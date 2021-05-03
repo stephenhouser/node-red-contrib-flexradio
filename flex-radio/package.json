@@ -1,0 +1,16 @@
+{
+  "name": "flex-radio",
+  "version": "1.0.0",
+  "description": "FlexRadio Control and Monitoring Nodes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Stephen Houser, N1SH <stephenhouser@gmail.com>",
+  "license": "MIT",
+  "node-red": {
+    "nodes": {
+      "flex-discovery": "flex-discovery.js"
+    }
+  }
+}

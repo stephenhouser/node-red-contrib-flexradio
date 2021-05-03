@@ -1,0 +1,39 @@
+<script type="text/javascript">
+    RED.nodes.registerType('vita49-decode', {
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: { value: "" },
+            datatype: { value: "buffer", required: true }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "file.png",
+        label: function() {
+            return this.name || "vita49-decode";
+        },
+        oneditprepare: function() {
+            
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="vita49-decode">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-datatype"><i class="fa fa-sign-out"></i>Output</label>
+        <select id="node-input-datatype" style="width:70%;">
+            <option value="buffer" data-i18n="udp.output.buffer">a Buffer</option>
+            <option value="utf8" data-i18n="udp.output.string">a String</option>
+            <option value="base64" data-i18n="udp.output.base64">a Base64 encoded string</option>
+        </select>
+    </div>
+
+</script>
+
+<script type="text/html" data-help-name="vita49-decode">
+    <p>Decode a raw VITA-49 datagram into a javascript object.</p>
+</script>
