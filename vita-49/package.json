@@ -2,7 +2,7 @@
   "name": "vita-49",
   "version": "1.0.0",
   "description": "VITA-49 Packet Functions (FlexRadio Specific)",
-  "main": "vita49.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
