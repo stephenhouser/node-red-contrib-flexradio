@@ -1,0 +1,31 @@
+<script type="text/javascript">
+    RED.nodes.registerType('flexradio-request', {
+        category: 'flexradio',
+        color: '#a6bbcf',
+        defaults: {
+            name: { value: '' },
+			radio: {value:'', type:'flexradio-server', required: true},
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'file.png',
+        label: function() {
+            return this.name || 'flexradio-request';
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="flexradio-request">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-radio"><i class="fa fa-sign-in"></i> FlexRadio</label>
+        <input type="text" id="node-input-radio" placeholder="FlexRadio">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="flexradio-request">
+    <p>Send commands to a FlexRadio 6xxx series radio and output the responses and messages from the radio.</p>
+</script>
