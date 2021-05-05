@@ -1,0 +1,11 @@
+{
+  "name": "vita-49",
+  "version": "1.0.0",
+  "description": "VITA-49 Packet Functions (FlexRadio Specific)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Stephen Houser, N1SH <stephenhouser@gmail.com>",
+  "license": "MIT"
+}
