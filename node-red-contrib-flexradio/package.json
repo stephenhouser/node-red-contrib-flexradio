@@ -18,7 +18,6 @@
       "flexradio-request": "flexradio-request.js",
       "flexradio-server": "flexradio-server.js",
       "flexradio-messages": "flexradio-messages.js",
-      "flexradio-status": "flexradio-status.js",
       "flexradio-meter": "flexradio-meter.js"
     }
   }
