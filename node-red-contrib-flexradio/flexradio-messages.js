@@ -1,12 +1,19 @@
 
 module.exports = function(RED) {
-    function FlexRadioMessageNode(config) {
+    "use strict"
+
+    function FlexRadioMessagesNode(config) {
         RED.nodes.createNode(this, config);
         
-        const node = this;              
+        const node = this;
+        node.name = config.name;
         node.radio = RED.nodes.getNode(config.radio);
-		node.client_handle = config.client_handle;
+        node.outputRadioMessages = config.radio_messages || false;
+        node.outputStatusMessages = config.status_messages || false;
+        node.clientHandle = config.client_handle;
 
+        node.log('outputmessages: ' + node.outputRadioMessages);
+        
         if (!node.radio) {  // No config node configured, should not happen
             node.status({fill:'red', shape:'circle', text:'not configured'});
             return;
@@ -15,14 +22,27 @@ module.exports = function(RED) {
         node.status({fill:'red', shape:'dot', text:'not connected'});
 
         const radio = node.radio;
-        radio.on('message', function(message) {
-            const msg = {
-                handle: message.handle,
-                payload: message.message
-            };
+        if (node.outputRadioMessages) {
+            radio.on('message', function(message) {
+                const msg = {
+                    messageId: message.message_id,
+                    payload: message.message
+                };
 
-            node.send(msg);
-        });
+                node.send(msg);
+            });
+        }
+
+        if (node.outputStatusMessages) {
+            radio.on('status', function(message) {
+                const msg = {
+                    clientHandle: message.handle,
+                    payload: message.message
+                };
+
+                node.send(msg);
+            });
+        }
 
         radio.on('connecting', function() {
             node.log('connecting');
@@ -41,5 +61,5 @@ module.exports = function(RED) {
         });
     }
 
-    RED.nodes.registerType("flexradio-messages", FlexRadioMessageNode);
+    RED.nodes.registerType("flexradio-messages", FlexRadioMessagesNode);
 }

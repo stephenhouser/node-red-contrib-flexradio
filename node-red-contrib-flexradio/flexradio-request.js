@@ -4,7 +4,9 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
 
         const node = this;
+        node.name = config.name;
         node.radio = RED.nodes.getNode(config.radio);
+        
         if (!node.radio) {  // No config node configured, should not happen
             node.status({fill:'red', shape:'circle', text:'not configured'});
             return;

@@ -3,11 +3,11 @@
         category: 'flexradio',
         color: '#a6bbcf',
         defaults: {
-            name: { value: '' },
+            name: {value: ''},
 			radio: {value: '', type: 'flexradio-radio', required: true},
-            radio_messages: { value: '' },
-            status_messages: { value: '' },
-			client_handle: { value: '' },
+            radio_messages: {value: ''},
+            status_messages: {value: ''},
+			client_handle: {value: ''},
         },
         inputs: 0,
         outputs: 1,
@@ -15,9 +15,9 @@
         label: function() {
             return this.name || 'flexradio-messages';
         },
-        oneditprepare: function() {
+        oneditprepare: function() {            
             var updateOptions = function() {
-                const status_messages = $('#node-input-staus-messages');
+                const status_messages = $('#node-input-status_messages');
                 if (status_messages.is(":checked")) {
                     $('#client-handle').show();
                 } else {
@@ -25,7 +25,7 @@
                 }
             };
             updateOptions();
-            $("#node-input-staus-messages").change(updateOptions);
+            $("#node-input-status_messages").change(updateOptions);
         }
     });
 </script>
@@ -41,15 +41,15 @@
     </div>
     <div class="form-row">
         <label><i class="fa fa-sign-out" ></i> Output</label>
-        <input style="width:20px; vertical-align:baseline; margin-right:5px;" type="checkbox" id="node-input-radio-messages">
-            <label style="width:auto; margin-top:7px;" for="node-input-radio-messages">Radio Messages</label>
-        <input style="width:20px; vertical-align:baseline; margin-right:5px;" type="checkbox" id="node-input-staus-messages">
-            <label style="width:auto; margin-top:7px;" for="node-input-staus-messages">Status Messages</label>
+        <input style="width:20px; vertical-align:baseline; margin-right:5px;" type="checkbox" id="node-input-radio_messages">
+            <label style="width:auto; margin-top:7px;" for="node-input-radio_messages">Radio Messages</label>
+        <input style="width:20px; vertical-align:baseline; margin-right:5px;" type="checkbox" id="node-input-status_messages">
+            <label style="width:auto; margin-top:7px;" for="node-input-status_messages">Status Messages</label>
         </div>
     </div>
     <div id="client-handle" class="form-row" style="padding-left:20px;">
-        <label for="node-input-client-handle"><i class="fa fa-tag"></i> Handle</label>
-        <input type="text" id="node-input-client-handle" placeholder="Client Handle (optional)">
+        <label for="node-input-client_handle"><i class="fa fa-tag"></i> Handle</label>
+        <input type="text" id="node-input-client_handle" placeholder="Client Handle (optional)">
     </div>
 </script>
 

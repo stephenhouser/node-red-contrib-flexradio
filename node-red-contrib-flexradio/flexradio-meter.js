@@ -3,7 +3,8 @@ module.exports = function(RED) {
     function FlexRadioMeterNode(config) {
         RED.nodes.createNode(this, config);
         
-        const node = this;              
+        const node = this;          
+        node.name = config.name;    
         node.radio = RED.nodes.getNode(config.radio);
 		node.client_handle = config.client_handle;
 
