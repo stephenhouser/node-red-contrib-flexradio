@@ -24,7 +24,6 @@ class Discovery extends EventEmitter {
 		this.port = port;
 		this.isConnected = false;
 		this.isConnecting = false;
-		this.eventEmitter = new events.EventEmitter();
 		this.discoveryListener = udp.createSocket('udp4');
 	}
 
