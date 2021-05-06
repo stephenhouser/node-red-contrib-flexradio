@@ -102,7 +102,7 @@ class Discovery {
 			const discovery_payload = new StringDecoder('utf8').write(vita49_message.payload);
 			const radio_descriptor = flex.decode_discovery(discovery_payload);
 			if (radio_descriptor) {
-				const radio = Radio.fromDiscovery(radio_descriptor);
+				const radio = Radio.fromDiscoveryDescriptor(radio_descriptor);
 				if (radio) {
 					this._emit('radio', radio);
 				}
