@@ -14,11 +14,13 @@
   },
   "node-red": {
     "nodes": {
-      "flexradio-decode": "flexradio-decode.js",
+      "flexradio-radio": "flexradio-radio.js",
       "flexradio-request": "flexradio-request.js",
-      "flexradio-server": "flexradio-server.js",
       "flexradio-messages": "flexradio-messages.js",
-      "flexradio-meter": "flexradio-meter.js"
+
+      "flexradio-meter": "flexradio-meter.js",
+
+      "flexradio-decode": "flexradio-decode.js"
     }
   }
 }
