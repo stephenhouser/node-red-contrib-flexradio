@@ -11,8 +11,6 @@ module.exports = function(RED) {
         node.outputRadioMessages = config.radio_messages || false;
         node.outputStatusMessages = config.status_messages || false;
         node.clientHandle = config.client_handle;
-
-        node.log('outputmessages: ' + node.outputRadioMessages);
         
         if (!node.radio) {  // No config node configured, should not happen
             node.status({fill:'red', shape:'circle', text:'not configured'});
