@@ -71,7 +71,6 @@ function decode_key_value(pairs) {
 	return values;
 }
 
-
 function decode_response(response) {
 	//console.log('decode_response:' + response);
 	const clean_data = response.replace(/\r?\n|\r/, '');
@@ -155,6 +154,11 @@ function decode(payload) {
 	}
 
 	return null;
+}
+
+function encode_request(sequence, request) {
+	return 'C' + sequence + '|' + request.toString() + '\n';
+
 }
 
 function encode(msg) {

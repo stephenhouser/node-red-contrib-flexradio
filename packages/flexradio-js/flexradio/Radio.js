@@ -42,11 +42,16 @@ class Radio extends EventEmitter {
 			this.host = this.ip;
 		}
 
+		this.clientId = null;
+
 		this.isConnected = false;
 		this.isConnecting = false;
 		this.connection = null;
-		this.clientId = null;
+
 		this.streamBuffer = '';
+
+		this.nextRequestSequenceNumber = 1;
+		this.requests = {};
 	}
 
 	static fromDiscoveryDescriptor(radio_descriptor) {
@@ -55,26 +60,36 @@ class Radio extends EventEmitter {
 	}
 
 	Connect(guiClientId, callback) {
-		// console.log('Connect(' + this.host + ':' + this.port + ')');
+		console.log('Radio.Connect(' + this.host + ':' + this.port + ')');
 
 		this.clientId = guiClientId;
 		this._connectToRadio();
 	}
 
 	Command(command, callback) {
-		
+		console.log('Radio.Command(' + command + ')');
+		this._sendCommand(command, callback);
+	}
+
+	Info() {
+		console.log('Radio.Info()');
 	}
 
 	Disconnect() {
-		console.log('Disconnect()');
+		console.log('Radio.Disconnect()');
 	}
 
 	RefreshLicenseState() {
-		console.log('RefreshLicenseState()');
+		console.log('Radio.RefreshLicenseState()');
 	}
 
 	MonitorNetworkQuality() {
-		console.log('MonitorNetworkQuality()');
+		console.log('Radio.MonitorNetworkQuality()');
+	}
+
+	Reboot() {
+		// 'radio reboot'
+		console.log('Radio.Reboot()');
 	}
 
 	// Connect to radio and setup handlers for TCP/IP data and state changes.
@@ -121,7 +136,7 @@ class Radio extends EventEmitter {
 
 		var idx;
 		while ((idx = radio.streamBuffer.indexOf('\n')) >= 0) {
-			const message = radio.streamBuffer.substring(0, idx);
+			const response = radio.streamBuffer.substring(0, idx);
 			radio.streamBuffer = radio.streamBuffer.substring(idx + 1);
 
 			radio._receiveMessage(message);
@@ -129,17 +144,34 @@ class Radio extends EventEmitter {
 	}
 
 	// Handles a singluar, separated, message line from TCP/IP stream
-	_receiveMessage(message) {
+	_receiveResponse(encoded_response) {
 		const radio = this;
 
-		console.log('_receiveMessage(' + message + ')');
+		console.log('_receiveResponse(' + encoded_response + ')');
 
-		const msg = flex.decode_response(message);
-		if (msg.type == 'response') {
-			// TODO: correlate with command id
-		} 
+		const response = flex.decode_response(encoded_response);
+		if (response.type == 'response') {
+			const request = radio.commands[response.sequence_number];
+			if (request && request.callback) {
+				request.callback(response);
+			}
+		} else {
+			radio.emit(response.type, response);
+		}
+	}
 
-		radio.emit(msg.type, msg);
+	_sendRequest(request, callback) {
+		const radio = this;
+
+		const sequenceNumber = radio.nextRequestSequenceNumber++;
+		radio.requests[sequenceNumber] = {
+			sequence_number: sequenceNumber,
+			request: request,
+			callback: callback
+		};
+
+		const encoded_request = flex.encode_request(sequenceNumber, request);
+		radio.connection.write(encoded_request);
 	}
 }
 
