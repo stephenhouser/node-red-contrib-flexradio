@@ -1,6 +1,6 @@
 
 const udp = require('dgram');
-const events = require('events');
+const EventEmitter = require('events');
 const { StringDecoder } = require('string_decoder');
 
 const vita49 = require('vita-49');
@@ -16,8 +16,10 @@ const VITA_FLEX_OUI 				= 0x1c2d;
 const VITA_FLEX_INFORMATION_CLASS 	= 0x534c;
 const VITA_FLEX_PACKET_CLASS		= 0xffff;
 
-class Discovery {
+class Discovery extends EventEmitter {
 	constructor(host, port) {
+		super();
+
 		this.host = host;
 		this.port = port;
 		this.isConnected = false;
@@ -36,50 +38,35 @@ class Discovery {
 		this._stopDiscoveryListener();
 	}
 
-	on(event, handlerFunction) {
-		this.eventEmitter.on(event, handlerFunction);
-	}
-
-	_emit(event, data) {
-		this.eventEmitter.emit(event, data);
-	}
-
 	_startDiscoveryListener() {
-		//console.log('_startDiscoveryListener()');
-		this._emit('discovery', 'starting');
-
 		const discovery = this;
 
-		//emits after the socket is ??? using socket.close();
 		discovery.discoveryListener.on('connect', function(){
-			//console.log('on connect');
 			discovery.isConnected = true;
 			discovery.isConnecting = false;
 		});
-  
-		//emits when socket is ready and listening for datagram msgs
+  		
 		discovery.discoveryListener.on('listening', function() {
-			//console.log('on listening');
-			const address = discovery.discoveryListener.address();
-			//console.log(address);
+			//emits when socket is ready and listening for datagram msgs
+			this.emit('started');
 		});
 
-		// emits when any error occurs
 		discovery.discoveryListener.on('error', function(error){
-			//console.log('on error:' + error);
+			// emits when any error occurs
+			// MUST be handled by a listener somewhere or will
+			// CRASH the program with an unhandled exception.
+			discovery.emit('error', err);
 		});
   
 		discovery.discoveryListener.on('message', function(data, info) {
-			//console.log('on message');
 			discovery._receiveData(data, info);
 		});
 
 		discovery.discoveryListener.on('close', function(){
-			//console.log('on close');
 			discovery.isConnected = false;
 			discovery.isConnecting = false;
 
-			discovery._emit('discovery', 'stopped');
+			discovery.emit('stopped');
 		});
 
 		discovery.isConnecting = true;
@@ -95,8 +82,6 @@ class Discovery {
 	}
 
 	_receiveData(data, info) {
-		//console.log('_receiveData()');
-
 		const vita49_message = vita49.decode(data);
 		if (this._isDiscoveryMessage(vita49_message)) {
 			const discovery_payload = new StringDecoder('utf8').write(vita49_message.payload);
@@ -104,7 +89,7 @@ class Discovery {
 			if (radio_descriptor) {
 				const radio = Radio.fromDiscoveryDescriptor(radio_descriptor);
 				if (radio) {
-					this._emit('radio', radio);
+					this.emit('radio', radio);
 				}
 			}
 		}
