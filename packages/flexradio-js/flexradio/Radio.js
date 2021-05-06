@@ -139,7 +139,7 @@ class Radio extends EventEmitter {
 			const response = radio.streamBuffer.substring(0, idx);
 			radio.streamBuffer = radio.streamBuffer.substring(idx + 1);
 
-			radio._receiveMessage(message);
+			radio._receiveResponse(response);
 		}
 	}
 
