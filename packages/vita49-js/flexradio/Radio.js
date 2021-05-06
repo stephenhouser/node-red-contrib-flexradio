@@ -1,14 +1,15 @@
 
 const net = require('net');
-const events = require('events');
+const EventEmitter = require('events');
 const { StringDecoder } = require('string_decoder');
 
 const flex = require('flexradio');
 
 const CONNECTION_RETRY_TIMEOUT = 5000;
 
-class Radio {
+class Radio extends EventEmitter {
 	constructor(descriptor) {
+		super();
 		// {
 		// 	discovery_protocol_version: "3.0.0.1",
 		// 	model: "FLEX-6600M",
@@ -34,15 +35,18 @@ class Radio {
 		//   }
 		for (const [key, value] of Object.entries(descriptor)) {
 			this[key] = value;
-		  }
+		}
+
+		// If there is no configured hostname, use ip
+		if (!this.host && this.ip) {
+			this.host = this.ip;
+		}
 
 		this.isConnected = false;
 		this.isConnecting = false;
 		this.connection = null;
 		this.clientId = null;
 		this.streamBuffer = '';
-
-		this.eventEmitter = new events.EventEmitter();
 	}
 
 	static fromDiscoveryDescriptor(radio_descriptor) {
@@ -51,7 +55,7 @@ class Radio {
 	}
 
 	Connect(guiClientId, callback) {
-		console.log('Connect(' + guiClientId + ')');
+		// console.log('Connect(' + this.host + ':' + this.port + ')');
 
 		this.clientId = guiClientId;
 		this._connectToRadio();
@@ -78,39 +82,32 @@ class Radio {
 		const radio = this;
 		if (!radio.isConnected && !radio.isConnecting) {
 			radio.isConnecting = true;
+			radio.emit('connecting');
+
 			radio.connection = net.connect(radio.port, radio.host, function() {
 				// Called when connection is complete
 				radio.isConnected = true;
 				radio.isConnecting = false;
-				radio._emit('connect');
+				radio.emit('connected');
 			});
-
-			// radio.connection.on('ready', function() {
-			// 	// Called when the connection is ready for use
-			// 	radio._emit('ready');
-			// });
 
 			radio.connection.on('data', function(data) {
 				// Called when data arrives on the socket
 				radio._receiveData(data);
 			});
 
-			radio.connection.on('error', function(err) {
+			radio.connection.on('error', function(error) {
 				// Called when there is an error on the channel
-				console.log('RADIO ERROR:' + err);
-				radio._emit('error', err);
-			});
-
-			radio.connection.on('end', function() {
-				// Called when there is an error on the channel
-				radio._emit('end');
+				// MUST be handled by a listener somewhere or will
+				// CRASH the program with an unhandled exception.
+				radio.emit('error', error);
 			});
 
 			radio.connection.on('close', function() {
 				// Called as the socket is closed (either end or error)
 				radio.isConnected = false;
 				radio.isConnecting = false;
-				radio._emit('close');
+				radio.emit('disconnected');
 			});
 		}
 	}
@@ -118,19 +115,23 @@ class Radio {
 	// Receives a "chunk" of data on the TCP/IP stream
 	// Accumulates it and passes off individual lines to be handled
 	_receiveData(raw_data) {
-		this.streamBuffer += new StringDecoder('utf8').write(raw_data);
+		const radio = this;
+
+		radio.streamBuffer += new StringDecoder('utf8').write(raw_data);
 
 		var idx;
-		while ((idx = this.streamBuffer.indexOf('\n')) >= 0) {
-			const message = this.streamBuffer.substring(0, idx);
-			this.streamBuffer = this.streamBuffer.substring(idx + 1);
+		while ((idx = radio.streamBuffer.indexOf('\n')) >= 0) {
+			const message = radio.streamBuffer.substring(0, idx);
+			radio.streamBuffer = radio.streamBuffer.substring(idx + 1);
 
-			this._receiveMessage(message);
+			radio._receiveMessage(message);
 		}
 	}
 
 	// Handles a singluar, separated, message line from TCP/IP stream
 	_receiveMessage(message) {
+		const radio = this;
+
 		console.log('_receiveMessage(' + message + ')');
 
 		const msg = flex.decode_response(message);
@@ -138,17 +139,7 @@ class Radio {
 			// TODO: correlate with command id
 		} 
 
-		this._emit(msg.type, msg);
-	}
-
-	// Client subscribe to events
-	on(event, handlerFunction) {
-		this.eventEmitter.on(event, handlerFunction);
-	}
-
-	// Emit an envet so listeners can get notified
-	_emit(event, data) {
-		this.eventEmitter.emit(event, data);
+		radio.emit(msg.type, msg);
 	}
 }
 
