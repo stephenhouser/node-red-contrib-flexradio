@@ -80,13 +80,13 @@ function decode_message(payload) {
 }
 
 function decode_discovery(payload) {
-	matches = clean_payload.match(/[^ ]+=[^ ]+/g);
-	return key_value_decoder(matches);
+	matches = payload.match(/[^ ]+=[^ ]+/g);
+	return decode_key_value(matches);
 }
 
 function decode_info(payload) {
-	matches = clean_payload.match(/[^,]+=[^,]+/g);
-	return key_value_decoder(matches);
+	matches = payload.match(/[^,]+=[^,]+/g);
+	return decode_key_value(matches);
 }
 
 function decode(payload) {

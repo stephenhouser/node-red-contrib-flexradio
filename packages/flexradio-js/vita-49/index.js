@@ -4,10 +4,6 @@
 // https://github.com/K3TZR/xLib6000/blob/master/Sources/xLib6000/Supporting/Vita.swift
 // https://community.flexradio.com/discussion/7063537/meter-packet-protocol
 
-const vita_discovery_stream = 0x00000800;
-const vita_flex_oui = 0x00001c2d;
-const vita_flex_information_class = 0x534cffff;
-
 const PacketType = {
 	if_data			: 0x00,
 	if_data_stream	: 0x01,
@@ -68,11 +64,11 @@ const TimeStampFractionType = {
 };
 
 function decode(raw_data) {
-	if (!raw_data) {
+	if (!raw_data || !(raw_data instanceof Uint8Array)) {
 		return null;
 	}
 
-	const data = new DataView(raw_data);
+	const data = new DataView(raw_data.buffer);
 	const vita = {};
 
 	// Decode the header flags
@@ -134,7 +130,7 @@ function decode(raw_data) {
 		header_byte += 8;
 	}
 
-	vita.payload = raw_data.slice(header_byte)
+	vita.payload = raw_data.slice(header_byte);
 
 	// TODO: Vita Trailier... 4 bytes at end 
 	if (has_trailer) {
