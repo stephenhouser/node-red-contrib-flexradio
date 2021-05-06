@@ -71,12 +71,68 @@ function decode_key_value(pairs) {
 	return values;
 }
 
-function decode_status(payload) {
-	return {};
+
+function decode_response(response) {
+	//console.log('decode_response:' + response);
+	const clean_data = response.replace(/\r?\n|\r/, '');
+
+	const message = clean_data.split('|');
+	const message_type = message[0].substring(0, 1);
+	const message_id = Number(message[0].substring(1));
+
+	switch (message_type) {
+		case 'R':
+			return decode_command_response(message);
+		case 'S':
+			return decode_status(message);
+		case 'M':
+			return decode_message(message);
+		case 'H':
+			return decode_handle(message);
+		case 'V':
+			return decode_version(message);
+	}
+
+	return null;
 }
 
-function decode_message(payload) {
-	return {};
+function decode_command_response(message) {
+	return {
+		type: 'response',
+		command_id: Number(message[0].substring(1)),
+		response_code: Number(message[1]),
+		message: message[2]
+	};
+}
+
+function decode_status(message) {
+	return {
+		type: 'status',
+		handle: message[0].substring(1),
+		message: message[1]
+	};
+}
+
+function decode_message(message) {
+	return {
+		type: 'message',
+		message_id: Number(message[0].substring(1)),
+		message: message[1]
+	};
+}
+
+function decode_handle(message) {
+	return { 
+		type: 'handle',
+		handle: message[0].substring(1)
+	};
+}
+
+function decode_version(message) {
+	return { 
+		type: 'version',
+		version: message[0].substring(1)
+	};
 }
 
 function decode_discovery(payload) {
@@ -113,4 +169,5 @@ module.exports = {
 	decode_message: decode_message,
 	decode_discovery: decode_discovery,
 	decode_info: decode_info,
+	decode_response: decode_response
 };

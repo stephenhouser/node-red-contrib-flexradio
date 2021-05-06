@@ -45,38 +45,37 @@ class Discovery {
 	}
 
 	_startDiscoveryListener() {
-		console.log('_startDiscoveryListener()');
+		//console.log('_startDiscoveryListener()');
 		this._emit('discovery', 'starting');
 
 		const discovery = this;
 
 		//emits after the socket is ??? using socket.close();
 		discovery.discoveryListener.on('connect', function(){
-			console.log('on connect');
+			//console.log('on connect');
 			discovery.isConnected = true;
 			discovery.isConnecting = false;
 		});
   
 		//emits when socket is ready and listening for datagram msgs
 		discovery.discoveryListener.on('listening', function() {
-			console.log('on listening');
+			//console.log('on listening');
 			const address = discovery.discoveryListener.address();
-			console.log(address);
+			//console.log(address);
 		});
 
 		// emits when any error occurs
 		discovery.discoveryListener.on('error', function(error){
-			console.log('on error:' + error);
+			//console.log('on error:' + error);
 		});
   
 		discovery.discoveryListener.on('message', function(data, info) {
-			console.log('on message');
+			//console.log('on message');
 			discovery._receiveData(data, info);
 		});
 
 		discovery.discoveryListener.on('close', function(){
-			console.log('on close');
-
+			//console.log('on close');
 			discovery.isConnected = false;
 			discovery.isConnecting = false;
 
@@ -96,7 +95,7 @@ class Discovery {
 	}
 
 	_receiveData(data, info) {
-		console.log('_receiveData()');
+		//console.log('_receiveData()');
 
 		const vita49_message = vita49.decode(data);
 		if (this._isDiscoveryMessage(vita49_message)) {
