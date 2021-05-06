@@ -45,19 +45,19 @@ class Radio {
 		this.eventEmitter = new events.EventEmitter();
 	}
 
-	static fromDiscovery(radio_descriptor) {
+	static fromDiscoveryDescriptor(radio_descriptor) {
 		const radio = new Radio(radio_descriptor);
 		return radio;
 	}
 
-	Connect(guiClientId) {
+	Connect(guiClientId, callback) {
 		console.log('Connect(' + guiClientId + ')');
 
 		this.clientId = guiClientId;
 		this._connectToRadio();
 	}
 
-	Command(command, completion_handler) {
+	Command(command, callback) {
 		
 	}
 
@@ -75,43 +75,41 @@ class Radio {
 
 	// Connect to radio and setup handlers for TCP/IP data and state changes.
 	_connectToRadio() {
-		//console.log('_connectToRadio()');
 		const radio = this;
 		if (!radio.isConnected && !radio.isConnecting) {
 			radio.isConnecting = true;
-			radio._emit('state', 'connecting');
-
 			radio.connection = net.connect(radio.port, radio.host, function() {
 				// Called when connection is complete
-				//console.log('on connected');
 				radio.isConnected = true;
 				radio.isConnecting = false;
-				radio._emit('state', 'connected');
 				radio._emit('connect');
 			});
 
+			// radio.connection.on('ready', function() {
+			// 	// Called when the connection is ready for use
+			// 	radio._emit('ready');
+			// });
+
 			radio.connection.on('data', function(data) {
 				// Called when data arrives on the socket
-				//console.log('on data');
 				radio._receiveData(data);
 			});
 
-			radio.connection.on('error', function (err) {
+			radio.connection.on('error', function(err) {
 				// Called when there is an error on the channel
-				console.log('on error');
+				console.log('RADIO ERROR:' + err);
 				radio._emit('error', err);
 			});
 
 			radio.connection.on('end', function() {
-				// Called when the other end closed the connection
-				//console.log('on end');
+				// Called when there is an error on the channel
+				radio._emit('end');
 			});
 
 			radio.connection.on('close', function() {
 				// Called as the socket is closed (either end or error)
-				// console.log('on close');
 				radio.isConnected = false;
-				radio._emit('state', 'disconnected');
+				radio.isConnecting = false;
 				radio._emit('close');
 			});
 		}
@@ -120,8 +118,6 @@ class Radio {
 	// Receives a "chunk" of data on the TCP/IP stream
 	// Accumulates it and passes off individual lines to be handled
 	_receiveData(raw_data) {
-		// console.log('_receiveData()');
-		// console.log(raw_data.toString());
 		this.streamBuffer += new StringDecoder('utf8').write(raw_data);
 
 		var idx;
@@ -150,11 +146,10 @@ class Radio {
 		this.eventEmitter.on(event, handlerFunction);
 	}
 
-	// Emit an envet
+	// Emit an envet so listeners can get notified
 	_emit(event, data) {
 		this.eventEmitter.emit(event, data);
 	}
-
 }
 
 module.exports = { Radio : Radio };
