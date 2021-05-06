@@ -1,4 +1,4 @@
-const { connect } = require('http2');
+const flex = require('flexradio');
 
 module.exports = function(RED) {
     "use strict";
@@ -28,16 +28,6 @@ module.exports = function(RED) {
 
         this.connected = function() {
             return node.is_connected;
-        }
-
-        function decode_response_code(code) {
-            switch (code) {
-                case 0:             return 'success';
-                case '5000002C':    return 'incorrect number of parameters';
-                case '50001000':    return '';
-                case '50000015':    return 'unknown command';
-                default:            return 'unknown error';   
-            }
         }
 
         function send_command(command, response_handler) {
@@ -72,7 +62,7 @@ module.exports = function(RED) {
 
             if (data.length >= 2) {
                 msg.response_code = data[1];
-                msg.response = decode_response_code(msg.response_code);
+                msg.response = flex.decode_response_code(msg.response_code);
             }
 
             if (data.length >= 3) {
