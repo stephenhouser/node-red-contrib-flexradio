@@ -98,7 +98,7 @@ function decode_response(response) {
 function decode_command_response(message) {
 	return {
 		type: 'response',
-		command_id: Number(message[0].substring(1)),
+		sequence_number: Number(message[0].substring(1)),
 		response_code: Number(message[1]),
 		message: message[2]
 	};
@@ -173,5 +173,6 @@ module.exports = {
 	decode_message: decode_message,
 	decode_discovery: decode_discovery,
 	decode_info: decode_info,
-	decode_response: decode_response
+	decode_response: decode_response,
+	encode_request: encode_request
 };

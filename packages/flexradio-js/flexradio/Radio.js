@@ -52,6 +52,8 @@ class Radio extends EventEmitter {
 
 		this.nextRequestSequenceNumber = 1;
 		this.requests = {};
+
+		this.connectedClientCount = 0;
 	}
 
 	static fromDiscoveryDescriptor(radio_descriptor) {
@@ -64,11 +66,12 @@ class Radio extends EventEmitter {
 
 		this.clientId = guiClientId;
 		this._connectToRadio();
+		this.connectedClientCount++;
 	}
 
 	Command(command, callback) {
 		console.log('Radio.Command(' + command + ')');
-		this._sendCommand(command, callback);
+		this._sendRequest(command, callback);
 	}
 
 	Info() {
@@ -77,6 +80,10 @@ class Radio extends EventEmitter {
 
 	Disconnect() {
 		console.log('Radio.Disconnect()');
+		this.connectedClientCount--;
+		if (this.connectedClientCount <= 0) {
+			this.radio.close();
+		}
 	}
 
 	RefreshLicenseState() {
@@ -151,7 +158,7 @@ class Radio extends EventEmitter {
 
 		const response = flex.decode_response(encoded_response);
 		if (response.type == 'response') {
-			const request = radio.commands[response.sequence_number];
+			const request = radio.requests[response.sequence_number];
 			if (request && request.callback) {
 				request.callback(response);
 			}
