@@ -7,81 +7,84 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         
         const node = this;
-        this.name = config.name;
-        this.host = config.host;
-        this.port = Number(config.port);
+        node.name = config.name;
+        node.host = config.host;
+        node.port = Number(config.port);
 
 		if (config.station_mode != 'none') {
-		    this.station_name = config.station_name;
+		    node.station_name = config.station_name;
 
             if (config.station_mode == 'slice') {
-                this.slice = config.slice;
+                node.slice = config.slice;
             }
         }
 
-        function connect_to_radio() {
-            //node.log('connect_to_radio()');
-            node.radio = new Radio({host: node.host, port: node.port});
+        node.radio = new Radio({ip:node.host, port:node.port});
+        if (node.radio) {
             const radio = node.radio;
 
-            radio.on('connect', function(connect_data) {
-                //node.log('radio connect');
-                node.emit('state', 'connected');
+            radio.on('connecting', function() {
+                node.log('radio connecting');
+                node.emit('connecting');
+            });
+
+            radio.on('connected', function() {
+                node.log('radio connect');
+                node.emit('connected');
             });
 
             radio.on('handle', function(handle_data) {
-                // node.log('radio handle');
+                node.log('radio handle');
                 node.emit('handle', handle_data);
             });
     
             radio.on('version', function(version_data) {
-                // node.log('radio version');
+                node.log('radio version');
                 node.emit('version', version_data);
             });
     
             radio.on('status', function(status_data) {
-                // node.log('radio status');
+                node.log('radio status');
                 node.emit('status', status_data);
             });
     
             radio.on('message', function(message_data) {
-                // node.log('radio message');
+                node.log('radio message');
                 node.emit('message', message_data);
             });
 
             radio.on('error', function(error) {
-                // node.log('radio error');
-                node.emit('state', 'error');
+                node.log(error);
+                //node.emit('error', error);
             });
 
-            radio.on('close', function(connect_data) {
-                // node.log('radio close');
-                node.emit('state', ' ');
+            radio.on('disconnected', function() {
+                node.log('radio close');
+                node.emit('disconnected');                                
+                node.reconnectTimeout = setTimeout(() => {
+                    radio.Connect();
+                }, 15000);
             });
-
-            // node.log('connecting');
-            node.emit('state', 'connecting');
-            radio.Connect();
         }
 
-        this.send = function(msg, response_handler) {
-            // node.log('send:' + msg.payload);
+        node.send = function(msg, response_handler) {
+            node.log('send:' + msg.payload);
 
             if (node.radio) {
                 node.radio.Command(msg.payload, response_handler);
             }
         };
 
-        this.on('close', function(done) {
-            // node.log('node close: ' + node.host + ':' + node.port);
+        node.on('close', function(done) {
+            node.log('node close: ' + node.host + ':' + node.port);
             node.emit('state',' ');
 
-            if (reconnectTimeout) {
-                clearInterval(this.reconnectTimeout);
+            if (node.reconnectTimeout) {
+                clearInterval(node.reconnectTimeout);
             }
         });
-        
-        connect_to_radio();
+
+        node.radio.Connect();
     }
 
     RED.nodes.registerType("flexradio-server", FlexRadioServerNode);
