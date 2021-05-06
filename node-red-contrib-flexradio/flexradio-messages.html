@@ -1,0 +1,58 @@
+<script type="text/javascript">
+    RED.nodes.registerType('flexradio-messages', {
+        category: 'flexradio',
+        color: '#a6bbcf',
+        defaults: {
+            name: { value: '' },
+			radio: { value: '', type: 'flexradio-server', required: true },
+            radio_messages: { value: '' },
+            status_messages: { value: '' },
+			client_handle: { value: '' },
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: 'file.png',
+        label: function() {
+            return this.name || 'flexradio-messages';
+        },
+        oneditprepare: function() {
+            var updateOptions = function() {
+                const status_messages = $('#node-input-staus-messages');
+                if (status_messages.is(":checked")) {
+                    $('#client-handle').show();
+                } else {
+                    $('#client-handle').hide();
+                }
+            };
+            updateOptions();
+            $("#node-input-staus-messages").change(updateOptions);
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="flexradio-messages">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-radio"><i class="fa fa-sign-in"></i> FlexRadio</label>
+        <input type="text" id="node-input-radio" placeholder="FlexRadio">
+    </div>
+    <div class="form-row">
+        <label><i class="fa fa-sign-out" ></i> Output</label>
+        <input style="width:20px; vertical-align:baseline; margin-right:5px;" type="checkbox" id="node-input-radio-messages">
+            <label style="width:auto; margin-top:7px;" for="node-input-radio-messages">Radio Messages</label>
+        <input style="width:20px; vertical-align:baseline; margin-right:5px;" type="checkbox" id="node-input-staus-messages">
+            <label style="width:auto; margin-top:7px;" for="node-input-staus-messages">Status Messages</label>
+        </div>
+    </div>
+    <div id="client-handle" class="form-row" style="padding-left:20px;">
+        <label for="node-input-client-handle"><i class="fa fa-tag"></i> Handle</label>
+        <input type="text" id="node-input-client-handle" placeholder="Client Handle (optional)">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="flexradio-messages">
+    <p>Receives FlexRadio 6xxx series messages.</p>
+</script>

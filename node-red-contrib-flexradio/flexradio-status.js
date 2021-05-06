@@ -15,10 +15,10 @@ module.exports = function(RED) {
         node.status({fill:'red', shape:'dot', text:'not connected'});
 
         const radio = node.radio;
-        radio.on('status', function(status_message) {
+        radio.on('status', function(status) {
             const msg = {
-                handle: status_message.handle,
-                payload: status_message.message
+                handle: status.handle,
+                payload: status.message
             };
 
             node.send(msg);
