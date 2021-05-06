@@ -9,7 +9,12 @@ module.exports = function(RED) {
         if (this.radio) {
             const node = this;
 
-            node.radio.on('status', function(msg) {
+            node.radio.on('status', function(status_message) {
+                const msg = {
+                    handle: status_message.handle,
+                    payload: status_message.message
+                };
+                
 				node.send(msg);
 			});
 
