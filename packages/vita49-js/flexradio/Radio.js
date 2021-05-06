@@ -4,13 +4,43 @@ var net = require('net');
 const CONNECTION_RETRY_TIMEOUT = 5000;
 
 class Radio {
-	constructor(host, port) {
-		this.host = host;
-		this.port = port;
-		this.clientId = null
+	constructor(descriptor) {
+		// {
+		// 	discovery_protocol_version: "3.0.0.1",
+		// 	model: "FLEX-6600M",
+		// 	serial: "0621-1104-6601-1641",
+		// 	version: "3.2.31.2837",
+		// 	nickname: "FlexRadio",
+		// 	callsign: "N1SH",
+		// 	ip: "192.168.10.27",
+		// 	port: "4992",
+		// 	status: "Available",
+		// 	max_licensed_version: "v3",
+		// 	radio_license_id: "00-1C-2D-05-1A-68",
+		// 	requires_additional_license: "0",
+		// 	fpc_mac: "00:1C:2D:03:85:6A",
+		// 	wan_connected: "1",
+		// 	licensed_clients: "2",
+		// 	available_clients: "2",
+		// 	max_panadapters: "4",
+		// 	available_panadapters: "4",
+		// 	max_slices: "4",
+		// 	available_slices: "4",
+		// 	gui_client_handles: "\u0000\u0000\u0000",
+		//   }
+		for (const [key, value] of Object.entries(descriptor)) {
+			this[key] = value;
+		  }
+
 		this.isConnected = false;
 		this.isConnecting = false;
 		this.connection = null;
+		this.clientId = null;
+	}
+
+	static fromDiscovery(radio_descriptor) {
+		const radio = new Radio(radio_descriptor);
+		return radio;
 	}
 
 	Connect(guiClientId) {
