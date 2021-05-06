@@ -8,6 +8,10 @@
   },
   "author": "Stephen Houser, N1SH <stephenhouser@gmail.com>",
   "license": "MIT",
+  "dependencies": {
+    "flexradio": "file:flexradio-js/flexradio",
+    "vita-49": "file:flexradio-js/vita-49"
+  },
   "node-red": {
     "nodes": {
       "flexradio-decode": "flexradio-decode.js",
