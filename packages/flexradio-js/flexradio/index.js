@@ -158,7 +158,6 @@ function decode(payload) {
 
 function encode_request(sequence, request) {
 	return 'C' + sequence + '|' + request.toString() + '\n';
-
 }
 
 function encode(msg) {
