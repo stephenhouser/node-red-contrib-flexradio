@@ -1,0 +1,33 @@
+<script type="text/javascript">
+    RED.nodes.registerType('flexradio-discovery', {
+        category: 'flexradio',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value: ''},
+            port: { value: 4992, required: true, validate: RED.validators.number() }
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: 'file.png',
+        label: function() {
+            return this.name || 'flexradio-discovery';
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="flexradio-discovery">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-port"><i class="fa fa-sign-in"></i> Port</label>
+        <input type="text" id="node-input-port" placeholder="4992">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="flexradio-discovery">
+    <p>Receives FlexRadio 6xxx series discovery messages from the network and outputs them into the flow.</p>
+
+	<p><strong>NOTE: Discovery nodes cannot share port numbers.</strong> The discovery node listens on a UDP/IP port for announcements from radios. Only one node can attach itself to a UDP/IP port. Thus,	there can be only one discovery node across all flows on a host for each port number.</strong> If there is more than one node with the same port number, one of them will generate discovery messages and the others will remain in an error state.</p>
+</script>

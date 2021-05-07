@@ -1,0 +1,79 @@
+<script type="text/javascript">
+    RED.nodes.registerType('flexradio-radio',{
+        category: 'config',
+        defaults: {
+            name: { value: '' },
+            host: { value: 'localhost', required: true },
+            port: { value: 4992, required: true, validate: RED.validators.number() },
+            station_name: { value: 'NodeRed', required: true },
+            slice_mode: { value: 'headless', required: true },
+            slice_name: { value: 'A' },
+        },
+        label: function() {
+            return this.name || this.host+":"+this.port;
+        },
+        oneditprepare: function() {
+            var updateOptions = function() {
+                var station_mode = $('#node-config-input-station_mode').val();
+                switch (station_mode) {
+                    case 'none':
+                        $('#node-config-station_config').hide();
+                        $('#node-config-slice_config').hide();
+                        break;
+                    case 'headless':
+                        $('#node-config-station_config').show();
+                        $('#node-config-slice_config').hide();
+                        break;
+                    case 'slice':
+                        $('#node-config-station_config').show();
+                        $('#node-config-slice_config').show();
+                        break;
+                }
+            };
+            updateOptions();
+            $("#node-config-input-station_mode").change(updateOptions);
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="flexradio-radio">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag">
+            </i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-host"><i class="fa fa-sign-in">
+            </i> Host</label>
+        <input type="text" id="node-config-input-host">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-port"><i class="fa fa-sign-in">
+            </i> Port</label>
+        <input type="text" id="node-config-input-port">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-station_mode"><i class="fa fa-sign-in">
+            </i> Station</label>
+        <select id="node-config-input-station_mode">
+            <option value="none">No Station</option>
+            <option value="headless">Headless</option>
+            <option value="slice">Slice</option>
+        </select>
+    </div>
+    <div class="form-row" id='node-config-station_config'>
+        <label for="node-config-input-station-name">
+            <i style="padding-left: 10%;" class="fa fa-sign-in"></i> Name</label>
+        <input type="text" id="node-config-input-station-name">    
+    </div>
+    <div class="form-row" id='node-config-slice_config'>
+        <label for="node-config-input-slice">
+            <i style="padding-left: 10%;" class="fa fa-sign-in"></i> Slice</label>
+        <select id="node-config-input-slice">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+        </select>
+    </div>
+</script>

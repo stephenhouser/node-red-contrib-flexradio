@@ -3,14 +3,15 @@
         category: 'flexradio',
         color: '#a6bbcf',
         defaults: {
-            name: { value: "" },
-            datatype: { value: "buffer", required: true }
+            name: { value: '' },
+            datatype_in: { value: 'buffer', required: true },
+            datatype_out: { value: 'buffer', required: true }
         },
         inputs: 1,
         outputs: 1,
-        icon: "file.png",
+        icon: 'file.png',
         label: function() {
-            return this.name || "vita49-decode";
+            return this.name || 'vita49-decode';
         },
         oneditprepare: function() {
             
@@ -24,8 +25,14 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-datatype"><i class="fa fa-sign-out"></i>Output</label>
-        <select id="node-input-datatype" style="width:70%;">
+        <label for="node-input-datatype_in"><i class="fa fa-sign-in"></i> Input</label>
+        <select id="node-input-datatype_in" style="width:70%;">
+            <option value="buffer" data-i18n="udp.output.buffer">a Buffer</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-datatype_out"><i class="fa fa-sign-out"></i> Output</label>
+        <select id="node-input-datatype_out" style="width:70%;">
             <option value="buffer" data-i18n="udp.output.buffer">a Buffer</option>
             <option value="utf8" data-i18n="udp.output.string">a String</option>
             <option value="base64" data-i18n="udp.output.base64">a Base64 encoded string</option>

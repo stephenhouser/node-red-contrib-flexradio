@@ -7,7 +7,7 @@ module.exports = function(RED) {
 		node.on('input', function(msg) {
 			flex_packet = flex.decode(msg.payload)
 			if (flex_packet) {
-				msg = flex_packet;
+				msg.payload = flex_packet;
 				node.send(msg);
 				this.status({});
 			} else {

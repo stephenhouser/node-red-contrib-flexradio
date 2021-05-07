@@ -1,0 +1,12 @@
+{
+    "name": "node-red-project",
+    "description": "A Node-RED Project",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "flexradio": "file:flexradio-js/flexradio",
+        "node-red-contrib-flex-radio": "file:node-red-contrib-flexradio",
+        "node-red-contrib-vita-49": "file:node-red-contrib-vita-49",
+        "vita-49": "file:flexradio-js/vita-49"
+    }
+}

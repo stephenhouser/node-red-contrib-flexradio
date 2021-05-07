@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    RED.nodes.registerType('flexradio-meter', {
+        category: 'flexradio',
+        color: '#a6bbcf',
+        defaults: {
+            name: { value: '' },
+			radio: {value: '', type: 'flexradio-radio', required: true},
+			client_handle: { value: '' },
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: 'file.png',
+        label: function() {
+            return this.name || 'flexradio-meter';
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="flexradio-meter">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-radio"><i class="fa fa-sign-in"></i> FlexRadio</label>
+        <input type="text" id="node-input-radio" placeholder="FlexRadio">
+    </div>
+    <div class="form-row">
+        <label for="node-input-client-handle"><i class="fa fa-tag"></i> Handle</label>
+        <input type="text" id="node-input-client-handle">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="flexradio-meter">
+    <p>Receives FlexRadio 6xxx series meter messages and outputs them.</p>
+</script>

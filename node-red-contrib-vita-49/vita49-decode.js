@@ -1,33 +1,37 @@
 const vita49 = require('vita-49');
 
-// Convert Buffer to ArrayBuffer and back again.
-// https://gist.github.com/miguelmota/5b06ae5698877322d0ca
-function toArrayBuffer(buffer) {
-	return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
-}
-
-function toBuffer(byteArray) {
-	return Buffer.from(byteArray);
-}
-
 module.exports = function(RED) {
 	function Vita49DecodeNode(config) {
 		RED.nodes.createNode(this, config);
 		var node = this;
+
+		node.datatype_in = config.datatype_in;
+		node.datatype_out = config.datatype_out;
+
 		node.on('input', function(msg) {
-			vita_datagram = vita49.decode(toArrayBuffer(msg.payload))
-			if (vita_datagram) {
-				msg = {...msg, ...vita_datagram};
-				if (config.datatype == 'utf8') {
-					msg.payload = toBuffer(vita_datagram.payload).toString();
+			msg_vita = vita49.decode(msg.payload)
+			if (msg_vita) {
+				msg = {...msg, ...msg_vita};
+				if (msg_vita.payload) {
+					switch (node.datatype_out) {
+						case 'utf8':
+						case 'base64':
+							msg.payload = msg_vita.payload.toString(node.datatype_out)
+							break;
+						case 'buffer':
+							msg.payload = Buffer.from(msg_vita.payload);
+							break;	
+						default:
+							msg.payload = msg_vita.payload;				
+					}
 				} else {
-					msg.payload = toBuffer(vita_datagram.payload);
+					msg.payload = '';
 				}
 				
 				node.send(msg);
-				this.status({});
+				node.status({});
 			} else {
-				this.status({fill: 'red', shape: 'dot', text: 'invalid datagram'});
+				node.status({fill: 'red', shape: 'dot', text: 'invalid datagram'});
 			}
 		});
 	}
