@@ -150,7 +150,7 @@ function decode(payload) {
 	if (clean_payload.includes(',')) {
 		return info_decoder(clean_payload);
 	} else {
-		return discovery_decoder(clean_payload);
+		return decode_discovery(clean_payload);
 	}
 
 	return null;

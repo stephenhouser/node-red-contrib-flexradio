@@ -7,8 +7,15 @@ const flex = require('flexradio');
 
 const CONNECTION_RETRY_TIMEOUT = 5000;
 
+const ConnectionStates = {
+	disconnected: 'disconnected',
+	connecting: 'connecting',
+	connected: 'connected'
+};
+
 class Radio extends EventEmitter {
-	constructor(descriptor) {
+
+		constructor(descriptor) {
 		super();
 		// {
 		// 	discovery_protocol_version: "3.0.0.1",
@@ -44,8 +51,7 @@ class Radio extends EventEmitter {
 
 		this.clientId = null;
 
-		this.isConnected = false;
-		this.isConnecting = false;
+		this.connectionState = ConnectionStates.disconnected;
 		this.connection = null;
 
 		this.streamBuffer = '';
@@ -61,56 +67,36 @@ class Radio extends EventEmitter {
 		return radio;
 	}
 
-	Connect(guiClientId, callback) {
-		console.log('Radio.Connect(' + this.host + ':' + this.port + ')');
+	connect(guiClientId, callback) {
+		console.log('Radio.connect(' + this.host + ':' + this.port + ')');
 
 		this.clientId = guiClientId;
 		this._connectToRadio();
 		this.connectedClientCount++;
 	}
 
-	Command(command, callback) {
-		console.log('Radio.Command(' + command + ')');
-		this._sendRequest(command, callback);
+	send(request, callback) {
+		console.log('Radio.send(' + request + ')');
+		this._sendRequest(request, callback);
 	}
 
-	Info() {
-		console.log('Radio.Info()');
-	}
-
-	Disconnect() {
-		console.log('Radio.Disconnect()');
+	disconnect() {
+		console.log('Radio.disconnect()');
 		this.connectedClientCount--;
 		if (this.connectedClientCount <= 0) {
-			this.radio.close();
+			this.connection.close();
 		}
-	}
-
-	RefreshLicenseState() {
-		console.log('Radio.RefreshLicenseState()');
-	}
-
-	MonitorNetworkQuality() {
-		console.log('Radio.MonitorNetworkQuality()');
-	}
-
-	Reboot() {
-		// 'radio reboot'
-		console.log('Radio.Reboot()');
 	}
 
 	// Connect to radio and setup handlers for TCP/IP data and state changes.
 	_connectToRadio() {
 		const radio = this;
-		if (!radio.isConnected && !radio.isConnecting) {
-			radio.isConnecting = true;
-			radio.emit('connecting');
+		if (radio.connectionState == ConnectionStates.disconnected) {
+			radio._setConnectionState(ConnectionStates.connecting);
 
 			radio.connection = net.connect(radio.port, radio.host, function() {
 				// Called when connection is complete
-				radio.isConnected = true;
-				radio.isConnecting = false;
-				radio.emit('connected');
+				radio._setConnectionState(ConnectionStates.connected);
 			});
 
 			radio.connection.on('data', function(data) {
@@ -127,9 +113,7 @@ class Radio extends EventEmitter {
 
 			radio.connection.on('close', function() {
 				// Called as the socket is closed (either end or error)
-				radio.isConnected = false;
-				radio.isConnecting = false;
-				radio.emit('disconnected');
+				radio._setConnectionState(ConnectionStates.disconnected);
 			});
 		}
 	}
@@ -179,6 +163,19 @@ class Radio extends EventEmitter {
 
 		const encoded_request = flex.encode_request(sequenceNumber, request);
 		radio.connection.write(encoded_request);
+	}
+
+	getConnectionState() {
+		const radio = this;
+
+		return radio.connectionState;
+	}
+
+	_setConnectionState(state) {
+		const radio = this;
+
+		radio.connectionState = state;
+		radio.emit(state);
 	}
 }
 
