@@ -36,7 +36,7 @@ module.exports = function(RED) {
             });
 
 			discoveryListener.on('radio', function(radio_data) {
-				node.log('discovered radio ' + radio_data);
+				// node.log('discovered radio ' + radio_data);
 				node.status({fill:'green', shape:'dot', text:'radio found'});
 
                 const msg = {

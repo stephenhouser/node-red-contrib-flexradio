@@ -22,8 +22,9 @@ module.exports = function(RED) {
         const radio = node.radio;
         if (node.outputRadioMessages) {
             radio.on('message', function(message) {
+                console.log("MESSAGE" + message);
                 const msg = {
-                    messageId: message.message_id,
+                    message_id: message.message_id,
                     payload: message.message
                 };
 
@@ -34,8 +35,8 @@ module.exports = function(RED) {
         if (node.outputStatusMessages) {
             radio.on('status', function(message) {
                 const msg = {
-                    clientHandle: message.handle,
-                    payload: message.message
+                    client_handle: message.handle,
+                    payload: message.status
                 };
 
                 node.send(msg);
@@ -48,9 +49,9 @@ module.exports = function(RED) {
         });
 
         radio.on('connected', function() {
-            node.log('connected');
-            const status = radio.nickname || radio.ip + ':' + radio.port || 'connected';
-            node.status({fill:'green', shape:'dot', text:status});
+			const radioName = radio.nickname ? radio.nickname : (radio.host + ':' + radio.port);
+            node.log('connected:' + radioName);
+            node.status({fill:'green', shape:'dot', text:radioName});
         });
 
         radio.on('disconnected', function() {

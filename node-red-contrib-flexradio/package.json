@@ -18,9 +18,7 @@
       "flexradio-radio": "flexradio-radio.js",
       "flexradio-request": "flexradio-request.js",
       "flexradio-messages": "flexradio-messages.js",
-
       "flexradio-meter": "flexradio-meter.js",
-
       "flexradio-decode": "flexradio-decode.js"
     }
   }

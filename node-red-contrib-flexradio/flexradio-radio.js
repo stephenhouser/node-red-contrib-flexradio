@@ -91,8 +91,8 @@ module.exports = function(RED) {
                 radio.send(msg.payload, function(response) {
                     if (response_handler) {
                         response_handler({
-                            sequenceNumber: response.sequence_number,
-                            statusCode: response.response_code,
+                            sequence_number: response.sequence_number,
+                            status_code: response.response_code,
                             payload: response.message
                         });
                     }

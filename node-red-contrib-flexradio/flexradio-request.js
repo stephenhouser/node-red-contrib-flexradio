@@ -10,7 +10,7 @@ module.exports = function(RED) {
         if (!node.radio) {  // No config node configured, should not happen
             node.status({fill:'red', shape:'circle', text:'not configured'});
             return;
-        } 
+        }
         
         node.status({fill:'red', shape:'dot', text:'not connected'});
         node.on('input', function(msg_in) {
@@ -26,9 +26,9 @@ module.exports = function(RED) {
         });
 
         radio.on('connected', function() {
-            node.log('connected');
-            const status = radio.nickname || radio.ip + ':' + radio.port || 'connected';
-            node.status({fill:'green', shape:'dot', text:status});
+			const radioName = radio.nickname ? radio.nickname : (radio.host + ':' + radio.port);
+            node.log('connected:' + radioName);
+            node.status({fill:'green', shape:'dot', text:radioName});
         });
 
         radio.on('disconnected', function() {
