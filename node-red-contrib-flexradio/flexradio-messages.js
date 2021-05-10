@@ -22,7 +22,6 @@ module.exports = function(RED) {
         const radio = node.radio;
         if (node.outputRadioMessages) {
             radio.on('message', function(message) {
-                console.log("MESSAGE" + message);
                 const msg = {
                     message_id: message.message_id,
                     payload: message.message
