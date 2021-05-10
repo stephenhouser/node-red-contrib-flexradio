@@ -38,8 +38,7 @@ module.exports = function(RED) {
                     node.status({fill:'green', shape:'circle', text:'connecting'});
                     break;
                 case 'connected':
-                    const radioName = radio.nickname ? radio.nickname : (radio.host + ':' + radio.port);
-                    node.status({fill:'green', shape:'dot', text:radioName});
+                    node.status({fill:'green', shape:'dot', text:radio.radioName()});
                     break;
                 case 'disconnected':
                     node.status({fill:'red', shape:'dot', text:'not connected'});

@@ -32,21 +32,6 @@ module.exports = function(RED) {
             radio.on('connected', function() {
                 updateNodeState();
             });
-
-            radio.on('handle', function(handle_data) {
-                node.log('recevied handle: ' + JSON.stringify(handle_data));
-                node.emit('handle', handle_data);
-            });
-    
-            radio.on('version', function(version_data) {
-                node.log('received version: ' + JSON.stringify(version_data));
-                node.emit('version', version_data);
-            });
-    
-            radio.on('status', function(status_data) {
-                node.log('received status: ' + JSON.stringify(status_data));
-                node.emit('status', status_data);
-            });
     
             radio.on('message', function(message_data) {
                 node.log('received message: ' + JSON.stringify(message_data));
@@ -81,6 +66,12 @@ module.exports = function(RED) {
             } else {
                 node.state = '';
             }
+        }
+
+        node.radioName = function() {
+            const node = this;
+            const radio = node.radio;
+            return radio.nickname ? radio.nickname : (radio.host + ':' + radio.port);
         }
 
         node.send = function(msg, response_handler) {

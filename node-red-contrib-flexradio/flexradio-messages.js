@@ -30,27 +30,28 @@ module.exports = function(RED) {
             updateNodeStatus();
         });
         
-        if (node.outputRadioMessages) {
-            radio.on('message', function(message) {
+        radio.on('message', function(message) {
+            if (message.type == 'message' && node.outputRadioMessages) {
                 const msg = {
+                    topic: radio.radioName() + '/' + message.type,
                     message_id: message.message_id,
                     payload: message.message
                 };
 
                 node.send(msg);
-            });
-        }
+            }
 
-        if (node.outputStatusMessages) {
-            radio.on('status', function(message) {
+            if (message.type == 'status' && node.outputStatusMessages) {
+                const topic = radio.radioName() + '/' + message.handle + '/' + message.status.topic;
+                delete message.status.topic;
                 const msg = {
-                    client_handle: message.handle,
+                    topic: topic,
                     payload: message.status
                 };
 
                 node.send(msg);
-            });
-        }
+            }
+        });
 
         function updateNodeStatus() {
             switch (radio.state) {
@@ -58,8 +59,7 @@ module.exports = function(RED) {
                     node.status({fill:'green', shape:'circle', text:'connecting'});
                     break;
                 case 'connected':
-                    const radioName = radio.nickname ? radio.nickname : (radio.host + ':' + radio.port);
-                    node.status({fill:'green', shape:'dot', text:radioName});
+                    node.status({fill:'green', shape:'dot', text:radio.radioName()});
                     break;
                 case 'disconnected':
                     node.status({fill:'red', shape:'dot', text:'not connected'});
