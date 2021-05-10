@@ -30,12 +30,12 @@ class DiscoveryListener extends EventEmitter {
 	}
 
 	start() {
-		console.log('DiscoveryListener.start()');
+		// console.log('DiscoveryListener.start()');
 		this._startDiscoveryListener();
 	}
 
 	stop() {
-		console.log('DiscoveryListener.stop()');
+		// console.log('DiscoveryListener.stop()');
 		this._stopDiscoveryListener();
 	}
 
