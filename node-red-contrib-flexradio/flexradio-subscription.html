@@ -1,0 +1,60 @@
+<script type="text/javascript">
+    RED.nodes.registerType('flexradio-subscription', {
+        category: 'flexradio',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value: ''},
+			radio: {value: '', type: 'flexradio-radio', required: true},
+            topic: {value: 'radio', required: true},
+            topic_filter: {value: 'all'},
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: 'file.png',
+        label: function() {
+            return this.name || 'flexradio-subscription';
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="flexradio-subscription">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-radio"><i class="fa fa-sign-in"></i> FlexRadio</label>
+        <input type="text" id="node-input-radio" placeholder="FlexRadio">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-topic"><i class="fa fa-sign-in">
+            </i> Topic</label>
+        <select id="node-config-input-topic">
+            <option value="amp">Amplifier (amp)</option>
+            <option value="atu">Automatic Tuner (atu)</option>
+            <option value="audio_stream">Audio Stream</option>
+            <option value="cwx">CW Transmit (cwx)</option>
+            <option value="dax">Digital Audio (dax)</option>
+            <option value="dax_iq">Digital Audio IQ (dax_iq)</option>
+            <option value="foundation">Foundation</option>
+            <option value="gps">Position/Location (gps)</option>
+            <option value="memories">Memories (memories)</option>
+            <option value="meter">Meter (meter)</option>
+            <option value="pan">Panadapter (pan)</option>
+            <option value="radio">Radio (radio)</option>
+            <option value="scu">Spectral Capture Unit (scu)</option>
+            <option value="slice">Slice (slice)</option>
+            <option value="tx">Transmit (tx)</option>
+            <option value="usb_cable">USB Cable (usb_cable)</option>
+            <option value="xvtr">Transverter (xvtr)</option>
+		</select>
+	</div>
+	<div id="client-handle" class="form-row" style="padding-left:20px;">
+        <label for="node-input-topic_filter"><i class="fa fa-tag"></i> Handle</label>
+        <input type="text" id="node-input-topic_filter" placeholder="all">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="flexradio-subscription">
+    <p>Subscribes to FlexRadio 6xxx series updates and outputs them to the flow.</p>
+</script>
