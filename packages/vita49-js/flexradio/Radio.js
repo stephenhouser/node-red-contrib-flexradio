@@ -190,23 +190,23 @@ class Radio extends EventEmitter {
 			const response = radio.streamBuffer.substring(0, idx);
 			radio.streamBuffer = radio.streamBuffer.substring(idx + 1);
 
-			radio._receiveResponse(response);
+			radio._receiveMessage(response);
 		}
 	}
 
 	// Handles a singluar, separated, message line from TCP/IP stream
-	_receiveResponse(encoded_response) {
+	_receiveMessage(encoded_message) {
 		const radio = this;
 
-		// console.log('_receiveResponse(' + encoded_response + ')');
-		const response = flex.decode(encoded_response);
-		if (response.type == 'response') {
-			const request = radio.requests[response.sequence_number];
+		console.log('_receiveResponse(' + encoded_message + ')');
+		const message = flex.decode(encoded_message);
+		if (message.type == 'response') {
+			const request = radio.requests[message.sequence_number];
 			if (request && request.callback) {
-				request.callback(response);
+				request.callback(message);
 			}
 		} else {
-			radio.emit(response.type, response);
+			radio.emit('message', message);
 		}
 	}
 

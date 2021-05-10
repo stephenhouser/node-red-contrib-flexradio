@@ -133,8 +133,9 @@ function decode_message_object(message) {
 	const response = {};
 
 	function message_split(message) {
-		if (message.includes(',')) {
-			return message.split(',');
+		// if (message.includes(',')) {
+		if (message.startsWith('model=')) {
+				return message.split(',');
 		} else if (message.includes('#')) {
 			return message.split('#');
 		}
@@ -146,7 +147,7 @@ function decode_message_object(message) {
 		for (var i = 0; i < fields.length; i++) {
 			const field = fields[i];
 			if (!field.includes('=')) {
-				response.object = response.object ? response.object + ' ' + field : field;
+				response.topic = response.topic ? response.topic + '/' + field : field;
 			} else {
 				const [k, v] = field.split('=');
 				response[k] = v.replace(/"/g, '');
