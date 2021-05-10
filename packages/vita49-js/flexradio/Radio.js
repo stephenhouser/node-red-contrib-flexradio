@@ -216,11 +216,12 @@ class Radio extends EventEmitter {
 		const vita49_message = vita49.decode(data);
 		if (vita49_message) {
 			const payload = vita49_message.payload.toString('utf8');
-			// console.log('receiveRealtimeData: ' + payload);
+			// TODO: Handle receipt of realtime (meter, panadapter,) data
 
+			// console.log('receiveRealtimeData: ' + payload);
 			// const realtime_data = flex.decode(payload);			
 			// if (realtime_data) {
-			// 	//this.emit('realtime', realtime_data);
+			//     this.emit('realtime', realtime_data);
 			// }
 		}
 	}
@@ -268,4 +269,7 @@ class Radio extends EventEmitter {
 	}
 }
 
-module.exports = { Radio : Radio };
+module.exports = { 
+	Radio : Radio, 
+	RadioConnectionStates : ConnectionStates
+};
