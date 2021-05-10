@@ -4,6 +4,9 @@
 // https://github.com/K3TZR/xLib6000/blob/master/Sources/xLib6000/Supporting/Vita.swift
 // https://community.flexradio.com/discussion/7063537/meter-packet-protocol
 
+// matchAll only available in Node >= 12
+const matchAll = require("match-all");
+
 const vita_discovery_stream = 0x00000800;
 const vita_flex_oui = 0x00001c2d;
 const vita_flex_information_class = 0x534cffff;
@@ -59,29 +62,17 @@ function decode_response_code(response_code) {
 	return 'unknown error';   
 }
 
-function decode_key_value(pairs) {
-	values = {};
-	pairs.forEach(
-		m => {
-		  var [k, v] = m.split('=');
-		  values[k] = v.replace(/"/g, '');
-		}
-  	);
-
-	return values;
-}
-
-function decode_response(response) {
+function decode(response) {
 	//console.log('decode_response:' + response);
 	const clean_data = response.replace(/\r?\n|\r/, '');
 
 	const message = clean_data.split('|');
 	const message_type = message[0].substring(0, 1);
-	const message_id = Number(message[0].substring(1));
+	// const message_id = Number(message[0].substring(1));
 
 	switch (message_type) {
 		case 'R':
-			return decode_command_response(message);
+			return decode_response(message);
 		case 'S':
 			return decode_status(message);
 		case 'M':
@@ -95,12 +86,12 @@ function decode_response(response) {
 	return null;
 }
 
-function decode_command_response(message) {
+function decode_response(message) {
 	return {
 		type: 'response',
 		sequence_number: Number(message[0].substring(1)),
 		response_code: Number(message[1]),
-		message: message[2]
+		message: decode_message_object(message[2])
 	};
 }
 
@@ -108,8 +99,8 @@ function decode_status(message) {
 	return {
 		type: 'status',
 		handle: message[0].substring(1),
-		message: message[1]
-	};
+		status: decode_message_object(message[1])
+	}
 }
 
 function decode_message(message) {
@@ -135,25 +126,35 @@ function decode_version(message) {
 }
 
 function decode_discovery(payload) {
-	matches = payload.match(/[^ ]+=[^ ]+/g);
-	return decode_key_value(matches);
+	return decode_message_object(payload);
 }
 
-function decode_info(payload) {
-	matches = payload.match(/[^,]+=[^,]+/g);
-	return decode_key_value(matches);
-}
+function decode_message_object(message) {
+	const response = {};
 
-function decode(payload) {
-	const clean_payload = payload.toString('utf8');
-
-	if (clean_payload.includes(',')) {
-		return info_decoder(clean_payload);
-	} else {
-		return decode_discovery(clean_payload);
+	function message_split(message) {
+		if (message.includes(',')) {
+			return message.split(',');
+		} else if (message.includes('#')) {
+			return message.split('#');
+		}
+		return message.split(' ');
 	}
 
-	return null;
+	if (message.length >= 1) {
+		const fields = message_split(message);
+		for (var i = 0; i < fields.length; i++) {
+			const field = fields[i];
+			if (!field.includes('=')) {
+				response.object = response.object ? response.object + ' ' + field : field;
+			} else {
+				const [k, v] = field.split('=');
+				response[k] = v.replace(/"/g, '');
+			}
+		}
+	}
+
+	return response;
 }
 
 function encode_request(sequence, request) {
@@ -164,14 +165,15 @@ function encode(msg) {
 }
 
 module.exports = {
-	decode: decode,
-	encode: encode,
 	packet_class: decode_packet_class,
 	response_code: decode_response_code,
+
+	decode: decode,
 	decode_status: decode_status,
 	decode_message: decode_message,
 	decode_discovery: decode_discovery,
-	decode_info: decode_info,
 	decode_response: decode_response,
+
+	encode: encode,
 	encode_request: encode_request
 };
