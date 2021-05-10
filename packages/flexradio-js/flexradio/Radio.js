@@ -74,7 +74,7 @@ class Radio extends EventEmitter {
 	}
 
 	connect(guiClientId, callback) {
-		console.log('Radio.connect(' + this.host + ':' + this.port + ')');
+		// console.log('Radio.connect(' + this.host + ':' + this.port + ')');
 
 		this.clientId = guiClientId;
 		this._connectToRadio();
@@ -82,12 +82,12 @@ class Radio extends EventEmitter {
 	}
 
 	send(request, callback) {
-		console.log('Radio.send(' + request + ')');
+		// console.log('Radio.send(' + request + ')');
 		this._sendRequest(request, callback);
 	}
 
 	disconnect() {
-		console.log('Radio.disconnect()');
+		// console.log('Radio.disconnect()');
 		this.connectedClientCount--;
 		if (this.connectedClientCount <= 0) {
 			this._disconnectFromRadio();
@@ -149,7 +149,7 @@ class Radio extends EventEmitter {
 				//emits when socket is ready and listening for datagram msgs
 				const listenAddress = realtimeListener.address();
 				radio.realtimeListenerPort = listenAddress.port;
-				console.log('realtimListener on udp4: ' + radio.realtimeListenerPort);
+				// console.log('realtimListener on udp4: ' + radio.realtimeListenerPort);
 				radio._setRealtimeListenerState(ConnectionStates.listening);
 
 				setTimeout(function() {
@@ -198,8 +198,7 @@ class Radio extends EventEmitter {
 	_receiveResponse(encoded_response) {
 		const radio = this;
 
-		console.log('_receiveResponse(' + encoded_response + ')');
-
+		// console.log('_receiveResponse(' + encoded_response + ')');
 		const response = flex.decode(encoded_response);
 		if (response.type == 'response') {
 			const request = radio.requests[response.sequence_number];
@@ -217,7 +216,7 @@ class Radio extends EventEmitter {
 		const vita49_message = vita49.decode(data);
 		if (vita49_message) {
 			const payload = vita49_message.payload.toString('utf8');
-			console.log('receiveRealtimeData: ' + payload);
+			// console.log('receiveRealtimeData: ' + payload);
 
 			// const realtime_data = flex.decode(payload);			
 			// if (realtime_data) {
