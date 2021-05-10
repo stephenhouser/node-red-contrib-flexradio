@@ -34,22 +34,22 @@ module.exports = function(RED) {
             });
 
             radio.on('handle', function(handle_data) {
-                node.log('radio handle');
+                node.log('recevied handle: ' + JSON.stringify(handle_data));
                 node.emit('handle', handle_data);
             });
     
             radio.on('version', function(version_data) {
-                node.log('radio version');
+                node.log('received version: ' + JSON.stringify(version_data));
                 node.emit('version', version_data);
             });
     
             radio.on('status', function(status_data) {
-                node.log('radio status');
+                node.log('received status: ' + JSON.stringify(status_data));
                 node.emit('status', status_data);
             });
     
             radio.on('message', function(message_data) {
-                node.log('radio message');
+                node.log('received message: ' + JSON.stringify(message_data));
                 node.emit('message', message_data);
             });
 
@@ -75,6 +75,7 @@ module.exports = function(RED) {
             if (node.radio) {
                 const state = node.radio.getConnectionState();
                 node.state = state;
+
                 node.log('radio ' + state);
                 node.emit(node.state);
             } else {
@@ -83,25 +84,25 @@ module.exports = function(RED) {
         }
 
         node.send = function(msg, response_handler) {
-            node.log('send:' + msg.payload);
-
+            node.log('send request: ' + msg.payload);
             if (node.radio) {
                 const radio = node.radio;
-
                 radio.send(msg.payload, function(response) {
                     if (response_handler) {
-                        response_handler({
+                        const response_data = {
                             sequence_number: response.sequence_number,
                             status_code: response.response_code,
                             payload: response.message
-                        });
+                        };
+
+                        node.log('recevied response: ' + JSON.stringify(response_data));
+                        response_handler(response_data);
                     }
                 });
             }
         };
 
         node.on('close', function(done) {
-            node.log('node close: ' + node.host + ':' + node.port);            
             if (node.reconnectTimeout) {
                 clearInterval(node.reconnectTimeout);
             }

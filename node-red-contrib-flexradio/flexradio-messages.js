@@ -15,11 +15,21 @@ module.exports = function(RED) {
         if (!node.radio) {  // No config node configured, should not happen
             node.status({fill:'red', shape:'circle', text:'not configured'});
             return;
-        } 
-
-        node.status({fill:'red', shape:'dot', text:'not connected'});
+        }
 
         const radio = node.radio;
+        radio.on('connecting', function() {
+            updateNodeStatus();
+        });
+
+        radio.on('connected', function() {
+            updateNodeStatus();
+        });
+
+        radio.on('disconnected', function() {
+            updateNodeStatus();
+        });
+        
         if (node.outputRadioMessages) {
             radio.on('message', function(message) {
                 const msg = {
@@ -42,21 +52,25 @@ module.exports = function(RED) {
             });
         }
 
-        radio.on('connecting', function() {
-            node.log('connecting');
-            node.status({fill:'green', shape:'circle', text:'connecting'});
-        });
+        function updateNodeStatus() {
+            switch (radio.state) {
+                case 'connecting':
+                    node.status({fill:'green', shape:'circle', text:'connecting'});
+                    break;
+                case 'connected':
+                    const radioName = radio.nickname ? radio.nickname : (radio.host + ':' + radio.port);
+                    node.status({fill:'green', shape:'dot', text:radioName});
+                    break;
+                case 'disconnected':
+                    node.status({fill:'red', shape:'dot', text:'not connected'});
+                    break;        
+                default:
+                    node.status({fill:'red', shape:'circle', text:radio.state});
+                    break;
+            }
+        }
 
-        radio.on('connected', function() {
-			const radioName = radio.nickname ? radio.nickname : (radio.host + ':' + radio.port);
-            node.log('connected:' + radioName);
-            node.status({fill:'green', shape:'dot', text:radioName});
-        });
-
-        radio.on('disconnected', function() {
-            node.log('disconnected');
-            node.status({fill:'red', shape:'dot', text:'not connected'});
-        });
+        updateNodeStatus();
     }
 
     RED.nodes.registerType("flexradio-messages", FlexRadioMessagesNode);

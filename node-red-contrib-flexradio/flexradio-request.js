@@ -1,3 +1,4 @@
+const { Radio, RadioConnectionStates } = require("flexradio/Radio");
 
 module.exports = function(RED) {
     function FlexRadioRequestNode(config) {
@@ -12,29 +13,44 @@ module.exports = function(RED) {
             return;
         }
         
-        node.status({fill:'red', shape:'dot', text:'not connected'});
         node.on('input', function(msg_in) {
             node.radio.send(msg_in, function(msg_out) {
                 node.send(msg_out);
             });
         });
 
-        const radio = node.radio;
+        const radio = node.radio;        
         radio.on('connecting', function() {
-            node.log('connecting');
-            node.status({fill:'green', shape:'circle', text:'connecting'});
+            updateNodeStatus();
         });
 
         radio.on('connected', function() {
-			const radioName = radio.nickname ? radio.nickname : (radio.host + ':' + radio.port);
-            node.log('connected:' + radioName);
-            node.status({fill:'green', shape:'dot', text:radioName});
+            updateNodeStatus();
         });
 
         radio.on('disconnected', function() {
-            node.log('disconnected');
-            node.status({fill:'red', shape:'dot', text:'not connected'});
+            updateNodeStatus();
         });
+
+        function updateNodeStatus() {
+            switch (radio.state) {
+                case 'connecting':
+                    node.status({fill:'green', shape:'circle', text:'connecting'});
+                    break;
+                case 'connected':
+                    const radioName = radio.nickname ? radio.nickname : (radio.host + ':' + radio.port);
+                    node.status({fill:'green', shape:'dot', text:radioName});
+                    break;
+                case 'disconnected':
+                    node.status({fill:'red', shape:'dot', text:'not connected'});
+                    break;        
+                default:
+                    node.status({fill:'red', shape:'circle', text:radio.state});
+                    break;
+            }
+        }
+
+        updateNodeStatus();
     }
 
     RED.nodes.registerType("flexradio-request", FlexRadioRequestNode);

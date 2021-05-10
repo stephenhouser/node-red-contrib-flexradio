@@ -14,6 +14,7 @@ module.exports = function(RED) {
         node.discoveryListener = new DiscoveryListener(node.host, node.port);
         if (node.discoveryListener) {
             const discoveryListener = node.discoveryListener;
+	        node.status({fill:'red', shape:'dot', text:'starting...'});
 
             discoveryListener.on('connecting', function() {
 				node.log('connecting');
@@ -52,7 +53,6 @@ module.exports = function(RED) {
             });
 
 			node.log('listener at udp4' + node.host + ':' + node.port);
-	        node.status({fill:'red', shape:'dot', text:'not connected'});
 			discoveryListener.start();
 		}
 
