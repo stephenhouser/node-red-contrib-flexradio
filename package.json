@@ -4,10 +4,8 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
-        "match-all": "^1.2.6",
-        "flexradio": "file:flexradio-js/flexradio",
+        "flexradio": "github:stephenhouser/flexradio-js",
         "node-red-contrib-flex-radio": "file:node-red-contrib-flexradio",
-        "node-red-contrib-vita-49": "file:node-red-contrib-vita-49",
-        "vita-49": "file:flexradio-js/vita-49"
+        "node-red-contrib-vita49": "file:node-red-contrib-vita49"
     }
 }

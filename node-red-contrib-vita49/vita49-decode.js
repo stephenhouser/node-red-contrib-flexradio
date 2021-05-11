@@ -1,4 +1,4 @@
-const vita49 = require('vita-49');
+const vita49 = require('vita49');
 
 module.exports = function(RED) {
 	function Vita49DecodeNode(config) {

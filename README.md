@@ -9,11 +9,9 @@ and network attached radios.
 The nodes in this collection are as follows:
 
 - flexradio-request node to send a radio commands and get responses
-- flexradio-status node that injects status information from a radio
-- flexradio-message node that injects messages from a radio (NOT COMPLETE)
+- flexradio-message node that injects messages from a radio
 - flexradio-meter node that injects meter data from a radio (NOT COMPLETE)
 
-- flexradio-decoder node to decode discovery and information messages
 - VITA-49 encoder/decoder nodes
 
 - flexradio-server configuration node that manages communication with a radio

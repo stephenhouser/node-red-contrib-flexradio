@@ -1,5 +1,5 @@
 {
-  "name": "node-red-contrib-vita-49",
+  "name": "node-red-contrib-vita49",
   "version": "1.0.0",
   "description": "NodeRed VITA-49 Packet Functions (FlexRadio Specific)",
   "main": "index.js",
@@ -9,7 +9,7 @@
   "author": "Stephen Houser, N1SH <stephenhouser@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "vita-49": "file:flexradio-js/vita-49"
+    "vita49": "github:stephenhouser/vita49-js"
   },
   "node-red": {
     "nodes": {
