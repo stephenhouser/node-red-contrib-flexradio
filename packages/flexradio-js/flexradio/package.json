@@ -2,6 +2,8 @@
   "name": "flexradio",
   "version": "1.0.0",
   "description": "FlexRadio Control and Monitoring Nodes",
+  "homepage": "https://github.com/stephenhouser/flexradio-js",
+  "repository": "github:stephenhouser/flexradio-js",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +12,6 @@
   "license": "MIT",
   "dependencies": {
     "match-all": "^1.2.6",
-    "vita-49": "file:flexradio-js/vita-49"
+    "vita-49": "https://github.com/stephenhouser/flexradio-js/tree/main/vita-49"
   }
 }
