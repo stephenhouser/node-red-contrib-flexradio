@@ -8,5 +8,5 @@
   },
   "author": "Stephen Houser, N1SH <stephenhouser@gmail.com>",
   "license": "MIT",
-  "repository" : "git+https://isaacs@github.com/stephenhouser/vita49-js"
+  "repository" : "github:stephenhouser/vita49-js"
 }
