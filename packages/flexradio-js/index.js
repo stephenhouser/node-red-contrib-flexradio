@@ -4,9 +4,6 @@
 // https://github.com/K3TZR/xLib6000/blob/master/Sources/xLib6000/Supporting/Vita.swift
 // https://community.flexradio.com/discussion/7063537/meter-packet-protocol
 
-// matchAll only available in Node >= 12
-const matchAll = require("match-all");
-
 const vita_discovery_stream = 0x00000800;
 const vita_flex_oui = 0x00001c2d;
 const vita_flex_information_class = 0x534cffff;

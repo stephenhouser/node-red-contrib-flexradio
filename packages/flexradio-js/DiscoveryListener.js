@@ -1,7 +1,7 @@
 const udp = require('dgram');
 const EventEmitter = require('events');
 
-const vita49 = require('vita-49');
+const vita49 = require('vita49');
 const flex = require('flexradio');
 
 const DiscoveryStates = {

@@ -11,6 +11,6 @@
   "author": "Stephen Houser, N1SH <stephenhouser@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "vita-49": "https://github.com/stephenhouser/vita49-js"
+    "vita49": "github:stephenhouser/vita49-js"
   }
 }
