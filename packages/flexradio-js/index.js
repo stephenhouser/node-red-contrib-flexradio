@@ -133,21 +133,21 @@ function decode_message_object(message) {
 		// if (message.includes(',')) {
 		if (message.startsWith('model=')) {
 				return message.split(',');
-		} else if (message.includes('#')) {
-			return message.split('#');
-		}
-		return message.split(' ');
+		} 
+		return message.split(/[ #]+/);
 	}
 
 	if (message.length >= 1) {
 		const fields = message_split(message);
+		var collect_topic = true;
 		for (var i = 0; i < fields.length; i++) {
 			const field = fields[i];
-			if (!field.includes('=')) {
-				response.topic = response.topic ? response.topic + '/' + field : field;
-			} else {
+			if (field.includes('=')) {
+				collect_topic = false;
 				const [k, v] = field.split('=');
 				response[k] = v.replace(/"/g, '');
+			} else if (collect_topic) {
+				response.topic = response.topic ? response.topic + '/' + field : field;
 			}
 		}
 	}
