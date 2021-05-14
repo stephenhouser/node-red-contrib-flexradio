@@ -33,7 +33,7 @@ module.exports = function(RED) {
         radio.on('message', function(message) {
             if (message.type == 'message' && node.outputRadioMessages) {
                 const msg = {
-                    topic: radio.radioName() + '/' + message.type,
+                    topic: message.type,
                     message_id: message.message_id,
                     payload: message.message
                 };
@@ -42,10 +42,9 @@ module.exports = function(RED) {
             }
 
             if (message.type == 'status' && node.outputStatusMessages) {
-                const topic = radio.radioName() + '/' + message.handle + '/' + message.status.topic;
-                delete message.status.topic;
                 const msg = {
-                    topic: topic,
+                    topic: message.status.topic,
+                    client_handle: message.handle,
                     payload: message.status
                 };
 
