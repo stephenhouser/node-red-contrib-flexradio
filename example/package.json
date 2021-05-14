@@ -1,0 +1,10 @@
+{
+    "name": "node-red-project",
+    "description": "A Node-RED Project",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "flexradio": "github:stephenhouser/flexradio-js",
+        "node-red-contrib-flexradio": "file:node-red-contrib-flexradio"
+    }
+}
