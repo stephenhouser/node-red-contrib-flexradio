@@ -5,7 +5,6 @@
     "private": true,
     "dependencies": {
         "flexradio": "github:stephenhouser/flexradio-js",
-        "node-red-contrib-flex-radio": "file:node-red-contrib-flexradio",
-        "node-red-contrib-vita49": "file:node-red-contrib-vita49"
+        "node-red-contrib-flexradio": "file:node-red-contrib-flexradio"
     }
 }
