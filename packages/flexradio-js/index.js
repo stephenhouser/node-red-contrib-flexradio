@@ -132,8 +132,9 @@ function decode_message_object(message) {
 	function message_split(message) {
 		// if (message.includes(',')) {
 		if (message.startsWith('model=')) {
-				return message.split(',');
-		} 
+			return message.split(',');
+		}
+
 		return message.split(/[ #]+/);
 	}
 
@@ -144,8 +145,19 @@ function decode_message_object(message) {
 			const field = fields[i];
 			if (field.includes('=')) {
 				collect_topic = false;
-				const [k, v] = field.split('=');
-				response[k] = v.replace(/"/g, '');
+
+				const [key, value] = field.split('=');
+				const clean_value = value.replace(/"/g, '');
+				if (key.includes('.')) {
+					const [major_key, minor_key] = key.split('.');
+					if (!response[major_key]) {
+						response[major_key] = {};
+					}
+
+					response[major_key][minor_key] = clean_value;
+				} else {
+					response[key] = clean_value;
+				}
 			} else if (collect_topic) {
 				response.topic = response.topic ? response.topic + '/' + field : field;
 			}
