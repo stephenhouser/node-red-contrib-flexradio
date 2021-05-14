@@ -141,11 +141,11 @@ function decode_message_object(message) {
 	if (message.length >= 1) {
 		const fields = message_split(message);
 		var collect_topic = true;
+		
 		for (var i = 0; i < fields.length; i++) {
 			const field = fields[i];
 			if (field.includes('=')) {
 				collect_topic = false;
-
 				const [key, value] = field.split('=');
 				const clean_value = value.replace(/"/g, '');
 				if (key.includes('.')) {
@@ -158,7 +158,7 @@ function decode_message_object(message) {
 				} else {
 					response[key] = clean_value;
 				}
-			} else if (collect_topic) {
+			} else if (collect_topic && field.length >= 1) {
 				response.topic = response.topic ? response.topic + '/' + field : field;
 			}
 		}
