@@ -15,6 +15,10 @@ module.exports = function(RED) {
         
         node.on('input', function(msg_in) {
             node.radio.send(msg_in, function(msg_out) {
+                if (Object.keys(msg_out.payload).length === 0) {
+                    msg_out.payload = msg_in.payload;
+                }
+
                 node.send(msg_out);
             });
         });
