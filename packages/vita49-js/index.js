@@ -130,7 +130,8 @@ function decode(raw_data) {
 		header_byte += 8;
 	}
 
-	vita.payload = raw_data.slice(header_byte);
+	// vita.payload = raw_data.slice(header_byte);
+	vita.payload = raw_data.subarray(header_byte);
 
 	// TODO: Vita Trailier... 4 bytes at end 
 	if (has_trailer) {
