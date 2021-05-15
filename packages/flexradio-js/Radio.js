@@ -8,6 +8,11 @@ const flex = require('flexradio');
 
 const CONNECTION_RETRY_TIMEOUT = 5000;
 
+const VITA_METER_STREAM 			= 0x00000700;
+const VITA_FLEX_OUI 				= 0x1c2d;
+const VITA_FLEX_INFORMATION_CLASS 	= 0x534c;
+const VITA_FLEX_METER_CLASS			= 0x8002;
+
 const ConnectionStates = {
 	disconnected: 'disconnected',
 	connecting: 'connecting',
@@ -210,19 +215,30 @@ class Radio extends EventEmitter {
 		}
 	}
 
+	_isRealtimeData(message) {
+		return message 
+			&& message.stream_id == VITA_METER_STREAM
+			&& message.class.oui == VITA_FLEX_OUI
+			&& message.class.information_class == VITA_FLEX_INFORMATION_CLASS
+			&& message.class.packet_class == VITA_FLEX_METER_CLASS;
+	}
+
 	_receiveRealtimeData(data) {
 		const radio = this;
 
 		const vita49_message = vita49.decode(data);
 		if (vita49_message) {
-			const payload = vita49_message.payload.toString('utf8');
 			// TODO: Handle receipt of realtime (meter, panadapter,) data
-
 			// console.log('receiveRealtimeData: ' + payload);
-			// const realtime_data = flex.decode(payload);			
-			// if (realtime_data) {
-			//     this.emit('realtime', realtime_data);
-			// }
+			if (this._isRealtimeData(vita49_message)) {
+				const meter_data = flex.decode_meter(vita49_message.payload)
+				if (meter_data) {
+					console.log('_receiveRealtimeData() ==>' + JSON.stringify(meter_data));
+					this.emit('meter', meter_data);
+				}	
+			} else {
+				console.log("REALTIME DATA (not METER)");
+			}
 		}
 	}
 

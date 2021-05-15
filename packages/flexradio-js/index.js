@@ -167,6 +167,22 @@ function decode_message_object(message) {
 	return response;
 }
 
+function decode_meter(raw_data) {
+	if (!raw_data || !(raw_data instanceof Uint8Array)) {
+		return null;
+	}
+
+	const data = new DataView(new Uint8Array(raw_data).buffer);
+	const meter_data = { topic: 'meter' };
+	for (var idx = 0; idx < data.byteLength; idx += Uint32Array.BYTES_PER_ELEMENT) {
+		const meter_identifier = data.getUint16(idx, false);
+		const meter_value = data.getUint16(idx + 2, false);
+		meter_data[meter_identifier] = meter_value;
+	}
+
+	return meter_data;
+}
+
 function encode_request(sequence, request) {
 	return 'C' + sequence + '|' + request.toString() + '\n';
 }
@@ -183,6 +199,7 @@ module.exports = {
 	decode_message: decode_message,
 	decode_discovery: decode_discovery,
 	decode_response: decode_response,
+	decode_meter: decode_meter,
 
 	encode: encode,
 	encode_request: encode_request

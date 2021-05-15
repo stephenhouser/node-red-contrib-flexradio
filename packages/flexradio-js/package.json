@@ -1,6 +1,6 @@
 {
   "name": "flexradio",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "FlexRadio Control and Monitoring Nodes",
   "homepage": "https://github.com/stephenhouser/flexradio-js",
   "repository": "github:stephenhouser/flexradio-js",
