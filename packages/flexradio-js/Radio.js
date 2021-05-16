@@ -233,7 +233,6 @@ class Radio extends EventEmitter {
 			if (this._isRealtimeData(vita49_message)) {
 				const meter_data = flex.decode_meter(vita49_message.payload)
 				if (meter_data) {
-					console.log('_receiveRealtimeData() ==>' + JSON.stringify(meter_data));
 					this.emit('meter', meter_data);
 				}	
 			} else {
@@ -259,7 +258,7 @@ class Radio extends EventEmitter {
 	_stopRealtimeListener() {
 		const radio = this;
 
-		if (radio.realtimeListener && radio.realtimeListenerState != disconnected) {
+		if (radio.realtimeListener && radio.realtimeListenerState != ConnectionStates.disconnected) {
 			radio.realtimeListener.close();
 		}
 	}

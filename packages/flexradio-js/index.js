@@ -88,15 +88,76 @@ function decode_response(message) {
 		type: 'response',
 		sequence_number: Number(message[0].substring(1)),
 		response_code: Number(message[1]),
-		message: decode_message_object(message[2])
+		message: decode_response_payload(message[2])
 	};
 }
 
+function _decode_response_payload(fields) {
+	if (!fields || fields.length == 0 || fields[0] == '') {
+		return {};
+	}
+
+	const field = fields[0];
+	const remainder = fields.slice(1);
+	const response = _decode_response_payload(remainder);
+
+	const [key, value] = decode_key_value(field);
+	if (key) {
+		if (key.includes('.')) {
+			const [major_key, minor_key] = key.split('.');
+			if (!response[major_key]) {
+				response[major_key] = {};
+			}
+
+			response[major_key][minor_key] = value;
+		} else {
+			response[key] = value;
+		}
+	} else {
+		return value;
+	}
+
+	return response;
+}
+
+function decode_response_payload(payload) {
+	function payload_splitter(payload) {
+		if (payload.startsWith('model=')) {				// 'info'
+			return payload.split(',');
+		} else if (payload.startsWith('meter ')) {		// 'meter list'
+			return ['meter', ...payload.substring(6).split('#')];
+		}
+
+		return payload.split(' ');
+	}
+
+	const fields = payload_splitter(payload);
+	return _decode_response_payload(fields);	
+}
+
+
 function decode_status(message) {
+	let topic = null;
+	const status = {};
+
+	let collect_topic = true;
+	const fields = message[1].split(' ');
+	for (var i = 0; i < fields.length; i++) {
+		const field = fields[i];
+		if (field.includes('=')) {
+			const [key, value] = decode_key_value(field);
+			status[key] = value;
+			collect_topic = false;
+		} else if (collect_topic && field.length >= 1) {
+			topic = topic ? topic + '/' + field : field;
+		}
+	}
+
 	return {
 		type: 'status',
 		handle: message[0].substring(1),
-		status: decode_message_object(message[1])
+		topic: topic,
+		status: status
 	}
 }
 
@@ -123,48 +184,14 @@ function decode_version(message) {
 }
 
 function decode_discovery(payload) {
-	return decode_message_object(payload);
-}
-
-function decode_message_object(message) {
-	const response = {};
-
-	function message_split(message) {
-		// if (message.includes(',')) {
-		if (message.startsWith('model=')) {
-			return message.split(',');
-		}
-
-		return message.split(/[ #]+/);
+	const discovery = {};
+	const fields = payload.split(' ');
+	for (var i = 0; i < fields.length; i++) {
+		const [key, value] = fields[i].split('=');
+		discovery[key] = value;
 	}
 
-	if (message.length >= 1) {
-		const fields = message_split(message);
-		var collect_topic = true;
-		
-		for (var i = 0; i < fields.length; i++) {
-			const field = fields[i];
-			if (field.includes('=')) {
-				collect_topic = false;
-				const [key, value] = field.split('=');
-				const clean_value = value.replace(/"/g, '');
-				if (key.includes('.')) {
-					const [major_key, minor_key] = key.split('.');
-					if (!response[major_key]) {
-						response[major_key] = {};
-					}
-
-					response[major_key][minor_key] = clean_value;
-				} else {
-					response[key] = clean_value;
-				}
-			} else if (collect_topic && field.length >= 1) {
-				response.topic = response.topic ? response.topic + '/' + field : field;
-			}
-		}
-	}
-
-	return response;
+	return discovery;
 }
 
 function decode_meter(raw_data) {
@@ -173,14 +200,32 @@ function decode_meter(raw_data) {
 	}
 
 	const data = new DataView(new Uint8Array(raw_data).buffer);
-	const meter_data = { topic: 'meter' };
+	const meter_data = {};
 	for (var idx = 0; idx < data.byteLength; idx += Uint32Array.BYTES_PER_ELEMENT) {
 		const meter_identifier = data.getUint16(idx, false);
 		const meter_value = data.getUint16(idx + 2, false);
-		meter_data[meter_identifier] = meter_value;
+		meter_data[meter_identifier] = { value: meter_value };
 	}
 
 	return meter_data;
+}
+
+function decode_key_value(kv) {
+	if (kv.includes('=')) {
+		const [key, value] = kv.split('=');
+		var clean_value = value.replace(/"/g, '');
+		if (value.includes(',')) {
+			clean_value = value.split(',');
+		}
+
+		return [key, clean_value];
+	}
+
+	if (kv.includes(',')) {
+		return [null, kv.split(',')];
+	}
+
+	return kv;
 }
 
 function encode_request(sequence, request) {

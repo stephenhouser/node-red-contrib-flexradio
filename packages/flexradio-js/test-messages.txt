@@ -1,3 +1,4 @@
+R3|0|
 V1.4.0.0
 H3621C7F5
 M10000001|Client connected from IP 192.168.10.20
@@ -50,4 +51,4 @@ S6EBCFFCF|slice 0 RF_frequency=14.074000 wide=0 lock=0
 S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
 S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
 S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
-
+R5|0|ANT1,ANT2,RX_A
