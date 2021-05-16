@@ -43,7 +43,7 @@ module.exports = function(RED) {
 
             if (message.type == 'status' && node.outputStatusMessages) {
                 const msg = {
-                    topic: message.status.topic,
+                    topic: message.topic,
                     client_handle: message.handle,
                     payload: message.status
                 };

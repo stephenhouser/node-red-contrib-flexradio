@@ -38,6 +38,11 @@ module.exports = function(RED) {
                 node.emit('message', message_data);
             });
 
+            radio.on('meter', function(meter_data) {
+                node.log('received meter: ' + JSON.stringify(meter_data));
+                node.emit('meter', meter_data);
+            });
+
             radio.on('error', function(error) {
                 // don't re-emit errors. They are treated differently by
                 // the EventEmitter and will crash if not handled.

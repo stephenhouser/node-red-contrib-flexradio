@@ -18,8 +18,8 @@ module.exports = function(RED) {
         const radio = node.radio;
         radio.on('meter', function(meter) {
             const msg = {
-                handle: meter.handle,
-                payload: meter.message
+                topic: 'meter',
+                payload: meter
             };
 
             node.send(msg);
