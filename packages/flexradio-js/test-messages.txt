@@ -1,3 +1,4 @@
+S513F01DA|meter 18.src=RAD#18.num=3#18.nam=MAINFAN#18.low=0.0#18.hi=8192.0#18.desc=Main radio fan RPM#18.unit=RPM#18.fps=0#
 R3|0|
 V1.4.0.0
 H3621C7F5

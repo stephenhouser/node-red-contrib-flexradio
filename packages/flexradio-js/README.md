@@ -1,53 +1,20 @@
-V1.4.0.0
-H3621C7F5
-M10000001|Client connected from IP 192.168.10.20
-S3621C7F5|radio slices=3 panadapters=3 lineout_gain=60 lineout_mute=0 headphone_gain=50 headphone_mute=0 remote_on_enabled=0 pll_done=0 freq_error_ppb=0 cal_freq=15.000000 tnf_enabled=1 snap_tune_enabled=1 nickname=Flex-6600M callsign=N1SH binaural_rx=0 full_duplex_enabled=0 band_persistence_enabled=1 rtty_mark_default=2125 enforce_private_ip_connections=1 backlight=50 mute_local_audio_when_remote=1 daxiq_capacity=16 daxiq_available=16
-S3621C7F5|radio filter_sharpness VOICE level=2 auto_level=1
-S3621C7F5|radio filter_sharpness CW level=2 auto_level=1
-S3621C7F5|radio filter_sharpness DIGITAL level=2 auto_level=1
-S3621C7F5|radio static_net_params ip= gateway= netmask=
-S3621C7F5|radio front_speaker_mute=0
-S3621C7F5|radio oscillator state=tcxo setting=auto locked=1 ext_present=0 gpsdo_present=0 tcxo_present=1
-S3621C7F5|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
-S3621C7F5|eq rx mode=1 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
-S3621C7F5|eq rxsc mode=1 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
-S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
-S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
-S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
-R1|0|model="FLEX-6600",chassis_serial="0621-1104-6601-1641",name="Flex-6600M",callsign="N1SH",gps="Not Present",atu_present=1,num_scu=2,num_slice=4,num_tx=1,software_ver=3.2.34.3128,mac=00:1C:2D:05:1A:68,ip=192.168.10.27,netmask=255.255.255.0,gateway=192.168.10.1,location="",region="USA",screensaver=model,options="None"
-R2|0|meter 1.src=COD-#1.num=1#1.nam=MICPEAK#1.low=-150.0#1.hi=20.0#1.desc=Signal strength of MIC output in CODEC#1.unit=dBFS#1.fps=40#2.src=COD-#2.num=2#2.nam=MIC#2.low=-150.0#2.hi=20.0#2.desc=Average Signal strength of MIC ouput in CODEC#2.unit=dBFS#2.fps=20#3.src=TX-#3.num=8#3.nam=CODEC#3.low=-150.0#3.hi=20.0#3.desc=Signal strength of CODEC output#3.unit=dBFS#3.fps=10#4.src=TX-#4.num=8#4.nam=SC_MIC#4.low=-150.0#4.hi=20.0#4.desc=Signal strength of MIC output#4.unit=dBFS#4.fps=10#5.src=TX-#5.num=8#5.nam=COMPPEAK#5.low=-150.0#5.hi=20.0#5.desc=Signal strength of signals after the CLIPPER (Compression)#5.unit=dBFS#5.fps=20#6.src=TX-#6.num=8#6.nam=SC_FILT_1#6.low=-150.0#6.hi=20.0#6.desc=Signal strength after Filter 1#6.unit=dBFS#6.fps=10#7.src=TX-#7.num=8#7.nam=ALC#7.low=-150.0#7.hi=20.0#7.desc=Signal strength of signals after SW ALC (SSB Peak)#7.unit=dBFS#7.fps=10#8.src=TX-#8.num=8#8.nam=PRE_WAVE_AGC#8.low=-150.0#8.hi=20.0#8.desc=Signal strength before Waveform AGC#8.unit=dBFS#8.fps=10#9.src=TX-#9.num=8#9.nam=PRE_WAVE#9.low=-150.0#9.hi=20.0#9.desc=Signal strength before Waveform Shim#9.unit=dBFS#9.fps=10#10.src=TX-#10.num=8#10.nam=SC_FILT_2#10.low=-150.0#10.hi=20.0#10.desc=Signal strength after Filter 2#10.unit=dBFS#10.fps=10#11.src=TX-#11.num=8#11.nam=B4RAMP#11.low=-150.0#11.hi=20.0#11.desc=Signal strength of signals before the ramp#11.unit=dBFS#11.fps=10#12.src=TX-#12.num=8#12.nam=AFRAMP#12.low=-150.0#12.hi=20.0#12.desc=Signal strength of signals after the ramp#12.unit=dBFS#12.fps=10#13.src=TX-#13.num=8#13.nam=POST_P#13.low=-150.0#13.hi=0.0#13.desc=Signal strength after all processing is done but before attenuation for power control#13.unit=dBFS#13.fps=10#14.src=TX-#14.num=8#14.nam=GAIN#14.low=-150.0#14.hi=0.0#14.desc=Signal strength after Gain#14.unit=dBFS#14.fps=10#15.src=TX-#15.num=5#15.nam=HWALC#15.low=-150.0#15.hi=20.0#15.desc=Voltage present at the Hardware ALC RCA Plug#15.unit=dBFS#15.fps=20#16.src=RAD#16.num=334#16.nam=+13.8A#16.low=10.5#16.hi=15.0#16.desc=Main radio input voltage at PA#16.unit=Volts#16.fps=0#17.src=RAD#17.num=0#17.nam=+13.8B#17.low=10.5#17.hi=15.0#17.desc=Main radio input voltage at CPU (continuous)#17.unit=Volts#17.fps=0#18.src=RAD#18.num=3#18.nam=MAINFAN#18.low=0.0#18.hi=8192.0#18.desc=Main radio fan RPM#18.unit=RPM#18.fps=0#19.src=TX-#19.num=1#19.nam=FWDPWR#19.low=0.0#19.hi=53.0#19.desc=RF Power Forward#19.unit=dBm#19.fps=20#20.src=TX-#20.num=2#20.nam=REFPWR#20.low=0.0#20.hi=53.0#20.desc=RF Power Reflected#20.unit=dBm#20.fps=20#21.src=TX-#21.num=3#21.nam=SWR#21.low=1.0#21.hi=999.0#21.desc=RF SWR#21.unit=SWR#21.fps=20#22.src=TX-#22.num=4#22.nam=PATEMP#22.low=0.0#22.hi=100.0#22.desc=PA Temperature#22.unit=degC#22.fps=0#23.src=SLC#23.num=0#23.nam=24kHz#23.low=-150.0#23.hi=10.0#23.desc=24kHz broadband slice receiver signal level#23.unit=dBFS#23.fps=10#24.src=SLC#24.num=0#24.nam=LEVEL#24.low=-150.0#24.hi=10.0#24.desc=Signal strength of signals in the filter passband#24.unit=dBm#24.fps=10#25.src=SLC#25.num=0#25.nam=AGC+#25.low=-150.0#25.hi=0.0#25.desc=Signal strength after AGC#25.unit=dBFS#25.fps=10#
-S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
-S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
-S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
-S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
-S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
-S3621C7F5|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
-R3|0|
-S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
-S3621C7F5|slice 0 in_use=1 sample_rate=24000 RF_frequency=14.074000 client_handle=0x786D7CEC index_letter=A rit_on=0 rit_freq=0 xit_on=0 xit_freq=0 rxant=ANT1 mode=DIGU wide=0 filter_lo=0 filter_hi=3000 step=10 step_list=1,5,10,20,100,250,500,1000 agc_mode=med agc_threshold=67 agc_off_level=10 pan=0x40000000 txant=ANT1 loopa=0 loopb=0 qsk=0 dax=1 dax_clients=1 lock=0 tx=1 active=1 audio_level=31 audio_pan=50 audio_mute=0 record=0 play=disabled record_time=0.0 anf=0 anf_level=0 nr=0 nr_level=0 nb=0 nb_level=50 wnb=0 wnb_level=0 apf=0 apf_level=0 squelch=1 squelch_level=20 diversity=0 diversity_parent=0 diversity_child=0 diversity_index=1342177293 ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB mode_list=LSB,USB,AM,CW,DIGL,DIGU,SAM,FM,NFM,DFM,RTTY fm_tone_mode=OFF fm_tone_value=67.0 fm_repeater_offset_freq=0.000000 tx_offset_freq=0.000000 repeater_offset_dir=SIMPLEX fm_tone_burst=0 fm_deviation=5000 dfm_pre_de_emphasis=0 post_demod_low=300 post_demod_high=3300 rtty_mark=2125 rtty_shift=170 digl_offset=2210 digu_offset=1500 post_demod_bypass=0 rfgain=8 tx_ant_list=ANT1,ANT2,XVTA,XVTB
-S3621C7F5|waveform installed_list=
-R4|0|
-S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
-S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
-S6EBCFFCF|slice 0 RF_frequency=14.074000 wide=0 lock=0
-S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
-S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
-S6EBCFFCF|slice 0 RF_frequency=14.074000 wide=0 lock=0
-S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
-S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
-
+16 May 21:36:37 - [info] [flexradio-radio:850ffdbc.dc261] radio connecting
+node-red_1  | 16 May 21:36:37 - [red] Uncaught Exception:
+node-red_1  | 16 May 21:36:37 - Error [ERR_SOCKET_DGRAM_NOT_RUNNING]: Not running
+node-red_1  |     at healthCheck (dgram.js:605:11)
+node-red_1  |     at Socket.bind (dgram.js:161:3)
+node-red_1  |     at Radio._startRealtimeListener (/data/node_modules/flexradio/Radio.js:182:21)
+node-red_1  |     at Socket.<anonymous> (/data/node_modules/flexradio/Radio.js:110:11)
+node-red_1  |     at Object.onceWrapper (events.js:286:20)
+node-red_1  |     at Socket.emit (events.js:203:15)
+node-red_1  |     at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1093:10)
+node-red_1  | npm ERR! code ELIFECYCLE
+node-red_1  | npm ERR! errno 1
+node-red_1  | npm ERR! node-red-docker@1.3.4 start: `node $NODE_OPTIONS node_modules/node-red/red.js $FLOWS "--userDir" "/data"`
+node-red_1  | npm ERR! Exit status 1
+node-red_1  | npm ERR! 
+node-red_1  | npm ERR! Failed at the node-red-docker@1.3.4 start script.
+node-red_1  | npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+node-red_1  | 
+node-red_1  | npm ERR! A complete log of this run can be found in:
+node-red_1  | npm ERR!     /data/.npm/_logs/2021-05-17T01_36_37_970Z-debug.log

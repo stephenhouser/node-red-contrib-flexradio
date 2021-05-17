@@ -135,7 +135,6 @@ function decode_response_payload(payload) {
 	return _decode_response_payload(fields);	
 }
 
-
 function decode_status(message) {
 	let topic = null;
 	const status = {};
@@ -153,11 +152,15 @@ function decode_status(message) {
 		}
 	}
 
+	// TODO: subscribing to a meter sends a context meter message, this is broken
+	console.log(message[1]);	
+	console.log(decode_response_payload(message[1]));
+
 	return {
 		type: 'status',
 		handle: message[0].substring(1),
 		topic: topic,
-		status: status
+		status: decode_response_payload(message[1])
 	}
 }
 
@@ -184,14 +187,17 @@ function decode_version(message) {
 }
 
 function decode_discovery(payload) {
-	const discovery = {};
+	const radio = {};
 	const fields = payload.split(' ');
 	for (var i = 0; i < fields.length; i++) {
 		const [key, value] = fields[i].split('=');
-		discovery[key] = value;
+		radio[key] = value;
 	}
 
-	return discovery;
+	return {
+		type: 'discovery',
+		radio: radio
+	};
 }
 
 function decode_meter(raw_data) {
@@ -202,12 +208,15 @@ function decode_meter(raw_data) {
 	const data = new DataView(new Uint8Array(raw_data).buffer);
 	const meter_data = {};
 	for (var idx = 0; idx < data.byteLength; idx += Uint32Array.BYTES_PER_ELEMENT) {
-		const meter_identifier = data.getUint16(idx, false);
+		const meter_index = data.getUint16(idx, false);
 		const meter_value = data.getUint16(idx + 2, false);
-		meter_data[meter_identifier] = { value: meter_value };
+		meter_data[meter_index] = meter_value;
 	}
 
-	return meter_data;
+	return {
+		type: 'meter',
+		meters: meter_data
+	}
 }
 
 function decode_key_value(kv) {
@@ -225,7 +234,7 @@ function decode_key_value(kv) {
 		return [null, kv.split(',')];
 	}
 
-	return kv;
+	return [kv];
 }
 
 function encode_request(sequence, request) {
