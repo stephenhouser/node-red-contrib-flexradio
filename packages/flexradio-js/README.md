@@ -1,20 +1,7 @@
-16 May 21:36:37 - [info] [flexradio-radio:850ffdbc.dc261] radio connecting
-node-red_1  | 16 May 21:36:37 - [red] Uncaught Exception:
-node-red_1  | 16 May 21:36:37 - Error [ERR_SOCKET_DGRAM_NOT_RUNNING]: Not running
-node-red_1  |     at healthCheck (dgram.js:605:11)
-node-red_1  |     at Socket.bind (dgram.js:161:3)
-node-red_1  |     at Radio._startRealtimeListener (/data/node_modules/flexradio/Radio.js:182:21)
-node-red_1  |     at Socket.<anonymous> (/data/node_modules/flexradio/Radio.js:110:11)
-node-red_1  |     at Object.onceWrapper (events.js:286:20)
-node-red_1  |     at Socket.emit (events.js:203:15)
-node-red_1  |     at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1093:10)
-node-red_1  | npm ERR! code ELIFECYCLE
-node-red_1  | npm ERR! errno 1
-node-red_1  | npm ERR! node-red-docker@1.3.4 start: `node $NODE_OPTIONS node_modules/node-red/red.js $FLOWS "--userDir" "/data"`
-node-red_1  | npm ERR! Exit status 1
-node-red_1  | npm ERR! 
-node-red_1  | npm ERR! Failed at the node-red-docker@1.3.4 start script.
-node-red_1  | npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
-node-red_1  | 
-node-red_1  | npm ERR! A complete log of this run can be found in:
-node-red_1  | npm ERR!     /data/.npm/_logs/2021-05-17T01_36_37_970Z-debug.log
+Sub to meter does not capture resposne correctly... topic is only '18' and should be 'meter'
+
+node-red_1  | 17 May 23:21:11 - [info] [flexradio-radio:850ffdbc.dc261] send request: sub meter 18
+node-red_1  | _sendRequest(sub meter 18)
+node-red_1  | _receiveResponse(S9249AD6|meter 18.src=RAD#18.num=3#18.nam=MAINFAN#18.low=0.0#18.hi=8192.0#18.desc=Main radio fan RPM#18.unit=RPM#18.fps=0#)
+node-red_1  | 17 May 23:21:11 - [info] [flexradio-radio:850ffdbc.dc261] received status: {"18":{"src":"RAD","num":"3","nam":"MAINFAN","low":"0.0","hi":"8192.0","desc":"Main radio fan RPM","unit":"RPM","fps":"0"},"type":"status","client":"9249AD6"}
+node-red_1  | 17 May 23:21:11 - [info] [flexradio-messages:f21c8af7.3f663] {"topic":"18","client":"9249AD6","payload":{"src":"RAD","num":"3","nam":"MAINFAN","low":"0.0","hi":"8192.0","desc":"Main radio fan RPM","unit":"RPM","fps":"0"}}
