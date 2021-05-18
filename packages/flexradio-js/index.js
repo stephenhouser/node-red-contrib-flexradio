@@ -8,6 +8,8 @@ const vita_discovery_stream = 0x00000800;
 const vita_flex_oui = 0x00001c2d;
 const vita_flex_information_class = 0x534cffff;
 
+const parser = require('./flex-parser');
+
 const PacketClassCode = {
 	meter          : 0x8002,
 	panadapter     : 0x8003,
@@ -60,6 +62,12 @@ function decode_response_code(response_code) {
 }
 
 function decode(response) {
+	const parsed = parser.parse(response);
+	console.log(parsed);
+	return parsed;
+}
+
+function old_decode(response) {
 	//console.log('decode_response:' + response);
 	const clean_data = response.replace(/\r?\n|\r/, '');
 
