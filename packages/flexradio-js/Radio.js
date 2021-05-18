@@ -212,7 +212,7 @@ class Radio extends EventEmitter {
 				request.callback(message);
 			}
 		} else {
-			radio.emit('message', message);
+			radio.emit(message.type, message);
 		}
 	}
 
@@ -256,6 +256,7 @@ class Radio extends EventEmitter {
 	_sendRequest(request, callback) {
 		const radio = this;
 
+		console.log('_sendRequest(' + request + ')');
 		const sequenceNumber = radio.nextRequestSequenceNumber++;
 		radio.requests[sequenceNumber] = {
 			sequence_number: sequenceNumber,

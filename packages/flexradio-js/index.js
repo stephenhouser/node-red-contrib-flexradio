@@ -63,7 +63,7 @@ function decode_response_code(response_code) {
 
 function decode(response) {
 	const parsed = parser.parse(response);
-	console.log(parsed);
+	//console.log(parsed);
 	return parsed;
 }
 
@@ -161,8 +161,8 @@ function decode_status(message) {
 	}
 
 	// TODO: subscribing to a meter sends a context meter message, this is broken
-	console.log(message[1]);	
-	console.log(decode_response_payload(message[1]));
+	// console.log(message[1]);	
+	// console.log(decode_response_payload(message[1]));
 
 	return {
 		type: 'status',
