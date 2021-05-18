@@ -31,7 +31,8 @@ module.exports = function(RED) {
         });
         
         radio.on('message', function(message) {
-            if (message.type == 'message' && node.outputRadioMessages) {
+            node.log(JSON.stringify(message));
+            if (node.outputRadioMessages) {
                 const msg = {
                     topic: message.type,
                     message_id: message.message_id,
@@ -40,15 +41,12 @@ module.exports = function(RED) {
 
                 node.send(msg);
             }
+        });
 
-            if (message.type == 'status' && node.outputStatusMessages) {
-                const msg = {
-                    topic: message.topic,
-                    client_handle: message.handle,
-                    payload: message.status
-                };
-
-                node.send(msg);
+        radio.on('status', function(status) {
+            node.log(JSON.stringify(status));
+            if (node.outputStatusMessages) {
+                node.send(status);
             }
         });
 

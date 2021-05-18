@@ -38,6 +38,24 @@ module.exports = function(RED) {
                 node.emit('message', message_data);
             });
 
+            radio.on('status', function(status_data) {
+                node.log('received status: ' + JSON.stringify(status_data));
+
+                // remove 'header' fields and find topical fields of message
+                const topics = Object.keys(status_data).filter(function(key) {
+                    return !(['type', 'client'].includes(key));
+                });
+
+                topics.forEach(function(topic) {
+                    const status_message = {
+                        topic: topic,
+                        client: status_data.client,
+                        payload: status_data[topic]
+                    };
+                    node.emit('status', status_message);                    
+                });
+            });
+
             radio.on('meter', function(meter_data) {
                 node.log('received meter: ' + JSON.stringify(meter_data));
                 node.emit('meter', meter_data);
@@ -94,7 +112,7 @@ module.exports = function(RED) {
                         const response_data = {
                             sequence_number: response.sequence_number,
                             status_code: response.response_code,
-                            payload: response.message
+                            payload: response.response
                         };
 
                         node.log('recevied response: ' + JSON.stringify(response_data));
