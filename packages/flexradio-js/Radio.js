@@ -229,26 +229,25 @@ class Radio extends EventEmitter {
 	
 		const vita49_message = vita49.decode(data);
 		if (vita49_message) {
-			// TODO: Handle receipt of realtime (meter, panadapter,) data
 			// console.log('receiveRealtimeData: ' + payload);
 			if (this._isRealtimeData(vita49_message)) {
 				const meter_data = flex.decode_meter(vita49_message.payload)
 				if (meter_data && 'meters' in meter_data) {
-					this.emit('meter', meter_data);
-					// const meters = radio.meters;
-					// for (const [key, value] of Object.entries(meter_data.meters)) {
-					//  	if (key in meters) {
-					// 		const meter_msg = {
-					// 			value: meter_data.meters[key],
-					// 			...meters[key]
-					// 		};
+					const meters = radio.meters;
+					for (const [meter_num, meter_value] of Object.entries(meter_data.meters)) {
+					 	if (meter_num in meters) {
+							const meter_message = {
+								value: meter_value,
+								...meters[meter_num]
+							};
 							
-					// 		this.emit('meter', meter_msg);
-					// 	}
-					// }
+							this.emit('meter', meter_message);
+						}
+					}
 				}	
 			} else {
-				console.log("REALTIME DATA (not METER)");
+				// TODO: Handle receipt of realtime data that is not a meter (e.g. panadapter)
+				console.log("Received real-time data that is not a meter. Not implemented!");
 			}
 		}
 	}
@@ -299,7 +298,7 @@ class Radio extends EventEmitter {
 	_updateMeterList() {
 		const radio = this;
 		radio.send('meter list', function(response) {
-			radio.meters = { ...radio.meters, ...response.message };
+			radio.meters = { ...radio.meters, ...response.response.meter };
 		});
 	}
 

@@ -34,7 +34,7 @@ Comma_List_Members = members:(
 
 Hash_Fields "hash_fields" =
 	"meter" ws m:Hash_Members
-    { return m; }
+    { return { meter: m }; }
 
 Hash_Members "hash_members" = members:(
       head:Hash_Member
