@@ -237,7 +237,7 @@ class Radio extends EventEmitter {
 					for (const [meter_num, meter_value] of Object.entries(meter_data.meters)) {
 					 	if (meter_num in meters) {
 							const meter_message = {
-								value: meter_value,
+								value: radio._scaleMeterValue(meter_num, meter_value),
 								...meters[meter_num]
 							};
 							
@@ -250,6 +250,40 @@ class Radio extends EventEmitter {
 				console.log("Received real-time data that is not a meter. Not implemented!");
 			}
 		}
+	}
+
+	// Divisor values from:
+	// https://github.com/K3TZR/xLib6000/blob/master/Sources/xLib6000/Models/Dynamic/Meter.swift
+	_scaleMeterValue(meter_num, value) {
+		const meters = this.meters;
+		if (meter_num in meters) {
+			const units = meters[meter_num].unit.toLowerCase();
+			switch (units) {
+				case 'db':
+				case 'dbm':
+				case 'dbfs':
+				case 'swr':
+					// Converted to VitaDB value ( converted_value = ((int32)(MeterValue * 128) & 0xFFFF) )
+					return parseFloat(value / 128.0).toFixed(1);
+
+				case 'volts':
+				case 'amps':
+					// Converted to floating point value ( converted_value = (float) ( MeterValue * 256.0) 
+					return parseFloat(value / 256.0).toFixed(1);
+
+				case 'degc':
+				case 'degf':
+					//  Converted to floating point value ( converted_value = (float) ( MeterValue * 64.0) ) 
+					return parseFloat(value / 64.0).toFixed(1);
+
+				case 'rpm':
+				case 'watts':
+				case 'percent':
+					return value;		
+			}
+		}
+
+		return value;
 	}
 
 	_sendRequest(request, callback) {
