@@ -15,17 +15,14 @@ module.exports = function(RED) {
 
         const radio = node.radio;
         radio.on('meter', function(meter) {
-            for (const [key, value] of Object.entries(meter.meters)) {
-                const meter_name = node.radio.getMeterName(key);
-             	if (meter_name) {
-                    const msg = {
-                        topic: 'meter/' + meter_name,
-                        payload: meter.meters[key]
-                    };
-        
-                    node.send(msg);
-                }
-            }
+            node.log(JSON.stringify(meter));
+
+            const msg = {
+                topic: 'meter/' + meter.nam,
+                payload: meter
+            };
+
+            node.send(msg);
         });
 
         radio.on('connecting', function() {

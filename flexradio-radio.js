@@ -33,32 +33,19 @@ module.exports = function(RED) {
                 updateNodeState();
             });
     
-            radio.on('message', function(message_data) {
-                node.log('received message: ' + JSON.stringify(message_data));
-                node.emit('message', message_data);
+            radio.on('message', function(message) {
+                node.log('received message: ' + JSON.stringify(message));
+                node.emit('message', message);                    
             });
 
-            radio.on('status', function(status_data) {
-                node.log('received status: ' + JSON.stringify(status_data));
-
-                // remove 'header' fields and find topical fields of message
-                const topics = Object.keys(status_data).filter(function(key) {
-                    return !(['type', 'client'].includes(key));
-                });
-
-                topics.forEach(function(topic) {
-                    const status_message = {
-                        topic: topic,
-                        client: status_data.client,
-                        payload: status_data[topic]
-                    };
-                    node.emit('status', status_message);                    
-                });
+            radio.on('status', function(status) {
+                node.log('received status: ' + JSON.stringify(status));
+                node.emit('status', status);                    
             });
 
-            radio.on('meter', function(meter_data) {
-                node.log('received meter: ' + JSON.stringify(meter_data));
-                node.emit('meter', meter_data);
+            radio.on('meter', function(meter) {
+                node.log('received meters: ' + JSON.stringify(meter));
+                node.emit('meter', meter);
             });
 
             radio.on('error', function(error) {

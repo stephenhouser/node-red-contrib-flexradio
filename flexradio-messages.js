@@ -30,25 +30,50 @@ module.exports = function(RED) {
             updateNodeStatus();
         });
         
-        radio.on('message', function(message) {
-            node.log(JSON.stringify(message));
+        radio.on('message', function(message_data) {
+            node.log(JSON.stringify(message_data));
             if (node.outputRadioMessages) {
-                const msg = {
-                    topic: message.type,
-                    message_id: message.message_id,
-                    payload: message.message
+                const message_msg = {
+                    message_id: message_data.message_id,
+                    payload: message_data.message
                 };
 
-                node.send(msg);
+                node.send(message_msg);
             }
         });
 
-        radio.on('status', function(status) {
-            node.log(JSON.stringify(status));
+        radio.on('status', function(status_data) {
+            node.log(JSON.stringify(status_data));
             if (node.outputStatusMessages) {
-                node.send(status);
+                const topic = extractMessageTopic(status_data);
+                const status_msg = {
+                    topic: topic,
+                    client: status_data.client,
+                    payload: status_data[topic]
+                };
+
+                node.send(status_msg);
             }
         });
+
+        function extractMessageTopic(message) {
+            // remove 'header' fields and find topical fields of message
+            const topics = Object.keys(message).filter(function(key) {
+                return !(['type', 'client'].includes(key));
+            });
+
+            if (topics.length != 1) {
+                node.log("ERROR: message from radio has more than one TOPIC!");
+                node.log(topics);
+            }
+
+            if (topics.length >= 1) {
+                return topics[0];
+            }
+
+            return null;
+        }
+
 
         function updateNodeStatus() {
             switch (radio.state) {
