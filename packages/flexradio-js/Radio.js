@@ -206,13 +206,15 @@ class Radio extends EventEmitter {
 
 		console.log('_receiveResponse(' + encoded_message + ')');
 		const message = flex.decode(encoded_message);
-		if (message.type == 'response') {
-			const request = radio.requests[message.sequence_number];
-			if (request && request.callback) {
-				request.callback(message);
+		if (message) {
+			if (message.type == 'response') {
+				const request = radio.requests[message.sequence_number];
+				if (request && request.callback) {
+					request.callback(message);
+				}
+			} else {
+				radio.emit(message.type, message);
 			}
-		} else {
-			radio.emit(message.type, message);
 		}
 	}
 
