@@ -585,7 +585,7 @@ module.exports = /*
             if (peg$silentFails === 0) { peg$fail(peg$c3); }
           }
           if (s3 !== peg$FAILED) {
-            s4 = peg$parseInteger();
+            s4 = peg$parseHex_String();
             if (s4 !== peg$FAILED) {
               if (input.charCodeAt(peg$currPos) === 124) {
                 s5 = peg$c2;

@@ -8,7 +8,7 @@ Message = "M" message_id:Integer "|" message:String_unbound
 Status = "S" client:Hex_String "|" response:Response_Fields
 	{ return { type: 'status', client: client, ...response }; }
     
-Response = "R" sequence:Integer "|" code: Integer "|" response:Response_Fields
+Response = "R" sequence:Integer "|" code: Hex_String "|" response:Response_Fields
 	{ return { type: 'response', sequence_number: sequence, response_code: code, response: response }; }
 
 Handle = "H" client:Hex_String 
@@ -138,8 +138,6 @@ Space_Topic "space_topic" = name:String
 Space_Sep = [ ]+
 Space_Word = [^ =]+ 
 	{ return text(); }
-
-
 
 
 Version_Number "version_number" = major:Integer "." minor:Integer "." patch:Integer "." build: Integer

@@ -341,15 +341,14 @@ class Radio extends EventEmitter {
 		});
 	}
 
-	getMeterName(meter_index) {
+	getMeter(meter_index) {
 		const radio = this;
 		if (meter_index in radio.meters) {
-			return radio.meters[meter_index].nam
+			return radio.meters[meter_index]
 		}
 
 		return null;
 	}
-
 }
 
 module.exports = { 
