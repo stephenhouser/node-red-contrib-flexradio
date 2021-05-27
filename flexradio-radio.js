@@ -25,37 +25,37 @@ module.exports = function(RED) {
         if (node.radio) {
             const radio = node.radio;
 
-            radio.on('connecting', function() {
-                updateNodeState();
+            radio.on('connecting', function(data) {
+                updateNodeState(data);
             });
 
-            radio.on('connected', function() {
-                updateNodeState();
+            radio.on('connected', function(data) {
+                updateNodeState(data);
             });
     
             radio.on('message', function(message) {
-                node.log('received message: ' + JSON.stringify(message));
+                // node.log('received message: ' + JSON.stringify(message));
                 node.emit('message', message);                    
             });
 
             radio.on('status', function(status) {
-                node.log('received status: ' + JSON.stringify(status));
+                // node.log('received status: ' + JSON.stringify(status));
                 node.emit('status', status);                    
             });
 
             radio.on('meter', function(meter) {
-                node.log('received meters: ' + JSON.stringify(meter));
+                node.trace('received meters: ' + JSON.stringify(meter));
                 node.emit('meter', meter);
             });
 
             radio.on('error', function(error) {
                 // don't re-emit errors. They are treated differently by
                 // the EventEmitter and will crash if not handled.
-                node.log(error);
+                node.error(error);
             });
 
-            radio.on('disconnected', function() {
-                updateNodeState();
+            radio.on('disconnected', function(data) {
+                updateNodeState(data);
 
                 node.reconnectTimeout = setTimeout(() => {
                     radio.connect();
@@ -66,12 +66,12 @@ module.exports = function(RED) {
             updateNodeState();
         }
 
-        function updateNodeState() {
+        function updateNodeState(data) {
             if (node.radio) {
                 const state = node.radio.getConnectionState();
                 node.state = state;
 
-                node.log('radio ' + state);
+                node.log('radio ' + state + ' ' + (data ? data : ''));
                 node.emit(node.state);
             } else {
                 node.state = '';
@@ -85,13 +85,17 @@ module.exports = function(RED) {
         }
 
         node.getMeterName = function(meter_index) {
+            return this.getMeter(meter_index).nam;
+        }
+
+        node.getMeter = function(meter_index) {
             const node = this;
             const radio = node.radio;
-            return radio.getMeterName(meter_index);
+            return radio.getMeter(meter_index);
         }
 
         node.send = function(msg, response_handler) {
-            node.log('send request: ' + msg.payload);
+            // node.log('send request: ' + msg.payload);
             if (node.radio) {
                 const radio = node.radio;
                 radio.send(msg.payload, function(response) {
@@ -102,7 +106,7 @@ module.exports = function(RED) {
                             payload: response.response
                         };
 
-                        node.log('recevied response: ' + JSON.stringify(response_data));
+                        // node.log('recevied response: ' + JSON.stringify(response_data));
                         response_handler(response_data);
                     }
                 });

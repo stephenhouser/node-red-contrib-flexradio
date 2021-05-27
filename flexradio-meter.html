@@ -5,7 +5,8 @@
         defaults: {
             name: { value: '' },
 			radio: {value: '', type: 'flexradio-radio', required: true},
-			client_handle: { value: '' },
+            output_mode: { value: 'value', required: true },
+			meter_name: { value: '#' }
         },
         inputs: 0,
         outputs: 1,
@@ -26,8 +27,15 @@
         <input type="text" id="node-input-radio" placeholder="FlexRadio">
     </div>
     <div class="form-row">
-        <label for="node-input-client-handle"><i class="fa fa-tag"></i> Handle</label>
-        <input type="text" id="node-input-client-handle">
+        <label for="node-input-meter_name"><i class="fa fa-tag"></i> Meter Name</label>
+        <input type="text" id="node-input-meter_name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-output_mode"><i class="fa fa-sign-in"></i> Output</label>
+        <select id="node-input-output_mode">
+            <option value="value">Value Only</option>
+            <option value="context">Value and Context</option>
+        </select>
     </div>
 </script>
 

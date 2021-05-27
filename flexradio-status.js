@@ -29,7 +29,7 @@ module.exports = function(RED) {
         });
         
         radio.on('status', function(status_data) {
-            node.log(JSON.stringify(status_data));
+            // node.log(JSON.stringify(status_data));
 			const topic = extractMessageTopic(status_data);
 			const status_msg = {
 				topic: topic,

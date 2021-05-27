@@ -28,7 +28,7 @@ module.exports = function(RED) {
         });
         
         radio.on('message', function(message_data) {
-            node.log(JSON.stringify(message_data));
+            // node.log(JSON.stringify(message_data));
             const message_msg = {
                 message_id: message_data.message_id,
                 payload: message_data.message

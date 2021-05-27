@@ -17,22 +17,23 @@ module.exports = function(RED) {
 	        node.status({fill:'red', shape:'dot', text:'starting...'});
 
             discoveryListener.on('connecting', function() {
-				node.log('connecting');
+				// node.log('connecting');
 				node.status({fill:'green', shape:'circle', text:'connecting'});
 				});
 
             discoveryListener.on('connected', function() {
-				node.log('connected');
+				// node.log('connected');
 				node.status({fill:'green', shape:'circle', text:'connected'});
 			});
 
             discoveryListener.on('listening', function() {
-				node.log('listening');
+				// node.log('listening');
 				node.status({fill:'green', shape:'dot', text:'listening'});
             });
 
             discoveryListener.on('error', function(error) {
 				node.log('error');
+                node.error(error);
 				node.status({fill:'red', shape:'dot', text:'error'});
             });
 
@@ -48,16 +49,16 @@ module.exports = function(RED) {
             });
 
             discoveryListener.on('stopped', function() {
-				node.log('stopped');
+				// node.log('stopped');
 				node.status({fill:'red', shape:'circle', text:'stopped'});
             });
 
-			node.log('listener at udp4' + node.host + ':' + node.port);
+			node.log('start listener at udp4: ' + node.host + ':' + node.port);
 			discoveryListener.start();
 		}
 
 		node.on('close', function(done) {
-            node.log('node close: ' + node.host + ':' + node.port);
+            node.log('close listnener at udp4: ' + node.host + ':' + node.port);
             if (node.discoveryListener) {
                 node.discoveryListener.close();
             }

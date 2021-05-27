@@ -6,7 +6,11 @@ module.exports = function(RED) {
         const node = this;          
         node.name = config.name;    
         node.radio = RED.nodes.getNode(config.radio);
-		node.client_handle = config.client_handle;
+        // TODO: Use meter_name as MQTT style topic filter
+		node.meter_name = config.meter_name;
+
+        // Should we include context with the injected message or just the value
+        node.output_mode = config.output_mode;
 
         if (!node.radio) {  // No config node configured, should not happen
             node.status({fill:'red', shape:'circle', text:'not configured'});
@@ -15,11 +19,11 @@ module.exports = function(RED) {
 
         const radio = node.radio;
         radio.on('meter', function(meter) {
-            node.log(JSON.stringify(meter));
+            // node.log(JSON.stringify(meter));
 
             const msg = {
                 topic: 'meter/' + meter.nam,
-                payload: meter
+                payload: node.output_mode == 'value' ? meter.value : meter
             };
 
             node.send(msg);
