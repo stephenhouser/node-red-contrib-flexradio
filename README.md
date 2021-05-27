@@ -60,3 +60,5 @@ S6190EABE|profile mic list=Default^Default FHM-1^Default FHM-1 DX^Default FHM-2^
 ```
 
 - [ ] Flesh out the `flexradio-subscription` node to allow one-stop-shopping for subscribing and receiving messages from the radio. Ex, `sub meter 1` and all the meter messages for meter 1 should appear at the output of the node.
+
+- [ ] Flow messages on connect, disconnect, etc. So you can trigger `sub` commands when the radio connects and if it disconnects and reconnects.

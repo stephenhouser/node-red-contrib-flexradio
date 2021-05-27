@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    RED.nodes.registerType('flexradio-status', {
+        category: 'flexradio',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value: ''},
+			radio: {value: '', type: 'flexradio-radio', required: true},
+			client_handle: {value: ''}
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: 'file.png',
+        label: function() {
+            return this.name || 'flexradio-status';
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="flexradio-status">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-radio"><i class="fa fa-sign-in"></i> FlexRadio</label>
+        <input type="text" id="node-input-radio" placeholder="FlexRadio">
+    </div>
+    <div id="client-handle" class="form-row" style="padding-left:20px;">
+        <label for="node-input-client_handle"><i class="fa fa-tag"></i> Handle</label>
+        <input type="text" id="node-input-client_handle" placeholder="Client Handle (optional)">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="flexradio-status">
+    <p>Receives FlexRadio 6xxx series status messages and inects them into the flow. This includes radio connection changes.</p>
+</script>
