@@ -232,6 +232,9 @@ class Radio extends EventEmitter {
 		const vita49_message = vita49.decode(data);
 		if (vita49_message) {
 			// console.log('receiveRealtimeData: ' + payload);
+			// TODO: Expand to panadapter and other data from radio.
+			// use message.class.packet_class as the emitted message topic
+			// e.g. emit(vita49.decode_packet_class(message.class.packet_class));
 			if (this._isRealtimeData(vita49_message)) {
 				const meter_data = flex.decode_meter(vita49_message.payload)
 				if (meter_data && 'meters' in meter_data) {
