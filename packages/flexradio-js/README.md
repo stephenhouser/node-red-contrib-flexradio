@@ -14,7 +14,7 @@ This is a simple JavaScript library that takes advantage of the FlexRadio 6xxx s
 
 ### Setup
 
-The primary way to interact with the library is via the `Radio` class.
+The primary way to interact with the library is via the `Radio` class. Once setup the `Radio` will emit asynchronous events for incoming data.
 
 ```
 const { Radio } = require('flexradio/Radio');
@@ -40,6 +40,24 @@ radio.on('error', function(error) {
 
 radio.connect();
 ```
+
+### Emitted Events
+
+#### Connection events:
+
+- `connecting` - trying to connect to radio
+- `connected` - connected to radio
+- `disconnected` - disconnected from radio
+- `listening` - listening for asynchronous data from radio
+- `error` - an error in communicating. **Must be caught or will crash!**
+
+#### Data events:
+
+- `message` - an inter-radio message
+- `handle` - client handle (sent as part of client connection process)
+- `version` - the radio interface version (sent as part of client connection process).
+- `status` - asynchronous status update (usually result of a `sub` command)
+- `meter` - asynchronous meter update (usually result of a `sub` command)
 
 ### Sending Commands
 
