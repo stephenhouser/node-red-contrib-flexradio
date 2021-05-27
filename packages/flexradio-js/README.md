@@ -1,4 +1,4 @@
-# flexradio-js a JavaSCript library for communicating with FlexRadio 6xxx series radios
+# flexradio-js FlexRadio 6xxx JavaScript Library
 
 This is a simple JavaScript library that takes advantage of the FlexRadio 6xxx series' network interface. There are no other applications, programs, or libraries needed. This library communicates directly with the radio and offers a JavaScript interface.
 
