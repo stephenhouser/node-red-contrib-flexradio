@@ -20,9 +20,8 @@ module.exports = function(RED) {
         const radio = node.radio;
         radio.on('meter', function(meter) {
             // node.log(JSON.stringify(meter));
-
             const msg = {
-                topic: 'meter/' + meter.nam,
+                topic: meterTopic(meter),
                 payload: node.output_mode == 'value' ? meter.value : meter
             };
 
@@ -40,6 +39,11 @@ module.exports = function(RED) {
         radio.on('disconnected', function() {
             updateNodeStatus();
         });
+
+        function meterTopic(meter) {
+            const topic = ['meter', meter.src, meter.num, meter.nam];
+            return topic.join('/');
+        }
 
         function updateNodeStatus() {
             switch (radio.state) {

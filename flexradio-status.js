@@ -8,6 +8,7 @@ module.exports = function(RED) {
         const node = this;
         node.name = config.name;
         node.radio = RED.nodes.getNode(config.radio);
+        node.topic = new RegExp('^' + config.topic + '$');
         node.clientHandle = config.client_handle;
         
         if (!node.radio) {  // No config node configured, should not happen
@@ -31,13 +32,15 @@ module.exports = function(RED) {
         radio.on('status', function(status_data) {
             // node.log(JSON.stringify(status_data));
 			const topic = extractMessageTopic(status_data);
-			const status_msg = {
-				topic: topic,
-				client: status_data.client,
-				payload: status_data[topic]
-			};
+            if (node.topic.test(topic)) {
+                const status_msg = {
+                    topic: topic,
+                    client: status_data.client,
+                    payload: status_data[topic]
+                };
 
-			node.send(status_msg);
+                node.send(status_msg);
+            }
         });
 
         function extractMessageTopic(message) {
@@ -75,13 +78,15 @@ module.exports = function(RED) {
             }
 
 			// Inject changes in radio state to the flow
-			const status_msg = {
-				topic: 'connection',
-				client: null,
-				payload: radio.state
-			};
+            if (node.topic.test('connection')) {
+                const status_msg = {
+    				topic: 'connection',
+	    			client: null,
+		    		payload: radio.state
+			    };
 
-			node.send(status_msg);
+			    node.send(status_msg);
+            }
         }
 
         updateNodeStatus();

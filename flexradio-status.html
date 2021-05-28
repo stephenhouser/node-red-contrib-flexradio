@@ -5,6 +5,7 @@
         defaults: {
             name: {value: ''},
 			radio: {value: '', type: 'flexradio-radio', required: true},
+            topic: {value: ''},
 			client_handle: {value: ''}
         },
         inputs: 0,
@@ -22,13 +23,18 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-radio"><i class="fa fa-sign-in"></i> FlexRadio</label>
+        <label for="node-input-radio"><i class="fa fa-globe"></i> FlexRadio</label>
         <input type="text" id="node-input-radio" placeholder="FlexRadio">
     </div>
-    <div id="client-handle" class="form-row" style="padding-left:20px;">
-        <label for="node-input-client_handle"><i class="fa fa-tag"></i> Handle</label>
+    <div id="topic" class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+        <input type="text" id="node-input-topic" placeholder="Topic">
+    </div>
+    <!--    <div id="client-handle" class="form-row">
+        <label for="node-input-client_handle"><i class="fa fa-tasks"></i> Handle</label>
         <input type="text" id="node-input-client_handle" placeholder="Client Handle (optional)">
     </div>
+    -->
 </script>
 
 <script type="text/html" data-help-name="flexradio-status">
