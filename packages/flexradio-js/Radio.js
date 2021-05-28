@@ -241,12 +241,13 @@ class Radio extends EventEmitter {
 					const meters = radio.meters;
 					for (const [meter_num, meter_value] of Object.entries(meter_data.meters)) {
 					 	if (meter_num in meters) {
-							const meter_message = {
-								value: radio._scaleMeterValue(meter_num, meter_value),
-								...meters[meter_num]
-							};
-							
-							this.emit('meter', meter_message);
+							const meter = meters[meter_num];
+							const value = radio._scaleMeterValue(meter, meter_value);
+							// Only update and emit when the value changes
+							if (value != meter.value) {
+								meter.value = value;
+								this.emit('meter', meter);
+							}
 						}
 					}
 				}	
@@ -259,16 +260,16 @@ class Radio extends EventEmitter {
 
 	// Divisor values from:
 	// https://github.com/K3TZR/xLib6000/blob/master/Sources/xLib6000/Models/Dynamic/Meter.swift
-	_scaleMeterValue(meter_num, value) {
-		const meters = this.meters;
-		if (meter_num in meters) {
-			const units = meters[meter_num].unit.toLowerCase();
+	_scaleMeterValue(meter, value) {
+		if ('unit' in meter) {
+			const units = meter.unit.toLowerCase();
 			switch (units) {
 				case 'db':
 				case 'dbm':
 				case 'dbfs':
 				case 'swr':
 					// Converted to VitaDB value ( converted_value = ((int32)(MeterValue * 128) & 0xFFFF) )
+					value = (value << 16) >> 16; // convert uint16 to int16
 					return parseFloat(value / 128.0).toFixed(1);
 
 				case 'volts':
@@ -279,6 +280,7 @@ class Radio extends EventEmitter {
 				case 'degc':
 				case 'degf':
 					//  Converted to floating point value ( converted_value = (float) ( MeterValue * 64.0) ) 
+					value = (value << 16) >> 16; // convert uint16 to int16
 					return parseFloat(value / 64.0).toFixed(1);
 
 				case 'rpm':
