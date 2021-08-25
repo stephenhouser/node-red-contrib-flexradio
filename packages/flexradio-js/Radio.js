@@ -254,6 +254,7 @@ class Radio extends EventEmitter {
 			} else {
 				// TODO: Handle receipt of realtime data that is not a meter (e.g. panadapter)
 				console.log("Received real-time data that is not a meter. Not implemented!");
+				console.log(vita49_message.payload);
 			}
 		}
 	}
