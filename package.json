@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-flexradio",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "FlexRadio Network Control and Monitoring Nodes",
   "keywords": [
     "node-red", "flexradio"
@@ -10,10 +10,18 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Stephen Houser, N1SH <stephenhouser@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stephenhouser/node-red-contrib-flexradio"
+  },
   "license": "MIT",
   "dependencies": {
     "flexradio": "github:stephenhouser/flexradio-js"
   },
+  "bugs": {
+    "url": "https://github.com/stephenhouser/node-red-contrib-flexradio/issues"
+  },
+  "homepage": "https://github.com/stephenhouser/node-red-contrib-flexradio",
   "node-red": {
     "nodes": {
       "vita49-decode": "vita49-decode.js",
