@@ -6,17 +6,22 @@ and network attached radios.
 
 ![Dashboard](example/dashboard.png)
 
-**NOTE**: This repository is a work in progress. These nodes and code may not work at all for anyone but me at the moment.
+**NOTE**: This repository is a work in progress. Expect things to change from one release to the next as it is developed.
 
 The nodes in this collection are as follows:
 
-- `flexradio-discovery` node that injects radio discovery messages into the flow
 - `flexradio-request` node to send commands to a radio (and get responses)
-- `flexradio-message` node that injects messages and status from a radio into the flow
+- `flexradio-messages` node that injects 'messages' from a radio into the flow
+- `flexradio-status` node that injects 'status information' from a radio into the flow
 - `flexradio-meter` node that injects meter data from a radio (NOT WORKING)
-- `flexradio-subscription` node that subscribes to a radio topic and injects data about that topic from a radio (NOT WORKING)
-- `VITA-49` decoder node that will decode the raw data from a VITA-49 UDP packet
+- `flexradio-discovery` node that injects radio discovery messages into the flow
 - `flexradio-server` configuration node that manages communication with radios
+
+The following nodes may be available but don't use them. they are deprecated and likely don't work any longer:
+
+- `VITA-49` decoder node that will decode the raw data from a VITA-49 UDP packet
+- `flexradio-decode` decoder node that will decode raw data from the TCP/IP stream.
+- `flexradio-subscription` node that subscribes to a radio topic and injects data about that topic from a radio (NOT WORKING)
 
 The following support libraries are dependencies of these NodeRed nodes. They should be automatically installed when you install the `node-red-contrib-flexradio` nodes. They are listed here just for completeness sake.
 
