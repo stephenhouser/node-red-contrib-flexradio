@@ -15,7 +15,7 @@ The nodes in this collection are as follows:
 - `flexradio-status` node that injects 'status information' from a radio into the flow
 - `flexradio-meter` node that injects meter data from a radio (NOT WORKING)
 - `flexradio-discovery` node that injects radio discovery messages into the flow
-- `flexradio-server` configuration node that manages communication with radios
+- `flexradio-radio` configuration node that manages communication with radios
 
 The following nodes may be available but don't use them. they are deprecated and likely don't work any longer:
 
