@@ -1,8 +1,7 @@
-
 <script type="text/html" data-help-name="flexradio-radio">
-	<p>Configuration for a connection to a Flexradio 6xxx series radio.</p>
+	<p>Configuration for a connection to a FlexRadio 6xxx series radio.</p>
 
-	<p>This configuration will create a single connection to the radio which can then be reused by <code>flexradio-messages</code>, <code>flexradio-request</code>, and <code>flexradio-meter</code> nodes.</p>
+	<p>This configuration will create a single connection to a radio which can then be shared and used by <code>flexradio-messages</code>, <code>flexradio-request</code>, and <code>flexradio-meter</code> nodes. To preserve radio resources, you should only have one connection node per radio in your flows. This connection can then be shared by any number of <code>flexradio-</code> nodes.</p>
 
     <h4>Host</h4>
     <p>This is the address of the radio to connect to. You can specify either a DNS name or an IP address.</p>
