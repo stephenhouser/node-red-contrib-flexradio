@@ -3,7 +3,8 @@
   "version": "0.3.3",
   "description": "FlexRadio Network Control and Monitoring Nodes",
   "keywords": [
-    "node-red", "flexradio"
+    "node-red",
+    "flexradio"
   ],
   "main": "index.js",
   "scripts": {
@@ -16,7 +17,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "flexradio": "github:stephenhouser/flexradio-js"
+    "flexradio": "github:stephenhouser/flexradio-js",
+    "mqtt-pattern": "^1.2.0"
   },
   "bugs": {
     "url": "https://github.com/stephenhouser/node-red-contrib-flexradio/issues"

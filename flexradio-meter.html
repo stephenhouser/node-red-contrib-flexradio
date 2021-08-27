@@ -4,14 +4,14 @@
         color: '#a6bbcf',
         defaults: {
             name: { value: '' },
-			radio: {value: '', type: 'flexradio-radio', required: true},
-            output_mode: { value: 'value', required: true },
-			meter_name: { value: '#' }
+            radio: { value: '', type: 'flexradio-radio', required: true },
+            topic: { value: '#' },
+            output_mode: { value: 'value', required: true }
         },
         inputs: 0,
         outputs: 1,
         icon: 'file.png',
-        label: function() {
+        label: function () {
             return this.name || 'flexradio-meter';
         }
     });
@@ -27,8 +27,8 @@
         <input type="text" id="node-input-radio" placeholder="FlexRadio">
     </div>
     <div class="form-row">
-        <label for="node-input-meter_name"><i class="fa fa-tag"></i> Meter Name</label>
-        <input type="text" id="node-input-meter_name">
+        <label for="node-input-meter-topic"><i class="fa fa-tag"></i> Meter Name</label>
+        <input type="text" id="node-input-topic" placeholder="#">
     </div>
     <div class="form-row">
         <label for="node-input-output_mode"><i class="fa fa-sign-in"></i> Output</label>
