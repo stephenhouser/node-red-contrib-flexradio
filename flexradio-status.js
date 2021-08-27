@@ -1,4 +1,3 @@
-mqp = require('mqtt-pattern');
 
 module.exports = function(RED) {
     "use strict"
@@ -33,15 +32,13 @@ module.exports = function(RED) {
         radio.on('status', function(status_data) {
             // node.log(JSON.stringify(status_data));
 			const topic = extractMessageTopic(status_data);
-            if (!node.topic || mqp.matches(node.topic, topic)) {
-                const status_msg = {
-                    topic: topic,
-                    client: status_data.client,
-                    payload: status_data[topic]
-                };
+            const status_msg = {
+                topic: topic,
+                client: status_data.client,
+                payload: status_data[topic]
+            };
 
-                node.send(status_msg);
-            }
+            node.send(status_msg);
         });
 
         function extractMessageTopic(message) {
@@ -79,15 +76,13 @@ module.exports = function(RED) {
             }
 
 			// Inject changes in radio state to the flow
-            if (!node.topic || mqp.matches(node.topic, 'connection')) {
-                const status_msg = {
-    				topic: 'connection',
-	    			client: null,
-		    		payload: radio.state
-			    };
+            const status_msg = {
+                topic: 'connection',
+                client: null,
+                payload: radio.state
+            };
 
-			    node.send(status_msg);
-            }
+            node.send(status_msg);
         }
 
         updateNodeStatus();

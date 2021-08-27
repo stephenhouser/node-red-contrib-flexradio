@@ -6,11 +6,11 @@
             name: {value: ''},
 			radio: {value: '', type: 'flexradio-radio', required: true},
             topic: {value: ''},
-			client_handle: {value: ''}
+			//client_handle: {value: ''}
         },
         inputs: 0,
         outputs: 1,
-        icon: 'file.png',
+        icon: 'bridge.svg',
         label: function() {
             return this.name || 'flexradio-status';
         }
@@ -38,5 +38,6 @@
 </script>
 
 <script type="text/html" data-help-name="flexradio-status">
+    <p>v0.3.4 -- This node is deprecated in favor of the combined <code>flexradio-messages</code> node.</p>
     <p>Receives FlexRadio 6xxx series status messages and inects them into the flow. This includes radio connection changes.</p>
 </script>

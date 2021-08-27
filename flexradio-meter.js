@@ -1,4 +1,3 @@
-mqp = require('mqtt-pattern');
 
 module.exports = function (RED) {
     function FlexRadioMeterNode(config) {
@@ -8,8 +7,11 @@ module.exports = function (RED) {
         node.name = config.name;
         node.radio = RED.nodes.getNode(config.radio);
         node.topic = config.topic;
-        // Should we include context with the injected message or just the value
         node.output_mode = config.output_mode;
+
+        node.topicRegEx = new RegExp("^" + node.topic.replace(/([\[\]\?\(\)\\\\$\^\*\.|])/g,"\\$1")
+            .replace(/\+/g,"[^/]+")
+            .replace(/\/#$/,"(\/.*)?")+"$");
 
         if (!node.radio) {  // No config node configured, should not happen
             node.status({ fill: 'red', shape: 'circle', text: 'not configured' });
@@ -19,10 +21,10 @@ module.exports = function (RED) {
         const radio = node.radio;
         radio.on('meter', function (meter) {
             // node.log(JSON.stringify(meter));
-            const topic = meterTopic(meter);
-            if (!node.topic || mqp.matches(node.topic, topic)) {
+            const topic = extractMeterTopic(meter);
+            if (matchesTopic(topic)) {
                 const msg = {
-                    topic: meterTopic(meter),
+                    topic: topic,
                     payload: node.output_mode == 'value' ? meter.value : meter
                 };
 
@@ -42,7 +44,15 @@ module.exports = function (RED) {
             updateNodeStatus();
         });
 
-        function meterTopic(meter) {
+        function matchesTopic(topic) {
+            if ( node.topic == '#') {
+                return true;
+            }
+
+            return node.topicRegEx.test(topic);
+        }
+
+        function extractMeterTopic(meter) {
             const source_names = {
                 "COD-": "codec",
                 "RAD": "radio",

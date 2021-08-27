@@ -3,13 +3,14 @@
         category: 'flexradio',
         color: '#06bcd8',
         defaults: {
-            name: {value: ''},
-			radio: {value: '', type: 'flexradio-radio', required: true}
+            name: { value: '' },
+            radio: { value: '', type: 'flexradio-radio', required: true },
+            topic: { value: '' }
         },
         inputs: 0,
         outputs: 1,
-        icon: 'file.png',
-        label: function() {
+        icon: 'bridge.svg',
+        label: function () {
             return this.name || 'flexradio-messages';
         }
     });
@@ -24,8 +25,8 @@
         <label for="node-input-radio"><i class="fa fa-sign-in"></i> FlexRadio</label>
         <input type="text" id="node-input-radio" placeholder="FlexRadio">
     </div>
-</script>
-
-<script type="text/html" data-help-name="flexradio-messages">
-    <p>Receives FlexRadio 6xxx series messages injects them into the flow.</p>
+    <div id="topic" class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+        <input type="text" id="node-input-topic" placeholder="Topic">
+    </div>
 </script>

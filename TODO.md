@@ -1,34 +1,17 @@
 # TODO
 
-* Remove vita-49 parser node. Move to another project?
+* Documentation in the node help pages.
+
+* No way to reconfigure radio dynamically. e.g. get a discovery packet and set the radio's ip address and then connect. maybe an 'autoconnect' option for the config node... how to inject IP address?
 
 * Add "raw" to get raw data from messages and responses
 
-* Fix extra fields in message/status nodes? do they all work?
+* Should `flexradio-meter` be different than `flexradio-messages` or should there be just one node that injects any/all data regardless of source (TCP or UDP) and is able to filter by topic. 
 
-* Clean up readme to be public face. Remove developer notes.
+* Test cases and testing for nodes and packet decoding. Need to read up on Nodered test infrastructure.
 
+* Parse `profile` messages that contain a `list` of `^` delimited profiles.
 
-* Use mqtt matchTopic NodeRed itself 
-https://github.com/node-red/node-red/blob/master/packages/node_modules/%40node-red/nodes/core/network/10-mqtt.js
-
-
-    function matchTopic(ts,t) {
-        if (ts == "#") {
-            return true;
-        }
-        /* The following allows shared subscriptions (as in MQTT v5)
-           http://docs.oasis-open.org/mqtt/mqtt/v5.0/cs02/mqtt-v5.0-cs02.html#_Toc514345522
-           4.8.2 describes shares like:
-           $share/{ShareName}/{filter}
-           $share is a literal string that marks the Topic Filter as being a Shared Subscription Topic Filter.
-           {ShareName} is a character string that does not include "/", "+" or "#"
-           {filter} The remainder of the string has the same syntax and semantics as a Topic Filter in a non-shared subscription. Refer to section 4.7.
-        */
-        else if(ts.startsWith("$share")){
-            ts = ts.replace(/^\$share\/[^#+/]+\/(.*)/g,"$1");
-
-        }
-        var re = new RegExp("^"+ts.replace(/([\[\]\?\(\)\\\\$\^\*\.|])/g,"\\$1").replace(/\+/g,"[^/]+").replace(/\/#$/,"(\/.*)?")+"$");
-        return re.test(t);
-    }
+```
+S6190EABE|profile mic list=Default^Default FHM-1^Default FHM-1 DX^Default FHM-2^Default FHM-2 DX^Default FHM-2 ESSB^Default FHM-3^Default FHM-3 DX^Default FHM-3 ESSB^Default HM-Pro^Default PR781^Default PR781 ESSB 3_2k^Default ProSet HC6^Inrad M629^Inrad M650^RadioSport DX M207^RadioSport DX M208^RadioSport DX M350-ADJ^RadioSport DX M360/EM56^RadioSport WIDE M207^RadioSport WIDE M208^RadioSport WIDE M350-ADJ^RadioSport WIDE M360/EM56^RTTYDefault^
+```

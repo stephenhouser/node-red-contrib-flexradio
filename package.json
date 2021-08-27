@@ -17,8 +17,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "flexradio": "github:stephenhouser/flexradio-js",
-    "mqtt-pattern": "^1.2.0"
+    "flexradio": "github:stephenhouser/flexradio-js"
   },
   "bugs": {
     "url": "https://github.com/stephenhouser/node-red-contrib-flexradio/issues"
