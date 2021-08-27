@@ -81,13 +81,13 @@ module.exports = function (RED) {
             }
         }
 
-        node.on('close', function(done) {
-            // const radio = node.radio;
-            // radio.off('meter');
-            // radio.off('connecting');
-            // radio.off('connected');
-            // radio.off('disconnected');    
-        });
+        // node.on('close', function(done) {
+        //     // const radio = node.radio;
+        //     // radio.off('meter');
+        //     // radio.off('connecting');
+        //     // radio.off('connected');
+        //     // radio.off('disconnected');    
+        // });
 
         updateNodeStatus();
     }
