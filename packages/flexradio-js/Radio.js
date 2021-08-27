@@ -134,7 +134,6 @@ class Radio extends EventEmitter {
 
 	_disconnectFromRadio() {
 		const radio = this;
-
 		radio.connection.close();
 	}
 
