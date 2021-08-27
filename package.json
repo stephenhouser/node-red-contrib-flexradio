@@ -26,14 +26,12 @@
   "homepage": "https://github.com/stephenhouser/node-red-contrib-flexradio",
   "node-red": {
     "nodes": {
-      "vita49-decode": "vita49-decode.js",
       "flexradio-discovery": "flexradio-discovery.js",
       "flexradio-radio": "flexradio-radio.js",
       "flexradio-request": "flexradio-request.js",
       "flexradio-messages": "flexradio-messages.js",
       "flexradio-status": "flexradio-status.js",
-      "flexradio-meter": "flexradio-meter.js",
-      "flexradio-decode": "flexradio-decode.js"
+      "flexradio-meter": "flexradio-meter.js"
     }
   }
 }

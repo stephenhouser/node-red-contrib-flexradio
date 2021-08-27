@@ -44,7 +44,7 @@ module.exports = function(RED) {
             });
 
             radio.on('meter', function(meter) {
-                node.trace('received meters: ' + JSON.stringify(meter));
+                // node.trace('received meters: ' + JSON.stringify(meter));
                 node.emit('meter', meter);
             });
 
