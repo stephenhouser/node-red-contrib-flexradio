@@ -1,0 +1,31 @@
+id,src,num,nam,low,hi,desc,unit,fps
+1,COD-,1,MICPEAK,-150,20,Signal strength of MIC output in CODEC,dBFS,40
+2,COD-,2,MIC,-150,20,Average Signal strength of MIC ouput in CODEC,dBFS,20
+3,TX-,8,CODEC,-150,20,Signal strength of CODEC output,dBFS,10
+4,TX-,8,SC_MIC,-150,20,Signal strength of MIC output,dBFS,10
+5,TX-,8,COMPPEAK,-150,20,Signal strength of signals after the CLIPPER (Compression),dBFS,20
+6,TX-,8,SC_FILT_1,-150,20,Signal strength after Filter 1,dBFS,10
+7,TX-,8,ALC,-150,20,Signal strength of signals after SW ALC (SSB Peak),dBFS,10
+8,TX-,8,PRE_WAVE_AGC,-150,20,Signal strength before Waveform AGC,dBFS,10
+9,TX-,8,PRE_WAVE,-150,20,Signal strength before Waveform Shim,dBFS,10
+10,TX-,8,SC_FILT_2,-150,20,Signal strength after Filter 2,dBFS,10
+11,TX-,8,B4RAMP,-150,20,Signal strength of signals before the ramp,dBFS,10
+12,TX-,8,AFRAMP,-150,20,Signal strength of signals after the ramp,dBFS,10
+13,TX-,8,POST_P,-150,0,Signal strength after all processing is done but before attenuation for power control,dBFS,10
+14,TX-,8,GAIN,-150,0,Signal strength after Gain,dBFS,10
+15,TX-,5,HWALC,-150,20,Voltage present at the Hardware ALC RCA Plug,dBFS,20
+16,RAD,334,+13.8A,10.5,15,Main radio input voltage at PA,Volts,0
+17,RAD,0,+13.8B,10.5,15,Main radio input voltage at CPU (continuous),Volts,0
+18,RAD,3,MAINFAN,0,8192,Main radio fan RPM,RPM,0
+19,TX-,1,FWDPWR,0,53,RF Power Forward,dBm,20
+20,TX-,2,REFPWR,0,53,RF Power Reflected,dBm,20
+21,TX-,3,SWR,1,999,RF SWR,SWR,20
+22,TX-,4,PATEMP,0,100,PA Temperature,degC,0
+23,SLC,0,24kHz,-150,10,24kHz broadband slice receiver signal level,dBFS,10
+24,SLC,0,LEVEL,-150,10,Signal strength of signals in the filter passband,dBm,10
+25,SLC,0,AGC+,-150,0,Signal strength after AGC,dBFS,10
+26,SLC,1,24kHz,-140,20,24kHz broadband slice receiver signal level,dBFS,10
+27,SLC,1,OSC,-140,20,Signal Strength after OSC,dBFS,10
+28,SLC,1,LEVEL,-150,20,Signal strength of signals in the filter passband,dBm,10
+29,SLC,1,NR/ANF,-150,20,Signal strength after NR/ANF,dBm,10
+30,SLC,1,AGC+,-150,0,Signal strength after AGC,dBFS,10

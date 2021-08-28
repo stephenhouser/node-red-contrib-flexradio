@@ -1,16 +1,22 @@
 {
-  "name": "flexradio",
-  "version": "0.3.0",
+  "name": "flexradio-js",
+  "version": "0.3.1",
   "description": "FlexRadio Control and Monitoring Nodes",
-  "homepage": "https://github.com/stephenhouser/flexradio-js",
+  "keywords": [
+    "flexradio"
+  ],
+  "author": "Stephen Houser, N1SH <stephenhouser@gmail.com>",
+  "license": "MIT",
   "repository": "github:stephenhouser/flexradio-js",
+  "homepage": "https://github.com/stephenhouser/flexradio-js",
+  "bugs": {
+    "url": "https://github.com/stephenhouser/flexradio-js/issues"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Stephen Houser, N1SH <stephenhouser@gmail.com>",
-  "license": "MIT",
   "dependencies": {
-    "vita49": "github:stephenhouser/vita49-js"
+    "vita49-js": "^0.1.3"
   }
 }

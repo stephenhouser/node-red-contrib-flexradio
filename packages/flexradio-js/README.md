@@ -17,7 +17,7 @@ This is a simple JavaScript library that takes advantage of the FlexRadio 6xxx s
 The primary way to interact with the library is via the `Radio` class. Once setup the `Radio` will emit asynchronous events for incoming data.
 
 ```
-const { Radio } = require('flexradio/Radio');
+const { Radio } = require('flexradio-js/Radio');
 
 const radio = new Radio({ip:'192.168.10.100', port:4992});
 radio.on('connected', function() {

@@ -3,15 +3,15 @@ const net = require('net');
 const udp = require('dgram');
 const EventEmitter = require('events');
 
-const vita49 = require('vita49');
-const flex = require('flexradio');
+const vita49 = require('vita49-js');
+const flex = require('flexradio-js');
 
 const CONNECTION_RETRY_TIMEOUT = 5000;
 
-const VITA_METER_STREAM 			= 0x00000700;
-const VITA_FLEX_OUI 				= 0x1c2d;
-const VITA_FLEX_INFORMATION_CLASS 	= 0x534c;
-const VITA_FLEX_METER_CLASS			= 0x8002;
+const VITA_METER_STREAM = 0x00000700;
+const VITA_FLEX_OUI = 0x1c2d;
+const VITA_FLEX_INFORMATION_CLASS = 0x534c;
+const VITA_FLEX_METER_CLASS = 0x8002;
 
 const ConnectionStates = {
 	disconnected: 'disconnected',
@@ -80,7 +80,8 @@ class Radio extends EventEmitter {
 	}
 
 	connect(guiClientId, callback) {
-		// console.log('Radio.connect(' + this.host + ':' + this.port + ')');
+		console.log('Radio.connect(' + this.host + ':' + this.port + ')');
+
 		this.clientId = guiClientId;
 		this._connectToRadio();
 		this.connectedClientCount++;
@@ -88,11 +89,13 @@ class Radio extends EventEmitter {
 
 	send(request, callback) {
 		// console.log('Radio.send(' + request + ')');
+
 		this._sendRequest(request, callback);
 	}
 
 	disconnect() {
-		// console.log('Radio.disconnect()');
+		console.log('Radio.disconnect()');
+
 		this.connectedClientCount--;
 		if (this.connectedClientCount <= 0) {
 			this._disconnectFromRadio();
@@ -102,30 +105,39 @@ class Radio extends EventEmitter {
 	// Connect to radio and setup handlers for TCP/IP data and state changes.
 	_connectToRadio() {
 		const radio = this;
+
+		console.log('Radio::_connectToRadio():');
+		// console.log('\tdata=' + radio.listenerCount('data'));
+		// console.log('\terror=' + radio.listenerCount('error'));
+		// console.log('\tclose=' + radio.listenerCount('close'));
+
 		if (radio.connectionState == ConnectionStates.disconnected) {
 			radio._setConnectionState(ConnectionStates.connecting);
 
-			radio.connection = net.connect(radio.port, radio.host, function() {
+			radio.connection = net.connect(radio.port, radio.host, function () {
 				// Called when connection is complete
+				console.log('Radio::connection.on(\'connect\')');
 				radio._setConnectionState(ConnectionStates.connected);
 				radio._startRealtimeListener();
 				radio._updateMeterList();
 			});
 
-			radio.connection.on('data', function(data) {
+			radio.connection.on('data', function (data) {
 				// Called when data arrives on the socket
 				radio._receiveData(data);
 			});
 
-			radio.connection.on('error', function(error) {
+			radio.connection.on('error', function (error) {
 				// Called when there is an error on the channel
 				// MUST be handled by a listener somewhere or will
 				// CRASH the program with an unhandled exception.
+				console.log('Radio::connection.on(\'error\')');
 				radio.emit('error', error);
 			});
 
-			radio.connection.on('close', function() {
+			radio.connection.on('close', function () {
 				// Called as the socket is closed (either end or error)
+				console.log('Radio::connection.on(\'close\')');
 				radio._stopRealtimeListener();
 				radio._setConnectionState(ConnectionStates.disconnected);
 			});
@@ -134,47 +146,55 @@ class Radio extends EventEmitter {
 
 	_disconnectFromRadio() {
 		const radio = this;
+
+		console.log('Radio::_disconnectFromRadio()');
 		radio.connection.close();
 	}
 
 	_startRealtimeListener() {
 		const radio = this;
+
+		console.log('Radio::_startRealtimeListener():');
 		if (radio.realtimeListenerState == ConnectionStates.disconnected) {
 			if (!radio.realtimeListener) {
-				radio.realtimeListener = udp.createSocket({ type: 'udp4', reuseAddr: false});
+				radio.realtimeListener = udp.createSocket({ type: 'udp4', reuseAddr: false });
 			}
 
 			const realtimeListener = radio.realtimeListener;
 
-			realtimeListener.on('connect', function() {
+			realtimeListener.on('connect', function () {
+				console.log('Radio::realtimeListener.on(\'connect\')');
 				radio._setRealtimeListenerState(ConnectionStates.connected);
 			});
-			
-			realtimeListener.on('listening', function() {
+
+			realtimeListener.on('listening', function () {
 				//emits when socket is ready and listening for datagram msgs
+				console.log('Radio::realtimeListener.on(\'listening\')');
 				const listenAddress = realtimeListener.address();
 				radio.realtimeListenerPort = listenAddress.port;
 				// console.log('realtimListener on udp4: ' + radio.realtimeListenerPort);
 				radio._setRealtimeListenerState(ConnectionStates.listening);
 
-				setTimeout(function() {
+				setTimeout(function () {
 					radio.send('client udpport ' + radio.realtimeListenerPort);
 				}, 1000);
-				
+
 			});
 
-			realtimeListener.on('error', function(error) {
+			realtimeListener.on('error', function (error) {
 				// emits when any error occurs
 				// MUST be handled by a listener somewhere or will
 				// CRASH the program with an unhandled exception.
+				console.log('Radio::realtimeListener.on(\'error\')');
 				radio.emit('error', error);
 			});
-	
-			realtimeListener.on('message', function(data, info) {
+
+			realtimeListener.on('message', function (data, info) {
 				radio._receiveRealtimeData(data, info);
 			});
 
-			realtimeListener.on('close', function(){
+			realtimeListener.on('close', function () {
+				console.log('Radio::realtimeListener.on(\'close\')');
 				radio._setRealtimeListenerState(ConnectionStates.disconnected);
 			});
 
@@ -188,6 +208,7 @@ class Radio extends EventEmitter {
 	_receiveData(raw_data) {
 		const radio = this;
 
+		// console.log('Radio::_receiveData(raw_data):');
 		radio.streamBuffer += raw_data.toString('utf8');
 
 		var idx;
@@ -218,7 +239,7 @@ class Radio extends EventEmitter {
 	}
 
 	_isRealtimeData(message) {
-		return message 
+		return message
 			&& message.stream_id == VITA_METER_STREAM
 			&& message.class.oui == VITA_FLEX_OUI
 			&& message.class.information_class == VITA_FLEX_INFORMATION_CLASS
@@ -227,7 +248,7 @@ class Radio extends EventEmitter {
 
 	_receiveRealtimeData(data) {
 		const radio = this;
-	
+
 		const vita49_message = vita49.decode(data);
 		if (vita49_message) {
 			// console.log('receiveRealtimeData: ' + payload);
@@ -239,7 +260,7 @@ class Radio extends EventEmitter {
 				if (meter_data && 'meters' in meter_data) {
 					const meters = radio.meters;
 					for (const [meter_num, meter_value] of Object.entries(meter_data.meters)) {
-					 	if (meter_num in meters) {
+						if (meter_num in meters) {
 							const meter = meters[meter_num];
 							const value = radio._scaleMeterValue(meter, meter_value);
 							// Only update and emit when the value changes
@@ -249,7 +270,7 @@ class Radio extends EventEmitter {
 							}
 						}
 					}
-				}	
+				}
 			} else {
 				// TODO: Handle receipt of realtime data that is not a meter (e.g. panadapter)
 				console.log("Received real-time data that is not a meter. Not implemented!");
@@ -286,7 +307,7 @@ class Radio extends EventEmitter {
 				case 'rpm':
 				case 'watts':
 				case 'percent':
-					return value;		
+					return value;
 			}
 		}
 
@@ -309,6 +330,7 @@ class Radio extends EventEmitter {
 	}
 
 	_stopRealtimeListener() {
+		console.log('Radio::_stopRealtimeListener()');
 		const radio = this;
 
 		if (radio.realtimeListener && radio.realtimeListenerState != ConnectionStates.disconnected) {
@@ -338,7 +360,8 @@ class Radio extends EventEmitter {
 
 	_updateMeterList() {
 		const radio = this;
-		radio.send('meter list', function(response) {
+
+		radio.send('meter list', function (response) {
 			radio.meters = { ...radio.meters, ...response.response.meter };
 		});
 	}
@@ -353,7 +376,7 @@ class Radio extends EventEmitter {
 	}
 }
 
-module.exports = { 
-	Radio : Radio, 
-	RadioConnectionStates : ConnectionStates
+module.exports = {
+	Radio: Radio,
+	RadioConnectionStates: ConnectionStates
 };
