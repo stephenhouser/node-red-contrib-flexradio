@@ -1,4 +1,4 @@
-const { Radio } = require('flexradio/Radio');
+const { Radio } = require('flexradio-js/Radio');
 
 const RECONNECT_TIMEOUT = 15000;
 
@@ -20,6 +20,10 @@ module.exports = function(RED) {
                 node.slice = config.slice;
             }
         }
+
+		// Allows any number of listeners to attach. Default is 10
+		// which is way too few for many flows.
+		this.setMaxListeners(0);
 
         node.radio = new Radio({ip:node.host, port:node.port});
         if (node.radio) {

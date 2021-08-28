@@ -6,31 +6,27 @@
     "node-red",
     "flexradio"
   ],
+  "author": "Stephen Houser, N1SH <stephenhouser@gmail.com>",
+  "repository": "github:stephenhouser/node-red-contrib-flexradio",
+  "license": "MIT",
+  "homepage": "https://github.com/stephenhouser/node-red-contrib-flexradio",
+  "bugs": {
+    "url": "https://github.com/stephenhouser/node-red-contrib-flexradio/issues"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Stephen Houser, N1SH <stephenhouser@gmail.com>",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/stephenhouser/node-red-contrib-flexradio"
-  },
-  "license": "MIT",
   "dependencies": {
-    "flexradio": "github:stephenhouser/flexradio-js"
+    "flexradio-js": "^0.3.2"
   },
-  "bugs": {
-    "url": "https://github.com/stephenhouser/node-red-contrib-flexradio/issues"
-  },
-  "homepage": "https://github.com/stephenhouser/node-red-contrib-flexradio",
   "node-red": {
     "nodes": {
-      "flexradio-discovery": "flexradio-discovery.js",
-      "flexradio-radio": "flexradio-radio.js",
       "flexradio-request": "flexradio-request.js",
-      "flexradio-messages": "flexradio-messages.js",
-      "flexradio-status": "flexradio-status.js",
-      "flexradio-meter": "flexradio-meter.js"
+      "flexradio-message": "flexradio-messages.js",
+      "flexradio-meter": "flexradio-meter.js",
+      "flexradio-discovery": "flexradio-discovery.js",
+      "flexradio-radio": "flexradio-radio.js"
     }
   }
 }

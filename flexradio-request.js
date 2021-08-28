@@ -1,4 +1,4 @@
-const { Radio, RadioConnectionStates } = require("flexradio/Radio");
+const { Radio, RadioConnectionStates } = require("flexradio-js/Radio");
 
 module.exports = function(RED) {
     function FlexRadioRequestNode(config) {

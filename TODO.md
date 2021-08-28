@@ -1,5 +1,9 @@
 # TODO
 
+* string node
+
+* dashboard UI Level  (level node)
+
 * Documentation in the node help pages.
 
 * No way to reconfigure radio dynamically. e.g. get a discovery packet and set the radio's ip address and then connect. maybe an 'autoconnect' option for the config node... how to inject IP address?

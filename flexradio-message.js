@@ -2,7 +2,7 @@
 module.exports = function(RED) {
     "use strict"
 
-    function FlexRadioMessagesNode(config) {
+    function FlexRadioMessageNode(config) {
         RED.nodes.createNode(this, config);
         
         const node = this;
@@ -118,5 +118,5 @@ module.exports = function(RED) {
         updateNodeStatus();
     }
 
-    RED.nodes.registerType("flexradio-messages", FlexRadioMessagesNode);
+    RED.nodes.registerType("flexradio-message", FlexRadioMessageNode);
 }

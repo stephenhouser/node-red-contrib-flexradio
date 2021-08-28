@@ -1,4 +1,4 @@
-const { DiscoveryListener } = require('flexradio/DiscoveryListener');
+const { DiscoveryListener } = require('flexradio-js/DiscoveryListener');
 
 module.exports = function(RED) {
     "use strict"
