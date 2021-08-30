@@ -23,7 +23,7 @@
   "node-red": {
     "nodes": {
       "flexradio-request": "flexradio-request.js",
-      "flexradio-message": "flexradio-messages.js",
+      "flexradio-message": "flexradio-message.js",
       "flexradio-meter": "flexradio-meter.js",
       "flexradio-discovery": "flexradio-discovery.js",
       "flexradio-radio": "flexradio-radio.js"
