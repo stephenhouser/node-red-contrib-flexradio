@@ -9,6 +9,14 @@
     <h4>Topic</h4>
     <p>This is the message or status message topic to select and inject into the flow. This is an MQTT-like topic pattern using '+' and '#' characters. See Details below for more information on how topics correspond to data from the radio.<p>
 
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">Object</span></dt>
+            <dd> an Object containing the message or status message.</dd>
+        <dt>topic <span class="property-type">string</span></dt>
+            <dd> a string containing the source of the message or status message.</dd>
+    </dl>
+    
     <h3>Output Details</h3>
     <p>The topic configuration specifies specific messages or status messages sent by the radio to be passed into the flow or an <a href="https://mosquitto.org/man/mqtt-7.html">MQTT-like topic pattern</a> can be used to specify a single or group of messages. For example, the default <code>#</code> will pass all messages and status messages into the flow. <code>client/+/connected</code> will pass only status messages about clients connecting to the radio. Message and status topics are built from the data sent by the radio. A description of messages and status messages can be found on the <a href="http://wiki.flexradio.com">FlexRadio Wiki</a>. Unfortunately the messages and status messages descriptions are not well documented so experimentation is likely needed to find the one(s) you are looking for.</p>
     
