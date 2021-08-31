@@ -23,29 +23,7 @@ const ConnectionStates = {
 class Radio extends EventEmitter {
 	constructor(descriptor) {
 		super();
-		// {
-		// 	discovery_protocol_version: "3.0.0.1",
-		// 	model: "FLEX-6600M",
-		// 	serial: "0621-1104-6601-1641",
-		// 	version: "3.2.31.2837",
-		// 	nickname: "FlexRadio",
-		// 	callsign: "N1SH",
-		// 	ip: "192.168.10.27",
-		// 	port: "4992",
-		// 	status: "Available",
-		// 	max_licensed_version: "v3",
-		// 	radio_license_id: "00-1C-2D-05-1A-68",
-		// 	requires_additional_license: "0",
-		// 	fpc_mac: "00:1C:2D:03:85:6A",
-		// 	wan_connected: "1",
-		// 	licensed_clients: "2",
-		// 	available_clients: "2",
-		// 	max_panadapters: "4",
-		// 	available_panadapters: "4",
-		// 	max_slices: "4",
-		// 	available_slices: "4",
-		// 	gui_client_handles: "\u0000\u0000\u0000",
-		//   }
+		
 		for (const [key, value] of Object.entries(descriptor)) {
 			this[key] = value;
 		}
@@ -89,7 +67,6 @@ class Radio extends EventEmitter {
 
 	send(request, callback) {
 		// console.log('Radio.send(' + request + ')');
-
 		this._sendRequest(request, callback);
 	}
 
@@ -122,33 +99,41 @@ class Radio extends EventEmitter {
 				radio._updateMeterList();
 			});
 
-			radio.connection.on('data', function (data) {
+			radio.handle_data = function (data) {
 				// Called when data arrives on the socket
 				radio._receiveData(data);
-			});
+			};
+			radio.connection.on('data', radio.handle_data);
 
-			radio.connection.on('error', function (error) {
+			radio.handle_error = function (error) {
 				// Called when there is an error on the channel
 				// MUST be handled by a listener somewhere or will
 				// CRASH the program with an unhandled exception.
 				console.log('Radio::connection.on(\'error\')');
 				radio.emit('error', error);
-			});
+			};
+			radio.connection.on('error', radio.handle_error);
 
-			radio.connection.on('close', function () {
+			radio.handle_close = function () {
 				// Called as the socket is closed (either end or error)
 				console.log('Radio::connection.on(\'close\')');
 				radio._stopRealtimeListener();
 				radio._setConnectionState(ConnectionStates.disconnected);
-			});
+			};
+			radio.connection.on('close', radio.handle_close);
 		}
 	}
 
 	_disconnectFromRadio() {
 		const radio = this;
-
 		console.log('Radio::_disconnectFromRadio()');
+
 		radio.connection.close();
+		radio.connection.off('data', radio.handle_data);
+		radio.connection.off('error', radio.handle_error);
+		radio.connection.off('close', radio.handle_close);
+		radio.connectionState == ConnectionStates.disconnected;
+		radio.connection = null;
 	}
 
 	_startRealtimeListener() {
@@ -162,12 +147,13 @@ class Radio extends EventEmitter {
 
 			const realtimeListener = radio.realtimeListener;
 
-			realtimeListener.on('connect', function () {
+			radio.handle_realtime_connect = function () {
 				console.log('Radio::realtimeListener.on(\'connect\')');
 				radio._setRealtimeListenerState(ConnectionStates.connected);
-			});
+			};
+			realtimeListener.on('connect', radio.handle_realtime_connect);
 
-			realtimeListener.on('listening', function () {
+			radio.handle_realtime_listening = function () {
 				//emits when socket is ready and listening for datagram msgs
 				console.log('Radio::realtimeListener.on(\'listening\')');
 				const listenAddress = realtimeListener.address();
@@ -178,25 +164,28 @@ class Radio extends EventEmitter {
 				setTimeout(function () {
 					radio.send('client udpport ' + radio.realtimeListenerPort);
 				}, 1000);
+			};
+			realtimeListener.on('listening', radio.handle_realtime_listening);
 
-			});
-
-			realtimeListener.on('error', function (error) {
+			radio.handle_realtime_error = function (error) {
 				// emits when any error occurs
 				// MUST be handled by a listener somewhere or will
 				// CRASH the program with an unhandled exception.
 				console.log('Radio::realtimeListener.on(\'error\')');
 				radio.emit('error', error);
-			});
+			};
+			realtimeListener.on('error', radio.handle_realtime_error);
 
-			realtimeListener.on('message', function (data, info) {
+			radio.handle_realtime_message = function (data, info) {
 				radio._receiveRealtimeData(data, info);
-			});
+			};
+			realtimeListener.on('message', radio.handle_realtime_message);
 
-			realtimeListener.on('close', function () {
+			radio.handle_realtime_close = function () {
 				console.log('Radio::realtimeListener.on(\'close\')');
 				radio._setRealtimeListenerState(ConnectionStates.disconnected);
-			});
+			};
+			realtimeListener.on('close', radio.handle_realtime_close);
 
 			radio._setRealtimeListenerState(ConnectionStates.connecting);
 			realtimeListener.bind();
@@ -333,8 +322,15 @@ class Radio extends EventEmitter {
 		console.log('Radio::_stopRealtimeListener()');
 		const radio = this;
 
-		if (radio.realtimeListener && radio.realtimeListenerState != ConnectionStates.disconnected) {
+		if (radio.realtimeListener) {
 			radio.realtimeListener.close();
+			radio.realtimeListener.off('connect', radio.handle_realtime_close);
+			radio.realtimeListener.off('listening', radio.handle_realtime_listening);
+			radio.realtimeListener.off('message', radio.handle_realtime_message);
+			radio.realtimeListener.off('error', radio.handle_realtime_error);
+			radio.realtimeListener.off('close', radio.handle_realtime_close);
+			radio.realtimeListenerState == ConnectionStates.disconnected;
+			radio.realtimeListener = null;
 		}
 	}
 
