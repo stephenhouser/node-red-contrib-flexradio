@@ -25,30 +25,33 @@ module.exports = function(RED) {
 		// which is way too few for many flows.
 		this.setMaxListeners(0);
 
+        node.log('creating host=' + node.host + ' port=' + node.port);
         node.radio = new Radio({ip:node.host, port:node.port});
         if (node.radio) {
             const radio = node.radio;
 
             radio.on('connecting', function(data) {
+                node.log('connecting: ' + JSON.stringify(data));
                 updateNodeState(data);
             });
 
             radio.on('connected', function(data) {
+                node.log('connected: ' + JSON.stringify(data));
                 updateNodeState(data);
             });
     
             radio.on('message', function(message) {
-                // node.log('received message: ' + JSON.stringify(message));
+                node.debug('message: ' + JSON.stringify(message));
                 node.emit('message', message);                    
             });
 
             radio.on('status', function(status) {
-                // node.log('received status: ' + JSON.stringify(status));
+                node.debug('status: ' + JSON.stringify(status));
                 node.emit('status', status);                    
             });
 
             radio.on('meter', function(meter) {
-                // node.trace('received meters: ' + JSON.stringify(meter));
+                // node.debug('meters: ' + JSON.stringify(meter));
                 node.emit('meter', meter);
             });
 
@@ -59,6 +62,7 @@ module.exports = function(RED) {
             });
 
             radio.on('disconnected', function(data) {
+                node.log('disconnected: ' + JSON.stringify(data));
                 updateNodeState(data);
 
                 node.reconnectTimeout = setTimeout(() => {
@@ -99,7 +103,7 @@ module.exports = function(RED) {
         }
 
         node.send = function(msg, response_handler) {
-            // node.log('send request: ' + msg.payload);
+            node.debug('send: ' + msg.payload);
             if (node.radio) {
                 const radio = node.radio;
                 radio.send(msg.payload, function(response) {
@@ -110,7 +114,7 @@ module.exports = function(RED) {
                             payload: response.response
                         };
 
-                        // node.log('recevied response: ' + JSON.stringify(response_data));
+                        node.debug('response: ' + JSON.stringify(response_data));
                         response_handler(response_data);
                     }
                 });
@@ -118,6 +122,8 @@ module.exports = function(RED) {
         };
 
         node.on('close', function(done) {
+            node.log('closing host=' + node.host + ' port=' + node.port);
+
             if (node.reconnectTimeout) {
                 clearInterval(node.reconnectTimeout);
             }
