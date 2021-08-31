@@ -7,11 +7,12 @@ module.exports = function(RED) {
 
     function FlexRadioNode(config) {
         RED.nodes.createNode(this, config);
-        
         const node = this;
+
         node.name = config.name;
         node.host = config.host;
         node.port = Number(config.port);
+        node.closing = false;
 
 		if (config.station_mode != 'none') {
 		    node.station_name = config.station_name;
@@ -23,7 +24,7 @@ module.exports = function(RED) {
 
 		// Allows any number of listeners to attach. Default is 10
 		// which is way too few for many flows.
-		this.setMaxListeners(0);
+		node.setMaxListeners(0);
 
         node.log('creating host=' + node.host + ' port=' + node.port);
         node.radio = new Radio({ip:node.host, port:node.port});
@@ -31,12 +32,10 @@ module.exports = function(RED) {
             const radio = node.radio;
 
             radio.on('connecting', function(data) {
-                node.log('connecting: ' + JSON.stringify(data));
                 updateNodeState(data);
             });
 
             radio.on('connected', function(data) {
-                node.log('connected: ' + JSON.stringify(data));
                 updateNodeState(data);
             });
     
@@ -62,12 +61,14 @@ module.exports = function(RED) {
             });
 
             radio.on('disconnected', function(data) {
-                node.log('disconnected: ' + JSON.stringify(data));
                 updateNodeState(data);
 
-                node.reconnectTimeout = setTimeout(() => {
-                    radio.connect();
-                }, RECONNECT_TIMEOUT);
+                clearInterval(node.reconnectTimeout);
+                if (!node.closing) {
+                    node.reconnectTimeout = setTimeout(() => {
+                        radio.connect();
+                    }, RECONNECT_TIMEOUT);
+                }
             });
 
             radio.connect();
@@ -87,8 +88,7 @@ module.exports = function(RED) {
         }
 
         node.radioName = function() {
-            const node = this;
-            const radio = node.radio;
+            const radio = this.radio;
             return radio.nickname ? radio.nickname : (radio.host + ':' + radio.port);
         }
 
@@ -97,9 +97,7 @@ module.exports = function(RED) {
         }
 
         node.getMeter = function(meter_index) {
-            const node = this;
-            const radio = node.radio;
-            return radio.getMeter(meter_index);
+            return this.radio.getMeter(meter_index);
         }
 
         node.send = function(msg, response_handler) {
@@ -124,14 +122,12 @@ module.exports = function(RED) {
         node.on('close', function(done) {
             node.log('closing host=' + node.host + ' port=' + node.port);
 
-            if (node.reconnectTimeout) {
-                clearInterval(node.reconnectTimeout);
-            }
-
+            node.closing = true;
             if (node.radio) {
                 node.radio.disconnect();
-                node.radio = null;
             }
+
+            done();
         });
     }
 

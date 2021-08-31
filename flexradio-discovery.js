@@ -16,31 +16,19 @@ module.exports = function(RED) {
             const discoveryListener = node.discoveryListener;
 	        node.status({fill:'red', shape:'dot', text:'starting...'});
 
-            discoveryListener.on('connecting', function() {
-				// node.log('connecting');
-				node.status({fill:'green', shape:'circle', text:'connecting'});
-				});
-
-            discoveryListener.on('connected', function() {
-				// node.log('connected');
-				node.status({fill:'green', shape:'circle', text:'connected'});
-			});
-
             discoveryListener.on('listening', function() {
-				// node.log('listening');
+				node.log('started listening on udp port ' + this.port);
 				node.status({fill:'green', shape:'dot', text:'listening'});
             });
 
             discoveryListener.on('error', function(error) {
-				node.log('error');
                 node.error(error);
-				node.status({fill:'red', shape:'dot', text:'error'});
+				node.status({fill:'red', shape:'circle', text:'error'});
             });
 
 			discoveryListener.on('radio', function(radio_data) {
 				// node.log('discovered radio ' + radio_data);
 				node.status({fill:'green', shape:'dot', text:'radio found'});
-
                 const msg = {
                     payload: radio_data
                 };
@@ -49,7 +37,7 @@ module.exports = function(RED) {
             });
 
             discoveryListener.on('stopped', function() {
-				// node.log('stopped');
+				node.log('stopped listening on udp port ' + node.port);
 				node.status({fill:'red', shape:'circle', text:'stopped'});
             });
 
@@ -58,10 +46,12 @@ module.exports = function(RED) {
 		}
 
 		node.on('close', function(done) {
-            node.log('close listnener at udp4: ' + node.host + ':' + node.port);
+            node.log('stop listnener at udp4: ' + node.host + ':' + node.port);
             if (node.discoveryListener) {
-                node.discoveryListener.close();
+                node.discoveryListener.stop();
             }
+
+            done();
         });
     }
 
