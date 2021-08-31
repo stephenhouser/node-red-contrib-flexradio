@@ -4,6 +4,9 @@ const EventEmitter = require('events');
 const vita49 = require('vita49-js');
 const flex = require('flexradio-js');
 
+const log_debug = function(msg) {} //{ console.log(msg); }
+const log_info = function(msg) { console.log(msg); }
+
 const DiscoveryStates = {
 	connecting: 'connecting',
 	connected: 'connected',
@@ -30,30 +33,28 @@ class DiscoveryListener extends EventEmitter {
 	}
 
 	start() {
-		// console.log('DiscoveryListener.start()');
+		log_info('DiscoveryListener::start()');
 		this._startDiscoveryListener();
 	}
+	
 
 	stop() {
-		// console.log('DiscoveryListener.stop()');
+		log_info('DiscoveryListener::stop()');
 		this._stopDiscoveryListener();
 	}
 
 	_startDiscoveryListener() {
+		log_info('DiscoveryListener::_startDiscoveryListener()');
+
 		const discovery = this;
 		if (discovery.discoveryState == DiscoveryStates.stopped) {
-			if (!discovery.discoveryListener) {
-				discovery.discoveryListener = udp.createSocket('udp4');
-			}
+			discovery.discoveryListener = udp.createSocket('udp4');
 
 			const discoveryListener = discovery.discoveryListener;
 
-			discoveryListener.on('connect', function() {
-				discovery._setDiscoveryState(DiscoveryStates.connected);
-			});
-			
 			discoveryListener.on('listening', function() {
 				//emits when socket is ready and listening for datagram msgs
+				log_info('DiscoveryListener::connection.on(\'listening\')');
 				discovery._setDiscoveryState(DiscoveryStates.listening);
 			});
 
@@ -61,14 +62,17 @@ class DiscoveryListener extends EventEmitter {
 				// emits when any error occurs
 				// MUST be handled by a listener somewhere or will
 				// CRASH the program with an unhandled exception.
+				console.error('DiscoveryListener::connection.on(\'error\')');
 				discovery.emit('error', error);
 			});
 	
 			discoveryListener.on('message', function(data, info) {
+				// log_debug('DiscoveryListener::connection.on(\'message\')');
 				discovery._receiveData(data, info);
 			});
 
-			discoveryListener.on('close', function(){
+			discoveryListener.on('close', function() {
+				log_info('DiscoveryListener::connection.on(\'close\')');
 				discovery._setDiscoveryState(DiscoveryStates.stopped);
 			});
 
@@ -89,31 +93,23 @@ class DiscoveryListener extends EventEmitter {
 		const vita49_message = vita49.decode(data);
 		if (this._isDiscoveryMessage(vita49_message)) {
 			const discovery_payload = vita49_message.payload.toString('utf8');
-			// const discovery_payload = new StringDecoder('utf8').write(vita49_message.payload);
 			const radio_descriptor = flex.decode_discovery(discovery_payload);			
 			if (radio_descriptor) {
 				this.emit('radio', radio_descriptor);
-				// const radio = Radio.fromDiscoveryDescriptor(radio_descriptor);
-				// if (radio) {
-				// 	this.emit('radio', radio);
-				// }
 			}
 		}
 	}
 
 	_stopDiscoveryListener() {
-		const discovery = this;
-		if (discovery.discoveryListener) {
-			const discoveryListener = discovery.discoveryListener;
-			discoveryListener.close();
+		log_info('DiscoveryListener::_stopDiscoveryListener()');
+		if (this.discoveryState != DiscoveryStates.stopped) {
+			this.discoveryListener.close();
 		}
 	}
 
 	_setDiscoveryState(state) {
-		const discovery = this;
-
-		discovery.discoveryState = state;
-		discovery.emit(state);
+		this.discoveryState = state;
+		this.emit(state);
 	}
 }
 
