@@ -124,6 +124,7 @@ module.exports = function(RED) {
 
             if (node.radio) {
                 node.radio.disconnect();
+                node.radio = null;
             }
         });
     }

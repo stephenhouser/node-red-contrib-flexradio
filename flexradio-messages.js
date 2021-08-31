@@ -2,7 +2,7 @@
 module.exports = function(RED) {
     "use strict"
 
-    function FlexRadioMessageNode(config) {
+    function FlexRadioMessagesNode(config) {
         RED.nodes.createNode(this, config);
         
         const node = this;
@@ -47,7 +47,7 @@ module.exports = function(RED) {
         });
 
         radio.on('status', function(status_data) {
-            // node.log(JSON.stringify(status_data));
+            node.log(JSON.stringify(status_data));
 			const topic = extractMessageTopic(status_data);
             if (matchesTopic(topic)) {
                 const status_msg = {
@@ -61,7 +61,7 @@ module.exports = function(RED) {
         });
 
         function matchesTopic(topic) {
-            if (!node.topic || node.topic == '#') {
+            if ( node.topic == '#') {
                 return true;
             }
 
@@ -80,7 +80,7 @@ module.exports = function(RED) {
             }
 
             if (topics.length >= 1) {
-                return topics[0];
+                return topics[0].toLocaleLowerCase();
             }
 
             return null;
@@ -118,5 +118,5 @@ module.exports = function(RED) {
         updateNodeStatus();
     }
 
-    RED.nodes.registerType("flexradio-message", FlexRadioMessageNode);
+    RED.nodes.registerType("flexradio-messages", FlexRadioMessagesNode);
 }

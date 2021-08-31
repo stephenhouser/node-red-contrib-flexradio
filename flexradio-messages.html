@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    RED.nodes.registerType('flexradio-messages', {
+        category: 'flexradio',
+        color: '#cce5ff',
+        defaults: {
+            name: { value: '' },
+            radio: { value: '', type: 'flexradio-radio', required: true },
+            topic: { value: '' }
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: 'bridge.svg',
+        label: function () {
+            return this.name || 'flexradio-messages';
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="flexradio-messages">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-radio"><i class="fa fa-sign-in"></i> FlexRadio</label>
+        <input type="text" id="node-input-radio" placeholder="FlexRadio">
+    </div>
+    <div id="topic" class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+        <input type="text" id="node-input-topic" placeholder="Topic">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="flexradio-status">
+    <p>v0.3.4 -- This node is deprecated in favor of the combined <code>flexradio-message</code> node.</p>
+</script>

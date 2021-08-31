@@ -45,7 +45,7 @@ module.exports = function (RED) {
         });
 
         function matchesTopic(topic) {
-            if ( node.topic == '#') {
+            if (!node.topic || node.topic == '#') {
                 return true;
             }
 
@@ -53,25 +53,7 @@ module.exports = function (RED) {
         }
 
         function extractMeterTopic(meter) {
-            const source_names = {
-                "COD-": "codec",
-                "RAD": "radio",
-                "SLC": "slice",
-                "TX-": "transmitter",
-                "AMP": "amplifier",
-                "WAVEFORM": "waveform"
-            };
-
-            const topic = [];
-            if (meter.src in source_names) {
-                topic.push(source_names[meter.src]);
-            } else {
-                topic.push(meter.src);
-            }
-
-            topic.push(meter.num);
-            topic.push(meter.nam.toLowerCase());
-            return topic.join('/');
+            return [meter.src, meter.num, meter.nam].join('/');
         }
 
         function updateNodeStatus() {
