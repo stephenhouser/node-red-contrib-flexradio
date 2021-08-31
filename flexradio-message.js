@@ -20,16 +20,16 @@ module.exports = function(RED) {
         }
 
         const radio = node.radio;
-        radio.on('connecting', function() {
-            updateNodeStatus();
+        radio.on('connecting', function(data) {
+            updateNodeStatus(data);
         });
 
-        radio.on('connected', function() {
-            updateNodeStatus();
+        radio.on('connected', function(data) {
+            updateNodeStatus(data);
         });
 
-        radio.on('disconnected', function() {
-            updateNodeStatus();
+        radio.on('disconnected', function(data) {
+            updateNodeStatus(data);
         });
         
         radio.on('message', function(message_data) {
@@ -86,7 +86,7 @@ module.exports = function(RED) {
             return null;
         }
 
-        function updateNodeStatus() {
+        function updateNodeStatus(data) {
             switch (radio.state) {
                 case 'connecting':
                     node.status({fill:'green', shape:'circle', text:'connecting'});
@@ -103,11 +103,10 @@ module.exports = function(RED) {
             }
 
 			// Inject changes in radio state to the flow
-            const topic = 'connection';
+            const topic = 'connection/' + data;
             if (matchesTopic(topic)) {
                 const status_msg = {
     				topic: topic,
-	    			client: null,
 		    		payload: radio.state
 			    };
 
@@ -115,7 +114,7 @@ module.exports = function(RED) {
             }
         }
 
-        updateNodeStatus();
+        // updateNodeStatus();
     }
 
     RED.nodes.registerType("flexradio-message", FlexRadioMessageNode);

@@ -72,7 +72,7 @@ module.exports = function(RED) {
             });
 
             radio.connect();
-            updateNodeState();
+            // updateNodeState();
         }
 
         function updateNodeState(data) {
@@ -81,7 +81,7 @@ module.exports = function(RED) {
                 node.state = state;
 
                 node.log('radio ' + state + ' ' + (data ? data : ''));
-                node.emit(node.state);
+                node.emit(node.state, data);
             } else {
                 node.state = '';
             }
