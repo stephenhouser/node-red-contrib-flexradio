@@ -20,7 +20,7 @@ module.exports = function (RED) {
 
         const radio = node.radio;
         radio.on('meter', function (meter) {
-            // node.log(JSON.stringify(meter));
+            // node.debug(JSON.stringify(meter));
             const topic = extractMeterTopic(meter);
             if (matchesTopic(topic)) {
                 const msg = {
