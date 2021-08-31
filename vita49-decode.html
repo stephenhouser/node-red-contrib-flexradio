@@ -1,7 +1,7 @@
 <script type="text/javascript">
     RED.nodes.registerType('vita49-decode', {
         category: 'flexradio',
-        color: '#a6bbcf',
+        color: '#cce5ff',
         defaults: {
             name: { value: '' },
             datatype_in: { value: 'buffer', required: true },
@@ -9,12 +9,11 @@
         },
         inputs: 1,
         outputs: 1,
-        icon: 'file.png',
+        icon: 'parser-json.svg',
         label: function() {
             return this.name || 'vita49-decode';
         },
         oneditprepare: function() {
-            
         }
     });
 </script>
@@ -42,5 +41,5 @@
 </script>
 
 <script type="text/html" data-help-name="vita49-decode">
-    <p>Decode a raw VITA-49 datagram into a javascript object.</p>
+    <p>Decode a raw VITA-49 datagram into a javascript object. This decoder is written specifically for FlexRadio 6xxx series radios and may not work for general VITA-49 datagrams.</p>
 </script>
