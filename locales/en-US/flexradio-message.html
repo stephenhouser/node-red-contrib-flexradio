@@ -1,4 +1,21 @@
 
 <script type="text/html" data-help-name="flexradio-message">
-    <p>Receives messages and status information from FlexRadio 6xxx series radios and inects them into the flow. This includes radio connection changes.</p>
+    <p>Receives messages and status messages from FlexRadio 6xxx series radios and inects them into the flow.</p>
+
+    <h3>Node Configuration</h3>
+    <h4>FlexRadio</h4>
+    <p>This is the radio configuration to connect to. You can select an existing connection or create a new one. To conserve resources on the radio, you should have only one (shared) connection per radio across all your flows on a system.</p>
+    
+    <h4>Topic</h4>
+    <p>This is the message or status message topic to select and inject into the flow. This is an MQTT-like topic pattern using '+' and '#' characters. See Details below for more information on how topics correspond to data from the radio.<p>
+
+    <h3>Output Details</h3>
+    <p>The topic configuration specifies specific messages or status messages sent by the radio to be passed into the flow or an <a href="https://mosquitto.org/man/mqtt-7.html">MQTT-like topic pattern</a> can be used to specify a single or group of messages. For example, the default <code>#</code> will pass all messages and status messages into the flow. <code>client/+/connected</code> will pass only status messages about clients connecting to the radio. Message and status topics are built from the data sent by the radio. A description of messages and status messages can be found on the <a href="http://wiki.flexradio.com">FlexRadio Wiki</a>. Unfortunately the messages and status messages descriptions are not well documented so experimentation is likely needed to find the one(s) you are looking for.</p>
+    
+    <p>The <code>msg.payload</code> will contain the an Object with the value parameters from the message or status message that is received.</p>
+    
+    <h3>Node Details</h3>
+    <p>This node requires a connection to a radio using <code>flexradio-radio</code>to be configured. This is configured by clicking the pencil icon. As indicated above, all <code>flexradio-</code> nodes that work with the same radio can and should share the same connection to conserve radio resources.</p>
+    
 </script>
+
