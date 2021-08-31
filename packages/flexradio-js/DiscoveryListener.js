@@ -14,9 +14,6 @@ const DiscoveryStates = {
 	stopped: 'stopped'
 };
 
-const CONNECTION_RETRY_TIMEOUT = 5000;
-const VITA_DISCOVERY_PORT = 4992;
-
 const VITA_DISCOVERY_STREAM 		= 0x00000800;
 const VITA_FLEX_OUI 				= 0x1c2d;
 const VITA_FLEX_INFORMATION_CLASS 	= 0x534c;
@@ -53,13 +50,11 @@ class DiscoveryListener extends EventEmitter {
 			const discoveryListener = discovery.discoveryListener;
 
 			discoveryListener.on('listening', function() {
-				//emits when socket is ready and listening for datagram msgs
 				log_info('DiscoveryListener::connection.on(\'listening\')');
 				discovery._setDiscoveryState(DiscoveryStates.listening);
 			});
 
 			discoveryListener.on('error', function(error) {
-				// emits when any error occurs
 				// MUST be handled by a listener somewhere or will
 				// CRASH the program with an unhandled exception.
 				console.error('DiscoveryListener::connection.on(\'error\')');
@@ -67,7 +62,7 @@ class DiscoveryListener extends EventEmitter {
 			});
 	
 			discoveryListener.on('message', function(data, info) {
-				// log_debug('DiscoveryListener::connection.on(\'message\')');
+				log_debug('DiscoveryListener::connection.on(\'message\')');
 				discovery._receiveData(data, info);
 			});
 
@@ -95,6 +90,7 @@ class DiscoveryListener extends EventEmitter {
 			const discovery_payload = vita49_message.payload.toString('utf8');
 			const radio_descriptor = flex.decode_discovery(discovery_payload);			
 			if (radio_descriptor) {
+				log_debug('DiscoveryListener::_receiveData(' + JSON.stringify(radio_desciptor) + ')');
 				this.emit('radio', radio_descriptor);
 			}
 		}
