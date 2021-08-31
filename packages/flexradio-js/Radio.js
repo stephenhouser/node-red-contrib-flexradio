@@ -6,7 +6,7 @@ const EventEmitter = require('events');
 const vita49 = require('vita49-js');
 const flex = require('flexradio-js');
 
-const log_debug = function(msg) {} //{ console.log(msg); }
+const log_debug = function(msg) { console.log(msg); }
 const log_info = function(msg) { console.log(msg); }
 
 const CONNECTION_RETRY_TIMEOUT = 5000;
@@ -196,16 +196,18 @@ class Radio extends EventEmitter {
 	}
 
 	_receiveRealtimeData(data) {
+		const meters = this.meters;
 		const vita49_message = vita49.decode(data);
+
 		if (vita49_message) {
-			// log_debug('receiveRealtimeData: ' + payload);
+			// log_debug('receiveRealtimeData: ' + data);
 			// TODO: Expand to panadapter and other data from radio.
 			// use message.class.packet_class as the emitted message topic
 			// e.g. emit(vita49.decode_packet_class(message.class.packet_class));
 			if (this._isRealtimeData(vita49_message)) {
 				const meter_data = flex.decode_meter(vita49_message.payload)
+				// log_debug('receiveRealtimeData: ' + JSON.stringify(meter_data));
 				if (meter_data && 'meters' in meter_data) {
-					const meters = this.meters;
 					for (const [meter_num, meter_value] of Object.entries(meter_data.meters)) {
 						if (meter_num in meters) {
 							const meter = meters[meter_num];
@@ -298,8 +300,9 @@ class Radio extends EventEmitter {
 	}
 
 	_updateMeterList() {
+		const radio = this;
 		this.send('meter list', function (response) {
-			this.meters = { ...this.meters, ...response.response.meter };
+			radio.meters = { ...radio.meters, ...response.response.meter };
 		});
 	}
 
