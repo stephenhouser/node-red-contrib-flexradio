@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+    node-red:
+        image: nodered/node-red:latest-minimal
+        network_mode: "host"
+        environment:
+            - TZ=EST5EDT
+        ports:
+            - "1880:1880/tcp"
+            - "4991:4991/udp"
+            - "4992:4992/udp"
+            - "4993:4993/udp"
+        volumes:
+            - ./data-linked:/data
+            - ../packages/vita49-js:/data/node_modules/vita49-js
+            - ../packages/flexradio-js:/data/node_modules/flexradio-js
+            - ../packages/node-red-contrib-flexradio:/data/node_modules/node-radio-contrib-flexradio
