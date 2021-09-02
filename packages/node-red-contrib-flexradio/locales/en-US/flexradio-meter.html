@@ -1,0 +1,30 @@
+<script type="text/html" data-help-name="flexradio-meter">
+	<p>Connects to a FlexRadio 6xxx series radio publishes meter data to the flow.</p>
+
+    <h3>Node Configuration</h3>
+    <h4>FlexRadio</h4>
+    <p>This is the radio configuration to connect to. You can select an existing connection or create a new one. To conserve resources on the radio, you should have only one (shared) connection per radio across all your flows on a system.</p>
+
+    <h4>Topic</h4>
+    <p>This is the source, number, and name of the meter to publish values for. This is an MQTT-like topic selector string which can match several or all meters on the radio. NOTE: this node does not <code>subscribe</code> to the meter, you need to do that elsewhere, e.g. <code>sub meter all</code>.</p>
+
+	<h4>Output</h4>
+    <p>This indicates if the node should ouput only the meter value or the value and descriptive (contextual) information about the meter in the output payload. See Output Details below for more information.</p>
+
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">string | Object</span></dt>
+            <dd> a string or Object containing the meter value and optional context.</dd>
+        <dt>topic <span class="property-type">string</span></dt>
+            <dd> a string containing the source of the meter value.</dd>
+    </dl>
+    
+    <h3>Output Details</h3>
+	<p>The meter name configuration item can specify a specific meter to passed into the flow or an <a href="https://mosquitto.org/man/mqtt-7.html">MQTT-like topic pattern</a> which can be used to specify several or all meters. For example, the default <code>#</code> will pass all subscribed meter values into the flow. <code>RAD/+/MAINFAN</code> will pass only meter readings with <code>SRC=RAD</code>, and <code>NAM=MAINFAN</code>, with any <CODE>NUM</CODE>. Meter topics are built from the meter context as <code>SRC/NUM/NAM</code>. A description of meters can be found on the <a href="http://wiki.flexradio.com">FlexRadio Wiki</a>. Unfortunately the meter descriptions are not well documented so experimentation is likely needed to find the one(s) you are looking for.</p>
+
+	<p>The <code>msg.payload</code> will contain either the meter value that is being reported or an Object with the value and additional context information about the meter.</p>
+
+    <h3>Node Details</h3>
+    <p>This node requires a connection to a radio using <code>flexradio-radio</code>to be configured. This is configured by clicking the pencil icon. As indicated above, all <code>flexradio-</code> nodes that work with the same radio can and should share the same connection to conserve radio resources.</p>
+
+</script>

@@ -1,0 +1,10 @@
+<script type="text/html" data-help-name="flexradio-discovery">
+    <p>Receives FlexRadio 6xxx series discovery messages from the network and outputs them into the flow.</p>
+
+	<h3>Node Configuration</h3>
+    <h4>Port</h4>
+    <p>This is UDP port that will receive discovery messages. Flexradio raidos send discovery packets on port <code>4992</code>. This should not be changed except for some esoteric advanced use cases (debugging, testing, new radio firmware.)</p>
+
+	<h3>Details</h3>
+	<p><strong>Discovery nodes cannot share port numbers.</strong> The discovery node listens on a UDP/IP port for announcements from radios. Only one node can attach itself to a UDP/IP port. Thus,	there can be only one discovery node across all flows on a host for each port number.</strong> If there is more than one node with the same port number, one of them will generate discovery messages and the others will remain in an error state.</p>
+</script>

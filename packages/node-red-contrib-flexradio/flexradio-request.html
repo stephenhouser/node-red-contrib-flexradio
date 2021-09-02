@@ -1,0 +1,27 @@
+<script type="text/javascript">
+    RED.nodes.registerType('flexradio-request', {
+        category: 'flexradio',
+        color: '#06bcd8',
+        defaults: {
+            name: { value: '' },
+			radio: {value: '', type: 'flexradio-radio', required: true},
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'inject.svg',
+        label: function() {
+            return this.name || 'flexradio-request';
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="flexradio-request">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-radio"><i class="fa fa-sign-in"></i> FlexRadio</label>
+        <input type="text" id="node-input-radio" placeholder="FlexRadio">
+    </div>
+</script>
