@@ -7,10 +7,10 @@
   ],
   "author": "Stephen Houser, N1SH <stephenhouser@gmail.com>",
   "license": "MIT",
-  "repository": "github:stephenhouser/flexradio-js",
-  "homepage": "https://github.com/stephenhouser/flexradio-js",
+  "repository": "github:stephenhouser/node-red-contrib-flexradio",
+  "homepage": "https://github.com/stephenhouser/node-red-contrib-flexradio",
   "bugs": {
-    "url": "https://github.com/stephenhouser/flexradio-js/issues"
+    "url": "https://github.com/stephenhouser/node-red-contrib-flexradio/issues"
   },
   "main": "index.js",
   "scripts": {

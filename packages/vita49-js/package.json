@@ -7,10 +7,10 @@
   ],
   "author": "Stephen Houser, N1SH <stephenhouser@gmail.com>",
   "license": "MIT",
-  "repository": "github:stephenhouser/vita49-js",
-  "homepage": "https://github.com/stephenhouser/vita49-js",
+  "repository": "github:stephenhouser/node-red-contrib-flexradio",
+  "homepage": "https://github.com/stephenhouser/node-red-contrib-flexradio",
   "bugs": {
-    "url": "https://github.com/stephenhouser/vita49-js/issues"
+    "url": "https://github.com/stephenhouser/node-red-contrib-flexradio/issues"
   },
   "main": "index.js",
   "scripts": {
