@@ -8,11 +8,7 @@ module.exports = function(RED) {
         const node = this;
         node.name = config.name;
         node.radio = RED.nodes.getNode(config.radio);
-        node.topic = config.topic || '#';
-
-        node.topicRegEx = new RegExp("^" + node.topic.replace(/([\[\]\?\(\)\\\\$\^\*\.|])/g,"\\$1")
-            .replace(/\+/g,"[^/]+")
-            .replace(/\/#$/,"(\/.*)?")+"$");
+        node.topic = config.topic;
 
         if (!node.radio) {  // No config node configured, should not happen
             node.status({fill:'red', shape:'circle', text:'not configured'});
@@ -35,7 +31,7 @@ module.exports = function(RED) {
         radio.on('message', function(message_data) {
             // node.log(JSON.stringify(message_data));
             const topic = 'message';
-            if (matchesTopic(topic)) {
+            if (radio.matchTopic(node.topic, topic)) {
                 const message_msg = {
                     topic: topic,
                     message_id: message_data.message_id,
@@ -49,7 +45,7 @@ module.exports = function(RED) {
         radio.on('status', function(status_data) {
             // node.log(JSON.stringify(status_data));
 			const topic = extractMessageTopic(status_data);
-            if (matchesTopic(topic)) {
+            if (radio.matchTopic(node.topic, topic)) {
                 const status_msg = {
                     topic: topic,
                     client: status_data.client,
@@ -59,14 +55,6 @@ module.exports = function(RED) {
                 node.send(status_msg);
             }
         });
-
-        function matchesTopic(topic) {
-            if (!node.topic || node.topic == '#') {
-                return true;
-            }
-
-            return node.topicRegEx.test(topic);
-        }
 
         function extractMessageTopic(message) {
             // remove 'header' fields and find topical fields of message
@@ -104,7 +92,7 @@ module.exports = function(RED) {
 
 			// Inject changes in radio state to the flow
             const topic = 'connection/' + data;
-            if (matchesTopic(topic)) {
+            if (radio.matchTopic(node.topic, topic)) {
                 const status_msg = {
     				topic: topic,
 		    		payload: radio.state

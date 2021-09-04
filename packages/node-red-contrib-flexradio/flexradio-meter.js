@@ -9,10 +9,6 @@ module.exports = function (RED) {
         node.topic = config.topic;
         node.output_mode = config.output_mode;
 
-        node.topicRegEx = new RegExp("^" + node.topic.replace(/([\[\]\?\(\)\\\\$\^\*\.|])/g,"\\$1")
-            .replace(/\+/g,"[^/]+")
-            .replace(/\/#$/,"(\/.*)?")+"$");
-
         if (!node.radio) {  // No config node configured, should not happen
             node.status({ fill: 'red', shape: 'circle', text: 'not configured' });
             return;
@@ -22,7 +18,7 @@ module.exports = function (RED) {
         radio.on('meter', function (meter) {
             // node.debug(JSON.stringify(meter));
             const topic = extractMeterTopic(meter);
-            if (matchesTopic(topic)) {
+            if (radio.matchTopic(node.topic, topic)) {
                 const msg = {
                     topic: topic,
                     payload: node.output_mode == 'value' ? meter.value : meter
@@ -43,14 +39,6 @@ module.exports = function (RED) {
         radio.on('disconnected', function () {
             updateNodeStatus();
         });
-
-        function matchesTopic(topic) {
-            if (!node.topic || node.topic == '#') {
-                return true;
-            }
-
-            return node.topicRegEx.test(topic);
-        }
 
         function extractMeterTopic(meter) {
             return [meter.src, meter.num, meter.nam].join('/');

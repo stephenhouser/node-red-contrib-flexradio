@@ -119,6 +119,23 @@ module.exports = function(RED) {
             }
         };
 
+        node.matchTopic = function(pattern, topic) {
+            // default value and match all is always true
+            if (!pattern || pattern === '' || pattern === '#') {
+                return true;
+            }
+
+            // Remove any actual regex expressions
+            const clean_pattern = pattern.replace(/([\[\]\?\(\)\\\\$\^\*\.|])/g,"\\$1");
+            // replace + with regex
+            const plus_pattern = clean_pattern.replace(/\+/g,"[^/]+");
+            // replace # with regex
+            const hash_pattern = plus_pattern.replace(/\/#$/,"(\/.*)?");
+            // Build regex to test with
+            const regex = new RegExp('^' + hash_pattern + '$');
+            return regex.test(topic);
+        };
+
         node.on('close', function(done) {
             node.log('closing host=' + node.host + ' port=' + node.port);
 

@@ -28,9 +28,7 @@
       "flexradio-meter": "flexradio-meter.js",
       "flexradio-discovery": "flexradio-discovery.js",
       "flexradio-radio": "flexradio-radio.js",
-      "vita49-decode": "vita49-decode.js",
-      "flexradio-messages": "flexradio-messages.js",
-      "flexradio-status": "flexradio-status.js"
+      "vita49-decode": "vita49-decode.js"
     }
   }
 }
