@@ -4,7 +4,7 @@ This repository provides a number of [NodeRed](https://nodered.org) nodes to
 interact with [FlexRadio 6xxx](http://flexradio.com) series software defined
 and network attached radios.
 
-![Dashboard](example/dashboard.png)
+![Dashboard](examples/dashboard.png)
 
 **NOTE**: This repository is a work in progress. Expect things to change from one release to the next as it is developed.
 
@@ -23,11 +23,11 @@ The following support libraries are dependencies of these NodeRed nodes. They sh
 
 ## Using these nodes in your flows
 
-The [example](example) directory has the example flows shown below. You can install this flow in your Node Red instance, but you will have to change the radio address to make them work.
+The [examples](examples) directory has the example flows shown below. You can install this flow in your Node Red instance from Import / Examples. You will have to set the radio address to make the flows work with your setup.
 
 The `flexradio-request` node is most likely the first node you will use. It allows you to send requests (or commands if you like) to a radio. You first need to configure the radio connection within the node after you add it to your flow. This radio configuration will be shared by other nodes in your flows, so you should only have to set it up once.
 
-![Meters](example/meters.png)
+![Meters](examples/meters.png)
 
 Once you have a `flexradio-request` node in your flow, you can send a request to your radio and see the response. Add an inject node with the payload `info` and a debug node at the other end to see the response from the radio. When you run the flow you should get an object in the debug window with all your radio parameters. In the above example, we send `sub meter 18` to the radio to subscribe to updates on the main fan speed.
 

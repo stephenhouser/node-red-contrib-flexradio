@@ -1,0 +1,8 @@
+
+node-red_1  | _receiveResponse(S4DD25101|interlock tx_client_handle=0x4DD25101 state=READY reason= source= tx_allowed=1 amplifier= )
+node-red_1  | _receiveResponse(S4DD25101|transmit tune=0 tx_rf_power_changes_allowed=1 max_power_level=100)
+node-red_1  | _receiveResponse(S4DD25101|transmit rfpower=10 tunepower=5 am_carrier_level=100)
+node-red_1  | _receiveResponse(S0|interlock tx_client_handle=0x4DD25101 state=PTT_REQUESTED reason= source=RCA tx_allowed=1 amplifier= )
+node-red_1  | _receiveResponse(S0|interlock tx_client_handle=0x4DD25101 state=TRANSMITTING reason= source=RCA tx_allowed=1 amplifier= )
+node-red_1  | _receiveResponse(S0|interlock tx_client_handle=0x4DD25101 state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier= )
+node-red_1  | _receiveResponse(S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= )

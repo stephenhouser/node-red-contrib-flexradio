@@ -107,6 +107,7 @@ module.exports = function(RED) {
                 radio.send(msg.payload, function(response) {
                     if (response_handler) {
                         const response_data = {
+                            request: msg.payload,
                             sequence_number: response.sequence_number,
                             status_code: response.response_code,
                             payload: response.response

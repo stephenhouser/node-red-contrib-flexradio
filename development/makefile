@@ -1,6 +1,6 @@
 
 up-linked:
-	mkdir -p ./data-linked
+	#mkdir -p ./data-linked
 	docker-compose -f docker-compose-linked.yml up
 
 up-clean: clean

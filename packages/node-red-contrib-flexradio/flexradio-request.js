@@ -41,14 +41,8 @@ module.exports = function(RED) {
         });
 
         function sendRequest(msg, send) {
-            radio.send(msg, function(msg_out) {
-                if (!('payload' in msg_out) 
-                    || !msg_out.payload
-                    || Object.keys(msg_out.payload).length === 0) {
-                    msg_out.payload = msg.payload;
-                }
-
-                send(msg_out);
+            radio.send(msg, function(response) {
+                send(response);
             });
         }
 

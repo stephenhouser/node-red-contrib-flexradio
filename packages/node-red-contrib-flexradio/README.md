@@ -4,7 +4,7 @@ This repository provides a number of [NodeRed](https://nodered.org) nodes to
 interact with [FlexRadio 6xxx](http://flexradio.com) series software defined
 and network attached radios.
 
-![Dashboard](example/dashboard.png)
+![Dashboard](examples/dashboard.png)
 
 **NOTE**: This repository is a work in progress. Expect things to change from one release to the next as it is developed.
 
