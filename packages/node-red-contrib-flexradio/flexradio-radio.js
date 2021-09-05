@@ -88,6 +88,14 @@ module.exports = function(RED) {
                 requests.forEach(function(request) {
                     radio.send(request, function(response) {
                         if (response_handler) {
+                            // Inject the meter topic into the response.
+                            if (request.match(/meter list/i) && ('meter' in response.response)) {
+                                const meters = response.response.meter;
+                                for (const [meter_number, meter] of Object.entries(meters)) {
+                                    meter.topic = node.meterTopic(meter);
+                                };
+                            }
+
                             const response_data = {
                                 request: request,
                                 sequence_number: response.sequence_number,
