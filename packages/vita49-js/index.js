@@ -5,52 +5,52 @@
 // https://community.flexradio.com/discussion/7063537/meter-packet-protocol
 
 const PacketType = {
-	if_data			: 0x00,
-	if_data_stream	: 0x01,
-	ext_data		: 0x02,
-	ext_data_stream	: 0x03,
-	if_context		: 0x04,
-	ext_context		: 0x05,
-	if_cmd_stream	: 0x06,
-	ext_cmd_stream	: 0x07
+	if_data: 0x00,
+	if_data_stream: 0x01,
+	ext_data: 0x02,
+	ext_data_stream: 0x03,
+	if_context: 0x04,
+	ext_context: 0x05,
+	if_cmd_stream: 0x06,
+	ext_cmd_stream: 0x07
 };
 
 const PacketClassCode = {
-	meter          : 0x8002,
-	panadapter     : 0x8003,
-	waterfall      : 0x8004,
-	opus           : 0x8005,
-	daxReducedBw   : 0x0123,
-	daxIq24        : 0x02e3,
-	daxIq48        : 0x02e4,
-	daxIq96        : 0x02e5,
-	daxIq192       : 0x02e6,
-	daxAudio       : 0x03e3,
-	discovery      : 0xffff,
+	meter: 0x8002,
+	panadapter: 0x8003,
+	waterfall: 0x8004,
+	opus: 0x8005,
+	daxReducedBw: 0x0123,
+	daxIq24: 0x02e3,
+	daxIq48: 0x02e4,
+	daxIq96: 0x02e5,
+	daxIq192: 0x02e6,
+	daxAudio: 0x03e3,
+	discovery: 0xffff,
 };
 
 const TimeStampIntegerType = {
-	none   : 0x00,
-    utc    : 0x01,
-    gps    : 0x02,
-    other  : 0x03,
+	none: 0x00,
+	utc: 0x01,
+	gps: 0x02,
+	other: 0x03,
 
-	decode : function(type_code) {
+	decode: function(type_code) {
 		const type_strings = [
 			"none",
 			"utc",
 			"gps",
 			"other"
 		];
-		return type_strings[type_code % type_strings.length];	
+		return type_strings[type_code % type_strings.length];
 	}
 };
 
 const TimeStampFractionType = {
-	none         : 0x00,
-    sampleCount  : 0x01,
-    realtime     : 0x02,
-    freeRunning  : 0x03,
+	none: 0x00,
+	sampleCount: 0x01,
+	realtime: 0x02,
+	freeRunning: 0x03,
 
 	decode: function(type_code) {
 		const type_strings = [
@@ -102,15 +102,15 @@ function decode(raw_data) {
 		// 64 bit class identifier
 		// 32 bits OUI
 		vita.class.oui = data.getUint32(header_byte, false);
-		header_byte +=4;
+		header_byte += 4;
 
 		// 16 bits information class code
 		// 16 bits packet class code
 		vita.class.information_class = data.getUint16(header_byte, false);
-		header_byte +=2;
+		header_byte += 2;
 
 		vita.class.packet_class = data.getUint16(header_byte, false);
-		header_byte +=2;
+		header_byte += 2;
 	}
 
 	// vita.tsi_type = tsi_type;
@@ -137,14 +137,14 @@ function decode(raw_data) {
 	if (has_trailer) {
 
 	}
-	
+
 	return vita;
 }
 
 function encode(msg) {
 }
 
-module.exports = { 
-	decode: decode, 
+module.exports = {
+	decode: decode,
 	encode: encode
 };

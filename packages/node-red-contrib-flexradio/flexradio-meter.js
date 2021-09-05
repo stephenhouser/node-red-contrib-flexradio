@@ -1,5 +1,5 @@
 
-module.exports = function (RED) {
+module.exports = function(RED) {
     function FlexRadioMeterNode(config) {
         RED.nodes.createNode(this, config);
 
@@ -15,9 +15,9 @@ module.exports = function (RED) {
         }
 
         const radio = node.radio;
-        radio.on('meter', function (meter) {
+        radio.on('meter', function(meter) {
             // node.debug(JSON.stringify(meter));
-            const topic = extractMeterTopic(meter);
+            const topic = radio.meterTopic(meter);
             if (radio.matchTopic(node.topic, topic)) {
                 const msg = {
                     topic: topic,
@@ -28,21 +28,17 @@ module.exports = function (RED) {
             };
         });
 
-        radio.on('connecting', function () {
+        radio.on('connecting', function() {
             updateNodeStatus();
         });
 
-        radio.on('connected', function () {
+        radio.on('connected', function() {
             updateNodeStatus();
         });
 
-        radio.on('disconnected', function () {
+        radio.on('disconnected', function() {
             updateNodeStatus();
         });
-
-        function extractMeterTopic(meter) {
-            return [meter.src, meter.num, meter.nam].join('/');
-        }
 
         function updateNodeStatus() {
             switch (radio.state) {
@@ -65,4 +61,4 @@ module.exports = function (RED) {
     }
 
     RED.nodes.registerType("flexradio-meter", FlexRadioMeterNode);
-}
+};

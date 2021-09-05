@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('flexradio-radio',{
+    RED.nodes.registerType('flexradio-radio', {
         category: 'config',
         defaults: {
             name: { value: '' },
@@ -10,7 +10,7 @@
             slice_name: { value: 'A' },
         },
         label: function() {
-            return this.name || this.host+":"+this.port;
+            return this.name || this.host + ":" + this.port;
         },
         oneditprepare: function() {
             var updateOptions = function() {

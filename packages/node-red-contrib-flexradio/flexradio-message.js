@@ -1,17 +1,17 @@
 
 module.exports = function(RED) {
-    "use strict"
+    "use strict";
 
     function FlexRadioMessageNode(config) {
         RED.nodes.createNode(this, config);
-        
+
         const node = this;
         node.name = config.name;
         node.radio = RED.nodes.getNode(config.radio);
         node.topic = config.topic;
 
         if (!node.radio) {  // No config node configured, should not happen
-            node.status({fill:'red', shape:'circle', text:'not configured'});
+            node.status({ fill: 'red', shape: 'circle', text: 'not configured' });
             return;
         }
 
@@ -27,7 +27,7 @@ module.exports = function(RED) {
         radio.on('disconnected', function(data) {
             updateNodeStatus(data);
         });
-        
+
         radio.on('message', function(message_data) {
             // node.log(JSON.stringify(message_data));
             const topic = 'message';
@@ -44,7 +44,7 @@ module.exports = function(RED) {
 
         radio.on('status', function(status_data) {
             // node.log(JSON.stringify(status_data));
-			const topic = extractMessageTopic(status_data);
+            const topic = radio.messageTopic(status_data);
             if (radio.matchTopic(node.topic, topic)) {
                 const status_msg = {
                     topic: topic,
@@ -56,49 +56,31 @@ module.exports = function(RED) {
             }
         });
 
-        function extractMessageTopic(message) {
-            // remove 'header' fields and find topical fields of message
-            const topics = Object.keys(message).filter(function(key) {
-                return !(['type', 'client'].includes(key));
-            });
-
-            if (topics.length != 1) {
-                node.log("ERROR: message from radio has more than one TOPIC!");
-                node.log(topics);
-            }
-
-            if (topics.length >= 1) {
-                return topics[0];
-            }
-
-            return null;
-        }
-
         function updateNodeStatus(data) {
             switch (radio.state) {
                 case 'connecting':
-                    node.status({fill:'green', shape:'circle', text:'connecting'});
+                    node.status({ fill: 'green', shape: 'circle', text: 'connecting' });
                     break;
                 case 'connected':
-                    node.status({fill:'green', shape:'dot', text:radio.radioName()});
+                    node.status({ fill: 'green', shape: 'dot', text: radio.radioName() });
                     break;
                 case 'disconnected':
-                    node.status({fill:'red', shape:'dot', text:'not connected'});
-                    break;        
+                    node.status({ fill: 'red', shape: 'dot', text: 'not connected' });
+                    break;
                 default:
-                    node.status({fill:'red', shape:'circle', text:radio.state});
+                    node.status({ fill: 'red', shape: 'circle', text: radio.state });
                     break;
             }
 
-			// Inject changes in radio state to the flow
+            // Inject changes in radio state to the flow
             const topic = 'connection/' + data;
             if (radio.matchTopic(node.topic, topic)) {
                 const status_msg = {
-    				topic: topic,
-		    		payload: radio.state
-			    };
+                    topic: topic,
+                    payload: radio.state
+                };
 
-			    node.send(status_msg);
+                node.send(status_msg);
             }
         }
 
@@ -106,4 +88,4 @@ module.exports = function(RED) {
     }
 
     RED.nodes.registerType("flexradio-message", FlexRadioMessageNode);
-}
+};

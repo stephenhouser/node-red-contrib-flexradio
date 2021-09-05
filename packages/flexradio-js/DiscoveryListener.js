@@ -4,8 +4,8 @@ const EventEmitter = require('events');
 const vita49 = require('vita49-js');
 const flex = require('flexradio-js');
 
-const log_debug = function(msg) {} //{ console.log(msg); }
-const log_info = function(msg) { console.log(msg); }
+const log_debug = function(msg) { }; //{ console.log(msg); }
+const log_info = function(msg) { console.log(msg); };
 
 const DiscoveryStates = {
 	connecting: 'connecting',
@@ -14,10 +14,10 @@ const DiscoveryStates = {
 	stopped: 'stopped'
 };
 
-const VITA_DISCOVERY_STREAM 		= 0x00000800;
-const VITA_FLEX_OUI 				= 0x1c2d;
-const VITA_FLEX_INFORMATION_CLASS 	= 0x534c;
-const VITA_FLEX_PACKET_CLASS		= 0xffff;
+const VITA_DISCOVERY_STREAM = 0x00000800;
+const VITA_FLEX_OUI = 0x1c2d;
+const VITA_FLEX_INFORMATION_CLASS = 0x534c;
+const VITA_FLEX_PACKET_CLASS = 0xffff;
 
 class DiscoveryListener extends EventEmitter {
 	constructor(host, port) {
@@ -33,7 +33,7 @@ class DiscoveryListener extends EventEmitter {
 		log_info('DiscoveryListener::start()');
 		this._startDiscoveryListener();
 	}
-	
+
 
 	stop() {
 		log_info('DiscoveryListener::stop()');
@@ -60,7 +60,7 @@ class DiscoveryListener extends EventEmitter {
 				console.error('DiscoveryListener::connection.on(\'error\')');
 				discovery.emit('error', error);
 			});
-	
+
 			discoveryListener.on('message', function(data, info) {
 				log_debug('DiscoveryListener::connection.on(\'message\')');
 				discovery._receiveData(data, info);
@@ -77,7 +77,7 @@ class DiscoveryListener extends EventEmitter {
 	}
 
 	_isDiscoveryMessage(message) {
-		return message 
+		return message
 			&& message.stream_id == VITA_DISCOVERY_STREAM
 			&& message.class.oui == VITA_FLEX_OUI
 			&& message.class.information_class == VITA_FLEX_INFORMATION_CLASS
@@ -88,7 +88,7 @@ class DiscoveryListener extends EventEmitter {
 		const vita49_message = vita49.decode(data);
 		if (this._isDiscoveryMessage(vita49_message)) {
 			const discovery_payload = vita49_message.payload.toString('utf8');
-			const radio_descriptor = flex.decode_discovery(discovery_payload);			
+			const radio_descriptor = flex.decode_discovery(discovery_payload);
 			if (radio_descriptor) {
 				log_debug('DiscoveryListener::_receiveData(' + JSON.stringify(radio_descriptor) + ')');
 				this.emit('radio', radio_descriptor);
@@ -109,4 +109,4 @@ class DiscoveryListener extends EventEmitter {
 	}
 }
 
-module.exports = { DiscoveryListener : DiscoveryListener };
+module.exports = { DiscoveryListener: DiscoveryListener };

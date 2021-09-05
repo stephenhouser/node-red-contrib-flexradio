@@ -7,27 +7,24 @@ module.exports = function(RED) {
         const node = this;
         node.name = config.name;
         node.radio = RED.nodes.getNode(config.radio);
-        
+
         if (!node.radio) {  // No config node configured, should not happen
-            node.status({fill:'red', shape:'circle', text:'not configured'});
+            node.status({ fill: 'red', shape: 'circle', text: 'not configured' });
             return;
         }
-        
-        node.on('input', function(msg, send, done) {
-            if (Array.isArray(msg.payload)) {
-                msg.payload.forEach(function(payload) {
-                    sendRequest({ ...msg, 'payload': payload }, send);
-                })
-            } else {
-                sendRequest(msg, send);
-            }
 
+        node.on('input', function(msg, send, done) {
+            radio.send(msg, function(response) {
+                send(response);
+            });
+
+            // TODO: is this out of order?
             if (done) {
                 done();
             }
         });
 
-        const radio = node.radio;        
+        const radio = node.radio;
         radio.on('connecting', function() {
             updateNodeStatus();
         });
@@ -49,16 +46,16 @@ module.exports = function(RED) {
         function updateNodeStatus() {
             switch (radio.state) {
                 case 'connecting':
-                    node.status({fill:'green', shape:'circle', text:'connecting'});
+                    node.status({ fill: 'green', shape: 'circle', text: 'connecting' });
                     break;
                 case 'connected':
-                    node.status({fill:'green', shape:'dot', text:radio.radioName()});
+                    node.status({ fill: 'green', shape: 'dot', text: radio.radioName() });
                     break;
                 case 'disconnected':
-                    node.status({fill:'red', shape:'dot', text:'not connected'});
-                    break;        
+                    node.status({ fill: 'red', shape: 'dot', text: 'not connected' });
+                    break;
                 default:
-                    node.status({fill:'red', shape:'circle', text:radio.state});
+                    node.status({ fill: 'red', shape: 'circle', text: radio.state });
                     break;
             }
         }
@@ -67,4 +64,4 @@ module.exports = function(RED) {
     }
 
     RED.nodes.registerType("flexradio-request", FlexRadioRequestNode);
-}
+};
