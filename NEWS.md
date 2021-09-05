@@ -10,7 +10,9 @@ I fixed an inconsistency with the `flexradio-request` node. If you sent a comman
 
 I cleaned up the topic in `flexradio-meter` and `flexradio-message` so the default (if you leave it empty) will be the same as putting in `#` to match everything. Somehow that logic got cross-wired and was different in both of those. It is now the same. Those two nodes share their topic-matching code now.
 
+**IMPORTANT: The previous `flexradio-status` and `flexradio-messages` (plural) nodes have been removed from this release.** If you were an early adopter, do not upgrade to this release until you have migrated everything with v0.5.0 to the `flexradio-message` (singular) node.
 
+---
 Subject: node-red-contrib-flexradio v0.5.0
 
 v0.5.0 - Thursday, September 2, 2021
