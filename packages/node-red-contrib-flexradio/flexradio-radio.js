@@ -164,7 +164,7 @@ module.exports = function(RED) {
             // replace # with regex
             const hash_pattern = plus_pattern.replace(/\/#$/, "(\/.*)?");
             // Build regex to test with
-            const regex = new RegExp('^' + hash_pattern + '$');
+            const regex = new RegExp('^' + hash_pattern + '$', 'i');
             return regex.test(topic);
         };
 
