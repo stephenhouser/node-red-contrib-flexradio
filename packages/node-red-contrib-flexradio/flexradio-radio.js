@@ -119,15 +119,17 @@ module.exports = function(RED) {
                 if (subMeterMatch && subMeterMatch.groups.meter != 'all') {
                     const subscribeTopic = subMeterMatch.groups.meter;
                     radio.send('meter list', function(response) {
-                        const meters = response.response.meter;
-                        const sub_request = [];
-                        for (const [meter_number, meter] of Object.entries(meters)) {
-                            if (node.matchTopic(subscribeTopic, node.meterTopic(meter))) {
-                                sub_request.push('sub meter ' + meter_number);
+                        if (('response' in response) && ('meter' in response.response)) {
+                            const meters = response.response.meter;
+                            const sub_request = [];
+                            for (const [meter_number, meter] of Object.entries(meters)) {
+                                if (node.matchTopic(subscribeTopic, node.meterTopic(meter))) {
+                                    sub_request.push('sub meter ' + meter_number);
+                                }
                             }
-                        }
 
-                        node.send({ 'payload': sub_request }, response_handler);
+                            node.send({ 'payload': sub_request }, response_handler);
+                        }
                     });
 
                     return true;
