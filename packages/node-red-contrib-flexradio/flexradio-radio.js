@@ -92,14 +92,6 @@ module.exports = function(RED) {
             return radio.nickname ? radio.nickname : (radio.host + ':' + radio.port);
         }
 
-        node.getMeterName = function(meter_index) {
-            return this.getMeter(meter_index).nam;
-        }
-
-        node.getMeter = function(meter_index) {
-            return this.radio.getMeter(meter_index);
-        }
-
         node.send = function(msg, response_handler) {
             node.debug('send: ' + msg.payload);
             if (node.radio) {
