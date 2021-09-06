@@ -17,10 +17,9 @@ rl.on('line', (line) => {
 	if (!line.match(/^C/)) {
 		try {
   			const p = parser.parse(line);
-  			console.log(JSON.stringify(p, null, '\t'));
+  			console.log(JSON.stringify(p, null, 2));
 		} catch (error) {
 			console.error(error);
 		}
 	}
-
 });
