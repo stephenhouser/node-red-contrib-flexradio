@@ -17,63 +17,73 @@ Handle = "H" client:Hex_String
 Version = "V" version:Version_Number 
 	{ return { version: version }; }
 
-Response_Fields = Hash_Fields / Comma_Fields / Comma_List / Space_Fields
+Response_Fields = GPS_Info / Mic_List / Version_Info / Meter_List / Profile_List / Antenna_List / Info_Fields / Space_KV_List
 
-Comma_List = 
-	"ANT" m:Comma_List_Members
+Version_Info "version_info" =
+	"SmartSDR" m:Hash_KV_List
+    { return { version: m }; }
+
+Meter_List "meter_list" =
+	"meter" ws m:Meter_KV_List
+    { return { meter: m }; }
+
+Antenna_List = 
+	"ANT" m:Comma_List
+    { return ['AN'+m[0], ...m.slice(1)]; }
+
+Mic_List = 
+	"MI" m:Comma_List
+    { return ['MI' + m[0], ...m.slice(1)]; }
+
+GPS_Info "gps_info" = 
+	"gps" ws m:Hash_KV_List
+    { return { gps: m }; }
+
+Info_Fields = 
+	"model=" m:Comma_KV_List
     { return m; }
 
-Comma_List_Members = members:(
+Profile_List "profile_list" =
+    "profile" ws t:String ws "list=" m:Caret_List { 
+        const result = {};
+        const topic = ['profile', t].join('/');
+        result[topic] = { list: m };
+        return result;
+    }
+
+// --- , delimited payload
+Comma_List = members:(
 	head:String
     tail:("," m:String { return m; })*
-    	{ return ['ANT' + head, ...tail]; }
+    	{ return [head, ...tail]; }
 	)?
     { return members; }
 
-// --- # delimited payload
-
-Hash_Fields "hash_fields" =
-	"meter" ws m:Hash_Members
-    { return { meter: m }; }
-
-Hash_Members "hash_members" = members:(
-      head:Hash_Member
-      tail:(Hash_Sep m:Hash_Member { return m; })*
+// -- Caret ^ sepearted fields
+Caret_List "caret_members" = members:(
+      head:Caret_Member 
+      tail:(Caret_Sep m:Caret_Member { return m; })*
       {
-        const fields = {};        
+        const members = [];
         [head].concat(tail).forEach(function(element) {
-        	if (!(element.num in fields)) {
-            	fields[element.num] = {};
-            }
-	        fields[element.num][element.key] = element.value;
+	        members.push(element);
         });
 
-        return fields;
+        return members;
       }
-    )? Hash_Sep?
+    )? Caret_Sep?
     { return members; }
 
-Hash_Member "hash_member" = num:Hash_Number "." key:Hash_Key "=" value:Hash_Value
-	{ return { num: num, key: key, value: value }; }
+Caret_Member "caret_member" = value:Caret_Value
+	{ return value }
 
-Hash_Sep = [#]
+Caret_Sep = [\^]
 
-Hash_Number = [0-9]+ 
-	{ return text(); }
-    
-Hash_Key = [^\.=]+ 
-	{ return text(); }
-    
-Hash_Value = [^#]+ 
+Caret_Value = [^\^]+ 
 	{ return text(); }
 
-// --- Comma delimited payload
-
-Comma_Fields = 
-	"model=" m:Comma_Members
-    { return m; }
-
-Comma_Members "comma_fields" = members:(
+// --- , delimited key=value payload
+Comma_KV_List "comma_fields" = members:(
       head:Comma_Member
       tail:(Comma_Sep m:Comma_Member { return m; })*
       {
@@ -99,13 +109,57 @@ Comma_Topic "comma_topic" = name:String
 Comma_Sep = [,]+
 Comma_Word = [^,=]+ { return text(); }
 
-// --- Space delimited payload
+// --- # delimited key=value payload
+Meter_KV_List "meter_list_members" = members:(
+      head:Meter_List_Member
+      tail:(Hash_Sep m:Meter_List_Member { return m; })*
+      {
+        const fields = {};        
+        [head].concat(tail).forEach(function(element) {
+        	if (!(element.num in fields)) {
+            	fields[element.num] = {};
+            }
+	        fields[element.num][element.key] = element.value;
+        });
 
-Space_Fields = 
-	m:Space_Members
-    { return m; }
+        return fields;
+      }
+    )? Hash_Sep?
+    { return members; }
 
-Space_Members "space_fields" = members:(
+Meter_List_Member "hash_member" = num:Hash_Number "." key:Hash_Key "=" value:Hash_Value
+	{ return { num: num, key: key, value: value }; }
+
+Hash_KV_List "hash_kv_list" = members:(
+      head:Hash_KV_Member
+      tail:(Hash_Sep m:Hash_KV_Member { return m; })*
+      {
+        const fields = {};        
+        [head].concat(tail).forEach(function(element) {
+	        fields[element.key] = element.value;
+        });
+
+        return fields;
+      }
+    )? Hash_Sep?
+    { return members; }
+
+Hash_KV_Member "hash_kv_member" = key:Hash_Key "=" value:Hash_Value?
+	{ return { key: key, value: value }; }
+
+Hash_Sep = [#]
+
+Hash_Number = [0-9]+ 
+	{ return text(); }
+    
+Hash_Key = [^\.=]+ 
+	{ return text(); }
+    
+Hash_Value = [^#]+ 
+	{ return text(); }
+
+// --- Space delimited key=value payload
+Space_KV_List "space_fields" = members:(
       head:Space_Member
       tail:(Space_Sep m:Space_Member { return m; })*
       {
@@ -138,7 +192,6 @@ Space_Topic "space_topic" = name:String
 Space_Sep = [ ]+
 Space_Word = [^ =]+ 
 	{ return text(); }
-
 
 Version_Number "version_number" = major:Integer "." minor:Integer "." patch:Integer "." build: Integer
 	{ return { 
