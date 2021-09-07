@@ -1,0 +1,996 @@
+V1.4.0.0
+H10C05077
+M10000001|Client connected from IP 192.168.10.25
+S10C05077|radio slices=4 panadapters=4 lineout_gain=78 lineout_mute=0 headphone_gain=54 headphone_mute=0 remote_on_enabled=0 pll_done=0 freq_error_ppb=0 cal_freq=15.000000 tnf_enabled=0 snap_tune_enabled=1 nickname=Flex-6600M callsign=N1SH binaural_rx=0 full_duplex_enabled=1 band_persistence_enabled=1 rtty_mark_default=2125 enforce_private_ip_connections=1 backlight=50 mute_local_audio_when_remote=1 daxiq_capacity=16 daxiq_available=16
+S10C05077|radio filter_sharpness VOICE level=2 auto_level=1
+S10C05077|radio filter_sharpness CW level=2 auto_level=1
+S10C05077|radio filter_sharpness DIGITAL level=2 auto_level=1
+S10C05077|radio static_net_params ip= gateway= netmask=
+S10C05077|radio front_speaker_mute=0
+S10C05077|radio oscillator state=tcxo setting=auto locked=1 ext_present=0 gpsdo_present=0 tcxo_present=1
+S10C05077|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=1 tx1_enabled=1 tx2_enabled=1 tx3_enabled=1 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+S10C05077|eq rx mode=0 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
+S10C05077|eq rxsc mode=0 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
+C3|client ip
+R3|0|192.168.10.25
+C4|client program SmartSDR-Win
+C5|client gui 74F5C15A-E4C7-4BDE-8B45-4F9E1E15DFA2
+C6|info
+C7|version
+C8|ant list
+C9|mic list
+C10|profile global info
+C11|profile tx info
+C12|profile mic info
+C13|profile display info
+C14|sub client all
+C15|sub tx all
+C16|sub atu all
+C17|sub amplifier all
+C18|sub meter all
+C19|sub pan all
+C20|sub slice all
+C21|sub gps all
+C22|sub audio_stream all
+C23|sub cwx all
+C24|sub xvtr all
+C25|sub memories all
+C26|sub daxiq all
+C27|sub dax all
+C28|sub usb_cable all
+C29|sub tnf all
+C30|sub spot all
+C31|sub rapidm all
+C32|client set enforce_network_mtu=1 network_mtu=1500
+C33|client set send_reduced_bw_dax=1
+C34|client udpport 4991
+C35|keepalive enable
+C36|ping ms_timestamp=0.0343
+C37|client station OFFICE-WIN
+R36|0|
+C38|client station OFFICE-WIN
+R37|0|
+R4|0|
+S10C05077|eq rx mode=0 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
+S10C05077|eq rxsc mode=0 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
+S10C05077|eq rx mode=0 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
+S10C05077|eq rxsc mode=0 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
+S10C05077|eq rx mode=0 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
+S10C05077|eq rxsc mode=0 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
+S10C05077|eq rx mode=0 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
+S10C05077|eq rxsc mode=0 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
+S10C05077|eq rx mode=0 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
+S10C05077|eq rxsc mode=0 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
+S10C05077|eq rx mode=0 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
+S10C05077|eq rxsc mode=0 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
+S10C05077|eq rx mode=0 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
+S10C05077|eq rxsc mode=0 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
+S10C05077|eq rx mode=0 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
+S10C05077|eq rxsc mode=0 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
+S10C05077|eq rx mode=0 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
+S10C05077|eq rxsc mode=0 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
+S10C05077|client 0x10C05077 connected local_ptt=1 client_id=74F5C15A-E4C7-4BDE-8B45-4F9E1E15DFA2 program=SmartSDR-Win
+S10C05077|interlock tx_client_handle=0x00000000 state=RECEIVE reason=NO_TX_ASSIGNED source= tx_allowed=0 amplifier= 
+S10C05077|radio slices=4 panadapters=3 lineout_gain=78 lineout_mute=0 headphone_gain=54 headphone_mute=0 remote_on_enabled=0 pll_done=0 freq_error_ppb=0 cal_freq=15.000000 tnf_enabled=0 snap_tune_enabled=1 nickname=Flex-6600M callsign=N1SH binaural_rx=0 full_duplex_enabled=1 band_persistence_enabled=1 rtty_mark_default=2125 enforce_private_ip_connections=1 backlight=50 mute_local_audio_when_remote=1 daxiq_capacity=16 daxiq_available=16
+S10C05077|radio filter_sharpness VOICE level=2 auto_level=1
+S10C05077|radio filter_sharpness CW level=2 auto_level=1
+S10C05077|radio filter_sharpness DIGITAL level=2 auto_level=1
+S10C05077|radio static_net_params ip= gateway= netmask=
+S10C05077|radio front_speaker_mute=0
+S10C05077|radio oscillator state=tcxo setting=auto locked=1 ext_present=0 gpsdo_present=0 tcxo_present=1
+S10C05077|display pan 0x40000000 client_handle=0x10C05077 wnb=0 wnb_level=0 wnb_updating=0 band_zoom=0 segment_zoom=0 x_pixels=50 y_pixels=20 center=14.100000 bandwidth=0.200000 min_dbm=-125.00 max_dbm=-40.00 fps=25 average=0 weighted_average=0 rfgain=0 rxant=ANT1 wide=0 loopa=0 loopb=0 band=20 daxiq_channel=0 waterfall=0x42000000 min_bw=0.001230 max_bw=14.745601 xvtr= pre= ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB
+S10C05077|display waterfall 0x42000000 client_handle=0x10C05077 x_pixels=50 center=14.100000 bandwidth=0.200000 band_zoom=0 segment_zoom=0 line_duration=100 rfgain=0 rxant=ANT1 wide=0 loopa=0 loopb=0 band=20 daxiq_channel=0 panadapter=0x40000000 color_gain=50 auto_black=1 black_level=0 gradient_index=0 xvtr=
+C39|display panafall rfgain_info 0x0
+S10C05077|display pan 0x40000000 center=14.022560 xvtr=
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=NOT_READY reason=OUT_OF_PA_RANGE source= tx_allowed=0 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=NOT_READY reason=OUT_OF_PA_RANGE source= tx_allowed=0 amplifier= 
+S0|interlock tx_client_handle=0x00000000 state=NOT_READY reason=OUT_OF_PA_RANGE source= tx_allowed=0 amplifier= 
+S10C05077|profile mic list=Default^Default FHM-1^Default FHM-1 DX^Default FHM-2^Default FHM-2 DX^Default FHM-2 ESSB^Default FHM-3^Default FHM-3 DX^Default FHM-3 ESSB^Default HM-Pro^Default PR781^Default PR781 ESSB 3_2k^Default ProSet HC6^Inrad M629^Inrad M650^iOS_default_Profile^RadioSport DX M207^RadioSport DX M208^RadioSport DX M350-ADJ^RadioSport DX M360/EM56^RadioSport WIDE M207^RadioSport WIDE M208^RadioSport WIDE M350-ADJ^RadioSport WIDE M360/EM56^RTTYDefault^
+S10C05077|profile mic current=Default
+S10C05077|interlock tx_client_handle=0x00000000 state=NOT_READY reason=OUT_OF_PA_RANGE source= tx_allowed=0 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=NOT_READY reason=OUT_OF_PA_RANGE source= tx_allowed=0 amplifier= 
+S10C05077|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+S10C05077|interlock tx_client_handle=0x00000000 state=NOT_READY reason=OUT_OF_PA_RANGE source= tx_allowed=0 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+S10C05077|interlock band 9 band_name=20 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 0 band_name=160 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 2 band_name=80 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 3 band_name=60 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 5 band_name=40 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 7 band_name=30 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+S10C05077|interlock band 9 band_name=20 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 11 band_name=17 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 13 band_name=15 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 14 band_name=12 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 16 band_name=10 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 20 band_name=6 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 24 band_name=GEN acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 25 band_name=2200 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 26 band_name=630 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0
+S10C05077|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_txreq_polarity=0 rca_txreq_polarity=0
+S10C05077|interlock timeout=0
+S10C05077|profile tx list=Default^iOS_default_Profile^SO2R_TX1^SO2R_TX2^
+S10C05077|profile tx current=Default
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|radio slices=3 panadapters=3 lineout_gain=78 lineout_mute=0 headphone_gain=54 headphone_mute=0 remote_on_enabled=0 pll_done=0 freq_error_ppb=0 cal_freq=15.000000 tnf_enabled=0 snap_tune_enabled=1 nickname=Flex-6600M callsign=N1SH binaural_rx=0 full_duplex_enabled=1 band_persistence_enabled=1 rtty_mark_default=2125 enforce_private_ip_connections=1 backlight=50 mute_local_audio_when_remote=1 daxiq_capacity=16 daxiq_available=16
+S10C05077|radio filter_sharpness VOICE level=2 auto_level=1
+S10C05077|radio filter_sharpness CW level=2 auto_level=1
+S10C05077|radio filter_sharpness DIGITAL level=2 auto_level=1
+S10C05077|radio static_net_params ip= gateway= netmask=
+S10C05077|radio front_speaker_mute=0
+S10C05077|radio oscillator state=tcxo setting=auto locked=1 ext_present=0 gpsdo_present=0 tcxo_present=1
+S10C05077|slice 0 in_use=1 sample_rate=24000 RF_frequency=14.022560 client_handle=0x10C05077 index_letter=A rit_on=0 rit_freq=0 xit_on=0 xit_freq=0 rxant=ANT1 mode=CW wide=0 filter_lo=-200 filter_hi=200 step=10 step_list=1,5,10,50,100,200,400 agc_mode=med agc_threshold=65 agc_off_level=10 pan=0x40000000 txant=ANT1 loopa=0 loopb=0 qsk=0 dax=0 dax_clients=0 lock=0 tx=1 active=1 audio_level=50 audio_pan=50 audio_mute=0 record=0 play=disabled record_time=0.0 anf=0 anf_level=0 nr=0 nr_level=0 nb=0 nb_level=50 wnb=0 wnb_level=0 apf=0 apf_level=30 squelch=1 squelch_level=20 diversity=0 diversity_parent=0 diversity_child=0 diversity_index=1342177293 ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB mode_list=LSB,USB,AM,CW,DIGL,DIGU,SAM,FM,NFM,DFM,RTTY fm_tone_mode=OFF fm_tone_value=67.0 fm_repeater_offset_freq=0.000000 tx_offset_freq=0.000000 repeater_offset_dir=SIMPLEX fm_tone_burst=0 fm_deviation=5000 dfm_pre_de_emphasis=0 post_demod_low=300 post_demod_high=3300 rtty_mark=2125 rtty_shift=170 digl_offset=2210 digu_offset=1500 post_demod_bypass=0 rfgain=0 tx_ant_list=ANT1,ANT2,XVTA,XVTB
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|slice 0 dax=1 dax_clients=0 
+S10C05077|display pan 0x40000000 rfgain=32 pre=+32dB
+S10C05077|display waterfall 0x42000000 rfgain=32
+S10C05077|slice 0 rfgain=32
+S10C05077|display pan 0x40000000 client_handle=0x10C05077 wnb=0 wnb_level=0 wnb_updating=0 band_zoom=0 segment_zoom=0 x_pixels=50 y_pixels=20 center=14.022560 bandwidth=0.075000 min_dbm=-135.00 max_dbm=-30.00 fps=25 average=50 weighted_average=0 rfgain=32 rxant=ANT1 wide=0 loopa=0 loopb=0 band=20 daxiq_channel=0 waterfall=0x42000000 min_bw=0.001230 max_bw=14.745601 xvtr= pre=+32dB ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB
+S10C05077|display waterfall 0x42000000 client_handle=0x10C05077 x_pixels=50 center=14.022560 bandwidth=0.075000 band_zoom=0 segment_zoom=0 line_duration=87 rfgain=32 rxant=ANT1 wide=0 loopa=0 loopb=0 band=20 daxiq_channel=0 panadapter=0x40000000 color_gain=20 auto_black=1 black_level=1 gradient_index=1 xvtr=
+S10C05077|slice 0 in_use=1 sample_rate=24000 RF_frequency=14.074000 client_handle=0x10C05077 index_letter=A rit_on=0 rit_freq=0 xit_on=0 xit_freq=0 rxant=ANT1 mode=CW wide=0 filter_lo=-250 filter_hi=250 step=10 step_list=1,5,10,50,100,200,400 agc_mode=med agc_threshold=28 agc_off_level=10 pan=0x40000000 txant=ANT1 loopa=0 loopb=0 qsk=0 dax=1 dax_clients=0 lock=0 tx=1 active=1 audio_level=51 audio_pan=50 audio_mute=0 record=0 play=disabled record_time=0.0 anf=0 anf_level=0 nr=0 nr_level=10 nb=0 nb_level=0 wnb=0 wnb_level=0 apf=0 apf_level=7 squelch=1 squelch_level=20 diversity=0 diversity_parent=0 diversity_child=0 diversity_index=1342177293 ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB mode_list=LSB,USB,AM,CW,DIGL,DIGU,SAM,FM,NFM,DFM,RTTY fm_tone_mode=OFF fm_tone_value=67.0 fm_repeater_offset_freq=0.000000 tx_offset_freq=0.000000 repeater_offset_dir=SIMPLEX fm_tone_burst=0 fm_deviation=5000 dfm_pre_de_emphasis=0 post_demod_low=300 post_demod_high=3300 rtty_mark=2125 rtty_shift=170 digl_offset=2210 digu_offset=1500 post_demod_bypass=0 rfgain=32 tx_ant_list=ANT1,ANT2,XVTA,XVTB
+S10C05077|waveform installed_list=
+S10C05077|radio slices=3 panadapters=3 lineout_gain=78 lineout_mute=0 headphone_gain=54 headphone_mute=0 remote_on_enabled=0 pll_done=0 freq_error_ppb=0 cal_freq=15.000000 tnf_enabled=0 snap_tune_enabled=1 nickname=Flex-6600M callsign=N1SH binaural_rx=0 full_duplex_enabled=1 band_persistence_enabled=1 rtty_mark_default=2125 enforce_private_ip_connections=1 backlight=50 mute_local_audio_when_remote=1 daxiq_capacity=16 daxiq_available=16
+S10C05077|radio filter_sharpness VOICE level=2 auto_level=1
+S10C05077|radio filter_sharpness CW level=2 auto_level=1
+S10C05077|radio filter_sharpness DIGITAL level=2 auto_level=1
+S10C05077|radio static_net_params ip= gateway= netmask=
+S10C05077|radio front_speaker_mute=0
+S10C05077|radio oscillator state=tcxo setting=auto locked=1 ext_present=0 gpsdo_present=0 tcxo_present=1
+S10C05077|display pan 0x40000000 client_handle=0x10C05077 wnb=0 wnb_level=0 wnb_updating=0 band_zoom=0 segment_zoom=0 x_pixels=50 y_pixels=20 center=14.022560 bandwidth=0.075000 min_dbm=-135.00 max_dbm=-30.00 fps=25 average=50 weighted_average=0 rfgain=32 rxant=ANT1 wide=0 loopa=0 loopb=0 band=20 daxiq_channel=0 waterfall=0x42000000 min_bw=0.001230 max_bw=14.745601 xvtr= pre=+32dB ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB
+S10C05077|display waterfall 0x42000000 client_handle=0x10C05077 x_pixels=50 center=14.022560 bandwidth=0.075000 band_zoom=0 segment_zoom=0 line_duration=87 rfgain=32 rxant=ANT1 wide=0 loopa=0 loopb=0 band=20 daxiq_channel=0 panadapter=0x40000000 color_gain=20 auto_black=1 black_level=1 gradient_index=1 xvtr=
+S10C05077|slice 0 in_use=1 sample_rate=24000 RF_frequency=14.074000 client_handle=0x10C05077 index_letter=A rit_on=0 rit_freq=0 xit_on=0 xit_freq=0 rxant=ANT1 mode=CW wide=0 filter_lo=-250 filter_hi=250 step=10 step_list=1,5,10,50,100,200,400 agc_mode=med agc_threshold=28 agc_off_level=10 pan=0x40000000 txant=ANT1 loopa=0 loopb=0 qsk=0 dax=1 dax_clients=0 lock=0 tx=1 active=1 audio_level=51 audio_pan=50 audio_mute=0 record=0 play=disabled record_time=0.0 anf=0 anf_level=0 nr=0 nr_level=10 nb=0 nb_level=0 wnb=0 wnb_level=0 apf=0 apf_level=7 squelch=1 squelch_level=20 diversity=0 diversity_parent=0 diversity_child=0 diversity_index=1342177293 ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB mode_list=LSB,USB,AM,CW,DIGL,DIGU,SAM,FM,NFM,DFM,RTTY fm_tone_mode=OFF fm_tone_value=67.0 fm_repeater_offset_freq=0.000000 tx_offset_freq=0.000000 repeater_offset_dir=SIMPLEX fm_tone_burst=0 fm_deviation=5000 dfm_pre_de_emphasis=0 post_demod_low=300 post_demod_high=3300 rtty_mark=2125 rtty_shift=170 digl_offset=2210 digu_offset=1500 post_demod_bypass=0 rfgain=32 tx_ant_list=ANT1,ANT2,XVTA,XVTB
+S10C05077|waveform installed_list=
+R5|0|74F5C15A-E4C7-4BDE-8B45-4F9E1E15DFA2
+R6|0|model="FLEX-6600",chassis_serial="0621-1104-6601-1641",name="Flex-6600M",callsign="N1SH",gps="Not Present",atu_present=1,num_scu=2,num_slice=4,num_tx=1,software_ver=3.2.39.3374,mac=00:1C:2D:05:1A:68,ip=192.168.10.27,netmask=255.255.255.0,gateway=192.168.10.1,location="",region="USA",screensaver=model,options="None"
+R7|0|SmartSDR-MB=3.2.39.3374#PIC-DECPU=1.0.3.0#PSoC-MBPA100=3.0.1.1#FPGA-MB=0.0.23.205
+R8|0|ANT1,ANT2,RX_A,RX_B,XVTA,XVTB
+R9|0|MIC,BAL,LINE,ACC,PC
+S10C05077|profile global list=Default^iOS_default_Profile^SO2RDefault^
+S10C05077|profile global current=
+R10|0|
+S10C05077|profile tx list=Default^iOS_default_Profile^SO2R_TX1^SO2R_TX2^
+S10C05077|profile tx current=Default
+R11|0|
+S10C05077|profile mic list=Default^Default FHM-1^Default FHM-1 DX^Default FHM-2^Default FHM-2 DX^Default FHM-2 ESSB^Default FHM-3^Default FHM-3 DX^Default FHM-3 ESSB^Default HM-Pro^Default PR781^Default PR781 ESSB 3_2k^Default ProSet HC6^Inrad M629^Inrad M650^iOS_default_Profile^RadioSport DX M207^RadioSport DX M208^RadioSport DX M350-ADJ^RadioSport DX M360/EM56^RadioSport WIDE M207^RadioSport WIDE M208^RadioSport WIDE M350-ADJ^RadioSport WIDE M360/EM56^RTTYDefault^
+S10C05077|profile mic current=Default
+R12|0|
+R13|0|
+S10C05077|client 0x10C05077 connected local_ptt=1 client_id=74F5C15A-E4C7-4BDE-8B45-4F9E1E15DFA2 program=SmartSDR-Win
+R14|0|
+S10C05077|transmit tx_rf_power_changes_allowed=1 tune=0 show_tx_in_waterfall=1 mon_available=1 max_power_level=100
+S10C05077|transmit freq=14.074000 rfpower=10 tunepower=5 tx_slice_mode=CW hwalc_enabled=0 inhibit=0 dax=1 sb_monitor=1 mon_gain_sb=80 mon_pan_sb=50 met_in_rx=0 am_carrier_level=100 mic_selection=MIC mic_level=32 mic_boost=1 mic_bias=1 mic_acc=0 compander=1 compander_level=70 vox_enable=0 vox_level=50 vox_delay=650 speech_processor_enable=1 speech_processor_level=0 lo=100 hi=2900 tx_filter_changes_allowed=1 tx_antenna=ANT1 pitch=600 speed=30 iambic=1 iambic_mode=1 swap_paddles=0 break_in=1 break_in_delay=41 cwl_enabled=0 sidetone=1 mon_gain_cw=80 mon_pan_cw=50 synccwx=1
+S10C05077|transmit band 0 band_name=160 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S10C05077|transmit band 2 band_name=80 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S10C05077|transmit band 3 band_name=60 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S10C05077|transmit band 5 band_name=40 rfpower=20 tunepower=5 hwalc_enabled=0 inhibit=0
+S10C05077|transmit band 7 band_name=30 rfpower=15 tunepower=5 hwalc_enabled=0 inhibit=0
+S10C05077|transmit band 9 band_name=20 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S10C05077|transmit band 11 band_name=17 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S10C05077|transmit band 13 band_name=15 rfpower=25 tunepower=5 hwalc_enabled=0 inhibit=0
+S10C05077|transmit band 14 band_name=12 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S10C05077|transmit band 16 band_name=10 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S10C05077|transmit band 20 band_name=6 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S10C05077|transmit band 24 band_name=GEN rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S10C05077|transmit band 25 band_name=2200 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S10C05077|transmit band 26 band_name=630 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S10C05077|eq tx mode=0 63Hz=10 125Hz=6 250Hz=6 500Hz=11 1000Hz=14 2000Hz=16 4000Hz=15 8000Hz=12
+S10C05077|eq txsc mode=0 63Hz=0 125Hz=-4 250Hz=-4 500Hz=1 1000Hz=4 2000Hz=6 4000Hz=5 8000Hz=2
+S10C05077|interlock band 0 band_name=160 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 2 band_name=80 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 3 band_name=60 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 5 band_name=40 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 7 band_name=30 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 9 band_name=20 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 11 band_name=17 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 13 band_name=15 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 14 band_name=12 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 16 band_name=10 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 20 band_name=6 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 24 band_name=GEN acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 25 band_name=2200 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock band 26 band_name=630 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S10C05077|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+R15|0|
+S10C05077|atu status=TUNE_SUCCESSFUL atu_enabled=1 memories_enabled=1 using_mem=1
+R16|0|
+R17|0|
+S10C05077|meter 1.src=COD-#1.num=1#1.nam=MICPEAK#1.low=-150.0#1.hi=20.0#1.desc=Signal strength of MIC output in CODEC#1.unit=dBFS#1.fps=40#
+S10C05077|meter 2.src=COD-#2.num=2#2.nam=MIC#2.low=-150.0#2.hi=20.0#2.desc=Average Signal strength of MIC ouput in CODEC#2.unit=dBFS#2.fps=20#
+S10C05077|meter 3.src=TX-#3.num=8#3.nam=CODEC#3.low=-150.0#3.hi=20.0#3.desc=Signal strength of CODEC output#3.unit=dBFS#3.fps=10#
+S10C05077|meter 4.src=TX-#4.num=8#4.nam=SC_MIC#4.low=-150.0#4.hi=20.0#4.desc=Signal strength of MIC output#4.unit=dBFS#4.fps=10#
+S10C05077|meter 5.src=TX-#5.num=8#5.nam=COMPPEAK#5.low=-150.0#5.hi=20.0#5.desc=Signal strength of signals after the CLIPPER (Compression)#5.unit=dBFS#5.fps=20#
+S10C05077|meter 6.src=TX-#6.num=8#6.nam=SC_FILT_1#6.low=-150.0#6.hi=20.0#6.desc=Signal strength after Filter 1#6.unit=dBFS#6.fps=10#
+S10C05077|meter 7.src=TX-#7.num=8#7.nam=ALC#7.low=-150.0#7.hi=20.0#7.desc=Signal strength of signals after SW ALC (SSB Peak)#7.unit=dBFS#7.fps=10#
+S10C05077|meter 8.src=TX-#8.num=8#8.nam=PRE_WAVE_AGC#8.low=-150.0#8.hi=20.0#8.desc=Signal strength before Waveform AGC#8.unit=dBFS#8.fps=10#
+S10C05077|meter 9.src=TX-#9.num=8#9.nam=PRE_WAVE#9.low=-150.0#9.hi=20.0#9.desc=Signal strength before Waveform Shim#9.unit=dBFS#9.fps=10#
+S10C05077|meter 10.src=TX-#10.num=8#10.nam=SC_FILT_2#10.low=-150.0#10.hi=20.0#10.desc=Signal strength after Filter 2#10.unit=dBFS#10.fps=10#
+S10C05077|meter 11.src=TX-#11.num=8#11.nam=B4RAMP#11.low=-150.0#11.hi=20.0#11.desc=Signal strength of signals before the ramp#11.unit=dBFS#11.fps=10#
+S10C05077|meter 12.src=TX-#12.num=8#12.nam=AFRAMP#12.low=-150.0#12.hi=20.0#12.desc=Signal strength of signals after the ramp#12.unit=dBFS#12.fps=10#
+S10C05077|meter 13.src=TX-#13.num=8#13.nam=POST_P#13.low=-150.0#13.hi=0.0#13.desc=Signal strength after all processing is done but before attenuation for power control#13.unit=dBFS#13.fps=10#
+S10C05077|meter 14.src=TX-#14.num=8#14.nam=GAIN#14.low=-150.0#14.hi=0.0#14.desc=Signal strength after Gain#14.unit=dBFS#14.fps=10#
+S10C05077|meter 15.src=TX-#15.num=5#15.nam=HWALC#15.low=-150.0#15.hi=20.0#15.desc=Voltage present at the Hardware ALC RCA Plug#15.unit=dBFS#15.fps=20#
+S10C05077|meter 16.src=RAD#16.num=334#16.nam=+13.8A#16.low=10.5#16.hi=15.0#16.desc=Main radio input voltage at PA#16.unit=Volts#16.fps=0#
+S10C05077|meter 17.src=RAD#17.num=0#17.nam=+13.8B#17.low=10.5#17.hi=15.0#17.desc=Main radio input voltage at CPU (continuous)#17.unit=Volts#17.fps=0#
+S10C05077|meter 18.src=RAD#18.num=3#18.nam=MAINFAN#18.low=0.0#18.hi=8192.0#18.desc=Main radio fan RPM#18.unit=RPM#18.fps=0#
+S10C05077|meter 19.src=TX-#19.num=1#19.nam=FWDPWR#19.low=0.0#19.hi=53.0#19.desc=RF Power Forward#19.unit=dBm#19.fps=20#
+S10C05077|meter 20.src=TX-#20.num=2#20.nam=REFPWR#20.low=0.0#20.hi=53.0#20.desc=RF Power Reflected#20.unit=dBm#20.fps=20#
+S10C05077|meter 21.src=TX-#21.num=3#21.nam=SWR#21.low=1.0#21.hi=999.0#21.desc=RF SWR#21.unit=SWR#21.fps=20#
+S10C05077|meter 22.src=TX-#22.num=4#22.nam=PATEMP#22.low=0.0#22.hi=100.0#22.desc=PA Temperature#22.unit=degC#22.fps=0#
+S10C05077|meter 23.src=SLC#23.num=0#23.nam=24kHz#23.low=-140.0#23.hi=20.0#23.desc=24kHz broadband slice receiver signal level#23.unit=dBFS#23.fps=10#
+S10C05077|meter 24.src=SLC#24.num=0#24.nam=LEVEL#24.low=-150.0#24.hi=20.0#24.desc=Signal strength of signals in the filter passband#24.unit=dBm#24.fps=10#
+S10C05077|meter 25.src=SLC#25.num=0#25.nam=NR/ANF#25.low=-150.0#25.hi=20.0#25.desc=Signal strength after NR/ANF#25.unit=dBm#25.fps=10#
+S10C05077|meter 26.src=SLC#26.num=0#26.nam=AGC+#26.low=-150.0#26.hi=0.0#26.desc=Signal strength after AGC#26.unit=dBFS#26.fps=10#
+R18|0|
+S10C05077|display pan 0x40000000 client_handle=0x10C05077 wnb=0 wnb_level=0 wnb_updating=0 band_zoom=0 segment_zoom=0 x_pixels=50 y_pixels=20 center=14.022560 bandwidth=0.075000 min_dbm=-135.00 max_dbm=-30.00 fps=25 average=50 weighted_average=0 rfgain=32 rxant=ANT1 wide=0 loopa=0 loopb=0 band=20 daxiq_channel=0 waterfall=0x42000000 min_bw=0.001230 max_bw=14.745601 xvtr= pre=+32dB ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB
+S10C05077|display waterfall 0x42000000 client_handle=0x10C05077 x_pixels=50 center=14.022560 bandwidth=0.075000 band_zoom=0 segment_zoom=0 line_duration=87 rfgain=32 rxant=ANT1 wide=0 loopa=0 loopb=0 band=20 daxiq_channel=0 panadapter=0x40000000 color_gain=20 auto_black=1 black_level=1 gradient_index=1 xvtr=
+R19|0|
+S10C05077|slice 0 in_use=1 sample_rate=24000 RF_frequency=14.074000 client_handle=0x10C05077 index_letter=A rit_on=0 rit_freq=0 xit_on=0 xit_freq=0 rxant=ANT1 mode=CW wide=0 filter_lo=-250 filter_hi=250 step=10 step_list=1,5,10,50,100,200,400 agc_mode=med agc_threshold=28 agc_off_level=10 pan=0x40000000 txant=ANT1 loopa=0 loopb=0 qsk=0 dax=1 dax_clients=0 lock=0 tx=1 active=1 audio_level=51 audio_pan=50 audio_mute=0 record=0 play=disabled record_time=0.0 anf=0 anf_level=0 nr=0 nr_level=10 nb=0 nb_level=0 wnb=0 wnb_level=0 apf=0 apf_level=7 squelch=1 squelch_level=20 diversity=0 diversity_parent=0 diversity_child=0 diversity_index=1342177293 ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB mode_list=LSB,USB,AM,CW,DIGL,DIGU,SAM,FM,NFM,DFM,RTTY fm_tone_mode=OFF fm_tone_value=67.0 fm_repeater_offset_freq=0.000000 tx_offset_freq=0.000000 repeater_offset_dir=SIMPLEX fm_tone_burst=0 fm_deviation=5000 dfm_pre_de_emphasis=0 post_demod_low=300 post_demod_high=3300 rtty_mark=2125 rtty_shift=170 digl_offset=2210 digu_offset=1500 post_demod_bypass=0 rfgain=32 tx_ant_list=ANT1,ANT2,XVTA,XVTB
+S10C05077|waveform installed_list=
+R20|0|
+S10C05077|gps lat=N 00 00.000#lon=W 000 00.000#grid=#altitude=0 m#tracked=0#visible=0#speed=0 kts#freq_error=0.000000e+00#status=Not Present#time=00:00:00Z#track=0.0
+R21|0|
+R22|0|
+S10C05077|cwx wpm=30 break_in_delay=0 qsk_enabled=1
+S10C05077|cwx macro1=""
+S10C05077|cwx macro2=""
+S10C05077|cwx macro3=""
+S10C05077|cwx macro4=""
+S10C05077|cwx macro5=""
+S10C05077|cwx macro6=""
+S10C05077|cwx macro7=""
+S10C05077|cwx macro8=""
+S10C05077|cwx macro9=""
+S10C05077|cwx macro10=""
+S10C05077|cwx macro11=""
+S10C05077|cwx macro12=""
+R23|0|
+R24|0|
+R25|0|
+R26|0|
+R27|0|
+R28|0|
+R29|0|
+R30|0|
+R31|0|
+R32|0|
+R33|0|
+R34|0|
+R35|0|
+S10C05077|client 0x10C05077 connected local_ptt=1 client_id=74F5C15A-E4C7-4BDE-8B45-4F9E1E15DFA2 program=SmartSDR-Win station=OFFICE-WIN
+R38|0|
+S0|display pan 0x40000000 min_dbm=-135.00 max_dbm=-30.00 rfgain=32 pre=+32dB
+S0|display pan 0x40000000 min_dbm=-135.00 max_dbm=-30.00 rfgain=32 pre=+32dB
+R39|50000029|
+C40|ping ms_timestamp=1008.3366
+R40|0|
+C41|display pan rfgain_info 0x40000000
+C42|display pan set 0x40000000 xpixels=100
+C43|display pan set 0x40000000 ypixels=100
+R41|0|-8,32,8,0,16,32
+R42|0|
+R43|0|
+S0|wan server_connected=1 radio_authenticated=1
+C44|ping ms_timestamp=2009.0024
+R44|0|
+C45|display pan set 0x40000000 xpixels=1030
+R45|0|
+C46|display pan set 0x40000000 ypixels=510
+R46|0|
+C47|display pan set 0x40000000 ypixels=497
+M10000001|Client connected from IP 192.168.10.25
+S7F6B5B|radio slices=3 panadapters=3 lineout_gain=78 lineout_mute=0 headphone_gain=54 headphone_mute=0 remote_on_enabled=0 pll_done=0 freq_error_ppb=0 cal_freq=15.000000 tnf_enabled=0 snap_tune_enabled=1 nickname=Flex-6600M callsign=N1SH binaural_rx=0 full_duplex_enabled=1 band_persistence_enabled=1 rtty_mark_default=2125 enforce_private_ip_connections=1 backlight=50 mute_local_audio_when_remote=1 daxiq_capacity=16 daxiq_available=16
+S7F6B5B|radio filter_sharpness VOICE level=2 auto_level=1
+S7F6B5B|radio filter_sharpness CW level=2 auto_level=1
+S7F6B5B|radio filter_sharpness DIGITAL level=2 auto_level=1
+S7F6B5B|radio static_net_params ip= gateway= netmask=
+S7F6B5B|radio front_speaker_mute=0
+S7F6B5B|radio oscillator state=tcxo setting=auto locked=1 ext_present=0 gpsdo_present=0 tcxo_present=1
+S7F6B5B|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+S7F6B5B|eq rx mode=0 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
+S7F6B5B|eq rxsc mode=0 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
+R47|0|
+S7F6B5B|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+S7F6B5B|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S7F6B5B|profile tx list=Default^iOS_default_Profile^SO2R_TX1^SO2R_TX2^
+S7F6B5B|profile tx current=Default
+S7F6B5B|profile mic list=Default^Default FHM-1^Default FHM-1 DX^Default FHM-2^Default FHM-2 DX^Default FHM-2 ESSB^Default FHM-3^Default FHM-3 DX^Default FHM-3 ESSB^Default HM-Pro^Default PR781^Default PR781 ESSB 3_2k^Default ProSet HC6^Inrad M629^Inrad M650^iOS_default_Profile^RadioSport DX M207^RadioSport DX M208^RadioSport DX M350-ADJ^RadioSport DX M360/EM56^RadioSport WIDE M207^RadioSport WIDE M208^RadioSport WIDE M350-ADJ^RadioSport WIDE M360/EM56^RTTYDefault^
+S7F6B5B|profile mic current=Default
+S7F6B5B|transmit tx_rf_power_changes_allowed=1 tune=0 show_tx_in_waterfall=1 mon_available=1 max_power_level=100
+S7F6B5B|transmit freq=14.074000 rfpower=10 tunepower=5 tx_slice_mode=CW hwalc_enabled=0 inhibit=0 dax=1 sb_monitor=1 mon_gain_sb=80 mon_pan_sb=50 met_in_rx=0 am_carrier_level=100 mic_selection=MIC mic_level=32 mic_boost=1 mic_bias=1 mic_acc=0 compander=1 compander_level=70 vox_enable=0 vox_level=50 vox_delay=650 speech_processor_enable=1 speech_processor_level=0 lo=100 hi=2900 tx_filter_changes_allowed=1 tx_antenna=ANT1 pitch=600 speed=30 iambic=1 iambic_mode=1 swap_paddles=0 break_in=1 break_in_delay=41 cwl_enabled=0 sidetone=1 mon_gain_cw=80 mon_pan_cw=50 synccwx=1
+S7F6B5B|cwx wpm=30 break_in_delay=0 qsk_enabled=1
+S7F6B5B|cwx macro1=""
+S7F6B5B|cwx macro2=""
+S7F6B5B|cwx macro3=""
+S7F6B5B|cwx macro4=""
+S7F6B5B|cwx macro5=""
+S7F6B5B|cwx macro6=""
+S7F6B5B|cwx macro7=""
+S7F6B5B|cwx macro8=""
+S7F6B5B|cwx macro9=""
+S7F6B5B|cwx macro10=""
+S7F6B5B|cwx macro11=""
+S7F6B5B|cwx macro12=""
+S7F6B5B|transmit band 0 band_name=160 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 2 band_name=80 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 3 band_name=60 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 5 band_name=40 rfpower=20 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 7 band_name=30 rfpower=15 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 9 band_name=20 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 11 band_name=17 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 13 band_name=15 rfpower=25 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 14 band_name=12 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 16 band_name=10 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 20 band_name=6 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 24 band_name=GEN rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 25 band_name=2200 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 26 band_name=630 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|interlock band 0 band_name=160 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 2 band_name=80 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 3 band_name=60 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 5 band_name=40 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 7 band_name=30 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 9 band_name=20 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 11 band_name=17 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 13 band_name=15 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 14 band_name=12 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 16 band_name=10 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 20 band_name=6 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 24 band_name=GEN acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 25 band_name=2200 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 26 band_name=630 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|profile global list=Default^iOS_default_Profile^SO2RDefault^
+S7F6B5B|profile global current=
+S7F6B5B|profile tx list=Default^iOS_default_Profile^SO2R_TX1^SO2R_TX2^
+S7F6B5B|profile tx current=Default
+S7F6B5B|profile mic list=Default^Default FHM-1^Default FHM-1 DX^Default FHM-2^Default FHM-2 DX^Default FHM-2 ESSB^Default FHM-3^Default FHM-3 DX^Default FHM-3 ESSB^Default HM-Pro^Default PR781^Default PR781 ESSB 3_2k^Default ProSet HC6^Inrad M629^Inrad M650^iOS_default_Profile^RadioSport DX M207^RadioSport DX M208^RadioSport DX M350-ADJ^RadioSport DX M360/EM56^RadioSport WIDE M207^RadioSport WIDE M208^RadioSport WIDE M350-ADJ^RadioSport WIDE M360/EM56^RTTYDefault^
+S7F6B5B|profile mic current=Default
+S7F6B5B|client 0x10C05077 connected local_ptt=1 client_id=74F5C15A-E4C7-4BDE-8B45-4F9E1E15DFA2 program=SmartSDR-Win station=OFFICE-WIN
+S7F6B5B|transmit tx_rf_power_changes_allowed=1 tune=0 show_tx_in_waterfall=1 mon_available=1 max_power_level=100
+S7F6B5B|transmit freq=14.074000 rfpower=10 tunepower=5 tx_slice_mode=CW hwalc_enabled=0 inhibit=0 dax=1 sb_monitor=1 mon_gain_sb=80 mon_pan_sb=50 met_in_rx=0 am_carrier_level=100 mic_selection=MIC mic_level=32 mic_boost=1 mic_bias=1 mic_acc=0 compander=1 compander_level=70 vox_enable=0 vox_level=50 vox_delay=650 speech_processor_enable=1 speech_processor_level=0 lo=100 hi=2900 tx_filter_changes_allowed=1 tx_antenna=ANT1 pitch=600 speed=30 iambic=1 iambic_mode=1 swap_paddles=0 break_in=1 break_in_delay=41 cwl_enabled=0 sidetone=1 mon_gain_cw=80 mon_pan_cw=50 synccwx=1
+S7F6B5B|transmit band 0 band_name=160 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 2 band_name=80 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 3 band_name=60 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 5 band_name=40 rfpower=20 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 7 band_name=30 rfpower=15 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 9 band_name=20 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 11 band_name=17 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 13 band_name=15 rfpower=25 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 14 band_name=12 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 16 band_name=10 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 20 band_name=6 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 24 band_name=GEN rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 25 band_name=2200 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|transmit band 26 band_name=630 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S7F6B5B|eq tx mode=0 63Hz=10 125Hz=6 250Hz=6 500Hz=11 1000Hz=14 2000Hz=16 4000Hz=15 8000Hz=12
+S7F6B5B|eq txsc mode=0 63Hz=0 125Hz=-4 250Hz=-4 500Hz=1 1000Hz=4 2000Hz=6 4000Hz=5 8000Hz=2
+S7F6B5B|interlock band 0 band_name=160 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 2 band_name=80 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 3 band_name=60 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 5 band_name=40 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 7 band_name=30 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 9 band_name=20 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 11 band_name=17 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 13 band_name=15 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 14 band_name=12 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 16 band_name=10 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 20 band_name=6 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 24 band_name=GEN acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 25 band_name=2200 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock band 26 band_name=630 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S7F6B5B|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+S7F6B5B|atu status=TUNE_SUCCESSFUL atu_enabled=1 memories_enabled=1 using_mem=1
+S7F6B5B|meter 1.src=COD-#1.num=1#1.nam=MICPEAK#1.low=-150.0#1.hi=20.0#1.desc=Signal strength of MIC output in CODEC#1.unit=dBFS#1.fps=40#
+S7F6B5B|meter 2.src=COD-#2.num=2#2.nam=MIC#2.low=-150.0#2.hi=20.0#2.desc=Average Signal strength of MIC ouput in CODEC#2.unit=dBFS#2.fps=20#
+S7F6B5B|meter 3.src=TX-#3.num=8#3.nam=CODEC#3.low=-150.0#3.hi=20.0#3.desc=Signal strength of CODEC output#3.unit=dBFS#3.fps=10#
+S7F6B5B|meter 4.src=TX-#4.num=8#4.nam=SC_MIC#4.low=-150.0#4.hi=20.0#4.desc=Signal strength of MIC output#4.unit=dBFS#4.fps=10#
+S7F6B5B|meter 5.src=TX-#5.num=8#5.nam=COMPPEAK#5.low=-150.0#5.hi=20.0#5.desc=Signal strength of signals after the CLIPPER (Compression)#5.unit=dBFS#5.fps=20#
+S7F6B5B|meter 6.src=TX-#6.num=8#6.nam=SC_FILT_1#6.low=-150.0#6.hi=20.0#6.desc=Signal strength after Filter 1#6.unit=dBFS#6.fps=10#
+S7F6B5B|meter 7.src=TX-#7.num=8#7.nam=ALC#7.low=-150.0#7.hi=20.0#7.desc=Signal strength of signals after SW ALC (SSB Peak)#7.unit=dBFS#7.fps=10#
+S7F6B5B|meter 8.src=TX-#8.num=8#8.nam=PRE_WAVE_AGC#8.low=-150.0#8.hi=20.0#8.desc=Signal strength before Waveform AGC#8.unit=dBFS#8.fps=10#
+S7F6B5B|meter 9.src=TX-#9.num=8#9.nam=PRE_WAVE#9.low=-150.0#9.hi=20.0#9.desc=Signal strength before Waveform Shim#9.unit=dBFS#9.fps=10#
+S7F6B5B|meter 10.src=TX-#10.num=8#10.nam=SC_FILT_2#10.low=-150.0#10.hi=20.0#10.desc=Signal strength after Filter 2#10.unit=dBFS#10.fps=10#
+S7F6B5B|meter 11.src=TX-#11.num=8#11.nam=B4RAMP#11.low=-150.0#11.hi=20.0#11.desc=Signal strength of signals before the ramp#11.unit=dBFS#11.fps=10#
+S7F6B5B|meter 12.src=TX-#12.num=8#12.nam=AFRAMP#12.low=-150.0#12.hi=20.0#12.desc=Signal strength of signals after the ramp#12.unit=dBFS#12.fps=10#
+S7F6B5B|meter 13.src=TX-#13.num=8#13.nam=POST_P#13.low=-150.0#13.hi=0.0#13.desc=Signal strength after all processing is done but before attenuation for power control#13.unit=dBFS#13.fps=10#
+S7F6B5B|meter 14.src=TX-#14.num=8#14.nam=GAIN#14.low=-150.0#14.hi=0.0#14.desc=Signal strength after Gain#14.unit=dBFS#14.fps=10#
+S7F6B5B|meter 15.src=TX-#15.num=5#15.nam=HWALC#15.low=-150.0#15.hi=20.0#15.desc=Voltage present at the Hardware ALC RCA Plug#15.unit=dBFS#15.fps=20#
+S7F6B5B|meter 16.src=RAD#16.num=334#16.nam=+13.8A#16.low=10.5#16.hi=15.0#16.desc=Main radio input voltage at PA#16.unit=Volts#16.fps=0#
+S7F6B5B|meter 17.src=RAD#17.num=0#17.nam=+13.8B#17.low=10.5#17.hi=15.0#17.desc=Main radio input voltage at CPU (continuous)#17.unit=Volts#17.fps=0#
+S7F6B5B|meter 18.src=RAD#18.num=3#18.nam=MAINFAN#18.low=0.0#18.hi=8192.0#18.desc=Main radio fan RPM#18.unit=RPM#18.fps=0#
+S7F6B5B|meter 19.src=TX-#19.num=1#19.nam=FWDPWR#19.low=0.0#19.hi=53.0#19.desc=RF Power Forward#19.unit=dBm#19.fps=20#
+S7F6B5B|meter 20.src=TX-#20.num=2#20.nam=REFPWR#20.low=0.0#20.hi=53.0#20.desc=RF Power Reflected#20.unit=dBm#20.fps=20#
+S7F6B5B|meter 21.src=TX-#21.num=3#21.nam=SWR#21.low=1.0#21.hi=999.0#21.desc=RF SWR#21.unit=SWR#21.fps=20#
+S7F6B5B|meter 22.src=TX-#22.num=4#22.nam=PATEMP#22.low=0.0#22.hi=100.0#22.desc=PA Temperature#22.unit=degC#22.fps=0#
+S7F6B5B|meter 23.src=SLC#23.num=0#23.nam=24kHz#23.low=-140.0#23.hi=20.0#23.desc=24kHz broadband slice receiver signal level#23.unit=dBFS#23.fps=10#
+S7F6B5B|meter 24.src=SLC#24.num=0#24.nam=LEVEL#24.low=-150.0#24.hi=20.0#24.desc=Signal strength of signals in the filter passband#24.unit=dBm#24.fps=10#
+S7F6B5B|meter 25.src=SLC#25.num=0#25.nam=NR/ANF#25.low=-150.0#25.hi=20.0#25.desc=Signal strength after NR/ANF#25.unit=dBm#25.fps=10#
+S7F6B5B|meter 26.src=SLC#26.num=0#26.nam=AGC+#26.low=-150.0#26.hi=0.0#26.desc=Signal strength after AGC#26.unit=dBFS#26.fps=10#
+S7F6B5B|display pan 0x40000000 client_handle=0x10C05077 wnb=0 wnb_level=0 wnb_updating=0 band_zoom=0 segment_zoom=0 x_pixels=1030 y_pixels=497 center=14.022560 bandwidth=0.075000 min_dbm=-135.00 max_dbm=-30.00 fps=25 average=50 weighted_average=0 rfgain=32 rxant=ANT1 wide=0 loopa=0 loopb=0 band=20 daxiq_channel=0 waterfall=0x42000000 min_bw=0.001230 max_bw=14.745601 xvtr= pre=+32dB ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB
+S7F6B5B|display waterfall 0x42000000 client_handle=0x10C05077 x_pixels=1030 center=14.022560 bandwidth=0.075000 band_zoom=0 segment_zoom=0 line_duration=87 rfgain=32 rxant=ANT1 wide=0 loopa=0 loopb=0 band=20 daxiq_channel=0 panadapter=0x40000000 color_gain=20 auto_black=1 black_level=1 gradient_index=1 xvtr=
+S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S0|atu atu_enabled=1
+S7F6B5B|slice 0 in_use=1 sample_rate=24000 RF_frequency=14.074000 client_handle=0x10C05077 index_letter=A rit_on=0 rit_freq=0 xit_on=0 xit_freq=0 rxant=ANT1 mode=CW wide=0 filter_lo=-250 filter_hi=250 step=10 step_list=1,5,10,50,100,200,400 agc_mode=med agc_threshold=28 agc_off_level=10 pan=0x40000000 txant=ANT1 loopa=0 loopb=0 qsk=0 dax=1 dax_clients=0 lock=0 tx=1 active=1 audio_level=51 audio_pan=50 audio_mute=0 record=0 play=disabled record_time=0.0 anf=0 anf_level=0 nr=0 nr_level=10 nb=0 nb_level=0 wnb=0 wnb_level=0 apf=0 apf_level=7 squelch=1 squelch_level=20 diversity=0 diversity_parent=0 diversity_child=0 diversity_index=1342177293 ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB mode_list=LSB,USB,AM,CW,DIGL,DIGU,SAM,FM,NFM,DFM,RTTY fm_tone_mode=OFF fm_tone_value=67.0 fm_repeater_offset_freq=0.000000 tx_offset_freq=0.000000 repeater_offset_dir=SIMPLEX fm_tone_burst=0 fm_deviation=5000 dfm_pre_de_emphasis=0 post_demod_low=300 post_demod_high=3300 rtty_mark=2125 rtty_shift=170 digl_offset=2210 digu_offset=1500 post_demod_bypass=0 rfgain=32 tx_ant_list=ANT1,ANT2,XVTA,XVTB
+S7F6B5B|waveform installed_list=
+S7F6B5B|gps lat=N 00 00.000#lon=W 000 00.000#grid=#altitude=0 m#tracked=0#visible=0#speed=0 kts#freq_error=0.000000e+00#status=Not Present#time=00:00:00Z#track=0.0
+S7F6B5B|cwx wpm=30 break_in_delay=0 qsk_enabled=1
+S7F6B5B|cwx macro1=""
+S7F6B5B|cwx macro2=""
+S7F6B5B|cwx macro3=""
+S7F6B5B|cwx macro4=""
+S7F6B5B|cwx macro5=""
+S7F6B5B|cwx macro6=""
+S7F6B5B|cwx macro7=""
+S7F6B5B|cwx macro8=""
+S7F6B5B|cwx macro9=""
+S7F6B5B|cwx macro10=""
+S7F6B5B|cwx macro11=""
+S7F6B5B|cwx macro12=""
+S7F6B5B|slice 0 dax=1 dax_clients=0 
+S7F6B5B|stream 0x04000008 type=dax_rx dax_channel=1 slice=A client_handle=0x007F6B5B ip=192.168.10.25
+S7F6B5B|stream 0x04000008 type=dax_rx dax_channel=1 slice=A client_handle=0x007F6B5B ip=192.168.10.25
+S7F6B5B|stream 0x84000000 type=dax_tx client_handle=0x007F6B5B tx=1 ip=192.168.10.25
+C48|ping ms_timestamp=3009.6648
+R48|0|
+M10000001|Client connected from IP 192.168.10.25
+S4EBE3069|radio slices=3 panadapters=3 lineout_gain=78 lineout_mute=0 headphone_gain=54 headphone_mute=0 remote_on_enabled=0 pll_done=0 freq_error_ppb=0 cal_freq=15.000000 tnf_enabled=0 snap_tune_enabled=1 nickname=Flex-6600M callsign=N1SH binaural_rx=0 full_duplex_enabled=1 band_persistence_enabled=1 rtty_mark_default=2125 enforce_private_ip_connections=1 backlight=50 mute_local_audio_when_remote=1 daxiq_capacity=16 daxiq_available=16
+S4EBE3069|radio filter_sharpness VOICE level=2 auto_level=1
+S4EBE3069|radio filter_sharpness CW level=2 auto_level=1
+S4EBE3069|radio filter_sharpness DIGITAL level=2 auto_level=1
+S4EBE3069|radio static_net_params ip= gateway= netmask=
+S4EBE3069|radio front_speaker_mute=0
+S4EBE3069|radio oscillator state=tcxo setting=auto locked=1 ext_present=0 gpsdo_present=0 tcxo_present=1
+S4EBE3069|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+S4EBE3069|eq rx mode=0 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
+S4EBE3069|eq rxsc mode=0 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
+S4EBE3069|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+S4EBE3069|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S4EBE3069|profile tx list=Default^iOS_default_Profile^SO2R_TX1^SO2R_TX2^
+S4EBE3069|profile tx current=Default
+S4EBE3069|profile mic list=Default^Default FHM-1^Default FHM-1 DX^Default FHM-2^Default FHM-2 DX^Default FHM-2 ESSB^Default FHM-3^Default FHM-3 DX^Default FHM-3 ESSB^Default HM-Pro^Default PR781^Default PR781 ESSB 3_2k^Default ProSet HC6^Inrad M629^Inrad M650^iOS_default_Profile^RadioSport DX M207^RadioSport DX M208^RadioSport DX M350-ADJ^RadioSport DX M360/EM56^RadioSport WIDE M207^RadioSport WIDE M208^RadioSport WIDE M350-ADJ^RadioSport WIDE M360/EM56^RTTYDefault^
+S4EBE3069|profile mic current=Default
+S4EBE3069|transmit tx_rf_power_changes_allowed=1 tune=0 show_tx_in_waterfall=1 mon_available=1 max_power_level=100
+S4EBE3069|transmit freq=14.074000 rfpower=10 tunepower=5 tx_slice_mode=CW hwalc_enabled=0 inhibit=0 dax=1 sb_monitor=1 mon_gain_sb=80 mon_pan_sb=50 met_in_rx=0 am_carrier_level=100 mic_selection=MIC mic_level=32 mic_boost=1 mic_bias=1 mic_acc=0 compander=1 compander_level=70 vox_enable=0 vox_level=50 vox_delay=650 speech_processor_enable=1 speech_processor_level=0 lo=100 hi=2900 tx_filter_changes_allowed=1 tx_antenna=ANT1 pitch=600 speed=30 iambic=1 iambic_mode=1 swap_paddles=0 break_in=1 break_in_delay=41 cwl_enabled=0 sidetone=1 mon_gain_cw=80 mon_pan_cw=50 synccwx=1
+S4EBE3069|cwx wpm=30 break_in_delay=0 qsk_enabled=1
+S4EBE3069|cwx macro1=""
+S4EBE3069|cwx macro2=""
+S4EBE3069|cwx macro3=""
+S4EBE3069|cwx macro4=""
+S4EBE3069|cwx macro5=""
+S4EBE3069|cwx macro6=""
+S4EBE3069|cwx macro7=""
+S4EBE3069|cwx macro8=""
+S4EBE3069|cwx macro9=""
+S4EBE3069|cwx macro10=""
+S4EBE3069|cwx macro11=""
+S4EBE3069|cwx macro12=""
+S4EBE3069|transmit band 0 band_name=160 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 2 band_name=80 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 3 band_name=60 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 5 band_name=40 rfpower=20 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 7 band_name=30 rfpower=15 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 9 band_name=20 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 11 band_name=17 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 13 band_name=15 rfpower=25 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 14 band_name=12 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 16 band_name=10 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 20 band_name=6 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 24 band_name=GEN rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 25 band_name=2200 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 26 band_name=630 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|interlock band 0 band_name=160 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 2 band_name=80 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 3 band_name=60 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 5 band_name=40 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 7 band_name=30 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 9 band_name=20 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 11 band_name=17 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 13 band_name=15 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 14 band_name=12 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 16 band_name=10 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 20 band_name=6 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 24 band_name=GEN acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 25 band_name=2200 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 26 band_name=630 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|profile global list=Default^iOS_default_Profile^SO2RDefault^
+S4EBE3069|profile global current=
+S4EBE3069|profile tx list=Default^iOS_default_Profile^SO2R_TX1^SO2R_TX2^
+S4EBE3069|profile tx current=Default
+S4EBE3069|profile mic list=Default^Default FHM-1^Default FHM-1 DX^Default FHM-2^Default FHM-2 DX^Default FHM-2 ESSB^Default FHM-3^Default FHM-3 DX^Default FHM-3 ESSB^Default HM-Pro^Default PR781^Default PR781 ESSB 3_2k^Default ProSet HC6^Inrad M629^Inrad M650^iOS_default_Profile^RadioSport DX M207^RadioSport DX M208^RadioSport DX M350-ADJ^RadioSport DX M360/EM56^RadioSport WIDE M207^RadioSport WIDE M208^RadioSport WIDE M350-ADJ^RadioSport WIDE M360/EM56^RTTYDefault^
+S4EBE3069|profile mic current=Default
+S4EBE3069|client 0x10C05077 connected local_ptt=1 client_id=74F5C15A-E4C7-4BDE-8B45-4F9E1E15DFA2 program=SmartSDR-Win station=OFFICE-WIN
+S4EBE3069|transmit tx_rf_power_changes_allowed=1 tune=0 show_tx_in_waterfall=1 mon_available=1 max_power_level=100
+S4EBE3069|transmit freq=14.074000 rfpower=10 tunepower=5 tx_slice_mode=CW hwalc_enabled=0 inhibit=0 dax=1 sb_monitor=1 mon_gain_sb=80 mon_pan_sb=50 met_in_rx=0 am_carrier_level=100 mic_selection=MIC mic_level=32 mic_boost=1 mic_bias=1 mic_acc=0 compander=1 compander_level=70 vox_enable=0 vox_level=50 vox_delay=650 speech_processor_enable=1 speech_processor_level=0 lo=100 hi=2900 tx_filter_changes_allowed=1 tx_antenna=ANT1 pitch=600 speed=30 iambic=1 iambic_mode=1 swap_paddles=0 break_in=1 break_in_delay=41 cwl_enabled=0 sidetone=1 mon_gain_cw=80 mon_pan_cw=50 synccwx=1
+S4EBE3069|transmit band 0 band_name=160 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 2 band_name=80 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 3 band_name=60 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 5 band_name=40 rfpower=20 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 7 band_name=30 rfpower=15 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 9 band_name=20 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 11 band_name=17 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 13 band_name=15 rfpower=25 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 14 band_name=12 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 16 band_name=10 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 20 band_name=6 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 24 band_name=GEN rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 25 band_name=2200 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|transmit band 26 band_name=630 rfpower=10 tunepower=5 hwalc_enabled=0 inhibit=0
+S4EBE3069|eq tx mode=0 63Hz=10 125Hz=6 250Hz=6 500Hz=11 1000Hz=14 2000Hz=16 4000Hz=15 8000Hz=12
+S4EBE3069|eq txsc mode=0 63Hz=0 125Hz=-4 250Hz=-4 500Hz=1 1000Hz=4 2000Hz=6 4000Hz=5 8000Hz=2
+S4EBE3069|interlock band 0 band_name=160 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 2 band_name=80 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 3 band_name=60 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 5 band_name=40 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 7 band_name=30 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 9 band_name=20 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 11 band_name=17 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 13 band_name=15 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 14 band_name=12 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 16 band_name=10 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 20 band_name=6 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 24 band_name=GEN acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 25 band_name=2200 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock band 26 band_name=630 acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0
+S4EBE3069|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+S4EBE3069|atu status=TUNE_SUCCESSFUL atu_enabled=1 memories_enabled=1 using_mem=1
+S4EBE3069|meter 1.src=COD-#1.num=1#1.nam=MICPEAK#1.low=-150.0#1.hi=20.0#1.desc=Signal strength of MIC output in CODEC#1.unit=dBFS#1.fps=40#
+S4EBE3069|meter 2.src=COD-#2.num=2#2.nam=MIC#2.low=-150.0#2.hi=20.0#2.desc=Average Signal strength of MIC ouput in CODEC#2.unit=dBFS#2.fps=20#
+S4EBE3069|meter 3.src=TX-#3.num=8#3.nam=CODEC#3.low=-150.0#3.hi=20.0#3.desc=Signal strength of CODEC output#3.unit=dBFS#3.fps=10#
+S4EBE3069|meter 4.src=TX-#4.num=8#4.nam=SC_MIC#4.low=-150.0#4.hi=20.0#4.desc=Signal strength of MIC output#4.unit=dBFS#4.fps=10#
+S4EBE3069|meter 5.src=TX-#5.num=8#5.nam=COMPPEAK#5.low=-150.0#5.hi=20.0#5.desc=Signal strength of signals after the CLIPPER (Compression)#5.unit=dBFS#5.fps=20#
+S4EBE3069|meter 6.src=TX-#6.num=8#6.nam=SC_FILT_1#6.low=-150.0#6.hi=20.0#6.desc=Signal strength after Filter 1#6.unit=dBFS#6.fps=10#
+S4EBE3069|meter 7.src=TX-#7.num=8#7.nam=ALC#7.low=-150.0#7.hi=20.0#7.desc=Signal strength of signals after SW ALC (SSB Peak)#7.unit=dBFS#7.fps=10#
+S4EBE3069|meter 8.src=TX-#8.num=8#8.nam=PRE_WAVE_AGC#8.low=-150.0#8.hi=20.0#8.desc=Signal strength before Waveform AGC#8.unit=dBFS#8.fps=10#
+S4EBE3069|meter 9.src=TX-#9.num=8#9.nam=PRE_WAVE#9.low=-150.0#9.hi=20.0#9.desc=Signal strength before Waveform Shim#9.unit=dBFS#9.fps=10#
+S4EBE3069|meter 10.src=TX-#10.num=8#10.nam=SC_FILT_2#10.low=-150.0#10.hi=20.0#10.desc=Signal strength after Filter 2#10.unit=dBFS#10.fps=10#
+S4EBE3069|meter 11.src=TX-#11.num=8#11.nam=B4RAMP#11.low=-150.0#11.hi=20.0#11.desc=Signal strength of signals before the ramp#11.unit=dBFS#11.fps=10#
+S4EBE3069|meter 12.src=TX-#12.num=8#12.nam=AFRAMP#12.low=-150.0#12.hi=20.0#12.desc=Signal strength of signals after the ramp#12.unit=dBFS#12.fps=10#
+S4EBE3069|meter 13.src=TX-#13.num=8#13.nam=POST_P#13.low=-150.0#13.hi=0.0#13.desc=Signal strength after all processing is done but before attenuation for power control#13.unit=dBFS#13.fps=10#
+S4EBE3069|meter 14.src=TX-#14.num=8#14.nam=GAIN#14.low=-150.0#14.hi=0.0#14.desc=Signal strength after Gain#14.unit=dBFS#14.fps=10#
+S4EBE3069|meter 15.src=TX-#15.num=5#15.nam=HWALC#15.low=-150.0#15.hi=20.0#15.desc=Voltage present at the Hardware ALC RCA Plug#15.unit=dBFS#15.fps=20#
+S4EBE3069|meter 16.src=RAD#16.num=334#16.nam=+13.8A#16.low=10.5#16.hi=15.0#16.desc=Main radio input voltage at PA#16.unit=Volts#16.fps=0#
+S4EBE3069|meter 17.src=RAD#17.num=0#17.nam=+13.8B#17.low=10.5#17.hi=15.0#17.desc=Main radio input voltage at CPU (continuous)#17.unit=Volts#17.fps=0#
+S4EBE3069|meter 18.src=RAD#18.num=3#18.nam=MAINFAN#18.low=0.0#18.hi=8192.0#18.desc=Main radio fan RPM#18.unit=RPM#18.fps=0#
+S4EBE3069|meter 19.src=TX-#19.num=1#19.nam=FWDPWR#19.low=0.0#19.hi=53.0#19.desc=RF Power Forward#19.unit=dBm#19.fps=20#
+S4EBE3069|meter 20.src=TX-#20.num=2#20.nam=REFPWR#20.low=0.0#20.hi=53.0#20.desc=RF Power Reflected#20.unit=dBm#20.fps=20#
+S4EBE3069|meter 21.src=TX-#21.num=3#21.nam=SWR#21.low=1.0#21.hi=999.0#21.desc=RF SWR#21.unit=SWR#21.fps=20#
+S4EBE3069|meter 22.src=TX-#22.num=4#22.nam=PATEMP#22.low=0.0#22.hi=100.0#22.desc=PA Temperature#22.unit=degC#22.fps=0#
+S4EBE3069|meter 23.src=SLC#23.num=0#23.nam=24kHz#23.low=-140.0#23.hi=20.0#23.desc=24kHz broadband slice receiver signal level#23.unit=dBFS#23.fps=10#
+S4EBE3069|meter 24.src=SLC#24.num=0#24.nam=LEVEL#24.low=-150.0#24.hi=20.0#24.desc=Signal strength of signals in the filter passband#24.unit=dBm#24.fps=10#
+S4EBE3069|meter 25.src=SLC#25.num=0#25.nam=NR/ANF#25.low=-150.0#25.hi=20.0#25.desc=Signal strength after NR/ANF#25.unit=dBm#25.fps=10#
+S4EBE3069|meter 26.src=SLC#26.num=0#26.nam=AGC+#26.low=-150.0#26.hi=0.0#26.desc=Signal strength after AGC#26.unit=dBFS#26.fps=10#
+S4EBE3069|display pan 0x40000000 client_handle=0x10C05077 wnb=0 wnb_level=0 wnb_updating=0 band_zoom=0 segment_zoom=0 x_pixels=1030 y_pixels=497 center=14.022560 bandwidth=0.075000 min_dbm=-135.00 max_dbm=-30.00 fps=25 average=50 weighted_average=0 rfgain=32 rxant=ANT1 wide=0 loopa=0 loopb=0 band=20 daxiq_channel=0 waterfall=0x42000000 min_bw=0.001230 max_bw=14.745601 xvtr= pre=+32dB ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB
+S4EBE3069|display waterfall 0x42000000 client_handle=0x10C05077 x_pixels=1030 center=14.022560 bandwidth=0.075000 band_zoom=0 segment_zoom=0 line_duration=87 rfgain=32 rxant=ANT1 wide=0 loopa=0 loopb=0 band=20 daxiq_channel=0 panadapter=0x40000000 color_gain=20 auto_black=1 black_level=1 gradient_index=1 xvtr=
+S4EBE3069|slice 0 in_use=1 sample_rate=24000 RF_frequency=14.074000 client_handle=0x10C05077 index_letter=A rit_on=0 rit_freq=0 xit_on=0 xit_freq=0 rxant=ANT1 mode=CW wide=0 filter_lo=-250 filter_hi=250 step=10 step_list=1,5,10,50,100,200,400 agc_mode=med agc_threshold=28 agc_off_level=10 pan=0x40000000 txant=ANT1 loopa=0 loopb=0 qsk=0 dax=1 dax_clients=1 lock=0 tx=1 active=1 audio_level=51 audio_pan=50 audio_mute=0 record=0 play=disabled record_time=0.0 anf=0 anf_level=0 nr=0 nr_level=10 nb=0 nb_level=0 wnb=0 wnb_level=0 apf=0 apf_level=7 squelch=1 squelch_level=20 diversity=0 diversity_parent=0 diversity_child=0 diversity_index=1342177293 ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB mode_list=LSB,USB,AM,CW,DIGL,DIGU,SAM,FM,NFM,DFM,RTTY fm_tone_mode=OFF fm_tone_value=67.0 fm_repeater_offset_freq=0.000000 tx_offset_freq=0.000000 repeater_offset_dir=SIMPLEX fm_tone_burst=0 fm_deviation=5000 dfm_pre_de_emphasis=0 post_demod_low=300 post_demod_high=3300 rtty_mark=2125 rtty_shift=170 digl_offset=2210 digu_offset=1500 post_demod_bypass=0 rfgain=32 tx_ant_list=ANT1,ANT2,XVTA,XVTB
+S4EBE3069|waveform installed_list=
+S4EBE3069|gps lat=N 00 00.000#lon=W 000 00.000#grid=#altitude=0 m#tracked=0#visible=0#speed=0 kts#freq_error=0.000000e+00#status=Not Present#time=00:00:00Z#track=0.0
+S4EBE3069|stream 0x04000008 type=dax_rx dax_channel=1 slice=A client_handle=0x007F6B5B ip=192.168.10.25
+S4EBE3069|stream 0x84000000 type=dax_tx client_handle=0x007F6B5B tx=1 ip=192.168.10.25
+S4EBE3069|cwx wpm=30 break_in_delay=0 qsk_enabled=1
+S4EBE3069|cwx macro1=""
+S4EBE3069|cwx macro2=""
+S4EBE3069|cwx macro3=""
+S4EBE3069|cwx macro4=""
+S4EBE3069|cwx macro5=""
+S4EBE3069|cwx macro6=""
+S4EBE3069|cwx macro7=""
+S4EBE3069|cwx macro8=""
+S4EBE3069|cwx macro9=""
+S4EBE3069|cwx macro10=""
+S4EBE3069|cwx macro11=""
+S4EBE3069|cwx macro12=""
+S4EBE3069|stream 0x04000008 type=dax_rx dax_channel=1 slice=A client_handle=0x007F6B5B ip=192.168.10.25
+S0|wan server_connected=1 radio_authenticated=1
+C49|ping ms_timestamp=4009.8753
+R49|0|
+S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S0|atu atu_enabled=1
+C58|ping ms_timestamp=13018.8717
+R58|0|
+C59|ping ms_timestamp=14020.2182
+R59|0|
+C60|ping ms_timestamp=15021.3221
+R60|0|
+C61|ping ms_timestamp=16022.9978
+R61|0|
+C62|ping ms_timestamp=17024.0386
+R62|0|
+C63|ping ms_timestamp=18025.3238
+R63|0|
+C64|ping ms_timestamp=19027.0234
+R64|0|
+C65|ping ms_timestamp=20028.3821
+R65|0|
+C66|ping ms_timestamp=21030.238
+R66|0|
+C67|ping ms_timestamp=22030.876
+R67|0|
+C68|ping ms_timestamp=23032.6391
+R68|0|
+C69|ping ms_timestamp=24034.6869
+R69|0|
+C70|transmit set rfpower=11
+C71|ping ms_timestamp=25034.8099
+R71|0|
+S10C05077|transmit band 9 band_name=20 rfpower=11 tunepower=5 hwalc_enabled=0 inhibit=0
+R70|0|
+C72|transmit set rfpower=12
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=5 hwalc_enabled=0 inhibit=0
+R72|0|
+C73|transmit set rfpower=13
+S10C05077|transmit band 9 band_name=20 rfpower=13 tunepower=5 hwalc_enabled=0 inhibit=0
+R73|0|
+C74|transmit set rfpower=14
+S10C05077|transmit band 9 band_name=20 rfpower=14 tunepower=5 hwalc_enabled=0 inhibit=0
+R74|0|
+C75|transmit set rfpower=16
+S10C05077|transmit band 9 band_name=20 rfpower=16 tunepower=5 hwalc_enabled=0 inhibit=0
+R75|0|
+C76|transmit set rfpower=17
+C77|transmit set rfpower=18
+R76|0|
+S10C05077|transmit band 9 band_name=20 rfpower=18 tunepower=5 hwalc_enabled=0 inhibit=0
+R77|0|
+C78|ping ms_timestamp=26037.131
+R78|0|
+C79|ping ms_timestamp=27037.9198
+R79|0|
+C80|transmit set rfpower=17
+S10C05077|transmit band 9 band_name=20 rfpower=17 tunepower=5 hwalc_enabled=0 inhibit=0
+R80|0|
+C81|transmit set rfpower=16
+S10C05077|transmit band 9 band_name=20 rfpower=16 tunepower=5 hwalc_enabled=0 inhibit=0
+R81|0|
+C82|transmit set rfpower=15
+S10C05077|transmit band 9 band_name=20 rfpower=15 tunepower=5 hwalc_enabled=0 inhibit=0
+R82|0|
+C83|transmit set rfpower=14
+C84|transmit set rfpower=13
+R83|0|
+C85|transmit set rfpower=12
+R84|0|
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=5 hwalc_enabled=0 inhibit=0
+R85|0|
+C86|ping ms_timestamp=28038.3154
+R86|0|
+C87|transmit set tunepower=6
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=6 hwalc_enabled=0 inhibit=0
+R87|0|
+C88|transmit set tunepower=7
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=7 hwalc_enabled=0 inhibit=0
+R88|0|
+C89|transmit set tunepower=8
+C90|transmit set tunepower=9
+R89|0|
+C91|transmit set tunepower=11
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=9 hwalc_enabled=0 inhibit=0
+R90|0|
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=11 hwalc_enabled=0 inhibit=0
+R91|0|
+C92|transmit set tunepower=13
+C93|transmit set tunepower=14
+C94|transmit set tunepower=15
+R92|0|
+R93|0|
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=15 hwalc_enabled=0 inhibit=0
+R94|0|
+C95|ping ms_timestamp=29039.8766
+R95|0|
+C96|transmit set tunepower=14
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=14 hwalc_enabled=0 inhibit=0
+R96|0|
+C97|ping ms_timestamp=30041.7955
+R97|0|
+C98|transmit set tunepower=13
+C99|transmit set tunepower=12
+R98|0|
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=12 hwalc_enabled=0 inhibit=0
+R99|0|
+C100|transmit set tunepower=11
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=11 hwalc_enabled=0 inhibit=0
+R100|0|
+C101|transmit set tunepower=10
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=10 hwalc_enabled=0 inhibit=0
+R101|0|
+C102|transmit set tunepower=9
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=9 hwalc_enabled=0 inhibit=0
+R102|0|
+C103|transmit set tunepower=8
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=8 hwalc_enabled=0 inhibit=0
+R103|0|
+C104|transmit set tunepower=9
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=9 hwalc_enabled=0 inhibit=0
+R104|0|
+C105|ping ms_timestamp=31042.8513
+R105|0|
+C106|ping ms_timestamp=32044.3933
+R106|0|
+C107|transmit set tunepower=10
+C108|transmit set tunepower=11
+R107|0|
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=11 hwalc_enabled=0 inhibit=0
+R108|0|
+C109|ping ms_timestamp=33045.8058
+R109|0|
+C110|transmit set tunepower=10
+C111|transmit set tunepower=9
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=10 hwalc_enabled=0 inhibit=0
+R110|0|
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=9 hwalc_enabled=0 inhibit=0
+R111|0|
+C112|ping ms_timestamp=34047.6561
+R112|0|
+C113|transmit set tunepower=10
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=10 hwalc_enabled=0 inhibit=0
+R113|0|
+C114|transmit set tunepower=11
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=11 hwalc_enabled=0 inhibit=0
+R114|0|
+C115|ping ms_timestamp=35048.5947
+R115|0|
+C116|transmit set tunepower=10
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=10 hwalc_enabled=0 inhibit=0
+R116|0|
+C117|transmit set tunepower=9
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=9 hwalc_enabled=0 inhibit=0
+R117|0|
+C118|ping ms_timestamp=36049.1221
+R118|0|
+C119|transmit set tunepower=10
+S10C05077|transmit band 9 band_name=20 rfpower=12 tunepower=10 hwalc_enabled=0 inhibit=0
+R119|0|
+C120|ping ms_timestamp=37049.4609
+R120|0|
+C121|ping ms_timestamp=38051.4832
+R121|0|
+C122|ping ms_timestamp=39052.2271
+R122|0|
+C123|ping ms_timestamp=40052.92
+R123|0|
+C124|ping ms_timestamp=41053.8073
+R124|0|
+C125|display pan set 0x40000000 center=14.074000
+R125|0|14.074
+C126|ping ms_timestamp=42054.0357
+R126|0|
+C127|ping ms_timestamp=43055.9307
+R127|0|
+C128|slice tune 0 14.073990 autopan=0
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.073990 lo=100 hi=2900 tx_filter_changes_allowed=1 
+R128|0|
+C129|slice tune 0 14.074000 autopan=0
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.074000 lo=100 hi=2900 tx_filter_changes_allowed=1 
+R129|0|
+C130|slice tune 0 14.074010 autopan=0
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.074010 lo=100 hi=2900 tx_filter_changes_allowed=1 
+R130|0|
+C131|slice tune 0 14.074020 autopan=0
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.074020 lo=100 hi=2900 tx_filter_changes_allowed=1 
+R131|0|
+C132|slice tune 0 14.074030 autopan=0
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.074030 lo=100 hi=2900 tx_filter_changes_allowed=1 
+R132|0|
+C133|ping ms_timestamp=44057.0274
+R133|0|
+C134|slice tune 0 14.074040 autopan=0
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.074040 lo=100 hi=2900 tx_filter_changes_allowed=1 
+R134|0|
+C135|ping ms_timestamp=45058.8606
+R135|0|
+C136|slice tune 0 14.074030 autopan=0
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.074030 lo=100 hi=2900 tx_filter_changes_allowed=1 
+R136|0|
+C137|slice tune 0 14.074020 autopan=0
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.074020 lo=100 hi=2900 tx_filter_changes_allowed=1 
+R137|0|
+C138|slice tune 0 14.074010 autopan=0
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.074010 lo=100 hi=2900 tx_filter_changes_allowed=1 
+R138|0|
+C139|ping ms_timestamp=46060.8118
+R139|0|
+C140|slice tune 0 14.074000 autopan=0
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.074000 lo=100 hi=2900 tx_filter_changes_allowed=1 
+R140|0|
+C141|ping ms_timestamp=47061.1504
+R141|0|
+C142|ping ms_timestamp=48063.0961
+R142|0|
+C143|ping ms_timestamp=49064.7309
+R143|0|
+C144|ping ms_timestamp=50066.0302
+R144|0|
+C145|stream create type=remote_audio_rx compression=opus
+S10C05077|stream 0x04000009 type=remote_audio_rx compression=OPUS client_handle=0x10C05077 ip=192.168.10.25
+R145|0|4000009
+C146|ping ms_timestamp=51067.6194
+R146|0|
+C147|ping ms_timestamp=52068.5335
+R147|0|
+C148|ping ms_timestamp=53069.2114
+R148|0|
+C160|ping ms_timestamp=62075.9404
+R160|0|
+C161|ping ms_timestamp=63076.0235
+R161|0|
+C162|ping ms_timestamp=64077.138
+R162|0|
+C163|ping ms_timestamp=65077.7706
+R163|0|
+S0|interlock tx_client_handle=0x10C05077 state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier= 
+S0|atu atu_enabled=1
+S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S0|atu atu_enabled=1
+S10C05077|transmit tune=0 tx_rf_power_changes_allowed=0 max_power_level=100
+S10C05077|transmit rfpower=10 tunepower=10 am_carrier_level=100
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.074000 lo=100 hi=2900 tx_filter_changes_allowed=1 
+S10C05077|atu status=TUNE_SUCCESSFUL memories_enabled=1 using_mem=1
+S10C05077|transmit tune=0 tx_rf_power_changes_allowed=1 max_power_level=100
+S10C05077|transmit rfpower=12 tunepower=10 am_carrier_level=100
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit sb_monitor=1 mon_gain_sb=80 mon_pan_sb=50 pitch=600 speed=30 iambic=1 iambic_mode=1 swap_paddles=0 break_in=1 break_in_delay=41 cwl_enabled=0 sidetone=1 mon_gain_cw=80 mon_pan_cw=50 synccwx=1
+S10C05077|transmit tune=0 tx_rf_power_changes_allowed=1 max_power_level=100
+S10C05077|transmit rfpower=12 tunepower=10 am_carrier_level=100
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+C164|ping ms_timestamp=66077.9189
+R164|0|
+C165|ping ms_timestamp=67078.9899
+R165|0|
+C166|ping ms_timestamp=68079.9305
+R166|0|
+C167|ping ms_timestamp=69080.5374
+R167|0|
+C168|ping ms_timestamp=70080.8399
+R168|0|
+C169|ping ms_timestamp=71081.462
+R169|0|
+C170|ping ms_timestamp=72082.087
+R170|0|
+C171|atu bypass
+S10C05077|atu status=TUNE_MANUAL_BYPASS memories_enabled=1 using_mem=1
+R171|0|
+S10C05077|transmit sb_monitor=1 mon_gain_sb=80 mon_pan_sb=50 pitch=600 speed=30 iambic=1 iambic_mode=1 swap_paddles=0 break_in=1 break_in_delay=0 cwl_enabled=0 sidetone=1 mon_gain_cw=80 mon_pan_cw=50 synccwx=1
+S10C05077|transmit tune=0 tx_rf_power_changes_allowed=1 max_power_level=100
+S10C05077|transmit rfpower=12 tunepower=10 am_carrier_level=100
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+C172|ping ms_timestamp=73082.2894
+R172|0|
+C173|atu start
+S10C05077|atu status=TUNE_IN_PROGRESS memories_enabled=1 using_mem=1
+R173|0|
+S10C05077|transmit tune=0 tx_rf_power_changes_allowed=0 max_power_level=100
+S10C05077|transmit rfpower=10 tunepower=10 am_carrier_level=100
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.074000 lo=100 hi=2900 tx_filter_changes_allowed=1 
+S10C05077|transmit tune=1 tx_rf_power_changes_allowed=0 max_power_level=100
+S10C05077|transmit rfpower=10 tunepower=10 am_carrier_level=100
+S10C05077|interlock tx_client_handle=0x10C05077 state=READY reason= source= tx_allowed=1 amplifier= 
+S0|interlock tx_client_handle=0x10C05077 state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier= 
+S0|atu atu_enabled=1
+S0|interlock tx_client_handle=0x10C05077 state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier= 
+S0|atu atu_enabled=1
+C174|ping ms_timestamp=74082.9931
+R174|0|
+C175|ping ms_timestamp=75083.915
+R175|0|
+C176|ping ms_timestamp=76084.8163
+R176|0|
+C177|ping ms_timestamp=77085.298
+R177|0|
+S0|interlock tx_client_handle=0x10C05077 state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier= 
+S0|atu atu_enabled=1
+S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S0|atu atu_enabled=1
+S10C05077|transmit tune=0 tx_rf_power_changes_allowed=0 max_power_level=100
+S10C05077|transmit rfpower=10 tunepower=10 am_carrier_level=100
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.074000 lo=100 hi=2900 tx_filter_changes_allowed=1 
+S10C05077|atu status=TUNE_SUCCESSFUL memories_enabled=1 using_mem=1
+S10C05077|transmit tune=0 tx_rf_power_changes_allowed=1 max_power_level=100
+S10C05077|transmit rfpower=12 tunepower=10 am_carrier_level=100
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit sb_monitor=1 mon_gain_sb=80 mon_pan_sb=50 pitch=600 speed=30 iambic=1 iambic_mode=1 swap_paddles=0 break_in=1 break_in_delay=41 cwl_enabled=0 sidetone=1 mon_gain_cw=80 mon_pan_cw=50 synccwx=1
+S10C05077|transmit tune=0 tx_rf_power_changes_allowed=1 max_power_level=100
+S10C05077|transmit rfpower=12 tunepower=10 am_carrier_level=100
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+C178|ping ms_timestamp=78086.2479
+R178|0|
+C179|ping ms_timestamp=79089.2858
+R179|0|
+C180|ping ms_timestamp=80090.3082
+R180|0|
+C181|ping ms_timestamp=81091.3268
+R181|0|
+C182|ping ms_timestamp=82092.2031
+R182|0|
+C183|ping ms_timestamp=83092.5177
+R183|0|
+C184|ping ms_timestamp=84092.8663
+R184|0|
+C185|ping ms_timestamp=85093.8572
+R185|0|
+C186|transmit tune 1
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.074000 lo=100 hi=2900 tx_filter_changes_allowed=1 
+S10C05077|transmit tune=1 tx_rf_power_changes_allowed=1 max_power_level=100
+S10C05077|transmit rfpower=12 tunepower=10 am_carrier_level=100
+S10C05077|interlock tx_client_handle=0x10C05077 state=READY reason= source= tx_allowed=1 amplifier= 
+S0|interlock tx_client_handle=0x10C05077 state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier= 
+S0|atu atu_enabled=1
+S0|interlock tx_client_handle=0x10C05077 state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier= 
+S0|atu atu_enabled=1
+R186|0|
+C187|ping ms_timestamp=86094.0434
+R187|0|
+C188|transmit tune 0
+S0|interlock tx_client_handle=0x10C05077 state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier= 
+S0|atu atu_enabled=1
+S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S0|atu atu_enabled=1
+S10C05077|transmit tune=0 tx_rf_power_changes_allowed=1 max_power_level=100
+S10C05077|transmit rfpower=12 tunepower=10 am_carrier_level=100
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S10C05077|transmit freq=14.074000 lo=100 hi=2900 tx_filter_changes_allowed=1 
+R188|0|
+C189|ping ms_timestamp=87094.1798
+R189|0|
+C190|ping ms_timestamp=88094.334
+R190|0|
+C191|ping ms_timestamp=89095.2289
+R191|0|
+C192|ping ms_timestamp=90095.7845
+R192|0|
+C193|ping ms_timestamp=91096.2247
+R193|0|
+C194|ping ms_timestamp=92096.3693
+R194|0|
+S7F6B5B|stream 0x84000000 removed
+C195|ping ms_timestamp=93097.1226
+R195|0|
+S7F6B5B|stream 0x04000008 removed
+S10C05077|client 0x10C05077 disconnected forced=0 wan_validation_failed=0 duplicate_client_id=0

@@ -14,9 +14,13 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./samples/parser-test.js samples/smartsdr-capture.txt",
+    "build": "pegjs -o flex-parser.js flex-parser.pegjs"
   },
   "dependencies": {
     "vita49-js": "^0.6.0"
+  },
+  "devDependencies": {
+    "pegjs": "^0.10.0"
   }
 }

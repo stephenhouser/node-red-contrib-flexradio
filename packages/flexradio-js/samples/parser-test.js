@@ -1,6 +1,5 @@
 const parser = require('../flex-parser');
 const fs = require('fs');
-const readline = require('readline');
 
 const fn = process.argv[2];
 
@@ -9,6 +8,15 @@ const requests = {};
 const data = fs.readFileSync(fn, 'UTF-8');
 const lines = data.split(/\r?\n/);
 lines.forEach((line) => {
+
+	// Parse all the things coming from the server
+	if (line && !line.match(/^C(?<sequence>\d+)\|(?<request>.*)$/)) {
+		const obj = parser.parse(line);
+		console.log(line);
+		console.log(JSON.stringify(obj, null, 2));
+		console.log();
+	}
+
 	if (request_match = line.match(/^C(?<sequence>\d+)\|(?<request>.*)$/)) {
 		const sequence = request_match.groups.sequence;
 		const request = request_match.groups.request;
@@ -26,9 +34,13 @@ lines.forEach((line) => {
 	}
 });
 
-// console.log(JSON.stringify(requests));
+/*
+// Print commands and responses.
 for (let [key, value] of Object.entries(requests)) {
 	console.log(value.raw_request);
 	console.log(value.raw_response);
+	const obj = parser.parse(value.raw_response);
+	console.log(JSON.stringify(obj, null, 2));
 	console.log();
 }
+*/

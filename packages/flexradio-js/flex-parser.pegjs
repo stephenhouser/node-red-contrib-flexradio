@@ -1,265 +1,215 @@
-// https://pegjs.org/online
+{
+	function makeTopic(msg) {
+        if (!msg || msg.length <= 1) {
+        	return null;
+        }
+        
+	    const topic = [];
+  		msg.forEach(function(t) {
+        	if (typeof t === 'string') {
+	           	topic.push(t);
+	        }
+	    });
+    	return topic.join('/');
+  	}
+    
+    function makePayload(msg) {
+        if (!msg || msg.length == 0) {
+        	return null;
+        }
+        
+        if (msg.length == 1) {
+        	return msg[0];
+		}
+            
+    	const payload = {};
+        msg.forEach(function(e) {
+           	if (Array.isArray(e)) {
+            	const key = e[0];
+                const name = e[1];
+                if (e.length == 3) {
+                	if (!(key in payload)) {
+                    	payload[key] = {};
+                    }
+                	payload[key][name] = e[2];
+                } else {
+                	payload[key] = name;
+                }
+           	}
+        });
+        return payload;
+    }
+}
 
 Start = Message / Status / Response / Handle / Version
 
-Message = "M" message_id:Integer "|" message:String_unbound 
-	{ return { type: 'message', message_id: message_id, message: message }; }
+Message 'Message' 
+	= 'M' message_id:Integer '|' message:.* 
+	{ return { type: 'message', 
+    			message_id: message_id, 
+                payload: message.join('') }; }
 
-Status = "S" client:Hex_String "|" response:Response_Fields
-	{ return { type: 'status', client: client, ...response }; }
+Status 'Status' 
+	= 'S' client:Hex_String '|' response:Payload
+	{ return { type: 'status', 
+    			client: client,
+                topic: makeTopic(response),
+                payload: makePayload(response) };
+    }
     
-Response = "R" sequence:Integer "|" code: Hex_String "|" response:Response_Fields
-	{ return { type: 'response', sequence_number: sequence, response_code: code, response: response }; }
-
-Handle = "H" client:Hex_String 
-	{ return { client: client }; }
-    
-Version = "V" version:Version_Number 
-	{ return { version: version }; }
-
-Response_Fields = GPS_Info / Mic_List / Version_Info / Meter_List / Profile_List / Antenna_List / Info_Fields / Space_KV_List
-
-Version_Info "version_info" =
-	"SmartSDR" m:Hash_KV_List
-    { return { version: m }; }
-
-Meter_List "meter_list" =
-	"meter" ws m:Meter_KV_List
-    { return { meter: m }; }
-
-Antenna_List = 
-	"ANT" m:Comma_List
-    { return ['AN'+m[0], ...m.slice(1)]; }
-
-Mic_List = 
-	"MI" m:Comma_List
-    { return ['MI' + m[0], ...m.slice(1)]; }
-
-GPS_Info "gps_info" = 
-	"gps" ws m:Hash_KV_List
-    { return { gps: m }; }
-
-Info_Fields = 
-	"model=" m:Comma_KV_List
-    { return m; }
-
-Profile_List "profile_list" =
-    "profile" ws t:String ws "list=" m:Caret_List { 
-        const result = {};
-        const topic = ['profile', t].join('/');
-        result[topic] = { list: m };
-        return result;
+Response 'Response' 
+	= 'R' sequence:Integer '|' code: Hex_String '|' response:Payload?
+	{ return { type: 'response', 
+    			sequence_number: sequence, 
+                response_code: code, 
+                topic: makeTopic(response),
+                payload: makePayload(response) 
+		};
     }
 
-// --- , delimited payload
-Comma_List = members:(
-	head:String
-    tail:("," m:String { return m; })*
-    	{ return [head, ...tail]; }
-	)?
-    { return members; }
-
-// -- Caret ^ sepearted fields
-Caret_List "caret_members" = members:(
-      head:Caret_Member 
-      tail:(Caret_Sep m:Caret_Member { return m; })*
-      {
-        const members = [];
-        [head].concat(tail).forEach(function(element) {
-	        members.push(element);
-        });
-
-        return members;
-      }
-    )? Caret_Sep?
-    { return members; }
-
-Caret_Member "caret_member" = value:Caret_Value
-	{ return value }
-
-Caret_Sep = [\^]
-
-Caret_Value = [^\^]+ 
-	{ return text(); }
-
-// --- , delimited key=value payload
-Comma_KV_List "comma_fields" = members:(
-      head:Comma_Member
-      tail:(Comma_Sep m:Comma_Member { return m; })*
-      {
-        const fields = {};
-        const new_head = { name: 'model', value: head.name };
-        [new_head].concat(tail).forEach(function(element) {
-      		fields[element.name] = element.value;
-        });
-
-        return fields;
-      }
-    )?
-    { return members; }
-
-Comma_Member "comma_member" = Comma_Value / Comma_Topic
-
-Comma_Value "comma_value" = name:Comma_Word "=" value:String
-	{ return { name: name, value: value }; }
+Handle 'Handle' 
+	= 'H' client:Hex_String 
+	{ return { type: 'handle', 
+    			client: client }; }
     
-Comma_Topic "comma_topic" = name:String 
-	{ return { name: name }; }
+Version 'Version' 
+	= 'V' version:Version_Number 
+	{ return { type: 'version', 
+    			version: version }; }
 
-Comma_Sep = [,]+
-Comma_Word = [^,=]+ { return text(); }
+Payload 'Payload' 
+	= Profile / Meter / GPS / Info / Version_Info / Space_KV_List
 
-// --- # delimited key=value payload
-Meter_KV_List "meter_list_members" = members:(
-      head:Meter_List_Member
-      tail:(Hash_Sep m:Meter_List_Member { return m; })*
-      {
-        const fields = {};        
-        [head].concat(tail).forEach(function(element) {
-        	if (!(element.num in fields)) {
-            	fields[element.num] = {};
-            }
-	        fields[element.num][element.key] = element.value;
-        });
+Version_Info "version_info" 
+	= k:"SmartSDR" m:Hash_KV_List
+    { 	// add SmartSDR back onto first element
+    	m[0][0] = k + m[0][0];
+		// topic = version
+    	return ['version', ...m]; }
 
-        return fields;
-      }
-    )? Hash_Sep?
-    { return members; }
+Info 'Info'
+	= 'model=' model:String_quoted ',' m:Comma_KV_List
+	// topic = info
+    { return ['info', ['model', model], ...m]; }
 
-Meter_List_Member "hash_member" = num:Hash_Number "." key:Hash_Key "=" value:Hash_Value
-	{ return { num: num, key: key, value: value }; }
+GPS 'GPS' 
+	= 'gps' _ m:Hash_KV_List
+	{ return ['gps', ...m] ; }
 
-Hash_KV_List "hash_kv_list" = members:(
-      head:Hash_KV_Member
-      tail:(Hash_Sep m:Hash_KV_Member { return m; })*
-      {
-        const fields = {};        
-        [head].concat(tail).forEach(function(element) {
-	        fields[element.key] = element.value;
-        });
+Meter 'Meter' 
+	= 'meter' _ m:Hash_KV_List
+	{ return ['meter', ...m] ; }
 
-        return fields;
-      }
-    )? Hash_Sep?
-    { return members; }
+Profile 'Profile' 
+	= 'profile' _ t:String _ m:(m:Profile_List / m:Space_KV_List)
+	{ return ['profile', t, ...m] ; }
+Profile_List 'Profile_List'
+	= 'list=' m:Caret_List
+	{ return [[ 'list', m ]]; }
 
-Hash_KV_Member "hash_kv_member" = key:Hash_Key "=" value:Hash_Value?
-	{ return { key: key, value: value }; }
 
-Hash_Sep = [#]
+Space_KV_List 'Space_KV_List'
+	= head:Space_KV_Member tail:(Space_KV_List_Tail)* _?
+	{ return [head].concat(tail); }
+Space_KV_List_Tail 'Space_KV_List_Tail'
+	= _ m:Space_KV_Member
+	{ return m; }
+Space_KV_Member 'Space_KV_Member'
+	= key:Space_KV_Token eq:'='? value:Space_KV_Token?
+	{ return eq ? [key, value] : key; }
+Space_KV_Token 'Space_KV_Token'
+	= chars:[^ =\t]+
+	{ return chars.join(''); }
 
-Hash_Number = [0-9]+ 
-	{ return text(); }
-    
-Hash_Key = [^\.=]+ 
-	{ return text(); }
-    
-Hash_Value = [^#]+ 
-	{ return text(); }
+Comma_KV_List 'Comma_KV_List'
+	= head:Comma_KV_Member tail:(Comma_KV_List_Tail)* Comma?
+	{ return [head].concat(tail); }
+Comma_KV_List_Tail 'Comma_KV_List_Tail'
+	= Comma m:Comma_KV_Member
+	{ return m; }
+Comma_KV_Member 'Comma_KV_Member'
+	= key:Comma_KV_Token eq:'='? value:Comma_KV_Token?
+	{ return eq ? [key, value] : key; }
+Comma_KV_Token 'Comma_KV_Token'
+	= String_quoted / Comma_KV_Token_unquoted
+Comma_KV_Token_unquoted 
+	= chars:[^,=]+
+	{ return chars.join(''); }
 
-// --- Space delimited key=value payload
-Space_KV_List "space_fields" = members:(
-      head:Space_Member
-      tail:(Space_Sep m:Space_Member { return m; })*
-      {
-        const fields = {};
-        const topic = [];
-        
-        [head].concat(tail).forEach(function(element) {
-        	if ('value' in element) {
-          		fields[element.name] = element.value;
-            } else {
-            	topic.push(element.name);
-            }
-        });
+Hash_KV_List 'Hash_KV_List'
+	= head:Hash_KV_Member tail:(Hash_KV_List_Tail)* Hash?
+	{ return [head].concat(tail); }
+Hash_KV_List_Tail 'Hash_KV_List_Tail'
+	= Hash m:Hash_KV_Member
+	{ return m; }    
+Hash_KV_Member 'Hash_KV_Member'
+	= key:Hash_KV_Key eq:'='? value:Hash_KV_Token?
+	{ return eq ? [...key, value] : key; }
+Hash_KV_Key 'Hash_KV_Key'
+	= key:Hash_KV_Complex_Key / key:Hash_KV_Token
+	{ return [key]; }
+Hash_KV_Complex_Key 'Hash_KV_Complex_Key'
+	= n:Integer '.' key:Hash_KV_Token
+	{ return [n, key]; }
+Hash_KV_Token 'Hash_KV_Toksn'
+	= chars:[^#=\t]+
+	{ return chars.join(''); }
+Hash 
+	= '#'
 
-		const result = {};
-        result[topic.join('/')] = fields;
-        return result;
-      }
-    )? Space_Sep?
-    { return members !== null ? members: {}; }
+Comma_List 
+	= head:Comma_Token tail:(Comma_List_Tail)* Comma?
+	{ return [head].concat(tail); }
+Comma_List_Tail 
+	= Comma t:Comma_Token
+	{ return t; }
+Comma_Token 
+	= chars:[^,]+
+	{ return chars.join(''); }
+Comma 
+	= ','
 
-Space_Member "field" = Space_Value / Space_Topic
+Caret_List 'Caret_List'
+	= head:Caret_Token tail:(Caret_List_Tail)* Caret?
+	{ return [head].concat(tail); }
+Caret_List_Tail 'Caret_List_Tail'
+	= Caret m:Caret_Token
+	{ return m; }
+Caret_Token 'Caret_Token'
+	= chars:[^\^]+
+	{ return chars.join(''); }
+Caret 
+	= '^'
 
-Space_Value "space_value" = name:Space_Word "=" value:Space_Word?
-    { return { name: name, value: value };}
-    
-Space_Topic "space_topic" = name:String 
-	{ return { name: name }; }
-
-Space_Sep = [ ]+
-Space_Word = [^ =]+ 
-	{ return text(); }
-
-Version_Number "version_number" = major:Integer "." minor:Integer "." patch:Integer "." build: Integer
+Version_Number 'Version_Number' 
+	= major:Integer '.' minor:Integer '.' patch:Integer '.' build: Integer
 	{ return { 
-    	version: major + "." + minor + "." + patch + "." + build,
+    	version: major + '.' + minor + '.' + patch + '.' + build,
     	major: major, 
-        minor: minor, 
-        patch: patch, 
-        build: build }; }
+       	minor: minor, 
+       	patch: patch, 
+       	build: build
+		};
+	}
 
-Hex_String "hex_string" = ws [0-9a-fA-F]+
+String 'String' 
+	= String_quoted / String_unquoted
+
+String_unquoted 'String_unquoted'
+	= chars:[^ ,#\t\n\r\f]+ 
+	{ return chars.join(''); }  
+    
+String_quoted 'String_quoted'
+	= '"' chars:[^"]* '"'
+	{ return chars.join(''); }
+
+Hex_String 'Hex_String' 
+	= [0-9a-fA-F]+
 	{ return text(); }
 
-Integer "integer" = ws [0-9]+ 
+Integer 'Integer' 
+	= [0-9]+ 
 	{ return parseInt(text(), 10); }
 
-ws "whitespace" = [ \t\n\r]*
-
-// ----- Strings -----
-String_unbound = .* 
-	{ return text(); }
-
-String = String_quoted / String_unquoted
-
-String_unquoted = chars:[^ ,=#\t\n\r\f]+ 
-	{ return chars.join(""); }
-
-String_quoted = quotation_mark chars:[^"]* quotation_mark 
-	{ return chars.join(""); }
-
-char = unescaped / escape sequence:(
-      '"'
-	/ "\\"
-    / "/"
-    / "b" { return "\b"; }
-    / "f" { return "\f"; }
-    / "n" { return "\n"; }
-    / "r" { return "\r"; }
-    / "t" { return "\t"; }
-    / "u" digits:$(HEXDIG HEXDIG HEXDIG HEXDIG) {
-    	return String.fromCharCode(parseInt(digits, 16));
-    }
-) {
-    return sequence; 
-}
-
-escape = "\\"
-quotation_mark = '"'
-unescaped = [^\0-\x1F\x22\x5C]
-
-// ----- Numbers -----
-
-Number "number" = minus? int frac? exp? { 
-	return parseFloat(text()); 
-}
-
-decimal_point = "." 
-digit1_9 = [1-9]
-e = [eE]
-exp = e (minus / plus)? DIGIT+
-frac = decimal_point DIGIT+
-int = zero / (digit1_9 DIGIT*)
-minus = "-"
-plus = "+"
-zero = "0"
-  
-// ----- Core ABNF Rules -----
-
-// See RFC 4234, Appendix B (http://tools.ietf.org/html/rfc4234).
-DIGIT  = [0-9]
-HEXDIG = [0-9a-f]i
-
+_ 'whitespace'
+  = [ \t\n\r]+
