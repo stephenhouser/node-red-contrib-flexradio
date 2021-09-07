@@ -81,20 +81,16 @@ Payload 'Payload'
 	= Profile / Meter / GPS / Info / Version_Info / Space_KV_List
 
 Version_Info "version_info" 
-	= k:"SmartSDR" m:Hash_KV_List
-    { 	// add SmartSDR back onto first element
-    	m[0][0] = k + m[0][0];
-		// topic = version
-    	return ['version', ...m]; }
+	= &"SmartSDR" m:Hash_KV_List
+    { return ['version', ...m]; }
 
 Info 'Info'
-	= 'model=' model:String_quoted ',' m:Comma_KV_List
-	// topic = info
-    { return ['info', ['model', model], ...m]; }
+	= &'model=' m:Comma_KV_List
+    { return ['info', ...m]; }
 
 GPS 'GPS' 
 	= 'gps' _ m:Hash_KV_List
-	{ return ['gps', ...m] ; }
+	{ return ['gps', ...m]; }
 
 Meter 'Meter' 
 	= 'meter' _ m:Hash_KV_List
