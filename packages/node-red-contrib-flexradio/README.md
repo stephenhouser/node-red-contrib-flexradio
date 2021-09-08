@@ -92,7 +92,7 @@ R18|0|
 
 Then asynchronously the meter configuration is reported:
 ```
-S10C05077|meter 1.src=COD-#1.num=1#1.nam=MICPEAK#1.low=-150.0#1.hi=20.0#1.desc=Signal strength of MIC output in CODEC#1.unit=dBFS#1.fps=40#
+S10C05077|meter 1.src=COD-#1.num=3#1.nam=MICPEAK#1.low=-150.0#1.hi=20.0#1.desc=Signal strength of MIC output in CODEC#1.unit=dBFS#1.fps=40#
 ```
 
 Which would generate output on a `flexradio-message` node if configured and generate the JSON below. **NOTE**: This is *not* the meter data, it is the meter *configuration*.
