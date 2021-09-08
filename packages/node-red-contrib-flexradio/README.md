@@ -103,7 +103,7 @@ Which would generate output on a `flexradio-message` node if configured and gene
   "payload": {
     "1": {
       "src": "COD-",
-      "num": "1",
+      "num": "3",
       "nam": "MICPEAK",
       "low": "-150.0",
       "hi": "20.0",
