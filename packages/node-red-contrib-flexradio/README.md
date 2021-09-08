@@ -43,6 +43,131 @@ The other node for getting data out of your radio is the `flexradio-meter` node.
 
 The `flexradio-meter` node will not get any data until you tell your radio to start sending those meter data to it. Start with a `meter list` request to get the list of meters available. Make a note of the meter number that you want. Then you can tell the radio to start sending them to your flow with a `sub meter` request. You can also use `sub meter all` to send all the meter data if you like. Then you can use the *topic* of the `flexradio-meter` node to filter what you want where.
 
+## Topics
+
+These nodes draw on and emulate many of the concepts from the [NodeRed MQTT nodes](https://cookbook.nodered.org/#mqtt). They adapt the radio's messages and status updates to an MQTT *topic* system and adopt the MQTT topic *wildcard* patterns (using `+` and `#`). The [MQTT man page](https://mosquitto.org/man/mqtt-7.html) has some good detail on how these wildcards and MQTT topics work. It's worth reading to understand the idea of topics and topic matching.
+
+To create *topics* from messages, these nodes use the type of data being received and parts of the message. For example a simple [message](http://wiki.flexradio.com/index.php?title=SmartSDR_TCP/IP_API#Message_Format) from the radio will have a `topic` of `message` and a `payload` corresponding to the message data itself.
+
+Message received from the radio:
+```
+M10000001|Client connected from IP 192.168.10.25
+```
+
+JSON on the output of a `flexradio-message` node:
+```
+{
+  "topic": "message",
+  "message_id": 10000001,
+  "payload": "Client connected from IP 192.168.10.25"
+}
+```
+
+Status messages get a little more complicated. Their topic is built from the starting tokens (words) of the status message itself. Note in the below example at how the delimited words that don't have a '=' are joined together to create the topic.
+
+Status Message received from the radio:
+```
+S10C05077|radio filter_sharpness DIGITAL level=2 auto_level=1
+```
+
+JSON on the output of a `flexradio-message` node:
+```
+{
+  "topic": "radio/filter_sharpness/DIGITAL",
+  "client": "10C05077",
+  "payload": {
+    "level": "2",
+    "auto_level": "1"
+  }
+}
+```
+
+Meter updates captured and inected from `flexradio-meter` have a similar construct as status messages. However the radio does not report the meter configuration with each update, so the topic is drawn from an initial `meter list` command and responses when a `sub meter` request is sent. The topic is created from the meter's `SRC`, `NUM`, and `NAM` fields concatenated together with the `/` character.
+
+First a `sub meter` request is sent and gets a response
+```
+C18|sub meter 1
+R18|0|
+```
+
+Then asynchronously the meter configuration is reported:
+```
+S10C05077|meter 1.src=COD-#1.num=1#1.nam=MICPEAK#1.low=-150.0#1.hi=20.0#1.desc=Signal strength of MIC output in CODEC#1.unit=dBFS#1.fps=40#
+```
+
+Which would generate output on a `flexradio-message` node if configured and generate the JSON below. **NOTE**: This is *not* the meter data, it is the meter *configuration*.
+```
+{
+  "client": "10C05077",
+  "topic": "meter",
+  "payload": {
+    "1": {
+      "src": "COD-",
+      "num": "1",
+      "nam": "MICPEAK",
+      "low": "-150.0",
+      "hi": "20.0",
+      "desc": "Signal strength of MIC output in CODEC",
+      "unit": "dBFS",
+      "fps": "40"
+    }
+  }
+}
+```
+
+Eventually you will start seeing *meter data* on a properly configured `flexradio-meter` node. In the case above, configured with a topic of `COD-/1/MICPEAK`.
+
+## Meter Names
+
+FlexRadio's use meter numbers to identify meters. Unfortunately these numbers change from version to version and even during a session depending on how many slices are active and what equipment is connected to the radio. To enable a more stable system, these nodes allow subscribing and monitoring meters by name rather than their number.
+
+As described above the `flexradio-meter` node assigns a topic to reported meter values using the meter configuration. The topic is created from the meter's `SRC`, `NUM`, and `NAM` fields concatenated together with the `/` character. 
+
+Thus the meter with configuration:
+```
+{
+  "client": "10C05077",
+  "topic": "meter",
+  "payload": {
+    "1": {
+      "src": "COD-",
+      "num": "3",
+      "nam": "MICPEAK",
+      "low": "-150.0",
+      "hi": "20.0",
+      "desc": "Signal strength of MIC output in CODEC",
+      "unit": "dBFS",
+      "fps": "40"
+    }
+  }
+}
+```
+
+Will have a topic of `COD-/3/MICPEAK`.
+
+You typically use this topic when sorting out meter data, perhaps in a switch node, or when configuring a `flexradio-meter` node to monitor only a single meter value.
+
+You can also use this meter name when *subscribing* to a meter. NOTE: the `NUM` field of the meter is *different* than the meter number, which is `1` in this example.
+
+```
+sub meter COD-/3/MICPEAK
+```
+
+Will have the same effect as knowing the meter number and subscribing to it with that number. In this example it was meter `1`, so the above is equivalent to:
+
+```
+sub meter 1
+```
+
+For even more flexibility, in both `meter sub` requests and `flexradio-meter` nodes we can use MQTT wildcard characters. This means we don't have to know any of the numbers.
+
+The request:
+```
+sub meter COD-/+/MICPEAK
+```
+
+Will search for any active meters that match the MQTT pattern (note the `+` in the middle) and subscribe to any matching meters. The same pattern (`COD-/+/MICPEAK`) can be used on a `flexradio-meter` node to receive updates to those meters.
+
 ## Issues
 
 Please use the [GitHub issues](https://github.com/stephenhouser/node-red-contrib-flexradio/issues) tab above to report problems with these nodes. Be as precise as you can with the problem and include any log data you may have captured.
