@@ -115,7 +115,7 @@ Which would generate output on a `flexradio-message` node if configured and gene
 }
 ```
 
-Eventually you will start seeing *meter data* on a properly configured `flexradio-meter` node. In the case above, configured with a topic of `COD-/1/MICPEAK`.
+Eventually you will start seeing *meter data* on a properly configured `flexradio-meter` node. In the case above, configured with a topic of `COD-/3/MICPEAK`.
 
 ## Meter Names
 
