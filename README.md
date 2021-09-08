@@ -23,7 +23,7 @@ The following support libraries are dependencies of these NodeRed nodes. They sh
 
 For a more thorough explanation of how to use these nodes in your flows please refer to the documentation for the main package provided in this repository:
 
-[node-red-contrib-flexradio/README](packages/node-red-contrib-flexradio/README.md)
+[node-red-contrib-flexradio/README.md](packages/node-red-contrib-flexradio/README.md)
 
 ## Issues
 
