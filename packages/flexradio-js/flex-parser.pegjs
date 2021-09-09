@@ -70,12 +70,12 @@ Response 'Response'
 Handle 'Handle' 
 	= 'H' client:Hex_String 
 	{ return { type: 'handle', 
-    			client: client }; }
+    			payload: client }; }
     
 Version 'Version' 
 	= 'V' version:Version_Number 
 	{ return { type: 'version', 
-    			version: version }; }
+    			payload: version }; }
 
 Payload 'Payload' 
 	= Profile / Meter / GPS / Info / Version_Info / Space_KV_List
