@@ -308,7 +308,7 @@ R43|50000029|
 
 {
   "request": "display panafall rfgain_info 0x0",
-  
+
   "sequence_number": 43,
   "response_code": "50000029",
   "topic": null,
@@ -323,3 +323,40 @@ These are re
 ### Raw TCP data
 ### Parser/Radio.js output
 ### Node/flexradio-message output
+
+
+
+flex.decode_vita49()
+    {
+        type: meter
+        payload: {
+            1: {},
+            7: {}
+        }
+    }
+
+
+    {
+        type: audio...
+    }
+
+
+const meter_data = flex.decode_meter(vita49_message.payload);
+
+    { 1: {}, 7: {}, ///}
+
+
+if (meter_data && 'meters' in meter_data) {
+    // for each meter in payload
+    for (const [meter_num, meter_value] of Object.entries(meter_data.meters)) {
+        if (meter_num in meters) {
+            const meter = meters[meter_num];
+            const value = this._scaleMeterValue(meter, meter_value);
+            // Only update and emit when the value changes
+            if (value != meter.value) {
+                meter.value = value;
+                this.emit('meter', meter);
+            }
+        }
+    }
+}
