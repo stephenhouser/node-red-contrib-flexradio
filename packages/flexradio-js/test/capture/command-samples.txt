@@ -1,8 +1,8 @@
 S513F01DA|meter 18.src=RAD#18.num=3#18.nam=MAINFAN#18.low=0.0#18.hi=8192.0#18.desc=Main radio fan RPM#18.unit=RPM#18.fps=0#
-R3|0|
 V1.4.0.0
 H3621C7F5
 M10000001|Client connected from IP 192.168.10.20
+R3|0|
 S3621C7F5|radio slices=3 panadapters=3 lineout_gain=60 lineout_mute=0 headphone_gain=50 headphone_mute=0 remote_on_enabled=0 pll_done=0 freq_error_ppb=0 cal_freq=15.000000 tnf_enabled=1 snap_tune_enabled=1 nickname=Flex-6600M callsign=N1SH binaural_rx=0 full_duplex_enabled=0 band_persistence_enabled=1 rtty_mark_default=2125 enforce_private_ip_connections=1 backlight=50 mute_local_audio_when_remote=1 daxiq_capacity=16 daxiq_available=16
 S3621C7F5|radio filter_sharpness VOICE level=2 auto_level=1
 S3621C7F5|radio filter_sharpness CW level=2 auto_level=1
@@ -53,4 +53,5 @@ S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_e
 S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
 S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
 R5|0|ANT1,ANT2,RX_A
-You suck
+This is an invalid line that should cause an error
+R60|0|

@@ -109,7 +109,7 @@ function decode_meter(raw_data) {
 
 	return {
 		type: 'meter',
-		meters: meter_data
+		payload: meter_data
 	};
 }
 
