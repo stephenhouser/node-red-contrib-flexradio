@@ -1,6 +1,10 @@
-const { Radio, RadioConnectionStates } = require("flexradio-js/Radio");
-
+/* flexradio-radio.js - NodeRed node for sending requests/commands to a FlexRadio
+ *
+ * 2021/09/09 Stephen Houser, MIT License
+ */
 module.exports = function(RED) {
+	"use strict";
+    
     function FlexRadioRequestNode(config) {
         RED.nodes.createNode(this, config);
 
@@ -54,7 +58,7 @@ module.exports = function(RED) {
             }
         }
 
-        updateNodeStatus('starting up');
+        updateNodeStatus('starting');
     }
 
     RED.nodes.registerType("flexradio-request", FlexRadioRequestNode);

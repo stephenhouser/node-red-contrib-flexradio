@@ -18,10 +18,10 @@
     "build": "pegjs -o flex-parser.js flex-parser.pegjs"
   },
   "dependencies": {
-    "pcap": "github:node-pcap/node_pcap",
     "vita49-js": "^0.6.0"
   },
   "devDependencies": {
+    "pcap": "github:node-pcap/node_pcap",
     "pegjs": "^0.10.0"
   }
 }

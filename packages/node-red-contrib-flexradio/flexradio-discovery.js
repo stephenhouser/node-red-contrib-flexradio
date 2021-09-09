@@ -1,3 +1,7 @@
+/* flexradio-discovery.js - NodeRed node for emitting FlexRadio discovery messages
+ *
+ * 2021/09/09 Stephen Houser, MIT License
+ */
 const { DiscoveryListener } = require('flexradio-js/DiscoveryListener');
 
 module.exports = function(RED) {

@@ -1,5 +1,10 @@
+/* flexradio-radio.js - NodeRed configuration node for FlexRadio nodes
+ *
+ * 2021/09/09 Stephen Houser, MIT License
+ */
 const { Radio } = require('flexradio-js/Radio');
 
+// TODO: Make RECONNECT_TIMEOUT a configuration parameter for the node
 const RECONNECT_TIMEOUT = 15000;
 
 module.exports = function(RED) {
@@ -13,14 +18,6 @@ module.exports = function(RED) {
         node.host = config.host;
         node.port = Number(config.port);
         node.closing = false;
-
-        if (config.station_mode != 'none') {
-            node.station_name = config.station_name;
-
-            if (config.station_mode == 'slice') {
-                node.slice = config.slice;
-            }
-        }
 
         // Allows any number of listeners to attach. Default is 10
         // which is way too few for many flows.
@@ -84,7 +81,6 @@ module.exports = function(RED) {
             });
 
             radio.connect();
-            // updateNodeState();
         };
 
         node.send = function(msg, response_handler) {
@@ -99,7 +95,7 @@ module.exports = function(RED) {
                 const requests = Array.isArray(msg.payload) ? msg.payload : [msg.payload];
                 requests.forEach(function(request) {
                     radio.send(request, function(response) {
-                        node.debug('response: ' + JSON.stringify(response, null, 2));
+                        node.debug('response: ' + JSON.stringify(response));
 
                         if (response_handler) {
                             // Inject the meter topic into the response.

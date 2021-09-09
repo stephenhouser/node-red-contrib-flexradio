@@ -1,4 +1,7 @@
-
+/* flexradio-message.js - NodeRed node for emitting FlexRadio messages and status
+ *
+ * 2021/09/09 Stephen Houser, MIT License
+ */
 module.exports = function(RED) {
     "use strict";
 
@@ -17,7 +20,6 @@ module.exports = function(RED) {
 
         const radio = node.radio;
         radio.on('connecting', function(connection) {
-            // node.debug(JSON.stringify(connection, null, 2));
             updateNodeStatus(connection);
 
             if (radio.matchTopic(node.topic, connection.topic)) {
@@ -26,7 +28,6 @@ module.exports = function(RED) {
         });
 
         radio.on('connected', function(connection) {
-            // node.debug(JSON.stringify(connection, null, 2));
             updateNodeStatus(connection);
 
             if (radio.matchTopic(node.topic, connection.topic)) {
@@ -35,7 +36,6 @@ module.exports = function(RED) {
         });
 
         radio.on('disconnected', function(connection) {
-            // node.debug(JSON.stringify(connection, null, 2));
             updateNodeStatus(connection);
 
             if (radio.matchTopic(node.topic, connection.topic)) {
@@ -44,14 +44,12 @@ module.exports = function(RED) {
         });
 
         radio.on('message', function(message) {
-            // node.debug(JSON.stringify(message, null, 2));
             if (radio.matchTopic(node.topic, message.topic)) {
                 node.send(message);
             }
         });
 
         radio.on('status', function(status) {
-            // node.debug(JSON.stringify(status, null, 2));
             if (radio.matchTopic(node.topic, status.topic)) {
                 node.send(status);
             }
@@ -75,7 +73,7 @@ module.exports = function(RED) {
             }
         }
 
-        updateNodeStatus('starting up');
+        updateNodeStatus('starting');
     }
 
     RED.nodes.registerType("flexradio-message", FlexRadioMessageNode);

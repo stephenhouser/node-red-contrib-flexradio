@@ -1,5 +1,10 @@
-
+/* flexradio-meter.js - NodeRed node for emitting meter data from FlexRadio
+ *
+ * 2021/09/09 Stephen Houser, MIT License
+ */
 module.exports = function(RED) {
+    "use strict";
+
     function FlexRadioMeterNode(config) {
         RED.nodes.createNode(this, config);
 
@@ -15,6 +20,18 @@ module.exports = function(RED) {
         }
 
         const radio = node.radio;
+        radio.on('connecting', function(connection) {
+            updateNodeStatus(connection);
+        });
+
+        radio.on('connected', function(connection) {
+            updateNodeStatus(connection);
+        });
+
+        radio.on('disconnected', function(connection) {
+            updateNodeStatus(connection);
+        });
+
         radio.on('meter', function(meter) {
             // node.debug(JSON.stringify(meter));
             const topic = radio.meterTopic(meter);
@@ -26,18 +43,6 @@ module.exports = function(RED) {
 
                 node.send(msg);
             };
-        });
-
-        radio.on('connecting', function(connection) {
-            updateNodeStatus(connection);
-        });
-
-        radio.on('connected', function(connection) {
-            updateNodeStatus(connection);
-        });
-
-        radio.on('disconnected', function(connection) {
-            updateNodeStatus(connection);
         });
 
         function updateNodeStatus(connection) {
@@ -58,7 +63,7 @@ module.exports = function(RED) {
             }
         }
 
-        updateNodeStatus('starting up');
+        updateNodeStatus('starting');
     }
 
     RED.nodes.registerType("flexradio-meter", FlexRadioMeterNode);
