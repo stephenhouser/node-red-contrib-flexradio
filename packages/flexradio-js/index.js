@@ -31,6 +31,65 @@ const PacketClassCode = {
 	discovery: 0xffff,
 };
 
+// decode() -- decode data sent from a FlexRadio on the TCP control stream.
+function decode(response) {
+	try {
+		// use PEGJS parser to parse response payloads.
+		const parsed = parser.parse(response);
+		return parsed;
+	} catch (error) {
+		console.log(error);
+	}
+
+	return null;
+}
+
+// decode_discovery() -- decode FlexRadio discovery datagrams sent as UDP broadcast messages
+function decode_discovery(payload) {
+	const radio = {};
+	const fields = payload.split(' ');
+	for (var i = 0; i < fields.length; i++) {
+		const [key, value] = fields[i].split('=');
+		radio[key] = value;
+	}
+
+	return {
+		type: 'discovery',
+		radio: radio
+	};
+}
+
+// decode_realtime() -- decode data sent from a FlexRadio on the UDP data channel
+function decode_realtime(data) {
+
+}
+
+// decode_meter() -- decode FlexRadio meter data received as UDP datagrams
+function decode_meter(raw_data) {
+	if (!raw_data || !(raw_data instanceof Uint8Array)) {
+		return null;
+	}
+
+	const data = new DataView(new Uint8Array(raw_data).buffer);
+	const meter_data = {};
+	for (var idx = 0; idx < data.byteLength; idx += Uint32Array.BYTES_PER_ELEMENT) {
+		const meter_index = data.getUint16(idx, false);
+		const meter_value = data.getUint16(idx + 2, false);
+		meter_data[meter_index] = meter_value;
+	}
+
+	return {
+		type: 'meter',
+		payload: meter_data
+	};
+}
+
+// encode_request() -- encode a FlexRadio command/request to be sent on the TCP control stream
+function encode_request(sequence, request) {
+	return 'C' + sequence + '|' + request.toString() + '\n';
+}
+
+
 function decode_packet_class(packet_class_code) {
 	var pcc = packet_class_code;
 	if (typeof (pcc) != 'number') {
@@ -68,54 +127,6 @@ function decode_response_code(response_code) {
 	return 'unknown error';
 }
 
-function decode(response) {
-	// use PEGJS parser to parse response payloads.
-	try {
-		const parsed = parser.parse(response);
-		return parsed;
-	} catch (error) {
-		console.log(error);
-	}
-
-	return null;
-}
-
-function decode_discovery(payload) {
-	const radio = {};
-	const fields = payload.split(' ');
-	for (var i = 0; i < fields.length; i++) {
-		const [key, value] = fields[i].split('=');
-		radio[key] = value;
-	}
-
-	return {
-		type: 'discovery',
-		radio: radio
-	};
-}
-
-function decode_meter(raw_data) {
-	if (!raw_data || !(raw_data instanceof Uint8Array)) {
-		return null;
-	}
-
-	const data = new DataView(new Uint8Array(raw_data).buffer);
-	const meter_data = {};
-	for (var idx = 0; idx < data.byteLength; idx += Uint32Array.BYTES_PER_ELEMENT) {
-		const meter_index = data.getUint16(idx, false);
-		const meter_value = data.getUint16(idx + 2, false);
-		meter_data[meter_index] = meter_value;
-	}
-
-	return {
-		type: 'meter',
-		payload: meter_data
-	};
-}
-
-function encode_request(sequence, request) {
-	return 'C' + sequence + '|' + request.toString() + '\n';
-}
 
 module.exports = {
 	packet_class: decode_packet_class,

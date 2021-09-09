@@ -142,6 +142,7 @@ function decode(raw_data) {
 }
 
 function encode(msg) {
+	// TODO: Implement encoding of VITA-49 datagrams (for sending meter data)
 }
 
 module.exports = {
