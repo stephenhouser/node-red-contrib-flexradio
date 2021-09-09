@@ -233,9 +233,9 @@ class Radio extends EventEmitter {
 			if (this._isRealtimeData(vita49_message)) {
 				const meter_data = flex.decode_meter(vita49_message.payload);
 				// log_debug('receiveRealtimeData: ' + JSON.stringify(meter_data));
-				if (meter_data && 'meters' in meter_data) {
+				if (meter_data && 'payload' in meter_data) {
 					// for each meter in payload
-					for (const [meter_num, meter_value] of Object.entries(meter_data.meters)) {
+					for (const [meter_num, meter_value] of Object.entries(meter_data.payload)) {
 						if (meter_num in meters) {
 							const meter = meters[meter_num];
 							const value = this._scaleMeterValue(meter, meter_value);
@@ -314,7 +314,7 @@ class Radio extends EventEmitter {
 	_updateMeterList() {
 		const radio = this;
 		this.send('meter list', function(response) {
-			radio.meters = { ...radio.meters, ...response.response.meter };
+			radio.meters = { ...radio.meters, ...response.payload };
 		});
 	}
 

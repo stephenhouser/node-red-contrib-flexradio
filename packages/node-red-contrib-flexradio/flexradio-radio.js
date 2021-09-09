@@ -32,21 +32,33 @@ module.exports = function(RED) {
             const radio = node.radio;
 
             radio.on('connecting', function(data) {
-                updateNodeState(data);
+                emitNodeState(data);
             });
 
             radio.on('connected', function(data) {
-                updateNodeState(data);
+                emitNodeState(data);
             });
 
             radio.on('message', function(message) {
                 node.debug('message: ' + JSON.stringify(message));
+                const output_msg = {
+                    topic: message.type,
+                    message_id: message.message_id,
+                    payload: message.payload
+                };
+
                 node.emit('message', message);
             });
 
             radio.on('status', function(status) {
                 node.debug('status: ' + JSON.stringify(status));
-                node.emit('status', status);
+                const output_status = {
+                    topic: status.topic,
+                    client: status.client,
+                    payload: status.payload
+                };
+
+                node.emit('status', output_status);
             });
 
             radio.on('meter', function(meter) {
@@ -61,7 +73,7 @@ module.exports = function(RED) {
             });
 
             radio.on('disconnected', function(data) {
-                updateNodeState(data);
+                emitNodeState(data);
 
                 clearInterval(node.reconnectTimeout);
                 if (!node.closing) {
@@ -87,11 +99,12 @@ module.exports = function(RED) {
                 const requests = Array.isArray(msg.payload) ? msg.payload : [msg.payload];
                 requests.forEach(function(request) {
                     radio.send(request, function(response) {
+                        node.debug('response: ' + JSON.stringify(response, null, 2));
+
                         if (response_handler) {
                             // Inject the meter topic into the response.
-                            if (request.match(/meter list/i) && ('meter' in response.response)) {
-                                const meters = response.response.meter;
-                                for (const [meter_number, meter] of Object.entries(meters)) {
+                            if (request.match(/meter list/i) && (response.response_code == 0)) {
+                                for (const [meter_number, meter] of Object.entries(response.payload)) {
                                     meter.topic = node.meterTopic(meter);
                                 };
                             }
@@ -100,10 +113,9 @@ module.exports = function(RED) {
                                 request: request,
                                 sequence_number: response.sequence_number,
                                 status_code: response.response_code,
-                                payload: response.response
+                                payload: response.payload
                             };
 
-                            node.debug('response: ' + JSON.stringify(response_data));
                             response_handler(response_data);
                         }
                     });
@@ -143,24 +155,6 @@ module.exports = function(RED) {
             return [meter.src, meter.num, meter.nam].join('/');
         };
 
-        node.messageTopic = function(message) {
-            // remove 'header' fields and find topical fields of message
-            const topics = Object.keys(message).filter(function(key) {
-                return !(['type', 'client'].includes(key));
-            });
-
-            if (topics.length != 1) {
-                node.log("ERROR: message from radio has more than one TOPIC!");
-                node.log(topics);
-            }
-
-            if (topics.length >= 1) {
-                return topics[0];
-            }
-
-            return null;
-        };
-
         node.matchTopic = function(pattern, topic) {
             // default value and match all is always true
             if (!pattern || pattern === '' || pattern === '#') {
@@ -194,16 +188,18 @@ module.exports = function(RED) {
             done();
         });
 
-        function updateNodeState(data) {
+        function emitNodeState(data) {
+            node.state = '';
             if (node.radio) {
-                const state = node.radio.getConnectionState();
-                node.state = state;
+                node.state = node.radio.getConnectionState();
+                const connection_msg = {
+                    topic: ['connection', data].join('/'),
+                    payload: node.state
+                };
 
-                node.log('radio ' + state + ' ' + (data ? data : ''));
-                node.emit(node.state, data);
-            } else {
-                node.state = '';
-            }
+                node.log('radio ' + node.state + ' ' + (data ? data : ''));
+                node.emit(node.state, connection_msg);
+            }            
         }
     }
 

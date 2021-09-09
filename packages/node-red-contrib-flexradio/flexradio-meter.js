@@ -9,7 +9,7 @@ module.exports = function(RED) {
         node.topic = config.topic;
         node.output_mode = config.output_mode;
 
-        if (!node.radio) {  // No config node configured, should not happen
+        if (!node.radio) {
             node.status({ fill: 'red', shape: 'circle', text: 'not configured' });
             return;
         }
@@ -28,36 +28,37 @@ module.exports = function(RED) {
             };
         });
 
-        radio.on('connecting', function() {
-            updateNodeStatus();
+        radio.on('connecting', function(connection) {
+            updateNodeStatus(connection);
         });
 
-        radio.on('connected', function() {
-            updateNodeStatus();
+        radio.on('connected', function(connection) {
+            updateNodeStatus(connection);
         });
 
-        radio.on('disconnected', function() {
-            updateNodeStatus();
+        radio.on('disconnected', function(connection) {
+            updateNodeStatus(connection);
         });
 
-        function updateNodeStatus() {
-            switch (radio.state) {
+        function updateNodeStatus(connection) {
+            const status = connection.payload;
+            switch (status) {
                 case 'connecting':
-                    node.status({ fill: 'green', shape: 'circle', text: 'connecting' });
+                    node.status({ fill: 'green', shape: 'circle', text: status });
                     break;
                 case 'connected':
                     node.status({ fill: 'green', shape: 'dot', text: radio.radioName() });
                     break;
                 case 'disconnected':
-                    node.status({ fill: 'red', shape: 'dot', text: 'not connected' });
+                    node.status({ fill: 'red', shape: 'dot', text: status });
                     break;
                 default:
-                    node.status({ fill: 'red', shape: 'circle', text: radio.state });
+                    node.status({ fill: 'red', shape: 'circle', text: status });
                     break;
             }
         }
 
-        updateNodeStatus();
+        updateNodeStatus('starting up');
     }
 
     RED.nodes.registerType("flexradio-meter", FlexRadioMeterNode);
