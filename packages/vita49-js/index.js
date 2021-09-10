@@ -136,7 +136,7 @@ function decode(raw_data) {
 
 	// TODO: Vita Trailier... 4 bytes at end 
 	if (has_trailer) {
-
+		vita.trailer = null;
 	}
 
 	return vita;
@@ -144,6 +144,7 @@ function decode(raw_data) {
 
 function encode(msg) {
 	// TODO: Implement encoding of VITA-49 datagrams (for sending meter data)
+	return msg;
 }
 
 module.exports = {

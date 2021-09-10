@@ -1,7 +1,37 @@
 {
-  "name": "root",
+  "name": "node-red-contrib-flexradio-meta",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "description": "This repository provides a number of [NodeRed](https://nodered.org) nodes to interact with [FlexRadio 6xxx](http://flexradio.com) series software defined and network attached radios.",
+  "version": "0.6.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx lerna run test",
+    "bootstrap": "npx lerna bootstrap",
+    "lint": "npx eslint --fix src",
+    "publish": "npx lerna publish",
+    "version": "npx lerna version",
+    "clean": "npx lerna clean"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stephenhouser/node-red-contrib-flexradio.git"
+  },
+  "keywords": [
+    "node-red",
+    "flexradio",
+    "radio"
+  ],
+  "author": "Stephen Houser",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stephenhouser/node-red-contrib-flexradio/issues"
+  },
+  "homepage": "https://github.com/stephenhouser/node-red-contrib-flexradio#readme",
   "devDependencies": {
+    "eslint": "^7.32.0",
     "lerna": "^4.0.0"
   }
 }
