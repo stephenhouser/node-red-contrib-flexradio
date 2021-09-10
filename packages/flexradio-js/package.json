@@ -14,9 +14,9 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "node ./samples/parser-test.js samples/smartsdr-capture.txt",
-    "build": "pegjs -o flex-parser.js flex-parser.pegjs",
-    "lint": "npx eslint --fix ."
+    "test": "node ./test/flex-parser-test.js ./test/capture/smartsdr-capture.txt",
+    "build": "npx pegjs -o flex-parser.js flex-parser.pegjs",
+    "lint": "npx eslint --fix . || exit 0"
   },
   "dependencies": {
     "vita49-js": "^0.6.0"
