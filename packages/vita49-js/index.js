@@ -23,7 +23,7 @@ const PacketType = {
 			'if_context',
 			'ext_context',
 			'if_cmd_stream',
-			'ext_cmd_stream',
+			'ext_cmd_stream'
 		];
 
 		return type_strings[type_code % type_strings.length];
@@ -86,12 +86,13 @@ function decode(raw_data) {
 	vita.count = packet_flags_low & 0x0F;
 
 	vita.packet_size = data.getUint16(2, false) * 4;
-	if (vita.packet_size != data.byteLength) {
+	if (vita.packet_size !== data.byteLength) {
 		return null;
 	}
 
 	let header_byte = 4;
-	if (vita.packet_type == PacketType.if_data_stream || vita.packet_type == PacketType.ext_data_stream) {
+	if ((vita.packet_type === PacketType.if_data_stream) ||
+		(vita.packet_type === PacketType.ext_data_stream)) {
 		// 32 bit packet stream identifier
 		vita.stream_id = data.getUint32(header_byte, false);
 		header_byte += 4;
@@ -134,7 +135,7 @@ function decode(raw_data) {
 	// vita.payload = raw_data.slice(header_byte);
 	vita.payload = raw_data.subarray(header_byte);
 
-	// TODO: Vita Trailier... 4 bytes at end 
+	// TODO: Vita Trailier... 4 bytes at end
 	if (has_trailer) {
 		vita.trailer = null;
 	}

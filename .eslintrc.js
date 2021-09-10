@@ -1,13 +1,20 @@
 module.exports = {
-    "env": {
-        "es2021": true,
-        "node": true
-    },
-    "extends": "eslint:recommended",
-    "parserOptions": {
-        "ecmaVersion": 12,
-        "sourceType": "module"
-    },
-    "rules": {
-    }
-};
+  env: {
+    commonjs: true,
+    es2021: true,
+    node: true
+  },
+  extends: [
+    'standard'
+  ],
+  parserOptions: {
+    ecmaVersion: 12
+  },
+  rules: {
+    "space-before-function-paren": ["error", "never"],
+    "camelcase": "off",
+    "semi": ["error", "always"],
+    "indent": ["error", "tab"],
+    "no-tabs": ["error", { allowIndentationTabs: true }],
+  }
+}
