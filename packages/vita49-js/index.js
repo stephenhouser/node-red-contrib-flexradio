@@ -30,20 +30,6 @@ const PacketType = {
 	}
 };
 
-const PacketClassCode = {
-	meter: 0x8002,
-	panadapter: 0x8003,
-	waterfall: 0x8004,
-	opus: 0x8005,
-	daxReducedBw: 0x0123,
-	daxIq24: 0x02e3,
-	daxIq48: 0x02e4,
-	daxIq96: 0x02e5,
-	daxIq192: 0x02e6,
-	daxAudio: 0x03e3,
-	discovery: 0xffff,
-};
-
 const TimeStampIntegerType = {
 	none: 0x00,
 	utc: 0x01,
@@ -162,5 +148,6 @@ function encode(msg) {
 
 module.exports = {
 	decode: decode,
-	encode: encode
+	encode: encode,
+	PacketType: PacketType
 };

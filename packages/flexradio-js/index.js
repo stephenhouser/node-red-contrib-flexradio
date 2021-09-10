@@ -18,6 +18,9 @@ const vita_flex_information_class = 0x534cffff;
 const parser = require('./flex-parser');
 const vita49 = require('../vita49-js');
 
+const VITA_FLEX_OUI = 0x1c2d;
+const VITA_FLEX_INFORMATION_CLASS = 0x534c;
+
 const PacketClassCode = {
 	meter: 0x8002,
 	panadapter: 0x8003,
@@ -30,6 +33,23 @@ const PacketClassCode = {
 	daxIq192: 0x02e6,
 	daxAudio: 0x03e3,
 	discovery: 0xffff,
+
+	decode: function(code) {
+		switch (code) {
+			case this.meter: return 'meter'; break;
+			case this.panadapter: return 'panadapter'; break;
+			case this.waterfall: return 'waterfall'; break;
+			case this.opus: return 'opus'; break;
+			case this.daxReducedBw: return 'daxReducedBw'; break;
+			case this.daxIq24: return 'daxIq24'; break;
+			case this.daxIq48: return 'daxIq48'; break;
+			case this.daxIq96: return 'daxIq96'; break;
+			case this.daxIq192: return 'daxIq192'; break;
+			case this.daxAudio: return 'daxAudio'; break;
+			case this.discovery: return 'discovery'; break;
+			default: return 'unknown' + code;
+		}
+	}
 };
 
 // decode() -- decode data sent from a FlexRadio on the TCP control stream.
@@ -56,7 +76,7 @@ function decode_discovery(payload) {
 
 	return {
 		type: 'discovery',
-		radio: radio
+		payload: radio
 	};
 }
 
@@ -73,39 +93,45 @@ _isRealtimeData(message) {
 		&& message.class.packet_class == VITA_FLEX_METER_CLASS;
 }
 */
-function is_flexradio_datagram(data) {
-	const VITA_FLEX_OUI = 0x1c2d;
+function flex_datagram_type(v49_data) {
+	if (v49_data.packet_type == vita49.PacketType.ext_data_stream
+		&& v49_data.class.oui == VITA_FLEX_OUI
+		&& v49_data.class.information_class == VITA_FLEX_INFORMATION_CLASS ) {
 
-	return MessageChannel.class.oui == VITA_FLEX_OUI;
+		return v49_data.class.packet_class;
+		}
+
+	return 'unknown';
 }
 
+const VITA_METER_STREAM = 0x00000700;
 
 // decode_realtime() -- decode data sent from a FlexRadio on the UDP data channel
 function decode_realtime(data) {
-	const vita49_message = vita49.decode(data);
-	if (vita49_message) {
+	const v49_data = vita49.decode(data);
+	if (v49_data) {
+		const type = flex_datagram_type(v49_data);
+		if (type) {
+			const decoded_msg = {
+				type: PacketClassCode.decode(type),
+				count: v49_data.count,
+				stream_id: v49_data.stream_id,
+			};
 
-		if (this._isRealtimeData(vita49_message)) {
-			const meter_data = flex.decode_meter(vita49_message.payload);
-			// log_debug('receiveRealtimeData: ' + JSON.stringify(meter_data));
-			if (meter_data && 'payload' in meter_data) {
-				// for each meter in payload
-				for (const [meter_num, meter_value] of Object.entries(meter_data.payload)) {
-					if (meter_num in meters) {
-						const meter = meters[meter_num];
-						const value = this._scaleMeterValue(meter, meter_value);
-						// Only update and emit when the value changes
-						if (value != meter.value) {
-							meter.value = value;
-							this.emit('meter', meter);
-						}
-					}
-				}
+			switch (type) {
+				case PacketClassCode.meter:
+					decoded_msg.payload = decode_meter(v49_data.payload)
+					break;
+
+				default:
+					decoded_msg.payload = v49_data.payload;
+					break;
 			}
-		} else {
-			console.warn("Received real-time data that is not a meter. Not implemented!");
-			console.warn(vita49_message.payload);
+
+			return decoded_msg;
 		}
+
+		return null;
 	}
 }
 
@@ -123,17 +149,13 @@ function decode_meter(raw_data) {
 		meter_data[meter_index] = meter_value;
 	}
 
-	return {
-		type: 'meter',
-		payload: meter_data
-	};
+	return meter_data;
 }
 
 // encode_request() -- encode a FlexRadio command/request to be sent on the TCP control stream
 function encode_request(sequence, request) {
 	return 'C' + sequence + '|' + request.toString() + '\n';
 }
-
 
 function decode_packet_class(packet_class_code) {
 	var pcc = packet_class_code;
@@ -178,6 +200,8 @@ module.exports = {
 	response_code: decode_response_code,
 
 	decode: decode,
+	decode_realtime: decode_realtime,
+
 	decode_discovery: decode_discovery,
 	decode_meter: decode_meter,
 
