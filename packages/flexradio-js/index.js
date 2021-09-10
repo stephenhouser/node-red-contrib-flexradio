@@ -2,7 +2,7 @@
  * Decodes the payloads that come back from a FlexRadio on
  * both the TCP connection and via VITA-49 over UDP (meter and discovery)
  * payloads.
- * 
+ *
  * Some references used in building this:
  * http://wiki.flexradio.com/index.php?title=Discovery_protocol
  * https://github.com/kc2g-flex-tools/flexclient
@@ -14,8 +14,8 @@
 const parser = require('./flex-parser');
 const vita49 = require('vita49-js');
 
-const VITA_DISCOVERY_STREAM = 0x00000800;
-const VITA_METER_STREAM = 0x00000700;
+// const VITA_DISCOVERY_STREAM = 0x00000800;
+// const VITA_METER_STREAM = 0x00000700;
 const VITA_FLEX_OUI = 0x00001c2d;
 const VITA_FLEX_INFORMATION_CLASS = 0x534c;
 
@@ -34,17 +34,17 @@ const PacketClassCode = {
 
 	decode: function(code) {
 		switch (code) {
-			case this.meter: return 'meter'; break;
-			case this.panadapter: return 'panadapter'; break;
-			case this.waterfall: return 'waterfall'; break;
-			case this.opus: return 'opus'; break;
-			case this.daxReducedBw: return 'daxReducedBw'; break;
-			case this.daxIq24: return 'daxIq24'; break;
-			case this.daxIq48: return 'daxIq48'; break;
-			case this.daxIq96: return 'daxIq96'; break;
-			case this.daxIq192: return 'daxIq192'; break;
-			case this.daxAudio: return 'daxAudio'; break;
-			case this.discovery: return 'discovery'; break;
+			case this.meter: return 'meter';
+			case this.panadapter: return 'panadapter';
+			case this.waterfall: return 'waterfall';
+			case this.opus: return 'opus';
+			case this.daxReducedBw: return 'daxReducedBw';
+			case this.daxIq24: return 'daxIq24';
+			case this.daxIq48: return 'daxIq48';
+			case this.daxIq96: return 'daxIq96';
+			case this.daxIq192: return 'daxIq192';
+			case this.daxAudio: return 'daxAudio';
+			case this.discovery: return 'discovery';
 			default: return 'unknown' + code;
 		}
 	}
@@ -67,7 +67,7 @@ function decode(response) {
 function decode_discovery(payload) {
 	const radio = {};
 	const fields = payload.split(' ');
-	for (var i = 0; i < fields.length; i++) {
+	for (let i = 0; i < fields.length; i++) {
 		const [key, value] = fields[i].split('=');
 		radio[key] = value;
 	}
@@ -79,16 +79,14 @@ function decode_discovery(payload) {
 }
 
 function flex_datagram_type(v49_data) {
-	if (v49_data.packet_type == vita49.PacketType.ext_data_stream
-		&& v49_data.class.oui == VITA_FLEX_OUI
-		&& v49_data.class.information_class == VITA_FLEX_INFORMATION_CLASS ) {
-
+	if (v49_data.packet_type === vita49.PacketType.ext_data_stream &&
+		v49_data.class.oui === VITA_FLEX_OUI &&
+		v49_data.class.information_class === VITA_FLEX_INFORMATION_CLASS) {
 		return v49_data.class.packet_class;
-		}
+	}
 
 	return 'unknown';
 }
-
 
 // decode_realtime() -- decode data sent from a FlexRadio on the UDP data channel
 function decode_realtime(data) {
@@ -99,12 +97,12 @@ function decode_realtime(data) {
 			const decoded_msg = {
 				type: PacketClassCode.decode(type),
 				count: v49_data.count,
-				stream_id: v49_data.stream_id,
+				stream_id: v49_data.stream_id
 			};
 
 			switch (type) {
 				case PacketClassCode.meter:
-					decoded_msg.payload = decode_meter(v49_data.payload)
+					decoded_msg.payload = decode_meter(v49_data.payload);
 					break;
 
 				default:
@@ -127,7 +125,7 @@ function decode_meter(raw_data) {
 
 	const data = new DataView(new Uint8Array(raw_data).buffer);
 	const meter_data = {};
-	for (var idx = 0; idx < data.byteLength; idx += Uint32Array.BYTES_PER_ELEMENT) {
+	for (let idx = 0; idx < data.byteLength; idx += Uint32Array.BYTES_PER_ELEMENT) {
 		const meter_index = data.getUint16(idx, false);
 		const meter_value = data.getUint16(idx + 2, false);
 		meter_data[meter_index] = meter_value;
@@ -142,8 +140,8 @@ function encode_request(sequence, request) {
 }
 
 function decode_packet_class(packet_class_code) {
-	var pcc = packet_class_code;
-	if (typeof (pcc) != 'number') {
+	let pcc = packet_class_code;
+	if (typeof (pcc) !== 'number') {
 		pcc = parseInt(pcc, 16);
 	}
 	switch (pcc) {
@@ -164,8 +162,8 @@ function decode_packet_class(packet_class_code) {
 }
 
 function decode_response_code(response_code) {
-	var rc = response_code;
-	if (typeof (rc) != 'number') {
+	let rc = response_code;
+	if (typeof (rc) !== 'number') {
 		rc = parseInt(rc, 16);
 	}
 	switch (rc) {
@@ -177,7 +175,6 @@ function decode_response_code(response_code) {
 
 	return 'unknown error';
 }
-
 
 module.exports = {
 	packet_class: decode_packet_class,

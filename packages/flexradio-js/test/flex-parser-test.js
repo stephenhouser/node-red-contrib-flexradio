@@ -8,7 +8,6 @@ const requests = {};
 const data = fs.readFileSync(fn, 'UTF-8');
 const lines = data.split(/\r?\n/);
 lines.forEach((line) => {
-
 	// Parse all the things coming from the server
 	if (line && !line.match(/^C(?<sequence>\d+)\|(?<request>.*)$/)) {
 		const obj = parser.parse(line);

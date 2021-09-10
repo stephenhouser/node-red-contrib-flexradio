@@ -5,11 +5,11 @@
 const vita49 = require('vita49-js');
 
 module.exports = function(RED) {
-	"use strict";
+	'use strict';
 
 	function Vita49DecodeNode(config) {
 		RED.nodes.createNode(this, config);
-		var node = this;
+		const node = this;
 
 		node.datatype_in = config.datatype_in;
 		node.datatype_out = config.datatype_out;

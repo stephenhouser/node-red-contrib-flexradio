@@ -4,7 +4,7 @@ const EventEmitter = require('events');
 const vita49 = require('vita49-js');
 const flex = require('flexradio-js');
 
-const log_debug = function(msg) { }; //{ console.log(msg); }
+const log_debug = function(msg) { }; // { console.log(msg); }
 const log_info = function(msg) { console.log(msg); };
 
 const DiscoveryStates = {
@@ -34,7 +34,6 @@ class DiscoveryListener extends EventEmitter {
 		this._startDiscoveryListener();
 	}
 
-
 	stop() {
 		log_info('DiscoveryListener::stop()');
 		this._stopDiscoveryListener();
@@ -44,7 +43,7 @@ class DiscoveryListener extends EventEmitter {
 		log_info('DiscoveryListener::_startDiscoveryListener()');
 
 		const discovery = this;
-		if (discovery.discoveryState == DiscoveryStates.stopped) {
+		if (discovery.discoveryState === DiscoveryStates.stopped) {
 			discovery.discoveryListener = udp.createSocket('udp4');
 
 			const discoveryListener = discovery.discoveryListener;
@@ -77,11 +76,11 @@ class DiscoveryListener extends EventEmitter {
 	}
 
 	_isDiscoveryMessage(message) {
-		return message
-			&& message.stream_id == VITA_DISCOVERY_STREAM
-			&& message.class.oui == VITA_FLEX_OUI
-			&& message.class.information_class == VITA_FLEX_INFORMATION_CLASS
-			&& message.class.packet_class == VITA_FLEX_PACKET_CLASS;
+		return message &&
+			message.stream_id === VITA_DISCOVERY_STREAM &&
+			message.class.oui === VITA_FLEX_OUI &&
+			message.class.information_class === VITA_FLEX_INFORMATION_CLASS &&
+			message.class.packet_class === VITA_FLEX_PACKET_CLASS;
 	}
 
 	_receiveData(data, info) {
@@ -98,7 +97,7 @@ class DiscoveryListener extends EventEmitter {
 
 	_stopDiscoveryListener() {
 		log_info('DiscoveryListener::_stopDiscoveryListener()');
-		if (this.discoveryState != DiscoveryStates.stopped) {
+		if (this.discoveryState !== DiscoveryStates.stopped) {
 			this.discoveryListener.close();
 		}
 	}

@@ -14,7 +14,7 @@ module.exports = {
     "space-before-function-paren": ["error", "never"],
     "camelcase": "off",
     "semi": ["error", "always"],
-    "indent": ["error", "tab"],
+    "indent": ["error", "tab", { "SwitchCase": 1 }],
     "no-tabs": ["error", { allowIndentationTabs: true }],
   }
 }

@@ -10,7 +10,7 @@
   "scripts": {
     "test": "npx lerna run test",
     "bootstrap": "npx lerna bootstrap",
-    "lint": "npx eslint --fix .",
+    "lint": "npx lerna run lint",
     "publish": "npx lerna publish",
     "version": "npx lerna version",
     "clean": "npx lerna clean"
@@ -31,11 +31,6 @@
   },
   "homepage": "https://github.com/stephenhouser/node-red-contrib-flexradio#readme",
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0",
     "lerna": "^4.0.0"
   }
 }
