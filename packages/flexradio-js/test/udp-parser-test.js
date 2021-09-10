@@ -45,11 +45,12 @@ pcap_session.on('packet', function (raw_packet) {
 
 			const vita49_message = vita49.decode(data);
 			if (isFlexMeterStream(vita49_message)) {
+				console.log('METER Data');
 				const meter_data = flex.decode_meter(vita49_message.payload);
 
 				console.log(meter_data);
 			} else {
-				console.log('WARNING: Not meter data.');
+				console.log('OTHER Data');
 				console.log(vita49_message);
 			}
 		}

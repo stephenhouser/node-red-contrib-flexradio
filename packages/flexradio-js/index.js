@@ -16,6 +16,7 @@ const vita_flex_oui = 0x00001c2d;
 const vita_flex_information_class = 0x534cffff;
 
 const parser = require('./flex-parser');
+const vita49 = require('../vita49-js');
 
 const PacketClassCode = {
 	meter: 0x8002,
@@ -59,9 +60,53 @@ function decode_discovery(payload) {
 	};
 }
 
+/*
+const VITA_METER_STREAM = 0x00000700;
+const VITA_FLEX_OUI = 0x1c2d;
+const VITA_FLEX_INFORMATION_CLASS = 0x534c;
+const VITA_FLEX_METER_CLASS = 0x8002;
+_isRealtimeData(message) {
+	return message
+		&& message.stream_id == VITA_METER_STREAM
+		&& message.class.oui == VITA_FLEX_OUI
+		&& message.class.information_class == VITA_FLEX_INFORMATION_CLASS
+		&& message.class.packet_class == VITA_FLEX_METER_CLASS;
+}
+*/
+function is_flexradio_datagram(data) {
+	const VITA_FLEX_OUI = 0x1c2d;
+
+	return MessageChannel.class.oui == VITA_FLEX_OUI;
+}
+
+
 // decode_realtime() -- decode data sent from a FlexRadio on the UDP data channel
 function decode_realtime(data) {
+	const vita49_message = vita49.decode(data);
+	if (vita49_message) {
 
+		if (this._isRealtimeData(vita49_message)) {
+			const meter_data = flex.decode_meter(vita49_message.payload);
+			// log_debug('receiveRealtimeData: ' + JSON.stringify(meter_data));
+			if (meter_data && 'payload' in meter_data) {
+				// for each meter in payload
+				for (const [meter_num, meter_value] of Object.entries(meter_data.payload)) {
+					if (meter_num in meters) {
+						const meter = meters[meter_num];
+						const value = this._scaleMeterValue(meter, meter_value);
+						// Only update and emit when the value changes
+						if (value != meter.value) {
+							meter.value = value;
+							this.emit('meter', meter);
+						}
+					}
+				}
+			}
+		} else {
+			console.warn("Received real-time data that is not a meter. Not implemented!");
+			console.warn(vita49_message.payload);
+		}
+	}
 }
 
 // decode_meter() -- decode FlexRadio meter data received as UDP datagrams

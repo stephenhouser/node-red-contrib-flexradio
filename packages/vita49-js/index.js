@@ -12,7 +12,22 @@ const PacketType = {
 	if_context: 0x04,
 	ext_context: 0x05,
 	if_cmd_stream: 0x06,
-	ext_cmd_stream: 0x07
+	ext_cmd_stream: 0x07,
+
+	decode: function(type_code) {
+		const type_strings = [
+			'if_data',
+			'if_data_stream',
+			'ext_data',
+			'ext_data_stream',
+			'if_context',
+			'ext_context',
+			'if_cmd_stream',
+			'ext_cmd_stream',
+		];
+
+		return type_strings[type_code % type_strings.length];
+	}
 };
 
 const PacketClassCode = {
@@ -37,10 +52,10 @@ const TimeStampIntegerType = {
 
 	decode: function(type_code) {
 		const type_strings = [
-			"none",
-			"utc",
-			"gps",
-			"other"
+			'none',
+			'utc',
+			'gps',
+			'other'
 		];
 		return type_strings[type_code % type_strings.length];
 	}
@@ -54,10 +69,10 @@ const TimeStampFractionType = {
 
 	decode: function(type_code) {
 		const type_strings = [
-			"none",
-			"sample_count",
-			"realtime",
-			"free_running"
+			'none',
+			'sample_count',
+			'realtime',
+			'free_running'
 		];
 		return type_strings[type_code % type_strings.length];
 	}
