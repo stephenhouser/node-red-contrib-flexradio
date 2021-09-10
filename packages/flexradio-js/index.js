@@ -11,14 +11,12 @@
  * https://community.flexradio.com/discussion/7063537/meter-packet-protocol
  */
 
-const vita_discovery_stream = 0x00000800;
-const vita_flex_oui = 0x00001c2d;
-const vita_flex_information_class = 0x534cffff;
-
 const parser = require('./flex-parser');
-const vita49 = require('../vita49-js');
+const vita49 = require('vita49-js');
 
-const VITA_FLEX_OUI = 0x1c2d;
+const VITA_DISCOVERY_STREAM = 0x00000800;
+const VITA_METER_STREAM = 0x00000700;
+const VITA_FLEX_OUI = 0x00001c2d;
 const VITA_FLEX_INFORMATION_CLASS = 0x534c;
 
 const PacketClassCode = {
@@ -80,19 +78,6 @@ function decode_discovery(payload) {
 	};
 }
 
-/*
-const VITA_METER_STREAM = 0x00000700;
-const VITA_FLEX_OUI = 0x1c2d;
-const VITA_FLEX_INFORMATION_CLASS = 0x534c;
-const VITA_FLEX_METER_CLASS = 0x8002;
-_isRealtimeData(message) {
-	return message
-		&& message.stream_id == VITA_METER_STREAM
-		&& message.class.oui == VITA_FLEX_OUI
-		&& message.class.information_class == VITA_FLEX_INFORMATION_CLASS
-		&& message.class.packet_class == VITA_FLEX_METER_CLASS;
-}
-*/
 function flex_datagram_type(v49_data) {
 	if (v49_data.packet_type == vita49.PacketType.ext_data_stream
 		&& v49_data.class.oui == VITA_FLEX_OUI
@@ -104,7 +89,6 @@ function flex_datagram_type(v49_data) {
 	return 'unknown';
 }
 
-const VITA_METER_STREAM = 0x00000700;
 
 // decode_realtime() -- decode data sent from a FlexRadio on the UDP data channel
 function decode_realtime(data) {
