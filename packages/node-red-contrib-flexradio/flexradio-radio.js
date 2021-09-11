@@ -168,7 +168,7 @@ module.exports = function(RED) {
 		};
 
 		node.connectionState = function() {
-			return this.radio.getConnectionState();
+			return node.radio.getConnectionState();
 		}
 
 		node.on('close', function(done) {
