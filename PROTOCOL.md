@@ -342,11 +342,23 @@ The payload will contain a dictionary/object with a key for each meter number be
 ### Node/flexradio-message output
 
 ```
+# When "Value and Context" is selected
 {
-    "topic":"COD-/1/MICPEAK",
-    "payload": -200
+    "topic": "TX-/8/CODEC",
+    "payload": {
+        "src": "TX-",
+        "num": "8",
+        "nam": "CODEC",
+        "low": "-150.0",
+        "hi": "20.0",
+        "desc": "Signal strength of CODEC output",
+        "unit": "dBFS",
+        "fps": "10",
+        "value": "-250.0"
+    }
 }
 
+# When "Value Only" is selected
 {
     "topic": "TX-/1/FWDPWR",
     "payload": 0
@@ -358,9 +370,9 @@ The payload will contain a dictionary/object with a key for each meter number be
 }
 ```
 
+Meters that the system does not know about, e.g. does not have the proper context information, are still reported but with much less information. The following example is assuming the same `Radio.js` output as above but where the system does not have the context information for the meters.
 
 ```
-# For "unknown" meters
 {
     "topic":"meter/1",
     "payload": 39936
