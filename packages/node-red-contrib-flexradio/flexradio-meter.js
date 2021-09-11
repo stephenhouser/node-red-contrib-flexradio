@@ -33,7 +33,6 @@ module.exports = function(RED) {
 		});
 
 		radio.on('meter', function(meter) {
-			// node.debug(JSON.stringify(meter));
 			const topic = radio.meterTopic(meter);
 			if (radio.matchTopic(node.topic, topic)) {
 				const msg = {

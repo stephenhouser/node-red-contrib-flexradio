@@ -59,7 +59,7 @@ module.exports = function(RED) {
 			});
 
 			radio.on('meter', function(meter) {
-				// node.debug('meter: ' + JSON.stringify(meter));
+				// node.log('meter: ' + JSON.stringify(meter));
 				node.emit('meter', meter);
 			});
 
@@ -153,7 +153,11 @@ module.exports = function(RED) {
 		};
 
 		node.meterTopic = function(meter) {
-			return [meter.src, meter.num, meter.nam].join('/');
+			if (meter.src && meter.num && meter.nam) {
+				return [meter.src, meter.num, meter.nam].join('/');
+			} else {
+				return ['meter', meter.num].join('/');
+			}
 		};
 
 		node.matchTopic = function(pattern, topic) {

@@ -7,6 +7,7 @@ const flex = require('flexradio-js');
 
 const log_debug = function(msg) { console.log(msg); };
 const log_info = function(msg) { console.log(msg); };
+const log_debug_realtime = function(msg) {  };
 
 const CLIENT_SETUP_COMMAND_DELAY = 1000;
 
@@ -235,6 +236,8 @@ class Radio extends EventEmitter {
 
 	_receiveRealtimeData(data) {
 		const flex_dgram = flex.decode_realtime(data);
+		log_debug_realtime('Radio._receiveRealtimeData(' + JSON.stringify(flex_dgram) + ')');
+
 		if (flex_dgram) {
 			switch (flex_dgram.type) {
 				case MessageTypes.meter:
@@ -255,11 +258,11 @@ class Radio extends EventEmitter {
 		for (const [meter_num, meter_value] of Object.entries(meter_data)) {
 			if (meter_num in meters) {
 				const meter = meters[meter_num];
-				const value = this._scaleMeterValue(meter, meter_value);
-				if (value !== meter.value) { // update only on value change
-					meter.value = value;
-					this.emit(MessageTypes.meter, meter);
-				}
+				meter.value = this._scaleMeterValue(meter, meter_value);
+				this.emit(MessageTypes.meter, meter);
+			} else {
+				// unknown meter, emit raw unscaled value 
+				this.emit(MessageTypes.meter, { num: meter_num, value: meter_value });
 			}
 		}
 	}
@@ -313,8 +316,9 @@ class Radio extends EventEmitter {
 		this.emit(state, 'udp');
 	}
 
-	_updateMeterList(meter_response) {
-		this.meters = { ...this.meters, ...meter_response.payload };
+	_updateMeterList(meters) {
+		const radio = this;
+		radio.meters = { ...radio.meters, ...meters };
 	}
 
 	_getMeterList() {
