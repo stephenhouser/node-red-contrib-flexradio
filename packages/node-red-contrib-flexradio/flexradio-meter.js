@@ -62,6 +62,9 @@ module.exports = function(RED) {
 		}
 
 		updateNodeStatus('starting');
+		setInterval(function() {
+			updateNodeStatus(radio.connectionState());
+		}, 5000);
 	}
 
 	RED.nodes.registerType('flexradio-meter', FlexRadioMeterNode);
