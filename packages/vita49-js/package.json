@@ -1,6 +1,6 @@
 {
   "name": "vita49-js",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "VITA-49 Packet Functions (FlexRadio Specific)",
   "keywords": [
     "flexradio"
@@ -18,12 +18,12 @@
     "lint": "npx eslint --fix . || exit 0"
   },
   "devDependencies": {
-    "pcap": "github:node-pcap/node_pcap",
-    "pegjs": "^0.10.0",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0"
+    "eslint-plugin-promise": "^5.1.0",
+    "pcap": "github:node-pcap/node_pcap",
+    "pegjs": "^0.10.0"
   }
 }
