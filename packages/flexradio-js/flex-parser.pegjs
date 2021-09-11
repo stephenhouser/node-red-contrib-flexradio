@@ -14,13 +14,6 @@
         return key;
     }
 
-	function tokenOrList(token) {
-    	if (token.match(/,/)) {
-        	return token.split(',');
-        }
-      	return token;
-    }
-
 	function makeTopic(msg) {
         if (!msg || msg.length <= 1) {
         	return null;
