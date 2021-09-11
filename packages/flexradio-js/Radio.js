@@ -237,8 +237,10 @@ class Radio extends EventEmitter {
 					break;
 
 				default:
-					console.warn('Received real-time data that is not a meter. Not implemented!');
-					console.warn(flex_dgram);
+					// 'daxAudio', 'panadapter', 'waterfall', 'opus', ...
+					// console.log(`[${flex_dgram.type}]`);
+					// console.warn('Received real-time data that is not a meter. Not implemented!');
+					this.emit(flex_dgram.type, flex_dgram);
 			}
 		}
 	}

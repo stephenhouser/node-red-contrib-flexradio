@@ -59,8 +59,13 @@ module.exports = function(RED) {
 			});
 
 			radio.on('meter', function(meter) {
-				// node.debug('meters: ' + JSON.stringify(meter));
+				// node.debug('meter: ' + JSON.stringify(meter));
 				node.emit('meter', meter);
+			});
+
+			radio.on('daxAudio', function(daxAudio) {
+				// node.log('daxAudio: ' + JSON.stringify(daxAudio));
+				node.emit('daxAudio', daxAudio);
 			});
 
 			radio.on('error', function(error) {

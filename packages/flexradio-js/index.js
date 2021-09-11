@@ -53,9 +53,11 @@ const PacketClassCode = {
 // decode() -- decode data sent from a FlexRadio on the TCP control stream.
 function decode(response) {
 	try {
-		// use PEGJS parser to parse response payloads.
-		const parsed = parser.parse(response);
-		return parsed;
+		if (response) {
+			// use PEGJS parser to parse response payloads.
+			const parsed = parser.parse(response);
+			return parsed;
+		}
 	} catch (error) {
 		console.log(error);
 	}

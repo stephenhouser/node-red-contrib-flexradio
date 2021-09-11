@@ -1,0 +1,28 @@
+V1.4.0.0
+H0B86CBBE
+S7FE7BBA0|eq rx mode=0 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
+S7FE7BBA0|eq rxsc mode=0 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
+M10000001|Client connected from IP 192.168.10.20
+SB86CBBE|radio slices=3 panadapters=3 lineout_gain=0 lineout_mute=0 headphone_gain=0 headphone_mute=0 remote_on_enabled=0 pll_done=0 freq_error_ppb=0 cal_freq=15.000000 tnf_enabled=0 snap_tune_enabled=1 nickname=Flex-6600M callsign=N1SH binaural_rx=0 full_duplex_enabled=1 band_persistence_enabled=1 rtty_mark_default=2125 enforce_private_ip_connections=1 backlight=50 mute_local_audio_when_remote=1 daxiq_capacity=16 daxiq_available=16
+SB86CBBE|radio filter_sharpness VOICE level=2 auto_level=1
+SB86CBBE|radio filter_sharpness CW level=2 auto_level=1
+SB86CBBE|radio filter_sharpness DIGITAL level=2 auto_level=1
+SB86CBBE|radio static_net_params ip= gateway= netmask=
+SB86CBBE|radio front_speaker_mute=0
+SB86CBBE|radio oscillator state=tcxo setting=auto locked=1 ext_present=0 gpsdo_present=0 tcxo_present=1
+SB86CBBE|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+SB86CBBE|eq rx mode=0 63Hz=10 125Hz=10 250Hz=10 500Hz=10 1000Hz=10 2000Hz=10 4000Hz=10 8000Hz=10
+SB86CBBE|eq rxsc mode=0 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz=0 8000Hz=0
+S7FE7BBA0|client 0x19935575 connected local_ptt=1 client_id=157225CF-028B-4ABB-939D-7AA912859B2D program=SmartSDR-M station=Maestro
+S7FE7BBA0|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+S7FE7BBA0|profile tx list=Default^iOS_default_Profile^SO2R_TX1^SO2R_TX2^
+S7FE7BBA0|profile mic list=Default^Default FHM-1^Default FHM-1 DX^Default FHM-2^Default FHM-2 DX^Default FHM-2 ESSB^Default FHM-3^Default FHM-3 DX^Default FHM-3 ESSB^Default HM-Pro^Default PR781^Default PR781 ESSB 3_2k^Default ProSet HC6^Inrad M629^Inrad M650^iOS_default_Profile^RadioSport DX M207^RadioSport DX M208^RadioSport DX M350-ADJ^RadioSport DX M360/EM56^RadioSport WIDE M207^RadioSport WIDE M208^RadioSport WIDE M350-ADJ^RadioSport WIDE M360/EM56^RTTYDefault^
+S3D63A6E7|client 0x19935575 connected local_ptt=1 client_id=157225CF-028B-4ABB-939D-7AA912859B2D program=SmartSDR-M station=Maestro
+S3D63A6E7|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+S3D63A6E7|profile tx list=Default^iOS_default_Profile^SO2R_TX1^SO2R_TX2^
+S3D63A6E7|profile mic list=Default^Default FHM-1^Default FHM-1 DX^Default FHM-2^Default FHM-2 DX^Default FHM-2 ESSB^Default FHM-3^Default FHM-3 DX^Default FHM-3 ESSB^Default HM-Pro^Default PR781^Default PR781 ESSB 3_2k^Default ProSet HC6^Inrad M629^Inrad M650^iOS_default_Profile^RadioSport DX M207^RadioSport DX M208^RadioSport DX M350-ADJ^RadioSport DX M360/EM56^RadioSport WIDE M207^RadioSport WIDE M208^RadioSport WIDE M350-ADJ^RadioSport WIDE M360/EM56^RTTYDefault^
+S7FE7BBA0|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
+S7FE7BBA0|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
+C1|spot add rx_freq=7.141500 callsign=4X1DX spotter_callsign=DJ9UN comment=JO30EF<>KM71JD lifetime_seconds=300
+R1|0|1
