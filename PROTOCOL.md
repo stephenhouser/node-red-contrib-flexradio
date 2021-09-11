@@ -343,13 +343,36 @@ The payload will contain a dictionary/object with a key for each meter number be
 
 ```
 {
-    "topic":"meter",
-    "count":1,
-    "stream_id":1792,
-    "payload": {
-        "1": 39936,
-        "19": 0,
-        "21":128
-    }
+    "topic":"COD-/1/MICPEAK",
+    "payload": -200
+}
+
+{
+    "topic": "TX-/1/FWDPWR",
+    "payload": 0
+}
+
+{
+    "topic": "TX-/3/SWR"
+    "payload": 1.2
+}
+```
+
+
+```
+# For "unknown" meters
+{
+    "topic":"meter/1",
+    "payload": 39936
+}
+
+{
+    "topic":"meter/19",
+    "payload": 0
+}
+
+{
+    "topic":"meter/21",
+    "payload": 128
 }
 ```
