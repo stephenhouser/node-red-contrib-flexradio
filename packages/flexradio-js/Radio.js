@@ -320,7 +320,6 @@ class Radio extends EventEmitter {
 	}
 
 	_updateMeterList(meters) {
-		log_debug(`_updateMeterList(${JSON.stringify(meters)}`);
 		const radio = this;
 		radio.meters = { ...radio.meters, ...meters };
 	}
