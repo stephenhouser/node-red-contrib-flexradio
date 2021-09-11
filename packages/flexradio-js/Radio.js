@@ -104,7 +104,7 @@ class Radio extends EventEmitter {
 				log_info('Radio.connection.on(\'connect\')');
 				radio._setConnectionState(ConnectionStates.connected);
 				radio._startRealtimeListener();
-				radio._updateMeterList();
+				radio._getMeterList();
 			});
 
 			this.connection.on('data', function(data) {
@@ -217,6 +217,11 @@ class Radio extends EventEmitter {
 		log_debug('Radio._receiveResponse(' + encoded_message + ')');
 		const message = flex.decode(encoded_message);
 		if (message) {
+			// Update internal meter list whenever we see an update...
+			if (message.topic === 'meter') {
+				this._updateMeterList(message.payload);
+			}
+
 			if (message.type === MessageTypes.response) {
 				const request = this.requests[message.sequence_number];
 				if (request && request.callback) {
@@ -308,10 +313,14 @@ class Radio extends EventEmitter {
 		this.emit(state, 'udp');
 	}
 
-	_updateMeterList() {
+	_updateMeterList(meter_response) {
+		this.meters = { ...this.meters, ...meter_response.payload };
+	}
+
+	_getMeterList() {
 		const radio = this;
 		this.send('meter list', function(response) {
-			radio.meters = { ...radio.meters, ...response.payload };
+			radio._updateMeterList(response.payload);
 		});
 	}
 }
