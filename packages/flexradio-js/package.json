@@ -14,7 +14,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "node ./test/flex-parser-test.js ./test/capture/smartsdr-capture.txt",
+    "test": "node ./test/flex-parser-test.js ./test/capture/command-samples.txt",
     "build": "npx pegjs -o flex-parser.js flex-parser.pegjs",
     "lint": "npx eslint --fix . || exit 0"
   },

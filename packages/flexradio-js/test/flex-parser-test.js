@@ -10,27 +10,31 @@ const lines = data.split(/\r?\n/);
 lines.forEach((line) => {
 	// Parse all the things coming from the server
 	if (line && !line.match(/^C(?<sequence>\d+)\|(?<request>.*)$/)) {
-		const obj = parser.parse(line);
 		console.log(line);
-		console.log(JSON.stringify(obj, null, 2));
+		try {
+			const obj = parser.parse(line);
+			console.log(JSON.stringify(obj, null, 2));	
+		} catch (error) {
+			console.log(error);
+		}
 		console.log();
 	}
 
-	if (request_match = line.match(/^C(?<sequence>\d+)\|(?<request>.*)$/)) {
-		const sequence = request_match.groups.sequence;
-		const request = request_match.groups.request;
-		requests[sequence] = { request: request, raw_request: line };
-	}
+	// if (request_match = line.match(/^C(?<sequence>\d+)\|(?<request>.*)$/)) {
+	// 	const sequence = request_match.groups.sequence;
+	// 	const request = request_match.groups.request;
+	// 	requests[sequence] = { request: request, raw_request: line };
+	// }
 
-	if (response_match = line.match(/^R(?<sequence>\d+)\|(?<status>\d+)\|(?<response>.*)$/)) {
-		const sequence = response_match.groups.sequence;
-		const status = response_match.groups.status;
-		const response = response_match.groups.response;
+	// if (response_match = line.match(/^R(?<sequence>\d+)\|(?<status>\d+)\|(?<response>.*)$/)) {
+	// 	const sequence = response_match.groups.sequence;
+	// 	const status = response_match.groups.status;
+	// 	const response = response_match.groups.response;
 
-		requests[sequence].status = status;
-		requests[sequence].response = response;
-		requests[sequence].raw_response = line;
-	}
+	// 	requests[sequence].status = status;
+	// 	requests[sequence].response = response;
+	// 	requests[sequence].raw_response = line;
+	// }
 });
 
 /*

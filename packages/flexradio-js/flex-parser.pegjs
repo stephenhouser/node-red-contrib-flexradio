@@ -1,4 +1,26 @@
 {
+	function listValue(key, value) {
+    	if (value) {
+        	if (key.endsWith('_list')) {
+        		return value.split(',');
+            }
+        	return value;    
+        }
+
+		if (key.match(/,/g)) {
+        	return key.split(',');
+        }
+
+        return key;
+    }
+
+	function tokenOrList(token) {
+    	if (token.match(/,/)) {
+        	return token.split(',');
+        }
+      	return token;
+    }
+
 	function makeTopic(msg) {
         if (!msg || msg.length <= 1) {
         	return null;
@@ -112,7 +134,7 @@ Space_KV_List_Tail 'Space_KV_List_Tail'
 	{ return m; }
 Space_KV_Member 'Space_KV_Member'
 	= key:Space_KV_Token eq:'='? value:Space_KV_Token?
-	{ return eq ? [key, value] : key; }
+	{ return eq ? [key, listValue(key, value)] : listValue(key); }
 Space_KV_Token 'Space_KV_Token'
 	= chars:[^ =\t]+
 	{ return chars.join(''); }

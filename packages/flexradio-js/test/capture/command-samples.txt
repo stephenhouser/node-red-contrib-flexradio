@@ -55,3 +55,7 @@ S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx
 R5|0|ANT1,ANT2,RX_A
 This is an invalid line that should cause an error
 R60|0|
+S10C05077|profile mic list=Default^Default FHM-1^Default FHM-1 DX^Default FHM-2^Default FHM-2 DX^Default FHM-2 ESSB^Default FHM-3^Default FHM-3 DX^Default FHM-3 ESSB^Default HM-Pro^Default PR781^Default PR781 ESSB 3_2k^Default ProSet HC6^Inrad M629^Inrad M650^iOS_default_Profile^RadioSport DX M207^RadioSport DX M208^RadioSport DX M350-ADJ^RadioSport DX M360/EM56^RadioSport WIDE M207^RadioSport WIDE M208^RadioSport WIDE M350-ADJ^RadioSport WIDE M360/EM56^RTTYDefault^
+S10C05077|profile mic current=Default
+R8|0|ANT1,ANT2,RX_A,RX_B,XVTA,XVTB
+R9|0|MIC,BAL,LINE,ACC,PC
