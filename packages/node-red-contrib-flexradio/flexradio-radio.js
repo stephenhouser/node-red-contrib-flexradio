@@ -95,10 +95,12 @@ module.exports = function(RED) {
 			}
 
 			const requests = Array.isArray(msg.payload) ? msg.payload : [msg.payload];
+
 			while (requests.length) {
 				const request = requests.pop();
 				node.debug('send: ' + request);
 
+				// Expand named meters and push sub commands to end of request array
 				const subMeterMatch = request.match(/^sub meter (?<meter>[^\d].+)/i);
 				if (subMeterMatch && subMeterMatch.groups.meter != 'all') {
 					const topic = subMeterMatch.groups.meter;
@@ -110,12 +112,12 @@ module.exports = function(RED) {
 					}
 					continue;
 				}
-	
+
 				radio.send(request, function(response) {
 					node.debug('response: ' + JSON.stringify(response));
 	
 					if (response_handler) {
-						// Inject the meter topic into the response.
+						// Synthesize meter topic into 'meter' list responses.
 						if (request.match(/meter list/i) && (response.response_code == 0)) {
 							for (const [meter_number, meter] of Object.entries(response.payload)) {
 								meter.topic = node.meterTopic(meter);
