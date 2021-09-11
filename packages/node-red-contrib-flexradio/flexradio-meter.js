@@ -21,15 +21,15 @@ module.exports = function(RED) {
 
 		const radio = node.radio;
 		radio.on('connecting', function(connection) {
-			updateNodeStatus(connection);
+			updateNodeStatus(connection.payload);
 		});
 
 		radio.on('connected', function(connection) {
-			updateNodeStatus(connection);
+			updateNodeStatus(connection.payload);
 		});
 
 		radio.on('disconnected', function(connection) {
-			updateNodeStatus(connection);
+			updateNodeStatus(connection.payload);
 		});
 
 		radio.on('meter', function(meter) {
@@ -44,8 +44,7 @@ module.exports = function(RED) {
 			};
 		});
 
-		function updateNodeStatus(connection) {
-			const status = connection.payload;
+		function updateNodeStatus(status) {
 			switch (status) {
 				case 'connecting':
 					node.status({ fill: 'green', shape: 'circle', text: status });

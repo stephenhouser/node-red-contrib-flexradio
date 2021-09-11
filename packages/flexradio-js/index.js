@@ -138,7 +138,7 @@ function decode_meter(raw_data) {
 
 // encode_request() -- encode a FlexRadio command/request to be sent on the TCP control stream
 function encode_request(sequence, request) {
-	return 'C' + sequence + '|' + request.toString() + '\n';
+	return 'C' + sequence + '|' + request.toString();
 }
 
 function decode_packet_class(packet_class_code) {

@@ -103,9 +103,10 @@ class Radio extends EventEmitter {
 			const radio = this;
 			this.connection = net.connect(radio.port, radio.host, function() {
 				log_info('Radio.connection.on(\'connect\')');
-				radio._setConnectionState(ConnectionStates.connected);
 				radio._startRealtimeListener();
-				radio._getMeterList();
+				radio._getMeterList(function() {
+					radio._setConnectionState(ConnectionStates.connected);
+				});
 			});
 
 			this.connection.on('data', function(data) {
@@ -186,7 +187,6 @@ class Radio extends EventEmitter {
 	}
 
 	_sendRequest(request, callback) {
-		log_debug('Radio._sendRequest(' + request + ')');
 		const sequenceNumber = this.nextRequestSequenceNumber++;
 		this.requests[sequenceNumber] = {
 			sequence_number: sequenceNumber,
@@ -195,7 +195,8 @@ class Radio extends EventEmitter {
 		};
 
 		const encoded_request = flex.encode_request(sequenceNumber, request);
-		this.connection.write(encoded_request);
+		log_debug('Radio._sendRequest(' + encoded_request + ')');
+		this.connection.write(encoded_request + '\n');
 	}
 
 	// Receives a "chunk" of data on the TCP/IP stream
@@ -246,8 +247,6 @@ class Radio extends EventEmitter {
 
 				default:
 					// 'daxAudio', 'panadapter', 'waterfall', 'opus', ...
-					// console.log(`[${flex_dgram.type}]`);
-					// console.warn('Received real-time data that is not a meter. Not implemented!');
 					this.emit(flex_dgram.type, flex_dgram);
 			}
 		}
@@ -306,6 +305,10 @@ class Radio extends EventEmitter {
 		return this.connectionState;
 	}
 
+	getMeters() {
+		return this.meters;
+	}
+
 	_setConnectionState(state) {
 		this.connectionState = state;
 		this.emit(state, 'tcp');
@@ -317,14 +320,16 @@ class Radio extends EventEmitter {
 	}
 
 	_updateMeterList(meters) {
+		log_debug(`_updateMeterList(${JSON.stringify(meters)}`);
 		const radio = this;
 		radio.meters = { ...radio.meters, ...meters };
 	}
 
-	_getMeterList() {
+	_getMeterList(callback) {
 		const radio = this;
 		this.send('meter list', function(response) {
 			radio._updateMeterList(response.payload);
+			callback();
 		});
 	}
 }
