@@ -19,8 +19,8 @@
     "lint": "npx eslint --fix . || exit 0"
   },
   "dependencies": {
-    "flexradio-js": "^0.7.0",
-    "vita49-js": "^0.7.0"
+    "flexradio-js": "^0.7.4",
+    "vita49-js": "^0.7.4"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
