@@ -5,7 +5,9 @@
         defaults: {
             name: { value: '' },
             radio: { value: '', type: 'flexradio-radio', required: true },
-            topic: { value: '#' },
+            // topic: { value: '#' },
+            topic: { value: '', validate: RED.validators.typedInput('topic_type')},
+            topic_type: { value: 'mqtt'},
             output_mode: { value: 'value', required: true }
         },
         inputs: 0,
@@ -13,6 +15,22 @@
         icon: 'bridge-dash.svg',
         label: function() {
             return this.name || 'flexradio-meter';
+        },
+        oneditprepare: function() {
+            const mqtt_type = {
+                value: 'mqtt',
+                label: 'mqtt expression',
+                icon: 'fa fa-hashtag',
+                hasValue: true,
+                validate: function(value) {
+                    return true;
+                }
+            };
+            $("#node-input-topic").typedInput({
+                default: this.topicType || 'mqtt', 
+                types: ['str', mqtt_type, 're'],
+                typeField: '#node-input-topic_type'
+            });
         }
     });
 </script>
@@ -27,8 +45,9 @@
         <input type="text" id="node-input-radio" placeholder="FlexRadio">
     </div>
     <div class="form-row">
-        <label for="node-input-meter-topic"><i class="fa fa-tag"></i> Topic</label>
-        <input type="text" id="node-input-topic" placeholder="#">
+        <label for="node-input-topic"><i class="fa fa-tag"></i> Topic</label>
+        <input type="text" id="node-input-topic" placeholder="Topic">
+        <input type="hidden" id="node-input-topic_type">
     </div>
     <div class="form-row">
         <label for="node-input-output_mode"><i class="fa fa-sign-in"></i> Output</label>

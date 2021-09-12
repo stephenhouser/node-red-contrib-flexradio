@@ -12,7 +12,11 @@ module.exports = function(RED) {
 		node.name = config.name;
 		node.radio = RED.nodes.getNode(config.radio);
 		node.topic = config.topic;
+		node.topic_type = config.topic_type;
 		node.output_mode = config.output_mode;
+
+		console.log(`TOPIC Type = ${node.topic_type}`);
+		console.log(`TOPIC = ${node.topic}`);
 
 		if (!node.radio) {
 			node.status({ fill: 'red', shape: 'circle', text: 'not configured' });
