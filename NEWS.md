@@ -1,5 +1,33 @@
 Subject: node-red-contrib-flexradio v0.6.0
 
+v0.7.7 - Thursday, September 12, 2021
+
+v0.7.7 of node-red-contrib-flexradio nodes are now available via Manage Pallette and NPM.
+
+There's a number of significant underlying changes in this version. The changes will likely break small portions of existing flows, but not to the extent of previous changes.
+
+* The parsing of data from the TCP control stream has been completely rewritten to be more efficient, cleaner, and to handle some of the cases the previous parser did not. This goes specifically to the caret (^) delimited lists, e.g. `profile list`. Also it adds full translation to JSON objects where the old one fell apart on some responses from the radio.
+
+* With the new parsing of TCP data the topics are now consistent across status, messages, and responses as well as with topics emitted from the `flexradio-meter` node.
+
+* The topic-matching system for `flexradio-messages` and `flexradio-meters` has been rewritten to be consistent across both of these nodes and to allow the choice of filtering topics based on an (1) exact string match, (2) an MQTT-like topic as in previous versions, or (3) a JavaScript regular expression. The regular expression was added to maintain consistency with other standard nodered nodes and to avoid confusion about matching MQTT-like topics.
+
+* The icons have changed in a few places. The most notable is the `flexradio-meter` and `flexradio-discovery` nodes have new icons.
+
+* The `flexradio-discovery` node was updated to fix how it generates it's payload.
+
+* The top-level nodes not check the radio connection periodically for state change. Previously they had to catch the state change to update. When only portions of a flow were deployed this would sometimes fail.
+
+* The top-level nodes now properly handle the `node.on('close')` which they did not previously.
+
+* The low-level VITA-49 and UDP decoding have the beginnings of support for audio, IQ, panadapter, and waterfall data. It is far from complete but the structure is now in place to support it in future versions.
+
+* Some new example flows have been added and can be imported from "Import" / "Examples".
+
+---
+
+Subject: node-red-contrib-flexradio v0.6.0
+
 v0.6.0 - Thursday, September 2, 2021
 
 Apologies for starting a new topic so soon after the last v0.5.0 release topic. But I figured I'd create a new topic for each feature release.
