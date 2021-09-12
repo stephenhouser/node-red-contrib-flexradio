@@ -4,9 +4,6 @@
  */
 const { Radio } = require('flexradio-js/Radio');
 
-// TODO: Make RECONNECT_TIMEOUT a configuration parameter for the node
-const RECONNECT_TIMEOUT = 15000;
-
 module.exports = function(RED) {
 	'use strict';
 
@@ -17,6 +14,9 @@ module.exports = function(RED) {
 		node.name = config.name;
 		node.host = config.host;
 		node.port = Number(config.port);
+
+		// TODO: Make RECONNECT_TIMEOUT a configuration parameter for the node
+		node.reconnectTimeout = 15000;
 		node.closing = false;
 
 		// Allows any number of listeners to attach. Default is 10
@@ -29,22 +29,22 @@ module.exports = function(RED) {
 			const radio = node.radio;
 
 			radio.on('connecting', function(data) {
-				emitNodeState(data);
+				updateNodeStatus(data);
 			});
 
 			radio.on('connected', function(data) {
-				emitNodeState(data);
+				updateNodeStatus(data);
 			});
 
 			radio.on('message', function(message) {
 				node.debug('message: ' + JSON.stringify(message));
-				const output_msg = {
+				const output_message = {
 					topic: message.type,
 					message_id: message.message_id,
 					payload: message.payload
 				};
 
-				node.emit('message', message);
+				node.emit('message', output_message);
 			});
 
 			radio.on('status', function(status) {
@@ -75,11 +75,11 @@ module.exports = function(RED) {
 			});
 
 			radio.on('disconnected', function(data) {
-				emitNodeState(data);
+				updateNodeStatus(data);
 
-				clearInterval(node.reconnectTimeout);
+				clearInterval(node.reconnectTimer);
 				if (!node.closing) {
-					node.reconnectTimeout = setTimeout(() => {
+					node.reconnectTimer = setTimeout(() => {
 						radio.connect();
 					}, RECONNECT_TIMEOUT);
 				}
@@ -89,13 +89,12 @@ module.exports = function(RED) {
 		};
 
 		node.send = function(msg, response_handler) {
-			const radio = node.radio;			
-			if (!msg || !msg.payload || !radio) {
+			if (!msg || !msg.payload || !node.radio) {
 				return;
 			}
 
+			const radio = node.radio;
 			const requests = Array.isArray(msg.payload) ? msg.payload : [msg.payload];
-
 			while (requests.length) {
 				const request = requests.pop();
 				node.debug('send: ' + request);
@@ -110,12 +109,13 @@ module.exports = function(RED) {
 							requests.push('sub meter ' + meter_number);
 						}
 					}
+
 					continue;
 				}
 
 				radio.send(request, function(response) {
 					node.debug('response: ' + JSON.stringify(response));
-	
+
 					if (response_handler) {
 						// Synthesize meter topic into 'meter' list responses.
 						if (request.match(/meter list/i) && (response.response_code == 0)) {
@@ -123,14 +123,14 @@ module.exports = function(RED) {
 								meter.topic = node.meterTopic(meter);
 							};
 						}
-	
+
 						const response_data = {
 							request: request,
 							sequence_number: response.sequence_number,
 							status_code: response.response_code,
 							payload: response.payload
 						};
-	
+
 						response_handler(response_data);
 					}
 				});
@@ -163,13 +163,17 @@ module.exports = function(RED) {
 		};
 
 		node.radioName = function() {
-			const radio = this.radio;
-			return radio.nickname ? radio.nickname : (radio.host + ':' + radio.port);
+			if (node.radio) {
+				const radio = node.radio;
+				return radio.nickname ? radio.nickname : (radio.host + ':' + radio.port);
+			}
+
+			return null;
 		};
 
 		node.connectionState = function() {
-			return node.radio.getConnectionState();
-		}
+			return (node.radio) ? node.radio.getConnectionState() : 'disconnected';
+		};
 
 		node.on('close', function(done) {
 			node.log('closing host=' + node.host + ' port=' + node.port);
@@ -177,12 +181,13 @@ module.exports = function(RED) {
 			node.closing = true;
 			if (node.radio) {
 				node.radio.disconnect();
+				node.radio = null;
 			}
 
 			done();
 		});
 
-		function emitNodeState(data) {
+		function updateNodeStatus(data) {
 			node.state = '';
 			if (node.radio) {
 				node.state = node.radio.getConnectionState();

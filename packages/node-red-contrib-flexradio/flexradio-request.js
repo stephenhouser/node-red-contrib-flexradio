@@ -40,6 +40,12 @@ module.exports = function(RED) {
 			updateNodeStatus(connection.payload);
 		});
 
+		node.on('close', function(done) {
+			updateNodeStatus('closed');
+			clearInterval(node.statusUpdate);
+			done();
+		});
+
 		function updateNodeStatus(status) {
 			switch (status) {
 				case 'connecting':
@@ -58,7 +64,7 @@ module.exports = function(RED) {
 		}
 
 		updateNodeStatus('starting');
-		setInterval(function() {
+		node.statusUpdate = setInterval(function() {
 			updateNodeStatus(radio.connectionState());
 		}, 5000);
 	}

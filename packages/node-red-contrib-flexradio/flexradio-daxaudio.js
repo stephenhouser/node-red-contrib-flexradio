@@ -43,6 +43,12 @@ module.exports = function(RED) {
 			node.send(msg);
 		});
 
+		node.on('close', function(done) {
+			updateNodeStatus('closed');
+			clearInterval(node.statusUpdate);
+			done();
+		});
+
 		function updateNodeStatus(connection) {
 			const status = connection.payload;
 			switch (status) {
@@ -62,6 +68,9 @@ module.exports = function(RED) {
 		}
 
 		updateNodeStatus('starting');
+		node.statusUpdate = setInterval(function() {
+			updateNodeStatus(radio.connectionState());
+		}, 5000);
 	}
 
 	RED.nodes.registerType('flexradio-daxaudio', FlexRadioDAXAudioNode);
