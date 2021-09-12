@@ -81,7 +81,7 @@ module.exports = function(RED) {
 				if (!node.closing) {
 					node.reconnectTimer = setTimeout(() => {
 						radio.connect();
-					}, RECONNECT_TIMEOUT);
+					}, node.reconnectTimeout);
 				}
 			});
 
