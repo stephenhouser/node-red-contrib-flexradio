@@ -30,11 +30,12 @@ module.exports = function(RED) {
 				node.status({ fill: 'red', shape: 'circle', text: 'error' });
 			});
 
-			discoveryListener.on('radio', function(radio_data) {
+			discoveryListener.on('discovery', function(discovery) {
 				// node.log('discovered radio ' + radio_data);
 				node.status({ fill: 'green', shape: 'dot', text: 'radio found' });
 				const msg = {
-					payload: radio_data
+					topic: discovery.type,
+					payload: discovery.payload
 				};
 
 				node.send(msg);

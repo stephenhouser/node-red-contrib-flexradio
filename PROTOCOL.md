@@ -4,6 +4,14 @@ This document shows by example the data format as it is moves through the layers
 
 These are used to document what we want the data to look like and can be used as test cases.
 
+## Discovery messages
+
+### Raw TCP data
+### Parser/Radio.js output
+
+### Node/flexradio-message output
+
+
 ## Version messages
 
 There will be one of these at connection time. They are not sent thereafter. This is the version of the protocol.

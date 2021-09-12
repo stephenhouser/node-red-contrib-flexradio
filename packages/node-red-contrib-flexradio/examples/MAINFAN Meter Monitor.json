@@ -1,0 +1,148 @@
+[
+    {
+        "id": "34b693d8da2eedd4",
+        "type": "flexradio-meter",
+        "z": "d4985d9b94d7e42d",
+        "name": "",
+        "radio": "7fbf2bfc9badc7d3",
+        "topic": "RAD/+/MAINFAN",
+        "output_mode": "value",
+        "x": 140,
+        "y": 220,
+        "wires": [
+            [
+                "8627cb5ddf246d21",
+                "2651e08d3642bc8d"
+            ]
+        ]
+    },
+    {
+        "id": "44777ef99eb60357",
+        "type": "comment",
+        "z": "d4985d9b94d7e42d",
+        "name": "Inject radio meters with flexradio-meter (SWR, Fan speed, Mic levels, etc.)",
+        "info": "",
+        "x": 300,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "8627cb5ddf246d21",
+        "type": "debug",
+        "z": "d4985d9b94d7e42d",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 570,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "648213094d7efc27",
+        "type": "inject",
+        "z": "d4985d9b94d7e42d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "sub meter 18",
+        "payloadType": "str",
+        "x": 160,
+        "y": 120,
+        "wires": [
+            [
+                "df1a645485ec8f29"
+            ]
+        ]
+    },
+    {
+        "id": "df1a645485ec8f29",
+        "type": "flexradio-request",
+        "z": "d4985d9b94d7e42d",
+        "name": "",
+        "radio": "7fbf2bfc9badc7d3",
+        "x": 370,
+        "y": 120,
+        "wires": [
+            [
+                "7ae871d3298c339a"
+            ]
+        ]
+    },
+    {
+        "id": "8f49b528e31f4ba9",
+        "type": "comment",
+        "z": "d4985d9b94d7e42d",
+        "name": "Subscribe to meters or other data from the radio",
+        "info": "",
+        "x": 220,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "7ae871d3298c339a",
+        "type": "debug",
+        "z": "d4985d9b94d7e42d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 550,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "b111b6e32c072862",
+        "type": "comment",
+        "z": "d4985d9b94d7e42d",
+        "name": "Track radio meters and interface changes",
+        "info": "",
+        "x": 180,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "2651e08d3642bc8d",
+        "type": "function",
+        "z": "d4985d9b94d7e42d",
+        "name": "Fan speed",
+        "func": "node.status({fill:\"green\",shape:\"dot\",text:msg.payload});\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7fbf2bfc9badc7d3",
+        "type": "flexradio-radio",
+        "name": "",
+        "host": "flex-6600m",
+        "port": "4992",
+        "station_name": "NodeRed",
+        "slice_mode": "headless",
+        "slice_name": "A"
+    }
+]

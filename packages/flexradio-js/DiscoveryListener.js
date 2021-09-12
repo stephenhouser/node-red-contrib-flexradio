@@ -90,7 +90,7 @@ class DiscoveryListener extends EventEmitter {
 			const radio_descriptor = flex.decode_discovery(discovery_payload);
 			if (radio_descriptor) {
 				log_debug('DiscoveryListener::_receiveData(' + JSON.stringify(radio_descriptor) + ')');
-				this.emit('radio', radio_descriptor);
+				this.emit('discovery', radio_descriptor);
 			}
 		}
 	}
