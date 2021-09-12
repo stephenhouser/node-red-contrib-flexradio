@@ -104,7 +104,7 @@ module.exports = function(RED) {
 				if (subMeterMatch && subMeterMatch.groups.meter != 'all') {
 					const topic = subMeterMatch.groups.meter;
 					for (const [meter_number, meter] of Object.entries(radio.getMeters())) {
-						if (node.matchTopic(topic, node.meterTopic(meter))) {
+						if (node.matchTopic(topic, node.meterTopic(meter), 'mqtt')) {
 							node.debug(`send: Translate meter '${topic}' to '${meter_number}'`);
 							requests.push('sub meter ' + meter_number);
 						}
@@ -145,9 +145,26 @@ module.exports = function(RED) {
 			}
 		};
 
-		node.matchTopic = function(pattern, topic) {
+		node.matchTopic = function(pattern, topic, match_type) {
+			if (!pattern || pattern === '') {
+				// empty pattern value will match everything
+				return true;
+			}
+
+			switch (match_type) {
+				case 're':
+					return topic.match(pattern);
+				case 'str':
+					return pattern === topic;
+				default:
+				case 'mqtt':
+					return matchMQTTTopic(pattern, topic);
+			}
+		};
+
+		function matchMQTTTopic(pattern, topic) {
 			// default value and match all is always true
-			if (!pattern || pattern === '' || pattern === '#') {
+			if (pattern === '#') {
 				return true;
 			}
 

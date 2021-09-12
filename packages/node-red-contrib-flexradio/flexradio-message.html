@@ -5,13 +5,30 @@
         defaults: {
             name: { value: '' },
             radio: { value: '', type: 'flexradio-radio', required: true },
-            topic: { value: '#' }
+            topic: { value: '', validate: RED.validators.typedInput('topic_type')},
+            topic_type: { value: 'mqtt', required: true },
         },
         inputs: 0,
         outputs: 1,
         icon: 'bridge.svg',
         label: function() {
             return this.name || 'flexradio-message';
+        },
+        oneditprepare: function() {
+            const mqtt_type = {
+                value: 'mqtt',
+                label: 'mqtt expression',
+                icon: 'fa fa-hashtag',
+                hasValue: true,
+                validate: function(value) {
+                    return true;
+                }
+            };
+            $("#node-input-topic").typedInput({
+                default: this.topicType || 'mqtt', 
+                types: ['str', mqtt_type, 're'],
+                typeField: '#node-input-topic_type'
+            });
         }
     });
 </script>
@@ -27,6 +44,7 @@
     </div>
     <div id="topic" class="form-row">
         <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
-        <input type="text" id="node-input-topic" placeholder="#">
+        <input type="text" id="node-input-topic" placeholder="Topic">
+        <input type="hidden" id="node-input-topic_type">
     </div>
 </script>

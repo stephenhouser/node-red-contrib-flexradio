@@ -5,9 +5,8 @@
         defaults: {
             name: { value: '' },
             radio: { value: '', type: 'flexradio-radio', required: true },
-            // topic: { value: '#' },
             topic: { value: '', validate: RED.validators.typedInput('topic_type')},
-            topic_type: { value: 'mqtt'},
+            topic_type: { value: 'mqtt', required: true },
             output_mode: { value: 'value', required: true }
         },
         inputs: 0,

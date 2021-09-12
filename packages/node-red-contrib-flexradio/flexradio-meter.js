@@ -15,9 +15,6 @@ module.exports = function(RED) {
 		node.topic_type = config.topic_type;
 		node.output_mode = config.output_mode;
 
-		console.log(`TOPIC Type = ${node.topic_type}`);
-		console.log(`TOPIC = ${node.topic}`);
-
 		if (!node.radio) {
 			node.status({ fill: 'red', shape: 'circle', text: 'not configured' });
 			return;
@@ -38,7 +35,7 @@ module.exports = function(RED) {
 
 		radio.on('meter', function(meter) {
 			const topic = radio.meterTopic(meter);
-			if (radio.matchTopic(node.topic, topic)) {
+			if (radio.matchTopic(node.topic, topic, node.topic_type)) {
 				const msg = {
 					topic: topic,
 					payload: node.output_mode == 'value' ? meter.value : meter

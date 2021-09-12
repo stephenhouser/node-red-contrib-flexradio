@@ -12,6 +12,7 @@ module.exports = function(RED) {
 		node.name = config.name;
 		node.radio = RED.nodes.getNode(config.radio);
 		node.topic = config.topic;
+		node.topic_type = config.topic_type;
 
 		if (!node.radio) {
 			node.status({ fill: 'red', shape: 'circle', text: 'not configured' });
@@ -22,7 +23,7 @@ module.exports = function(RED) {
 		radio.on('connecting', function(connection) {
 			updateNodeStatus(connection.payload);
 
-			if (radio.matchTopic(node.topic, connection.topic)) {
+			if (radio.matchTopic(node.topic, connection.topic, node.topic_type)) {
 				node.send(connection);
 			}
 		});
@@ -30,7 +31,7 @@ module.exports = function(RED) {
 		radio.on('connected', function(connection) {
 			updateNodeStatus(connection.payload);
 
-			if (radio.matchTopic(node.topic, connection.topic)) {
+			if (radio.matchTopic(node.topic, connection.topic, node.topic_type)) {
 				node.send(connection);
 			}
 		});
@@ -38,19 +39,19 @@ module.exports = function(RED) {
 		radio.on('disconnected', function(connection) {
 			updateNodeStatus(connection.payload);
 
-			if (radio.matchTopic(node.topic, connection.topic)) {
+			if (radio.matchTopic(node.topic, connection.topic, node.topic_type)) {
 				node.send(connection);
 			}
 		});
 
 		radio.on('message', function(message) {
-			if (radio.matchTopic(node.topic, message.topic)) {
+			if (radio.matchTopic(node.topic, message.topic, node.topic_type)) {
 				node.send(message);
 			}
 		});
 
 		radio.on('status', function(status) {
-			if (radio.matchTopic(node.topic, status.topic)) {
+			if (radio.matchTopic(node.topic, status.topic, node.topic_type)) {
 				node.send(status);
 			}
 		});
