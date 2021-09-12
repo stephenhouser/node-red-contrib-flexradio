@@ -1,12 +1,19 @@
 [
     {
+        "id": "cd2c91a331ba76e5",
+        "type": "tab",
+        "label": "Discovery Dashboard",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "e816dcc7c981cc46",
         "type": "flexradio-discovery",
-        "z": "f10ab0ce06103a06",
+        "z": "cd2c91a331ba76e5",
         "name": "",
         "port": 4992,
-        "x": 190,
-        "y": 640,
+        "x": 130,
+        "y": 100,
         "wires": [
             [
                 "0e3e3da2b75be21d"
@@ -16,7 +23,7 @@
     {
         "id": "ce4e2255eaa7be8b",
         "type": "ui_text",
-        "z": "f10ab0ce06103a06",
+        "z": "cd2c91a331ba76e5",
         "group": "934a16b21c57e5d4",
         "order": 11,
         "width": 0,
@@ -25,14 +32,14 @@
         "label": "Model",
         "format": "{{msg.payload.model}}",
         "layout": "row-spread",
-        "x": 690,
-        "y": 640,
+        "x": 610,
+        "y": 160,
         "wires": []
     },
     {
         "id": "9b4795e9f3f20129",
         "type": "ui_text",
-        "z": "f10ab0ce06103a06",
+        "z": "cd2c91a331ba76e5",
         "group": "934a16b21c57e5d4",
         "order": 11,
         "width": 0,
@@ -41,14 +48,14 @@
         "label": "Version",
         "format": "{{msg.payload.version}}",
         "layout": "row-spread",
-        "x": 700,
-        "y": 680,
+        "x": 620,
+        "y": 200,
         "wires": []
     },
     {
         "id": "67dc77b10a31d7d2",
         "type": "ui_text",
-        "z": "f10ab0ce06103a06",
+        "z": "cd2c91a331ba76e5",
         "group": "934a16b21c57e5d4",
         "order": 11,
         "width": 0,
@@ -57,14 +64,14 @@
         "label": "Callsign",
         "format": "{{msg.payload.callsign}}",
         "layout": "row-spread",
-        "x": 700,
-        "y": 720,
+        "x": 620,
+        "y": 240,
         "wires": []
     },
     {
         "id": "e95b44be6d970f2b",
         "type": "ui_text",
-        "z": "f10ab0ce06103a06",
+        "z": "cd2c91a331ba76e5",
         "group": "934a16b21c57e5d4",
         "order": 11,
         "width": 0,
@@ -73,14 +80,14 @@
         "label": "Status",
         "format": "{{msg.payload.status}}",
         "layout": "row-spread",
-        "x": 690,
-        "y": 760,
+        "x": 610,
+        "y": 280,
         "wires": []
     },
     {
         "id": "20678c261e557ed6",
         "type": "ui_text",
-        "z": "f10ab0ce06103a06",
+        "z": "cd2c91a331ba76e5",
         "group": "934a16b21c57e5d4",
         "order": 11,
         "width": 0,
@@ -89,14 +96,14 @@
         "label": "Radio Name",
         "format": "{{msg.payload.nickname}}",
         "layout": "row-spread",
-        "x": 710,
-        "y": 600,
+        "x": 630,
+        "y": 120,
         "wires": []
     },
     {
         "id": "0e3e3da2b75be21d",
         "type": "trigger",
-        "z": "f10ab0ce06103a06",
+        "z": "cd2c91a331ba76e5",
         "name": "",
         "op1": "",
         "op2": "{\"status\":\"Off\"}",
@@ -110,8 +117,8 @@
         "bytopic": "all",
         "topic": "topic",
         "outputs": 1,
-        "x": 390,
-        "y": 640,
+        "x": 370,
+        "y": 200,
         "wires": [
             [
                 "20678c261e557ed6",
@@ -126,8 +133,8 @@
     {
         "id": "3b12972d1eb5a36b",
         "type": "change",
-        "z": "f10ab0ce06103a06",
-        "name": "Save Discovery",
+        "z": "cd2c91a331ba76e5",
+        "name": "Save Discovery to flow",
         "rules": [
             {
                 "t": "set",
@@ -149,26 +156,66 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 400,
-        "y": 720,
+        "x": 660,
+        "y": 380,
         "wires": [
             []
         ]
     },
     {
+        "id": "e2a9cb77eecd33d8",
+        "type": "comment",
+        "z": "cd2c91a331ba76e5",
+        "name": "Radio Discovery Dashboard Example",
+        "info": "",
+        "x": 170,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "2d65f82bbbea5118",
+        "type": "comment",
+        "z": "cd2c91a331ba76e5",
+        "name": "Send status \"Off\" if no discoverys for 15s",
+        "info": "",
+        "x": 280,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "c309ae443e0abe78",
+        "type": "comment",
+        "z": "cd2c91a331ba76e5",
+        "name": "Save to flow for use in other nodes",
+        "info": "",
+        "x": 700,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "4309fd3e9c27e31b",
+        "type": "comment",
+        "z": "cd2c91a331ba76e5",
+        "name": "UI Dashboard",
+        "info": "",
+        "x": 630,
+        "y": 80,
+        "wires": []
+    },
+    {
         "id": "934a16b21c57e5d4",
         "type": "ui_group",
-        "name": "Home",
+        "name": "Discovery",
         "tab": "2cf42508ef86c162",
         "order": 1,
         "disp": true,
         "width": "6",
-        "collapse": true
+        "collapse": false
     },
     {
         "id": "2cf42508ef86c162",
         "type": "ui_tab",
-        "name": "Radio",
+        "name": "FlexRadio Dashboard",
         "icon": "dashboard",
         "disabled": false,
         "hidden": false
