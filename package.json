@@ -11,8 +11,6 @@
     "test": "npx lerna run test",
     "bootstrap": "npx lerna bootstrap",
     "lint": "npx lerna run lint",
-    "publish": "npx lerna publish",
-    "version": "npx lerna version",
     "clean": "npx lerna clean"
   },
   "repository": {
