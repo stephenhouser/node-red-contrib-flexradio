@@ -44,7 +44,7 @@ class DiscoveryListener extends EventEmitter {
 
 		const discovery = this;
 		if (discovery.discoveryState === DiscoveryStates.stopped) {
-			discovery.discoveryListener = udp.createSocket('udp4');
+			discovery.discoveryListener = udp.createSocket({type: 'udp4', reuseAddr: true});
 
 			const discoveryListener = discovery.discoveryListener;
 
