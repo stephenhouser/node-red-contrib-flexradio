@@ -40,6 +40,8 @@ module.exports = function(RED) {
 		node.port = Number(config.port);
 		node.timeoutSeconds = config.timeout || 15;
 
+		console.log("TIMEOUT == " + node.timeoutSeconds);
+
 		node.closing = false;
 
 		// Allows any number of listeners to attach. Default is 10

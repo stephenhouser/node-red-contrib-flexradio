@@ -5,8 +5,8 @@
             name: { value: '' },
             host: { value: 'flexradio', required: true },
             port: { value: 4992, required: true, validate: RED.validators.number() },
-            timeout: { value: '15', validate: RED.validators.number() },
-            
+            // Advanced properties, hidden by default
+            timeout: { value: '15' },
             station_name: { value: 'NodeRed', required: true },
             slice_mode: { value: 'headless', required: true },
             slice_name: { value: 'A' },
@@ -54,13 +54,14 @@
             </i> Port</label>
         <input type="text" id="node-config-input-port">
     </div>
-    <div class="form-row">
+
+    <!-- TODO: Advanced properties start as display: none  -->
+    <div class="form-row" style="display: none;">
         <label for="node-config-input-timeout"><i class="fa fa-stopwatch">
             </i> Timeout</label>
         <input type="text" id="node-config-input-timeout">
     </div>
-    <!--
-    <div class="form-row">
+    <div class="form-row" style="display: none;">
         <label for="node-config-input-station_mode"><i class="fa fa-sign-in">
             </i> Station</label>
         <select id="node-config-input-station_mode">
@@ -84,5 +85,4 @@
             <option value="D">D</option>
         </select>
     </div>
-    -->
 </script>
