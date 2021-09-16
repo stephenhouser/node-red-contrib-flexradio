@@ -1,4 +1,22 @@
-Subject: node-red-contrib-flexradio v0.6.0
+# News about `node-red-contrib-flexradio`
+
+Releases are posted in the [nodered-hamradio Groups.io](https://groups.io/nodered-hamradio) group.
+
+## Subject: Release of node-red-contrib-flexradio nodes v0.8.0
+
+v0.8.0 of node-red-contrib-flexradio nodes are now available via Manage Pallette and NPM.
+
+* Reorder items in node configuration so that the `Name` field is last. This maintains consistency with the built-in NodeRed nodes. This is only a user interface change.
+
+* Clean up the event handlers among the nodes to more gracefully work with re-deploys and not consume extra memory and resources.
+
+* Change the default radio hostname from `localhost` to `flexradio` as the radio hostname will surely never, ever, be `localhost`. It was misleading.
+
+* Update the `vita49-decode` node which enables access to the VITA-49 datagram parser without creating a UDP listner (e.g. the `flexradio-discover` or `flexradio-meter` nodes). This is an advanced feature which may be removed in a future version.
+
+* Add `flexradio-decode` node to enable access to the parser without a connection to the radio. Could be used if you want to manage the TCP connection yourself. An advanced feature which may be removed in a future version.
+
+## Subject: node-red-contrib-flexradio v0.7.0
 
 v0.7.7 - Thursday, September 12, 2021
 
@@ -24,9 +42,7 @@ There's a number of significant underlying changes in this version. The changes 
 
 * Some new example flows have been added and can be imported from "Import" / "Examples".
 
----
-
-Subject: node-red-contrib-flexradio v0.6.0
+## Subject: node-red-contrib-flexradio v0.6.0
 
 v0.6.0 - Thursday, September 2, 2021
 
@@ -40,8 +56,7 @@ I cleaned up the topic in `flexradio-meter` and `flexradio-message` so the defau
 
 **IMPORTANT: The previous `flexradio-status` and `flexradio-messages` (plural) nodes have been removed from this release.** If you were an early adopter, do not upgrade to this release until you have migrated everything with v0.5.0 to the `flexradio-message` (singular) node.
 
----
-Subject: node-red-contrib-flexradio v0.5.0
+## Subject: node-red-contrib-flexradio v0.5.0
 
 v0.5.0 - Thursday, September 2, 2021
 
