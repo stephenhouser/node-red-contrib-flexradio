@@ -38,9 +38,8 @@ module.exports = function(RED) {
 		node.name = config.name;
 		node.host = config.host;
 		node.port = Number(config.port);
+		node.timeoutSeconds = config.timeout || 15;
 
-		// TODO: Make RECONNECT_TIMEOUT a configuration parameter for the node
-		node.reconnectTimeout = 15000;
 		node.closing = false;
 
 		// Allows any number of listeners to attach. Default is 10
@@ -115,7 +114,7 @@ module.exports = function(RED) {
 				if (!node.closing) {
 					node.reconnectTimer = setTimeout(() => {
 						radio.connect();
-					}, node.reconnectTimeout);
+					}, node.timeoutSeconds * 1000);
 				}
 			});
 
