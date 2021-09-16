@@ -14,49 +14,59 @@ module.exports = function(RED) {
 		node.topic = config.topic;
 		node.topic_type = config.topic_type;
 
+		node.listeners = {};
+
 		if (!node.radio) {
 			node.status({ fill: 'red', shape: 'circle', text: 'not configured' });
 			return;
 		}
 
 		const radio = node.radio;
-		radio.on('connecting', function(connection) {
+		node.listeners['connecting'] = function(connection) {
 			updateNodeStatus(connection.payload);
 
 			if (radio.matchTopic(node.topic, connection.topic, node.topic_type)) {
 				node.send(connection);
 			}
-		});
+		}
 
-		radio.on('connected', function(connection) {
+		node.listeners['connected'] = function(connection) {
 			updateNodeStatus(connection.payload);
 
 			if (radio.matchTopic(node.topic, connection.topic, node.topic_type)) {
 				node.send(connection);
 			}
-		});
+		}
 
-		radio.on('disconnected', function(connection) {
+		node.listeners['disconnected'] = function(connection) {
 			updateNodeStatus(connection.payload);
 
 			if (radio.matchTopic(node.topic, connection.topic, node.topic_type)) {
 				node.send(connection);
 			}
-		});
+		}
 
-		radio.on('message', function(message) {
+		node.listeners['message'] = function(message) {
 			if (radio.matchTopic(node.topic, message.topic, node.topic_type)) {
 				node.send(message);
 			}
-		});
+		}
 
-		radio.on('status', function(status) {
+		node.listeners['status'] = function(status) {
 			if (radio.matchTopic(node.topic, status.topic, node.topic_type)) {
 				node.send(status);
 			}
-		});
+		}
 
 		node.on('close', function(done) {
+			// Unsubscribe to radio events from our listeners
+			const radio = node.radio;
+			Object.entries(node.listeners).forEach(function([event, handler]) {
+				if (handler) {
+					radio.off(event, handler)
+				}
+			});
+
 			updateNodeStatus('closed');
 			clearInterval(node.statusUpdate);
 			done();
@@ -79,10 +89,18 @@ module.exports = function(RED) {
 			}
 		}
 
+		// Update this node's status from the config node, in case we miss events
 		updateNodeStatus('starting');
 		node.statusUpdate = setInterval(function() {
 			updateNodeStatus(radio.connectionState());
 		}, 5000);
+
+		// Subscribe to radio events with our listeners
+		Object.entries(node.listeners).forEach(function([event, handler]) {
+			if (handler) {
+				radio.on(event, handler)
+			}
+		});
 	}
 
 	RED.nodes.registerType('flexradio-message', FlexRadioMessageNode);

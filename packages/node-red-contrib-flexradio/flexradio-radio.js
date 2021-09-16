@@ -4,6 +4,30 @@
  */
 const { Radio } = require('flexradio-js/Radio');
 
+const MessageTypes = {
+	connecting: 'connecting',
+	conneced: 'connected',
+	disconneced: 'disconnected',
+	error: 'error',
+	version: 'version',
+	handle: 'handle',
+	message: 'message',
+	status: 'status',
+	response: 'response',
+	meter: 'meter',
+	panadapter: 'panadapter',
+	waterfall: 'waterfall',
+	opus: 'opus',
+	daxReducedBw: 'daxReducedBw',
+	daxIq24: 'daxIq24',
+	daxIq48: 'daxIq48',
+	daxIq96: 'daxIq96',
+	daxIq192: 'daxIq192',
+	daxAudio: 'daxAudio',
+	discovery: 'discovery',
+	unknown: 'unknown'
+};
+
 module.exports = function(RED) {
 	'use strict';
 
@@ -22,6 +46,16 @@ module.exports = function(RED) {
 		// Allows any number of listeners to attach. Default is 10
 		// which is way too few for many flows.
 		node.setMaxListeners(0);
+
+		// Show number of listeners for each emitted event type
+		setInterval(function() {
+			process.stdout.write('-radio listeners: ')
+			Object.entries(MessageTypes).forEach(function([key, value]) {
+				const listeners = node.listeners(value);
+				process.stdout.write(`${value}=${listeners.length}, `);	
+			});
+			process.stdout.write('\n');
+		}, 10000);
 
 		node.log('creating host=' + node.host + ' port=' + node.port);
 		node.radio = new Radio({ ip: node.host, port: node.port });

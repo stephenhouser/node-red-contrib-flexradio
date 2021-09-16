@@ -14,25 +14,27 @@ module.exports = function(RED) {
 		node.topic = config.topic;
 		node.output_mode = config.output_mode;
 
+		node.listeners = {};
+
 		if (!node.radio) {
 			node.status({ fill: 'red', shape: 'circle', text: 'not configured' });
 			return;
 		}
 
 		const radio = node.radio;
-		radio.on('connecting', function(connection) {
+		node.listeners['connecting'] = function(connection) {
+			updateNodeStatus(connection);
+		}
+
+		node.listeners['connected'] = function(connection) {
+			updateNodeStatus(connection);
+		}
+
+		node.listeners['disconnected'] = function(connection) {
 			updateNodeStatus(connection);
 		});
 
-		radio.on('connected', function(connection) {
-			updateNodeStatus(connection);
-		});
-
-		radio.on('disconnected', function(connection) {
-			updateNodeStatus(connection);
-		});
-
-		radio.on('daxAudio', function(daxAudio) {
+		node.listeners['daxAudio'] = function(daxAudio) {
 			// node.debug(JSON.stringify(meter));
 			const msg = {
 				topic: 'daxAudio',
@@ -41,9 +43,17 @@ module.exports = function(RED) {
 			};
 
 			node.send(msg);
-		});
+		}
 
 		node.on('close', function(done) {
+			// Unsubscribe to radio events from our listeners
+			const radio = node.radio;
+			Object.entries(node.listeners).forEach(function([event, handler]) {
+				if (handler) {
+					radio.off(event, handler)
+				}
+			});
+
 			updateNodeStatus('closed');
 			clearInterval(node.statusUpdate);
 			done();
@@ -67,10 +77,17 @@ module.exports = function(RED) {
 			}
 		}
 
+		// Update this node's status from the config node, in case we miss events
 		updateNodeStatus('starting');
 		node.statusUpdate = setInterval(function() {
 			updateNodeStatus(radio.connectionState());
 		}, 5000);
+		// Subscribe to radio events with our listeners
+		Object.entries(node.listeners).forEach(function([event, handler]) {
+			if (handler) {
+				radio.on(event, handler)
+			}
+		});
 	}
 
 	RED.nodes.registerType('flexradio-daxaudio', FlexRadioDAXAudioNode);

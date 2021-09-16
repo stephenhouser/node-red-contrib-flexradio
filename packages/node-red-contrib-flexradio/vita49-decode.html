@@ -3,17 +3,13 @@
         category: 'flexradio',
         color: '#cce5ff',
         defaults: {
-            name: { value: '' },
-            datatype_in: { value: 'buffer', required: true },
-            datatype_out: { value: 'buffer', required: true }
+            name: { value: '' }
         },
         inputs: 1,
         outputs: 1,
         icon: 'parser-json.svg',
         label: function() {
             return this.name || 'vita49-decode';
-        },
-        oneditprepare: function() {
         }
     });
 </script>
@@ -23,23 +19,9 @@
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
-    <div class="form-row">
-        <label for="node-input-datatype_in"><i class="fa fa-sign-in"></i> Input</label>
-        <select id="node-input-datatype_in" style="width:70%;">
-            <option value="buffer" data-i18n="udp.output.buffer">a Buffer</option>
-        </select>
-    </div>
-    <div class="form-row">
-        <label for="node-input-datatype_out"><i class="fa fa-sign-out"></i> Output</label>
-        <select id="node-input-datatype_out" style="width:70%;">
-            <option value="buffer" data-i18n="udp.output.buffer">a Buffer</option>
-            <option value="utf8" data-i18n="udp.output.string">a String</option>
-            <option value="base64" data-i18n="udp.output.base64">a Base64 encoded string</option>
-        </select>
-    </div>
 
 </script>
 
 <script type="text/html" data-help-name="vita49-decode">
-    <p>Decode a raw VITA-49 datagram into a javascript object. This decoder is written specifically for FlexRadio 6xxx series radios and may not work for general VITA-49 datagrams.</p>
+    <p>Decode a raw VITA-49 datagram into a javascript object. This decoder is written specifically for FlexRadio 6xxx series radios and may not work for general VITA-49 datagrams.  This is primarily a diagnostic node allowing use of the VITA-49 parser without a radio connection.<</p>
 </script>
