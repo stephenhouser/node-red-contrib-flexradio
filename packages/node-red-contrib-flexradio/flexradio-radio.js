@@ -48,14 +48,14 @@ module.exports = function(RED) {
 		node.setMaxListeners(0);
 
 		// Show number of listeners for each emitted event type
-		setInterval(function() {
-			process.stdout.write('-radio listeners: ')
-			Object.entries(MessageTypes).forEach(function([key, value]) {
-				const listeners = node.listeners(value);
-				process.stdout.write(`${value}=${listeners.length}, `);	
-			});
-			process.stdout.write('\n');
-		}, 10000);
+		// setInterval(function() {
+		// 	process.stdout.write('-radio listeners: ')
+		// 	Object.entries(MessageTypes).forEach(function([key, value]) {
+		// 		const listeners = node.listeners(value);
+		// 		process.stdout.write(`${value}=${listeners.length}, `);	
+		// 	});
+		// 	process.stdout.write('\n');
+		// }, 10000);
 
 		node.log('creating host=' + node.host + ' port=' + node.port);
 		node.radio = new Radio({ ip: node.host, port: node.port });
