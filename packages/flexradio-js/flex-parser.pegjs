@@ -1,14 +1,18 @@
 {
+	function tokenValue(token) {
+    	return isNaN(Number(token)) ? token : Number(token);
+    }
+    
 	function listValue(key, value) {
     	if (value) {
-        	if (key.endsWith('_list')) {
-        		return value.split(',');
+        	if (typeof key === 'string' && key.endsWith('_list')) {
+        		return value.split(',').map(tokenValue);
             }
-        	return value;    
+        	return tokenValue(value);    
         }
 
-		if (key.match(/,/g)) {
-        	return key.split(',');
+		if (typeof key === 'string' && key.match(/,/g)) {
+        	return key.split(',').map(tokenValue);
         }
 
         return key;
@@ -21,7 +25,7 @@
         
 	    const topic = [];
   		msg.forEach(function(t) {
-        	if (typeof t === 'string') {
+        	if (typeof t === 'string' || typeof t === 'number') {
 	           	topic.push(t);
 	        }
 	    });
@@ -130,7 +134,7 @@ Space_KV_Member 'Space_KV_Member'
 	{ return eq ? [key, listValue(key, value)] : listValue(key); }
 Space_KV_Token 'Space_KV_Token'
 	= chars:[^ =\t]+
-	{ return chars.join(''); }
+	{ return tokenValue(chars.join('')); }
 
 Comma_KV_List 'Comma_KV_List'
 	= head:Comma_KV_Member tail:(Comma_KV_List_Tail)* Comma?
