@@ -4,8 +4,8 @@ const EventEmitter = require('events');
 const vita49 = require('vita49-js');
 const flex = require('flexradio-js');
 
-const log_debug = function(msg) { }; // { console.log(msg); }
 const log_info = function(msg) { console.log(msg); };
+const log_debug = function(msg) { };
 
 const DiscoveryStates = {
 	connecting: 'connecting',

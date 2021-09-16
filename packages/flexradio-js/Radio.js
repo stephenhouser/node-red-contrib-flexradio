@@ -5,8 +5,8 @@ const EventEmitter = require('events');
 
 const flex = require('flexradio-js');
 
-const log_debug = function(msg) { console.log(msg); };
 const log_info = function(msg) { console.log(msg); };
+const log_debug = function(msg) { console.log(msg); };
 const log_debug_realtime = function(msg) {  };
 
 const CLIENT_SETUP_COMMAND_DELAY = 1000;
