@@ -1,95 +1,48 @@
 [
     {
-        "id": "cd2c91a331ba76e5",
+        "id": "d41e4f69218cfc53",
         "type": "tab",
         "label": "Discovery Dashboard",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "e816dcc7c981cc46",
+        "id": "3ffa9f63571820cb",
         "type": "flexradio-discovery",
-        "z": "cd2c91a331ba76e5",
+        "z": "d41e4f69218cfc53",
         "name": "",
         "port": 4992,
-        "x": 130,
+        "x": 150,
         "y": 100,
         "wires": [
             [
-                "0e3e3da2b75be21d"
+                "d4a5151f0e97c0a4",
+                "054fb893e0425ccb"
             ]
         ]
     },
     {
-        "id": "ce4e2255eaa7be8b",
-        "type": "ui_text",
-        "z": "cd2c91a331ba76e5",
-        "group": "934a16b21c57e5d4",
-        "order": 11,
-        "width": 0,
-        "height": 0,
+        "id": "d4a5151f0e97c0a4",
+        "type": "debug",
+        "z": "d41e4f69218cfc53",
         "name": "",
-        "label": "Model",
-        "format": "{{msg.payload.model}}",
-        "layout": "row-spread",
-        "x": 610,
-        "y": 160,
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 390,
+        "y": 100,
         "wires": []
     },
     {
-        "id": "9b4795e9f3f20129",
+        "id": "40061e355a4c05e9",
         "type": "ui_text",
-        "z": "cd2c91a331ba76e5",
-        "group": "934a16b21c57e5d4",
-        "order": 11,
-        "width": 0,
-        "height": 0,
-        "name": "",
-        "label": "Version",
-        "format": "{{msg.payload.version}}",
-        "layout": "row-spread",
-        "x": 620,
-        "y": 200,
-        "wires": []
-    },
-    {
-        "id": "67dc77b10a31d7d2",
-        "type": "ui_text",
-        "z": "cd2c91a331ba76e5",
-        "group": "934a16b21c57e5d4",
-        "order": 11,
-        "width": 0,
-        "height": 0,
-        "name": "",
-        "label": "Callsign",
-        "format": "{{msg.payload.callsign}}",
-        "layout": "row-spread",
-        "x": 620,
-        "y": 240,
-        "wires": []
-    },
-    {
-        "id": "e95b44be6d970f2b",
-        "type": "ui_text",
-        "z": "cd2c91a331ba76e5",
-        "group": "934a16b21c57e5d4",
-        "order": 11,
-        "width": 0,
-        "height": 0,
-        "name": "",
-        "label": "Status",
-        "format": "{{msg.payload.status}}",
-        "layout": "row-spread",
-        "x": 610,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "20678c261e557ed6",
-        "type": "ui_text",
-        "z": "cd2c91a331ba76e5",
-        "group": "934a16b21c57e5d4",
-        "order": 11,
+        "z": "d41e4f69218cfc53",
+        "group": "0654378ffbcd6bf5",
+        "order": 0,
         "width": 0,
         "height": 0,
         "name": "",
@@ -97,19 +50,83 @@
         "format": "{{msg.payload.nickname}}",
         "layout": "row-spread",
         "x": 630,
-        "y": 120,
+        "y": 140,
         "wires": []
     },
     {
-        "id": "0e3e3da2b75be21d",
+        "id": "b687cd2ea9dad90a",
+        "type": "ui_text",
+        "z": "d41e4f69218cfc53",
+        "group": "0654378ffbcd6bf5",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Model",
+        "format": "{{msg.payload.model}}",
+        "layout": "row-spread",
+        "x": 610,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "df62ab91f83c1ef7",
+        "type": "ui_text",
+        "z": "d41e4f69218cfc53",
+        "group": "0654378ffbcd6bf5",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Version",
+        "format": "{{msg.payload.version}}",
+        "layout": "row-spread",
+        "x": 620,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "a17e45a80471e22e",
+        "type": "ui_text",
+        "z": "d41e4f69218cfc53",
+        "group": "0654378ffbcd6bf5",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Callsign",
+        "format": "{{msg.payload.callsign}}",
+        "layout": "row-spread",
+        "x": 620,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "e5ccfb990a95147a",
+        "type": "ui_text",
+        "z": "d41e4f69218cfc53",
+        "group": "0654378ffbcd6bf5",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Radio Status",
+        "format": "{{msg.payload.status}}",
+        "layout": "row-spread",
+        "x": 630,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "054fb893e0425ccb",
         "type": "trigger",
-        "z": "cd2c91a331ba76e5",
+        "z": "d41e4f69218cfc53",
         "name": "",
         "op1": "",
-        "op2": "{\"status\":\"Off\"}",
+        "op2": "{\"status\":\"off\"}",
         "op1type": "pay",
         "op2type": "json",
-        "duration": "15",
+        "duration": "5",
         "extend": false,
         "overrideDelay": false,
         "units": "s",
@@ -117,23 +134,48 @@
         "bytopic": "all",
         "topic": "topic",
         "outputs": 1,
-        "x": 370,
+        "x": 320,
         "y": 200,
         "wires": [
             [
-                "20678c261e557ed6",
-                "ce4e2255eaa7be8b",
-                "9b4795e9f3f20129",
-                "67dc77b10a31d7d2",
-                "e95b44be6d970f2b",
-                "3b12972d1eb5a36b"
+                "40061e355a4c05e9",
+                "b687cd2ea9dad90a",
+                "df62ab91f83c1ef7",
+                "a17e45a80471e22e",
+                "e5ccfb990a95147a",
+                "956e2468180ad7b6"
             ]
         ]
     },
     {
-        "id": "3b12972d1eb5a36b",
+        "id": "ae84ebb1d5520c33",
+        "type": "inject",
+        "z": "d41e4f69218cfc53",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"status\":\"off\"}",
+        "payloadType": "json",
+        "x": 140,
+        "y": 300,
+        "wires": [
+            [
+                "054fb893e0425ccb"
+            ]
+        ]
+    },
+    {
+        "id": "956e2468180ad7b6",
         "type": "change",
-        "z": "cd2c91a331ba76e5",
+        "z": "d41e4f69218cfc53",
         "name": "Save Discovery to flow",
         "rules": [
             {
@@ -157,15 +199,55 @@
         "to": "",
         "reg": false,
         "x": 660,
-        "y": 380,
+        "y": 400,
         "wires": [
             []
         ]
     },
     {
-        "id": "e2a9cb77eecd33d8",
+        "id": "12fa713f3ab1b970",
         "type": "comment",
-        "z": "cd2c91a331ba76e5",
+        "z": "d41e4f69218cfc53",
+        "name": "Save to flow for use in other nodes",
+        "info": "",
+        "x": 700,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "b41591a52c33f420",
+        "type": "comment",
+        "z": "d41e4f69218cfc53",
+        "name": "UI Dashboard",
+        "info": "",
+        "x": 630,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "2a2c6b360539e403",
+        "type": "comment",
+        "z": "d41e4f69218cfc53",
+        "name": "Send status \"Off\" if no discoverys for 15s",
+        "info": "",
+        "x": 300,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "4e4b667045813796",
+        "type": "comment",
+        "z": "d41e4f69218cfc53",
+        "name": "Set to \"off\" at startup",
+        "info": "",
+        "x": 130,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "1d38973d90ecf53d",
+        "type": "comment",
+        "z": "d41e4f69218cfc53",
         "name": "Radio Discovery Dashboard Example",
         "info": "",
         "x": 170,
@@ -173,49 +255,19 @@
         "wires": []
     },
     {
-        "id": "2d65f82bbbea5118",
-        "type": "comment",
-        "z": "cd2c91a331ba76e5",
-        "name": "Send status \"Off\" if no discoverys for 15s",
-        "info": "",
-        "x": 280,
-        "y": 160,
-        "wires": []
-    },
-    {
-        "id": "c309ae443e0abe78",
-        "type": "comment",
-        "z": "cd2c91a331ba76e5",
-        "name": "Save to flow for use in other nodes",
-        "info": "",
-        "x": 700,
-        "y": 340,
-        "wires": []
-    },
-    {
-        "id": "4309fd3e9c27e31b",
-        "type": "comment",
-        "z": "cd2c91a331ba76e5",
-        "name": "UI Dashboard",
-        "info": "",
-        "x": 630,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "934a16b21c57e5d4",
+        "id": "0654378ffbcd6bf5",
         "type": "ui_group",
         "name": "Discovery",
-        "tab": "2cf42508ef86c162",
+        "tab": "261f67a97729a108",
         "order": 1,
         "disp": true,
         "width": "6",
         "collapse": false
     },
     {
-        "id": "2cf42508ef86c162",
+        "id": "261f67a97729a108",
         "type": "ui_tab",
-        "name": "FlexRadio Dashboard",
+        "name": "FlexRadion Dashboard",
         "icon": "dashboard",
         "disabled": false,
         "hidden": false

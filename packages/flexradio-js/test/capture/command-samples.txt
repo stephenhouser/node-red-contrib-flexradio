@@ -1,8 +1,8 @@
-S513F01DA|meter 18.src=RAD#18.num=3#18.nam=MAINFAN#18.low=0.0#18.hi=8192.0#18.desc=Main radio fan RPM#18.unit=RPM#18.fps=0#
 V1.4.0.0
 H3621C7F5
 M10000001|Client connected from IP 192.168.10.20
 R3|0|
+S513F01DA|meter 18.src=RAD#18.num=3#18.nam=MAINFAN#18.low=0.0#18.hi=8192.0#18.desc=Main radio fan RPM#18.unit=RPM#18.fps=0#
 S3621C7F5|radio slices=3 panadapters=3 lineout_gain=60 lineout_mute=0 headphone_gain=50 headphone_mute=0 remote_on_enabled=0 pll_done=0 freq_error_ppb=0 cal_freq=15.000000 tnf_enabled=1 snap_tune_enabled=1 nickname=Flex-6600M callsign=N1SH binaural_rx=0 full_duplex_enabled=0 band_persistence_enabled=1 rtty_mark_default=2125 enforce_private_ip_connections=1 backlight=50 mute_local_audio_when_remote=1 daxiq_capacity=16 daxiq_available=16
 S3621C7F5|radio filter_sharpness VOICE level=2 auto_level=1
 S3621C7F5|radio filter_sharpness CW level=2 auto_level=1
@@ -27,35 +27,45 @@ S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx
 S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier=
 S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
 S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
-S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
-S3621C7F5|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
-R3|0|
-S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
 S3621C7F5|slice 0 in_use=1 sample_rate=24000 RF_frequency=14.074000 client_handle=0x786D7CEC index_letter=A rit_on=0 rit_freq=0 xit_on=0 xit_freq=0 rxant=ANT1 mode=DIGU wide=0 filter_lo=0 filter_hi=3000 step=10 step_list=1,5,10,20,100,250,500,1000 agc_mode=med agc_threshold=67 agc_off_level=10 pan=0x40000000 txant=ANT1 loopa=0 loopb=0 qsk=0 dax=1 dax_clients=1 lock=0 tx=1 active=1 audio_level=31 audio_pan=50 audio_mute=0 record=0 play=disabled record_time=0.0 anf=0 anf_level=0 nr=0 nr_level=0 nb=0 nb_level=50 wnb=0 wnb_level=0 apf=0 apf_level=0 squelch=1 squelch_level=20 diversity=0 diversity_parent=0 diversity_child=0 diversity_index=1342177293 ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB mode_list=LSB,USB,AM,CW,DIGL,DIGU,SAM,FM,NFM,DFM,RTTY fm_tone_mode=OFF fm_tone_value=67.0 fm_repeater_offset_freq=0.000000 tx_offset_freq=0.000000 repeater_offset_dir=SIMPLEX fm_tone_burst=0 fm_deviation=5000 dfm_pre_de_emphasis=0 post_demod_low=300 post_demod_high=3300 rtty_mark=2125 rtty_shift=170 digl_offset=2210 digu_offset=1500 post_demod_bypass=0 rfgain=8 tx_ant_list=ANT1,ANT2,XVTA,XVTB
 S3621C7F5|waveform installed_list=
 R4|0|
 S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
-S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
-S6EBCFFCF|slice 0 RF_frequency=14.074000 wide=0 lock=0
-S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
-S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
-S6EBCFFCF|slice 0 RF_frequency=14.074000 wide=0 lock=0
-S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
-S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
-S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
 R5|0|ANT1,ANT2,RX_A
 This is an invalid line that should cause an error
-R60|0|
 S10C05077|profile mic list=Default^Default FHM-1^Default FHM-1 DX^Default FHM-2^Default FHM-2 DX^Default FHM-2 ESSB^Default FHM-3^Default FHM-3 DX^Default FHM-3 ESSB^Default HM-Pro^Default PR781^Default PR781 ESSB 3_2k^Default ProSet HC6^Inrad M629^Inrad M650^iOS_default_Profile^RadioSport DX M207^RadioSport DX M208^RadioSport DX M350-ADJ^RadioSport DX M360/EM56^RadioSport WIDE M207^RadioSport WIDE M208^RadioSport WIDE M350-ADJ^RadioSport WIDE M360/EM56^RTTYDefault^
 S10C05077|profile mic current=Default
 R8|0|ANT1,ANT2,RX_A,RX_B,XVTA,XVTB
 R9|0|MIC,BAL,LINE,ACC,PC
+S7FE7BBA0|waveform installed_list=
+S3D63A6E7|profile tx list=Default^iOS_default_Profile^SO2R_TX1^SO2R_TX2^
+S3D63A6E7|profile tx current=Default
+S3D63A6E7|profile mic current=Default FHM-3
+R3|0|0x19935575
+S3D63A6E7|slice 0 dax=0 dax_clients=0 
+S3D63A6E7|slice 0 dax=1 dax_clients=0 
+C7|stream create type=dax_rx dax_channel=1
+S3D63A6E7|slice 0 dax=1 dax_clients=0 
+S3D63A6E7|stream 0x04000008 type=dax_rx dax_channel=1 slice=A client_handle=0x3D63A6E7 ip=192.168.10.20
+S3D63A6E7|stream 0x04000008 type=dax_rx dax_channel=1 slice=A client_handle=0x3D63A6E7 ip=192.168.10.20
+R7|0|4000008
+C8|audio stream 0x4000008 slice 0 gain 50
+R8|0|
+C9|stream create type=dax_tx1
+S3D63A6E7|stream 0x84000000 type=dax_tx client_handle=0x3D63A6E7 tx=1 ip=192.168.10.20
+R9|0|84000000
+S7FE7BBA0|slice 0 RF_frequency=14.074010 wide=0 lock=1
+S3D63A6E7|stream 0x04000008 removed
+S3D63A6E7|stream 0x84000000 removed
+C6|slice t 0 14.074055
+S7FE7BBA0|slice 0 RF_frequency=14.074010 wide=0 lock=1
+R6|50000068|Unable to tune a locked slice -- unlock first
+C16|slice t 0 14.074000
+S7FE7BBA0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier= 
+S7FE7BBA0|transmit freq=14.074000 lo=100 hi=2900 tx_filter_changes_allowed=1 
+R16|0|
+C17|xmit 0
+R17|0|
+S7FE7BBA0|client 0x19935575 connected local_ptt=1 client_id=157225CF-028B-4ABB-939D-7AA912859B2D program=SmartSDR-M station=Maestro
+C2|client bind client_id=157225CF-028B-4ABB-939D-7AA912859B2D
+R2|0|0x19935575
