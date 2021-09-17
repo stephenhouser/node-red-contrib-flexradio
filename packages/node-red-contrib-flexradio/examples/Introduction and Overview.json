@@ -1,0 +1,270 @@
+[
+    {
+        "id": "fe0426b0e092c814",
+        "type": "tab",
+        "label": "Introduction and Overview",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "b0c01338af5e9f66",
+        "type": "flexradio-discovery",
+        "z": "fe0426b0e092c814",
+        "name": "",
+        "port": 4992,
+        "x": 150,
+        "y": 120,
+        "wires": [
+            [
+                "318a24ded19d7d4f"
+            ]
+        ]
+    },
+    {
+        "id": "318a24ded19d7d4f",
+        "type": "debug",
+        "z": "fe0426b0e092c814",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 430,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "c8f10835b473d172",
+        "type": "flexradio-message",
+        "z": "fe0426b0e092c814",
+        "name": "",
+        "radio": "96ce77470f014789",
+        "topic": "",
+        "topic_type": "mqtt",
+        "x": 150,
+        "y": 220,
+        "wires": [
+            [
+                "4260720575b8c897"
+            ]
+        ]
+    },
+    {
+        "id": "4260720575b8c897",
+        "type": "debug",
+        "z": "fe0426b0e092c814",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 430,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "8d99fd14099a344d",
+        "type": "flexradio-request",
+        "z": "fe0426b0e092c814",
+        "name": "",
+        "radio": "96ce77470f014789",
+        "x": 450,
+        "y": 380,
+        "wires": [
+            [
+                "e20fea9133ec25c6"
+            ]
+        ]
+    },
+    {
+        "id": "e20fea9133ec25c6",
+        "type": "debug",
+        "z": "fe0426b0e092c814",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "0751e84ac8ed0c1e",
+        "type": "inject",
+        "z": "fe0426b0e092c814",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "meter list",
+        "payloadType": "str",
+        "x": 140,
+        "y": 400,
+        "wires": [
+            [
+                "8d99fd14099a344d"
+            ]
+        ]
+    },
+    {
+        "id": "7a78427844b24e12",
+        "type": "inject",
+        "z": "fe0426b0e092c814",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "sub meter RAD/3/MAINFAN",
+        "payloadType": "str",
+        "x": 200,
+        "y": 460,
+        "wires": [
+            [
+                "8d99fd14099a344d"
+            ]
+        ]
+    },
+    {
+        "id": "08ed461027fd605e",
+        "type": "flexradio-meter",
+        "z": "fe0426b0e092c814",
+        "name": "",
+        "radio": "96ce77470f014789",
+        "topic": "",
+        "topic_type": "mqtt",
+        "output_mode": "value",
+        "x": 140,
+        "y": 560,
+        "wires": [
+            [
+                "9ff0f80ad36418ff"
+            ]
+        ]
+    },
+    {
+        "id": "9ff0f80ad36418ff",
+        "type": "debug",
+        "z": "fe0426b0e092c814",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 450,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "72b948c5937b1de9",
+        "type": "inject",
+        "z": "fe0426b0e092c814",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "info",
+        "payloadType": "str",
+        "x": 130,
+        "y": 340,
+        "wires": [
+            [
+                "8d99fd14099a344d"
+            ]
+        ]
+    },
+    {
+        "id": "65d1e553a8982ba6",
+        "type": "comment",
+        "z": "fe0426b0e092c814",
+        "name": "Introduction and Overview",
+        "info": "",
+        "x": 130,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "38b429037abe45d7",
+        "type": "comment",
+        "z": "fe0426b0e092c814",
+        "name": "Inject radio discovey announcements",
+        "info": "",
+        "x": 200,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "3256813458e24b97",
+        "type": "comment",
+        "z": "fe0426b0e092c814",
+        "name": "All radio status and messages",
+        "info": "",
+        "x": 180,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "30b10e63251daf7b",
+        "type": "comment",
+        "z": "fe0426b0e092c814",
+        "name": "Sample requests/commands",
+        "info": "",
+        "x": 180,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "e3ee426c66a9bb42",
+        "type": "comment",
+        "z": "fe0426b0e092c814",
+        "name": "Monitor main radio fan",
+        "info": "",
+        "x": 160,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "96ce77470f014789",
+        "type": "flexradio-radio",
+        "name": "",
+        "host": "flex-6600m",
+        "port": "4992",
+        "station_name": "NodeRed",
+        "slice_mode": "headless",
+        "slice_name": "A"
+    }
+]
