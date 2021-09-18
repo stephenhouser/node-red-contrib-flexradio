@@ -67,6 +67,21 @@ Using `node-red-contrib-flexradio` nodes within NodeRed to create a simple dashb
 * NodeRed Dashboard -- https://flows.nodered.org/node/node-red-dashboard
 * FlexRadio Nodes -- https://flows.nodered.org/node/node-red-contrib-flexradio
 
+### Script
+
+* dashboard node
+	- serial, radio_license_id
+* debug node
+* text - radio name -- nickname
+* text - model number -- model
+* text - version - version
+* text - callsign - callsign
+* text - status - status
+* text - stations - gui_client_stations
+* trigger - 5s {"status": "off" }
+* inject - on startup {"status": "off"}
+* change - flow.discovery = msg.payload
+
 ## NodeRed/FlexRadio Messages and Status
 
 **TODO**
