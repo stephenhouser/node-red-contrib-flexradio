@@ -60,6 +60,10 @@ function decode(response) {
 		}
 	} catch (error) {
 		console.log(error);
+		return { 
+			type: 'error',
+			payload: { ...error, response: response }
+		};
 	}
 
 	return null;

@@ -10,8 +10,9 @@
 		
     	if (value !== undefined) {
         	if (typeof key === 'string' && key.endsWith('_list')) {
-        		value.split(',').map(tokenValue);
+        		return value.split(',').map(tokenValue);
             }
+            
         	return tokenValue(value);    
         }
 
@@ -38,7 +39,7 @@
     
     function makePayload(msg) {
         if (!msg || msg.length == 0) {
-        	return null;
+        	return '';
         }
         
         if (msg.length == 1) {
@@ -60,7 +61,7 @@
                 }
            	}
         });
-        return payload;
+        return payload || '';
     }
 }
 
@@ -249,8 +250,14 @@ String_quoted 'String_quoted'
 
 Hex_String 'Hex_String' 
 	// 8 hex characters. PegJS does not have the repeat function for characters.
-	= prefix:'0x'? chars:([0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])
-	{ return Number('0x' + chars.join('')); }
+	= prefix:'0x'? chars:(Hex_String_0 / Hex_String_8)
+	{ return Number('0x' + chars); }
+Hex_String_0 'Hex_String_0'
+	= '0'
+Hex_String_8 'Hex_String_8'
+	= [0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]?
+    { return text(); }
+    
 
 Integer 'Integer' 
 	= [0-9]+ 

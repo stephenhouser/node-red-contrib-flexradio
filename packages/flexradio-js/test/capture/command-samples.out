@@ -1,3 +1,7 @@
+
+> flexradio-js@0.7.8 test /home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js
+> node ./test/flex-parser-test.js ./test/capture/command-samples.txt
+
 V1.4.0.0
 {
   "type": "version",
@@ -29,7 +33,7 @@ R3|0|
   "sequence_number": 3,
   "response_code": 0,
   "topic": null,
-  "payload": null
+  "payload": ""
 }
 
 S513F01DA|meter 18.src=RAD#18.num=3#18.nam=MAINFAN#18.low=0.0#18.hi=8192.0#18.desc=Main radio fan RPM#18.unit=RPM#18.fps=0#
@@ -213,28 +217,17 @@ S3621C7F5|eq rxsc mode=1 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz
 }
 
 S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
-peg$SyntaxError: Expected Handle, Message, Response, Status, or Version but "S" found.
-    at peg$buildStructuredError (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:431:12)
-    at Object.peg$parse [as parse] (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:2450:11)
-    at /home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:15:23
-    at Array.forEach (<anonymous>)
-    at Object.<anonymous> (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:10:7)
-    at Module._compile (internal/modules/cjs/loader.js:1085:14)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1114:10)
-    at Module.load (internal/modules/cjs/loader.js:950:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:790:14)
-    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:76:12) {
-  expected: [
-    { type: 'other', description: 'Message' },
-    { type: 'other', description: 'Status' },
-    { type: 'other', description: 'Response' },
-    { type: 'other', description: 'Handle' },
-    { type: 'other', description: 'Version' }
-  ],
-  found: 'S',
-  location: {
-    start: { offset: 0, line: 1, column: 1 },
-    end: { offset: 1, line: 1, column: 2 }
+{
+  "type": "status",
+  "client": 0,
+  "topic": "interlock",
+  "payload": {
+    "tx_client_handle": 0,
+    "state": "READY",
+    "reason": null,
+    "source": null,
+    "tx_allowed": 1,
+    "amplifier": null
   }
 }
 
@@ -262,54 +255,32 @@ S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_e
 }
 
 S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
-peg$SyntaxError: Expected Handle, Message, Response, Status, or Version but "S" found.
-    at peg$buildStructuredError (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:431:12)
-    at Object.peg$parse [as parse] (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:2450:11)
-    at /home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:15:23
-    at Array.forEach (<anonymous>)
-    at Object.<anonymous> (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:10:7)
-    at Module._compile (internal/modules/cjs/loader.js:1085:14)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1114:10)
-    at Module.load (internal/modules/cjs/loader.js:950:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:790:14)
-    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:76:12) {
-  expected: [
-    { type: 'other', description: 'Message' },
-    { type: 'other', description: 'Status' },
-    { type: 'other', description: 'Response' },
-    { type: 'other', description: 'Handle' },
-    { type: 'other', description: 'Version' }
-  ],
-  found: 'S',
-  location: {
-    start: { offset: 0, line: 1, column: 1 },
-    end: { offset: 1, line: 1, column: 2 }
+{
+  "type": "status",
+  "client": 0,
+  "topic": "interlock",
+  "payload": {
+    "tx_client_handle": 2020441324,
+    "state": "PTT_REQUESTED",
+    "reason": null,
+    "source": "SW",
+    "tx_allowed": 1,
+    "amplifier": null
   }
 }
 
 S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
-peg$SyntaxError: Expected Handle, Message, Response, Status, or Version but "S" found.
-    at peg$buildStructuredError (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:431:12)
-    at Object.peg$parse [as parse] (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:2450:11)
-    at /home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:15:23
-    at Array.forEach (<anonymous>)
-    at Object.<anonymous> (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:10:7)
-    at Module._compile (internal/modules/cjs/loader.js:1085:14)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1114:10)
-    at Module.load (internal/modules/cjs/loader.js:950:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:790:14)
-    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:76:12) {
-  expected: [
-    { type: 'other', description: 'Message' },
-    { type: 'other', description: 'Status' },
-    { type: 'other', description: 'Response' },
-    { type: 'other', description: 'Handle' },
-    { type: 'other', description: 'Version' }
-  ],
-  found: 'S',
-  location: {
-    start: { offset: 0, line: 1, column: 1 },
-    end: { offset: 1, line: 1, column: 2 }
+{
+  "type": "status",
+  "client": 0,
+  "topic": "interlock",
+  "payload": {
+    "tx_client_handle": 2020441324,
+    "state": "TRANSMITTING",
+    "reason": null,
+    "source": "SW",
+    "tx_allowed": 1,
+    "amplifier": null
   }
 }
 
@@ -602,54 +573,32 @@ R2|0|meter 1.src=COD-#1.num=1#1.nam=MICPEAK#1.low=-150.0#1.hi=20.0#1.desc=Signal
 }
 
 S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier=
-peg$SyntaxError: Expected Handle, Message, Response, Status, or Version but "S" found.
-    at peg$buildStructuredError (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:431:12)
-    at Object.peg$parse [as parse] (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:2450:11)
-    at /home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:15:23
-    at Array.forEach (<anonymous>)
-    at Object.<anonymous> (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:10:7)
-    at Module._compile (internal/modules/cjs/loader.js:1085:14)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1114:10)
-    at Module.load (internal/modules/cjs/loader.js:950:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:790:14)
-    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:76:12) {
-  expected: [
-    { type: 'other', description: 'Message' },
-    { type: 'other', description: 'Status' },
-    { type: 'other', description: 'Response' },
-    { type: 'other', description: 'Handle' },
-    { type: 'other', description: 'Version' }
-  ],
-  found: 'S',
-  location: {
-    start: { offset: 0, line: 1, column: 1 },
-    end: { offset: 1, line: 1, column: 2 }
+{
+  "type": "status",
+  "client": 0,
+  "topic": "interlock",
+  "payload": {
+    "tx_client_handle": 2020441324,
+    "state": "UNKEY_REQUESTED",
+    "reason": null,
+    "source": null,
+    "tx_allowed": 1,
+    "amplifier": null
   }
 }
 
 S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
-peg$SyntaxError: Expected Handle, Message, Response, Status, or Version but "S" found.
-    at peg$buildStructuredError (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:431:12)
-    at Object.peg$parse [as parse] (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:2450:11)
-    at /home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:15:23
-    at Array.forEach (<anonymous>)
-    at Object.<anonymous> (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:10:7)
-    at Module._compile (internal/modules/cjs/loader.js:1085:14)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1114:10)
-    at Module.load (internal/modules/cjs/loader.js:950:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:790:14)
-    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:76:12) {
-  expected: [
-    { type: 'other', description: 'Message' },
-    { type: 'other', description: 'Status' },
-    { type: 'other', description: 'Response' },
-    { type: 'other', description: 'Handle' },
-    { type: 'other', description: 'Version' }
-  ],
-  found: 'S',
-  location: {
-    start: { offset: 0, line: 1, column: 1 },
-    end: { offset: 1, line: 1, column: 2 }
+{
+  "type": "status",
+  "client": 0,
+  "topic": "interlock",
+  "payload": {
+    "tx_client_handle": 0,
+    "state": "READY",
+    "reason": null,
+    "source": null,
+    "tx_allowed": 1,
+    "amplifier": null
   }
 }
 
@@ -677,106 +626,62 @@ S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_e
 }
 
 S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
-peg$SyntaxError: Expected Handle, Message, Response, Status, or Version but "S" found.
-    at peg$buildStructuredError (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:431:12)
-    at Object.peg$parse [as parse] (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:2450:11)
-    at /home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:15:23
-    at Array.forEach (<anonymous>)
-    at Object.<anonymous> (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:10:7)
-    at Module._compile (internal/modules/cjs/loader.js:1085:14)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1114:10)
-    at Module.load (internal/modules/cjs/loader.js:950:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:790:14)
-    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:76:12) {
-  expected: [
-    { type: 'other', description: 'Message' },
-    { type: 'other', description: 'Status' },
-    { type: 'other', description: 'Response' },
-    { type: 'other', description: 'Handle' },
-    { type: 'other', description: 'Version' }
-  ],
-  found: 'S',
-  location: {
-    start: { offset: 0, line: 1, column: 1 },
-    end: { offset: 1, line: 1, column: 2 }
+{
+  "type": "status",
+  "client": 0,
+  "topic": "interlock",
+  "payload": {
+    "tx_client_handle": 2020441324,
+    "state": "PTT_REQUESTED",
+    "reason": null,
+    "source": "SW",
+    "tx_allowed": 1,
+    "amplifier": null
   }
 }
 
 S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
-peg$SyntaxError: Expected Handle, Message, Response, Status, or Version but "S" found.
-    at peg$buildStructuredError (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:431:12)
-    at Object.peg$parse [as parse] (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:2450:11)
-    at /home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:15:23
-    at Array.forEach (<anonymous>)
-    at Object.<anonymous> (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:10:7)
-    at Module._compile (internal/modules/cjs/loader.js:1085:14)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1114:10)
-    at Module.load (internal/modules/cjs/loader.js:950:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:790:14)
-    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:76:12) {
-  expected: [
-    { type: 'other', description: 'Message' },
-    { type: 'other', description: 'Status' },
-    { type: 'other', description: 'Response' },
-    { type: 'other', description: 'Handle' },
-    { type: 'other', description: 'Version' }
-  ],
-  found: 'S',
-  location: {
-    start: { offset: 0, line: 1, column: 1 },
-    end: { offset: 1, line: 1, column: 2 }
+{
+  "type": "status",
+  "client": 0,
+  "topic": "interlock",
+  "payload": {
+    "tx_client_handle": 2020441324,
+    "state": "TRANSMITTING",
+    "reason": null,
+    "source": "SW",
+    "tx_allowed": 1,
+    "amplifier": null
   }
 }
 
 S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier=
-peg$SyntaxError: Expected Handle, Message, Response, Status, or Version but "S" found.
-    at peg$buildStructuredError (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:431:12)
-    at Object.peg$parse [as parse] (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:2450:11)
-    at /home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:15:23
-    at Array.forEach (<anonymous>)
-    at Object.<anonymous> (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:10:7)
-    at Module._compile (internal/modules/cjs/loader.js:1085:14)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1114:10)
-    at Module.load (internal/modules/cjs/loader.js:950:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:790:14)
-    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:76:12) {
-  expected: [
-    { type: 'other', description: 'Message' },
-    { type: 'other', description: 'Status' },
-    { type: 'other', description: 'Response' },
-    { type: 'other', description: 'Handle' },
-    { type: 'other', description: 'Version' }
-  ],
-  found: 'S',
-  location: {
-    start: { offset: 0, line: 1, column: 1 },
-    end: { offset: 1, line: 1, column: 2 }
+{
+  "type": "status",
+  "client": 0,
+  "topic": "interlock",
+  "payload": {
+    "tx_client_handle": 2020441324,
+    "state": "UNKEY_REQUESTED",
+    "reason": null,
+    "source": null,
+    "tx_allowed": 1,
+    "amplifier": null
   }
 }
 
 S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
-peg$SyntaxError: Expected Handle, Message, Response, Status, or Version but "S" found.
-    at peg$buildStructuredError (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:431:12)
-    at Object.peg$parse [as parse] (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:2450:11)
-    at /home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:15:23
-    at Array.forEach (<anonymous>)
-    at Object.<anonymous> (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:10:7)
-    at Module._compile (internal/modules/cjs/loader.js:1085:14)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1114:10)
-    at Module.load (internal/modules/cjs/loader.js:950:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:790:14)
-    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:76:12) {
-  expected: [
-    { type: 'other', description: 'Message' },
-    { type: 'other', description: 'Status' },
-    { type: 'other', description: 'Response' },
-    { type: 'other', description: 'Handle' },
-    { type: 'other', description: 'Version' }
-  ],
-  found: 'S',
-  location: {
-    start: { offset: 0, line: 1, column: 1 },
-    end: { offset: 1, line: 1, column: 2 }
+{
+  "type": "status",
+  "client": 0,
+  "topic": "interlock",
+  "payload": {
+    "tx_client_handle": 0,
+    "state": "READY",
+    "reason": null,
+    "source": null,
+    "tx_allowed": 1,
+    "amplifier": null
   }
 }
 
@@ -824,7 +729,16 @@ S3621C7F5|slice 0 in_use=1 sample_rate=24000 RF_frequency=14.074000 client_handl
     "filter_lo": 0,
     "filter_hi": 3000,
     "step": 10,
-    "step_list": "1,5,10,20,100,250,500,1000",
+    "step_list": [
+      1,
+      5,
+      10,
+      20,
+      100,
+      250,
+      500,
+      1000
+    ],
     "agc_mode": "med",
     "agc_threshold": 67,
     "agc_off_level": 10,
@@ -860,8 +774,27 @@ S3621C7F5|slice 0 in_use=1 sample_rate=24000 RF_frequency=14.074000 client_handl
     "diversity_parent": 0,
     "diversity_child": 0,
     "diversity_index": 1342177293,
-    "ant_list": "ANT1,ANT2,RX_A,RX_B,XVTA,XVTB",
-    "mode_list": "LSB,USB,AM,CW,DIGL,DIGU,SAM,FM,NFM,DFM,RTTY",
+    "ant_list": [
+      "ANT1",
+      "ANT2",
+      "RX_A",
+      "RX_B",
+      "XVTA",
+      "XVTB"
+    ],
+    "mode_list": [
+      "LSB",
+      "USB",
+      "AM",
+      "CW",
+      "DIGL",
+      "DIGU",
+      "SAM",
+      "FM",
+      "NFM",
+      "DFM",
+      "RTTY"
+    ],
     "fm_tone_mode": "OFF",
     "fm_tone_value": 67,
     "fm_repeater_offset_freq": 0,
@@ -878,7 +811,12 @@ S3621C7F5|slice 0 in_use=1 sample_rate=24000 RF_frequency=14.074000 client_handl
     "digu_offset": 1500,
     "post_demod_bypass": 0,
     "rfgain": 8,
-    "tx_ant_list": "ANT1,ANT2,XVTA,XVTB"
+    "tx_ant_list": [
+      "ANT1",
+      "ANT2",
+      "XVTA",
+      "XVTB"
+    ]
   }
 }
 
@@ -898,7 +836,7 @@ R4|0|
   "sequence_number": 4,
   "response_code": 0,
   "topic": null,
-  "payload": null
+  "payload": ""
 }
 
 S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_enabled=0 tx2_enabled=0 tx3_enabled=0 tx_delay=0 acc_tx_delay=0 tx1_delay=0 tx2_delay=0 tx3_delay=0 acc_txreq_polarity=0 rca_txreq_polarity=0 timeout=0
@@ -938,28 +876,47 @@ R5|0|ANT1,ANT2,RX_A
 }
 
 This is an invalid line that should cause an error
-peg$SyntaxError: Expected Handle, Message, Response, Status, or Version but "T" found.
-    at peg$buildStructuredError (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:431:12)
-    at Object.peg$parse [as parse] (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/flex-parser.js:2450:11)
-    at /home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:15:23
-    at Array.forEach (<anonymous>)
-    at Object.<anonymous> (/home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js/test/flex-parser-test.js:10:7)
-    at Module._compile (internal/modules/cjs/loader.js:1085:14)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1114:10)
-    at Module.load (internal/modules/cjs/loader.js:950:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:790:14)
-    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:76:12) {
-  expected: [
-    { type: 'other', description: 'Message' },
-    { type: 'other', description: 'Status' },
-    { type: 'other', description: 'Response' },
-    { type: 'other', description: 'Handle' },
-    { type: 'other', description: 'Version' }
-  ],
-  found: 'T',
-  location: {
-    start: { offset: 0, line: 1, column: 1 },
-    end: { offset: 1, line: 1, column: 2 }
+{
+  "type": "error",
+  "payload": {
+    "message": "Expected Handle, Message, Response, Status, or Version but \"T\" found.",
+    "expected": [
+      {
+        "type": "other",
+        "description": "Message"
+      },
+      {
+        "type": "other",
+        "description": "Status"
+      },
+      {
+        "type": "other",
+        "description": "Response"
+      },
+      {
+        "type": "other",
+        "description": "Handle"
+      },
+      {
+        "type": "other",
+        "description": "Version"
+      }
+    ],
+    "found": "T",
+    "location": {
+      "start": {
+        "offset": 0,
+        "line": 1,
+        "column": 1
+      },
+      "end": {
+        "offset": 1,
+        "line": 1,
+        "column": 2
+      }
+    },
+    "name": "SyntaxError",
+    "response": "This is an invalid line that should cause an error"
   }
 }
 
@@ -1159,8 +1116,7 @@ R7|0|4000008
   "type": "response",
   "sequence_number": 7,
   "response_code": 0,
-  "topic": null,
-  "payload": 4000008
+  "payload": 67108872
 }
 
 R8|0|
@@ -1169,7 +1125,7 @@ R8|0|
   "sequence_number": 8,
   "response_code": 0,
   "topic": null,
-  "payload": null
+  "payload": ""
 }
 
 S3D63A6E7|stream 0x84000000 type=dax_tx client_handle=0x3D63A6E7 tx=1 ip=192.168.10.20
@@ -1275,7 +1231,7 @@ R16|0|
   "sequence_number": 16,
   "response_code": 0,
   "topic": null,
-  "payload": null
+  "payload": ""
 }
 
 R17|0|
@@ -1284,7 +1240,7 @@ R17|0|
   "sequence_number": 17,
   "response_code": 0,
   "topic": null,
-  "payload": null
+  "payload": ""
 }
 
 S7FE7BBA0|client 0x19935575 connected local_ptt=1 client_id=157225CF-028B-4ABB-939D-7AA912859B2D program=SmartSDR-M station=Maestro
