@@ -19,6 +19,7 @@
     "lint": "npx eslint --fix . || exit 0"
   },
   "dependencies": {
+    "binary-parser": "^1.9.2",
     "vita49-js": "^0.7.5"
   },
   "devDependencies": {

@@ -1,14 +1,23 @@
 {
+	function tokenValue(token) {
+       	return isNaN(Number(token)) ? token : Number(token);
+    }
+    
 	function listValue(key, value) {
-    	if (value) {
-        	if (key.endsWith('_list')) {
-        		return value.split(',');
+    	if (value === null) {
+    		return value;
+    	}
+		
+    	if (value !== undefined) {
+        	if (typeof key === 'string' && key.endsWith('_list')) {
+        		return value.split(',').map(tokenValue);
             }
-        	return value;    
+            
+        	return tokenValue(value);    
         }
 
-		if (key.match(/,/g)) {
-        	return key.split(',');
+		if (typeof key === 'string' && key.match(/,/g)) {
+        	return key.split(',').map(tokenValue);
         }
 
         return key;
@@ -21,7 +30,7 @@
         
 	    const topic = [];
   		msg.forEach(function(t) {
-        	if (typeof t === 'string') {
+        	if (typeof t === 'string' || typeof t === 'number') {
 	           	topic.push(t);
 	        }
 	    });
@@ -30,7 +39,7 @@
     
     function makePayload(msg) {
         if (!msg || msg.length == 0) {
-        	return null;
+        	return '';
         }
         
         if (msg.length == 1) {
@@ -52,14 +61,14 @@
                 }
            	}
         });
-        return payload;
+        return payload || '';
     }
 }
 
 Start = Message / Status / Response / Handle / Version
 
 Message 'Message' 
-	= 'M' message_id:Integer '|' message:.* 
+	= 'M' message_id:Hex_String '|' message:.* 
 	{ return { type: 'message', 
     			message_id: message_id, 
                 payload: message.join('') }; }
@@ -73,10 +82,35 @@ Status 'Status'
     }
     
 Response 'Response' 
-	= 'R' sequence:Integer '|' code: Hex_String '|' response:Payload?
+	= Response_Handle / Response_Success / Response_Error
+
+// Special case for an untagged (0x) handle in a response
+// ex: `R12|50000068|Unable to tune a locked slice -- unlock first`
+Response_Handle 'Response_Handle'
+	= 'R' sequence:Integer '|0|' response:Hex_String
+	{ return { type: 'response', 
+    			sequence_number: sequence, 
+                response_code: 0, 
+                payload: response
+		};
+    }
+
+// Special case to not parse error messages with non-zero response code
+// Happens with `C7|stream create ...` request
+Response_Error 'Response_Error'
+	= 'R' sequence:Integer '|' code:Hex_String '|' response:.*
 	{ return { type: 'response', 
     			sequence_number: sequence, 
                 response_code: code, 
+                payload: response.join('')
+		};
+    }
+
+Response_Success 'Response_Success'
+	= 'R' sequence:Integer '|0|' response:Payload?
+	{ return { type: 'response', 
+    			sequence_number: sequence, 
+                response_code: 0, 
                 topic: makeTopic(response),
                 payload: makePayload(response) 
 		};
@@ -129,8 +163,8 @@ Space_KV_Member 'Space_KV_Member'
 	= key:Space_KV_Token eq:'='? value:Space_KV_Token?
 	{ return eq ? [key, listValue(key, value)] : listValue(key); }
 Space_KV_Token 'Space_KV_Token'
-	= chars:[^ =\t]+
-	{ return chars.join(''); }
+	= [^ =\t]+
+	{ return tokenValue(text()); }
 
 Comma_KV_List 'Comma_KV_List'
 	= head:Comma_KV_Member tail:(Comma_KV_List_Tail)* Comma?
@@ -144,8 +178,8 @@ Comma_KV_Member 'Comma_KV_Member'
 Comma_KV_Token 'Comma_KV_Token'
 	= String_quoted / Comma_KV_Token_unquoted
 Comma_KV_Token_unquoted 
-	= chars:[^,=]+
-	{ return chars.join(''); }
+	= [^,=]+
+	{ return tokenValue(text()); }
 
 Hash_KV_List 'Hash_KV_List'
 	= head:Hash_KV_Member tail:(Hash_KV_List_Tail)* Hash?
@@ -163,8 +197,8 @@ Hash_KV_Complex_Key 'Hash_KV_Complex_Key'
 	= n:Integer '.' key:Hash_KV_Token
 	{ return [n, key]; }
 Hash_KV_Token 'Hash_KV_Toksn'
-	= chars:[^#=\t]+
-	{ return chars.join(''); }
+	= [^#=\t]+
+	{ return tokenValue(text()); }
 Hash 
 	= '#'
 
@@ -175,8 +209,8 @@ Comma_List_Tail
 	= Comma t:Comma_Token
 	{ return t; }
 Comma_Token 
-	= chars:[^,]+
-	{ return chars.join(''); }
+	= [^,]+
+	{ return tokenValue(text()); }
 Comma 
 	= ','
 
@@ -187,8 +221,8 @@ Caret_List_Tail 'Caret_List_Tail'
 	= Caret m:Caret_Token
 	{ return m; }
 Caret_Token 'Caret_Token'
-	= chars:[^\^]+
-	{ return chars.join(''); }
+	= [^\^]+
+	{ return tokenValue(text()); }
 Caret 
 	= '^'
 
@@ -207,16 +241,23 @@ String 'String'
 	= String_quoted / String_unquoted
 
 String_unquoted 'String_unquoted'
-	= chars:[^ ,#\t\n\r\f]+ 
-	{ return chars.join(''); }  
+	= [^ ,#\t\n\r\f]+ 
+	{ return text(); }  
     
 String_quoted 'String_quoted'
 	= '"' chars:[^"]* '"'
 	{ return chars.join(''); }
 
 Hex_String 'Hex_String' 
-	= [0-9a-fA-F]+
-	{ return text(); }
+	// 8 hex characters. PegJS does not have the repeat function for characters.
+	= prefix:'0x'? chars:(Hex_String_0 / Hex_String_8)
+	{ return Number('0x' + chars); }
+Hex_String_0 'Hex_String_0'
+	= '0'
+Hex_String_8 'Hex_String_8'
+	= [0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]?
+    { return text(); }
+    
 
 Integer 'Integer' 
 	= [0-9]+ 
