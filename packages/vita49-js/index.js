@@ -9,7 +9,7 @@
  * https://github.com/K3TZR/xLib6000/blob/master/Sources/xLib6000/Supporting/Vita.swift
  * https://community.flexradio.com/discussion/7063537/meter-packet-protocol
 */
-const Parser = require("binary-parser").Parser;
+const binaryParser = require("binary-parser").Parser;
 
 const PacketType = {
 	if_data: 0x00,
@@ -71,23 +71,23 @@ const TimeStampFractionType = {
 	}
 };
 
-const nullParser = new Parser();
+const nullParser = new binaryParser();
 
-const classIdParser = new Parser()
+const classIdParser = new binaryParser()
 	.uint32('oui')
 	.uint16('information_class')
 	.uint16('packet_class');
 
-const ifDataParser = new Parser();
-	// TODO: ifDataParser() is not implemented.
+const ifDataParser = new binaryParser();
+// TODO: ifDataParser() is not implemented.
 
-const ifDataStreamParser = new Parser();
-	// TODO: ifDataStreamParser() is not implemented.
+const ifDataStreamParser = new binaryParser();
+// TODO: ifDataStreamParser() is not implemented.
 
-const extDataParser = new Parser();
-	// TODO: extDataParser() is not implemented.
+const extDataParser = new binaryParser();
+// TODO: extDataParser() is not implemented.
 
-const extDataStreamParser = new Parser()
+const extDataStreamParser = new binaryParser()
 	.uint32('stream')
 	.choice('class', {
 		tag: '_class_present',
@@ -98,14 +98,14 @@ const extDataStreamParser = new Parser()
 	})
 	.choice('timestamp_int', {
 		tag: '_tsi_type',
-		defaultChoice: new Parser().uint32('seconds'),
+		defaultChoice: new binaryParser().uint32('seconds'),
 		choices: {
 			0: nullParser
 		}
 	})
 	.choice('timestamp_frac', {
 		tag: '_tsf_type',
-		defaultChoice: new Parser().uint64('fraction'),
+		defaultChoice: new binaryParser().uint64('fraction'),
 		choices: {
 			0: nullParser,
 		}
@@ -113,24 +113,24 @@ const extDataStreamParser = new Parser()
 	.saveOffset('_payload_offset')
 	.buffer('payload', {
 		length: function(vars) {
-			return  ((vars.packet_size - vars._trailer_present) * 4) - vars._payload_offset;
+			return ((vars.packet_size - vars._trailer_present) * 4) - vars._payload_offset;
 		}
 	});
 
-const ifContextParser = new Parser();
-	// TODO: ifContextParser() is not implemented.
+const ifContextParser = new binaryParser();
+// TODO: ifContextParser() is not implemented.
 
-const extContextParser = new Parser();
-	// TODO: extContextParser() is not implemented.
+const extContextParser = new binaryParser();
+// TODO: extContextParser() is not implemented.
 
-const ifCmdStreamParser = new Parser();
-	// TODO: ifCmdStreamParser() is not implemented.
+const ifCmdStreamParser = new binaryParser();
+// TODO: ifCmdStreamParser() is not implemented.
 
-const extCmdStreamParser = new Parser();
-	// TODO: extCmdStreamParser() is not implemented.
+const extCmdStreamParser = new binaryParser();
+// TODO: extCmdStreamParser() is not implemented.
 
 
-const vita49Parser = new Parser()
+const vita49Parser = new binaryParser()
 	.bit4('packet_type')
 	.bit1('_class_present')
 	.bit2('_reserved')
