@@ -25,7 +25,7 @@ pcap_session.on('packet', function(raw_packet) {
 		const u_packet = udp_packet(packet);
 		if (u_packet) {
 			const data = new Uint8Array(u_packet.data);
-			// console.log(packet.payload.payload.payload);
+			console.log(data);
 
 			const flex_dgram = flex.decode_realtime(data);
 			if (flex_dgram) {
