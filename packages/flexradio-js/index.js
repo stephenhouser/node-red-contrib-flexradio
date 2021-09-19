@@ -142,13 +142,14 @@ function decode_realtime(data) {
 
 	const vita49_dgram = vita49.decode(data);
 	if (isFlexClass(vita49_dgram) && isDataStream(vita49_dgram)) {
-		console.log(vita49_dgram);
-
 		switch (vita49_dgram.class.packet_class) {
 			case RealtimePacketClass.meter:
 				return decode_meters(vita49_dgram);
 			default:
-				return vita49_dgram.payload;
+				return {
+					type: 'unknown',
+					payload: vita49_dgram
+				};
 		}
 	}
 }
