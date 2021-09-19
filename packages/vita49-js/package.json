@@ -25,5 +25,8 @@
     "eslint-plugin-promise": "^5.1.0",
     "pcap": "github:node-pcap/node_pcap",
     "pegjs": "^0.10.0"
+  },
+  "dependencies": {
+    "binary-parser": "^1.9.2"
   }
 }

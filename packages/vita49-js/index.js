@@ -1,8 +1,15 @@
-// http://wiki.flexradio.com/index.php?title=Discovery_protocol
-// https://github.com/kc2g-flex-tools/flexclient
-// https://discourse.nodered.org/t/vita-49-decoding/20792
-// https://github.com/K3TZR/xLib6000/blob/master/Sources/xLib6000/Supporting/Vita.swift
-// https://community.flexradio.com/discussion/7063537/meter-packet-protocol
+/* vita49-js/index.js - Parser for VITA-49 datagrams
+ *
+ * 2021/09/19 Stephen Houser, MIT License
+ *
+ * Some reference materials:
+ * http://wiki.flexradio.com/index.php?title=Discovery_protocol
+ * https://github.com/kc2g-flex-tools/flexclient
+ * https://discourse.nodered.org/t/vita-49-decoding/20792
+ * https://github.com/K3TZR/xLib6000/blob/master/Sources/xLib6000/Supporting/Vita.swift
+ * https://community.flexradio.com/discussion/7063537/meter-packet-protocol
+*/
+const Parser = require("binary-parser").Parser;
 
 const PacketType = {
 	if_data: 0x00,
@@ -64,92 +71,123 @@ const TimeStampFractionType = {
 	}
 };
 
-function decode(raw_data) {
-	if (!raw_data || !(raw_data instanceof Uint8Array)) {
-		return null;
+const nullParser = new Parser();
+
+const classIdParser = new Parser()
+	.uint32('oui')
+	.uint16('information_class')
+	.uint16('packet_class');
+
+const ifDataParser = new Parser();
+	// TODO: ifDataParser() is not implemented.
+
+const ifDataStreamParser = new Parser();
+	// TODO: ifDataStreamParser() is not implemented.
+
+const extDataParser = new Parser();
+	// TODO: extDataParser() is not implemented.
+
+const extDataStreamParser = new Parser()
+	.uint32('stream')
+	.choice('class', {
+		tag: '_class_present',
+		choices: {
+			0: nullParser,
+			1: classIdParser
+		}
+	})
+	.choice('timestamp_int', {
+		tag: '_tsi_type',
+		defaultChoice: new Parser().uint32('seconds'),
+		choices: {
+			0: nullParser
+		}
+	})
+	.choice('timestamp_frac', {
+		tag: '_tsf_type',
+		defaultChoice: new Parser().uint64('fraction'),
+		choices: {
+			0: nullParser,
+		}
+	})
+	.saveOffset('_payload_offset')
+	.buffer('payload', {
+		length: function(vars) {
+			return  ((vars.packet_size - vars._trailer_present) * 4) - vars._payload_offset;
+		}
+	});
+
+const ifContextParser = new Parser();
+	// TODO: ifContextParser() is not implemented.
+
+const extContextParser = new Parser();
+	// TODO: extContextParser() is not implemented.
+
+const ifCmdStreamParser = new Parser();
+	// TODO: ifCmdStreamParser() is not implemented.
+
+const extCmdStreamParser = new Parser();
+	// TODO: extCmdStreamParser() is not implemented.
+
+
+const vita49Parser = new Parser()
+	.bit4('packet_type')
+	.bit1('_class_present')
+	.bit2('_reserved')
+	.bit1('_trailer_present')
+	.bit2('_tsi_type')
+	.bit2('_tsf_type')
+	.bit4('sequence')
+	.uint16('packet_size')
+	.choice(null, {
+		tag: 'packet_type',
+		choices: {
+			0x00: ifDataParser,
+			0x01: ifDataStreamParser,
+			0x02: extDataParser,
+			0x03: extDataStreamParser,
+			0x04: ifContextParser,
+			0x05: extContextParser,
+			0x06: ifCmdStreamParser,
+			0x07: extCmdStreamParser,
+			0x08: nullParser
+		}
+	});
+
+function decode(data) {
+	const vita49_dgram = vita49Parser.parse(data);
+
+	if (vita49_dgram) {
+		// Map the timestamp to a struct
+		if (vita49_dgram._tsi_type && vita49_dgram.timestamp_int) {
+			vita49_dgram.timestamp_int.type = TimeStampIntegerType.decode(vita49_dgram._tsi_type);
+		}
+
+		if (vita49_dgram._tsf_type && vita49_dgram.timestamp_frac) {
+			vita49_dgram.timestamp_frac.type = TimeStampFractionType.decode(vita49_dgram._tsf_type);
+		}
+
+		// Clean up the '_' properties, they are temporary
+		const remove_keys = Object.keys(vita49_dgram).filter(function(key) {
+			return key.startsWith('_');
+		});
+		remove_keys.forEach(function(key) {
+			delete vita49_dgram[key];
+		});
 	}
 
-	const data = new DataView(raw_data.buffer);
-	const vita = {};
-
-	// Decode the header flags
-	const packet_flags_high = data.getUint8(0, false);
-	vita.packet_type = packet_flags_high >> 4 & 0x0F;
-	const has_class = (packet_flags_high & 0x08) ? 1 : 0;
-	const has_trailer = (packet_flags_high & 0x04) ? 1 : 0;
-	// reserved = packet_flags_high & 0x02;
-	// reserved = packet_flags_high & 0x01;
-
-	const packet_flags_low = data.getUint8(1, false);
-	const tsi_type = packet_flags_low >> 6 & 0x03;
-	const tsf_type = packet_flags_low >> 4 & 0x03;
-	vita.count = packet_flags_low & 0x0F;
-
-	vita.packet_size = data.getUint16(2, false) * 4;
-	if (vita.packet_size !== data.byteLength) {
-		return null;
-	}
-
-	let header_byte = 4;
-	if ((vita.packet_type === PacketType.if_data_stream) ||
-		(vita.packet_type === PacketType.ext_data_stream)) {
-		// 32 bit packet stream identifier
-		vita.stream_id = data.getUint32(header_byte, false);
-		header_byte += 4;
-	}
-
-	if (has_class) {
-		vita.class = {};
-
-		// 64 bit class identifier
-		// 32 bits OUI
-		vita.class.oui = data.getUint32(header_byte, false);
-		header_byte += 4;
-
-		// 16 bits information class code
-		// 16 bits packet class code
-		vita.class.information_class = data.getUint16(header_byte, false);
-		header_byte += 2;
-
-		vita.class.packet_class = data.getUint16(header_byte, false);
-		header_byte += 2;
-	}
-
-	// vita.tsi_type = tsi_type;
-	if (tsi_type) {
-		vita.timestamp_int = {};
-
-		vita.timestamp_int.type = TimeStampIntegerType.decode(tsi_type);
-		vita.timestamp_int.seconds = data.getUint32(header_byte, false);
-		header_byte += 4;
-	}
-
-	// vita.tsf_type = tsf_type;
-	if (tsf_type) {
-		vita.timestamp_frac = {};
-		vita.timestamp_frac.type = TimeStampFractionType.decode(tsf_type);
-		vita.timestamp_frac.fraction = data.getBigInt64(header_byte, false);
-		header_byte += 8;
-	}
-
-	// vita.payload = raw_data.slice(header_byte);
-	vita.payload = raw_data.subarray(header_byte);
-
-	// TODO: Vita Trailier... 4 bytes at end
-	if (has_trailer) {
-		vita.trailer = null;
-	}
-
-	return vita;
+	return vita49_dgram;
 }
 
-function encode(msg) {
-	// TODO: Implement encoding of VITA-49 datagrams (for sending meter data)
-	return msg;
+function encode(data) {
+	// TODO: encode() has not been implemented
+	return null;
 }
 
 module.exports = {
 	decode: decode,
 	encode: encode,
-	PacketType: PacketType
+	PacketType: PacketType,
+	TimeStampIntegerType: TimeStampIntegerType,
+	TimeStampFractionType: TimeStampFractionType
 };
