@@ -36,9 +36,19 @@ pcap_session.on('packet', function(raw_packet) {
 						// console.log(flex_dgram);
 						break;
 	
+					case 'panadapter':
+						console.log(flex_dgram);
+						break;
+							
+					case 'waterfall':
+						break;
+								
+					case 'discovery':
+						break;
+
 					default:
 						console.log(' Data');
-						console.log(flex_dgram);
+						// console.log(flex_dgram);
 				}
 			}
 		}

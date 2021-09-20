@@ -127,18 +127,39 @@ function decode_meters(dgram) {
 	});
 
 	return {
-		type: 'meter',
+		type: RealtimePacketClass.decode(dgram.class.packet_class),
 		sequence: dgram.sequence,
 		payload: meters
 	};
 }
 
 function decode_panadapter(dgram) {
-	return null;
+	const panadapterParser = new binaryParser()
+		.uint16('start_bin')
+		.uint16('number_of_bins')
+		.uint16('bin_size')
+		.uint16('bins_in_frame')
+		.uint32('frame_index')
+		.array("data", {
+			type: new binaryParser().uint16(),
+			length: 'bins_in_frame'
+		});
+
+	return {
+		type: RealtimePacketClass.decode(dgram.class.packet_class),
+		stream: dgram.stream,
+		sequence: dgram.sequence,
+		payload: panadapterParser.parse(dgram.payload)
+	};
 }
 
 function decode_waterfall(dgram) {
-	return null;
+	return {
+		type: RealtimePacketClass.decode(dgram.class.packet_class),
+		stream: dgram.stream,
+		sequence: dgram.sequence,
+		payload: dgram.payload
+	};
 }
 
 // decode_realtime() -- decode data sent from a FlexRadio on the UDP data channel
@@ -167,7 +188,6 @@ function decode_realtime(data) {
 				return decode_waterfall(vita49_dgram);
 
 			case RealtimePacketClass.discovery:
-				console.log(vita49_dgram);
 				const discovery_payload = new TextDecoder().decode(vita49_dgram.payload);
 				return decode_discovery(discovery_payload);
 				
