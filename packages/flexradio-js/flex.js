@@ -92,12 +92,16 @@ function decode(response) {
 
 // decode_discovery() -- decode FlexRadio discovery datagrams sent as UDP broadcast messages
 function decode_discovery(payload) {
+	function tokenValue(token) {
+		return isNaN(Number(token)) ? token : Number(token);
+ 	}
+ 
 	const radio = {};
-	const fields = payload.split(' ');
-	for (let i = 0; i < fields.length; i++) {
-		const [key, value] = fields[i].split('=');
-		radio[key] = value;
-	}
+	const clean_payload = payload.replace(/[^\x20-\x7E]/g, '');
+	const fields = clean_payload.split(' ').forEach(function(kv) {
+		const [key, value] = kv.split('=');
+		radio[key] = tokenValue(value);
+	});
 
 	return {
 		type: 'discovery',
@@ -106,7 +110,7 @@ function decode_discovery(payload) {
 }
 
 // decode_meters() -- decode the meter reporting datagram (just the payload)
-function decode_meters(vita49_dgram) {
+function decode_meters(dgram) {
 	const meterParser = new binaryParser()
 		.uint16('meter')
 		.uint16('value');
@@ -118,15 +122,23 @@ function decode_meters(vita49_dgram) {
 		});
 
 	const meters = {};
-	metersParser.parse(vita49_dgram.payload).forEach(function(m) {
+	metersParser.parse(dgram.payload).forEach(function(m) {
 		meters[m.meter] = m.value;
 	});
 
 	return {
 		type: 'meter',
-		sequence: vita49_dgram.sequence,
+		sequence: dgram.sequence,
 		payload: meters
 	};
+}
+
+function decode_panadapter(dgram) {
+	return null;
+}
+
+function decode_waterfall(dgram) {
+	return null;
 }
 
 // decode_realtime() -- decode data sent from a FlexRadio on the UDP data channel
@@ -142,12 +154,26 @@ function decode_realtime(data) {
 
 	const vita49_dgram = vita49.decode(data);
 	if (isFlexClass(vita49_dgram) && isDataStream(vita49_dgram)) {
+		const packet_class = RealtimePacketClass.decode(vita49_dgram.class.packet_class);
+		
 		switch (vita49_dgram.class.packet_class) {
 			case RealtimePacketClass.meter:
 				return decode_meters(vita49_dgram);
+
+			case RealtimePacketClass.panadapter:
+				return decode_panadapter(vita49_dgram);
+
+			case RealtimePacketClass.waterfall:
+				return decode_waterfall(vita49_dgram);
+
+			case RealtimePacketClass.discovery:
+				console.log(vita49_dgram);
+				const discovery_payload = new TextDecoder().decode(vita49_dgram.payload);
+				return decode_discovery(discovery_payload);
+				
 			default:
 				return {
-					type: 'unknown',
+					type: packet_class,
 					payload: vita49_dgram
 				};
 		}
@@ -158,7 +184,6 @@ function decode_realtime(data) {
 function encode_request(sequence, request) {
 	return 'C' + sequence + '|' + request.toString();
 }
-
 
 module.exports = {
 	response_code: ResponseCode.decode,
