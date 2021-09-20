@@ -34,16 +34,19 @@ module.exports = function(RED) {
 			updateNodeStatus(connection);
 		};
 
-		node.listeners['daxAudio'] = function(daxAudio) {
-			// node.debug(JSON.stringify(meter));
+		node.stream_handler = function(stream_data) {
 			const msg = {
-				topic: 'daxAudio',
-				stream: daxAudio.stream,
-				payload: daxAudio.payload
+				topic: stream_data.type,
+				stream: stream_data.stream,
+				payload: stream_data.payload
 			};
 
-			node.send(msg);
+			node.send(msg);			
 		}
+
+		node.listeners['daxAudio'] = node.stream_handler;
+		node.listeners['panadapter'] = node.stream_handler;
+		node.listeners['waterfall'] = node.stream_handler;
 
 		node.on('close', function(done) {
 			// Unsubscribe to radio events from our listeners
@@ -90,5 +93,5 @@ module.exports = function(RED) {
 		});
 	}
 
-	RED.nodes.registerType('flexradio-stream', FlexRadioDAXAudioNode);
+	RED.nodes.registerType('flexradio-stream', FlexRadioStreamNode);
 };
