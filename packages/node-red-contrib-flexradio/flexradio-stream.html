@@ -1,18 +1,18 @@
 <script type="text/javascript">
-    RED.nodes.registerType('flexradio-daxaudio', {
+    RED.nodes.registerType('flexradio-stream', {
         category: 'flexradio',
         color: '#06bcd8',
         defaults: {
             name: { value: '' },
             radio: { value: '', type: 'flexradio-radio', required: true },
-            topic: { value: '#' },
+            stream: { value: '#' },
             output_mode: { value: 'value', required: true }
         },
         inputs: 0,
         outputs: 1,
         icon: 'font-awesome/fa-volume-up',
         label: function() {
-            return this.name || 'flexradio-daxaudio';
+            return this.name || 'flexradio-stream';
         }
     });
 </script>
@@ -23,14 +23,14 @@
         <input type="text" id="node-input-radio" placeholder="FlexRadio">
     </div>
     <div class="form-row">
-        <label for="node-input-topic"><i class="fa fa-tag"></i> Topic</label>
-        <input type="text" id="node-input-topic" placeholder="#">
+        <label for="node-input-stream"><i class="fa fa-tag"></i> Topic</label>
+        <input type="text" id="node-input-stream" placeholder="#">
     </div>
     <div class="form-row">
         <label for="node-input-output_mode"><i class="fa fa-sign-in"></i> Output</label>
         <select id="node-input-output_mode">
-            <option value="value">Value Only</option>
-            <option value="context">Value and Context</option>
+            <option value="value">Values Only</option>
+            <option value="context">Values and Context</option>
         </select>
     </div>
     <div class="form-row">

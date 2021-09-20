@@ -33,6 +33,7 @@
   },
   "node-red": {
     "nodes": {
+      "flexradio-stream": "flexradio-stream.js",
       "flexradio-request": "flexradio-request.js",
       "flexradio-message": "flexradio-message.js",
       "flexradio-meter": "flexradio-meter.js",
