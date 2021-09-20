@@ -129,7 +129,6 @@ const ifCmdStreamParser = new binaryParser();
 const extCmdStreamParser = new binaryParser();
 // TODO: extCmdStreamParser() is not implemented.
 
-
 const vita49Parser = new binaryParser()
 	.bit4('packet_type')
 	.bit1('_class_present')
@@ -155,8 +154,12 @@ const vita49Parser = new binaryParser()
 	});
 
 function decode(data) {
-	const vita49_dgram = vita49Parser.parse(data);
+	if (!data || !(data instanceof Uint8Array)) {
+		return null;
+	}
 
+	const vita49_dgram = vita49Parser.parse(data);
+	console.log(vita49_dgram);
 	if (vita49_dgram) {
 		// Map the timestamp to a struct
 		if (vita49_dgram._tsi_type && vita49_dgram.timestamp_int) {

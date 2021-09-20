@@ -31,15 +31,12 @@ pcap_session.on('packet', function(raw_packet) {
 			if (flex_dgram) {
 				switch (flex_dgram.type) {
 					case 'meter':
-					// console.log('METER Data');
-						console.log(flex_dgram);
+						console.log(`METER Data: ${flex_dgram}`);
 						break;
 
 					default:
-						// console.log('FLEX Data');
+						console.log(`Unknown type: ${flex_dgram.type}``);
 				}
-
-				// console.log(flex_dgram);
 			}
 		}
 	}

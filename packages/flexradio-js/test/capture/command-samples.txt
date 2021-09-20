@@ -69,3 +69,4 @@ R17|0|
 S7FE7BBA0|client 0x19935575 connected local_ptt=1 client_id=157225CF-028B-4ABB-939D-7AA912859B2D program=SmartSDR-M station=Maestro
 C2|client bind client_id=157225CF-028B-4ABB-939D-7AA912859B2D
 R2|0|0x19935575
+H07717FA5

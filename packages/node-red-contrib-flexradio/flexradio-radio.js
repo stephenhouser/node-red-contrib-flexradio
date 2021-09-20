@@ -173,7 +173,7 @@ module.exports = function(RED) {
 		};
 
 		node.meterTopic = function(meter) {
-			if (meter.src && meter.num && meter.nam) {
+			if (meter.src !== undefined && meter.num !== undefined && meter.nam !== undefined) {
 				return [meter.src, meter.num, meter.nam].join('/');
 			} else {
 				return ['meter', meter.num].join('/');

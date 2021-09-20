@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/stephenhouser/node-red-contrib-flexradio/issues"
   },
-  "main": "index.js",
+  "main": "flex.js",
   "scripts": {
     "test": "node ./test/flex-parser-test.js ./test/capture/command-samples.txt",
     "build": "npx pegjs -o flex-parser.js flex-parser.pegjs",

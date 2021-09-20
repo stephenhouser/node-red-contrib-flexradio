@@ -77,7 +77,7 @@ class DiscoveryListener extends EventEmitter {
 
 	_isDiscoveryMessage(message) {
 		return message &&
-			message.stream_id === VITA_DISCOVERY_STREAM &&
+			message.stream === VITA_DISCOVERY_STREAM &&
 			message.class.oui === VITA_FLEX_OUI &&
 			message.class.information_class === VITA_FLEX_INFORMATION_CLASS &&
 			message.class.packet_class === VITA_FLEX_PACKET_CLASS;
