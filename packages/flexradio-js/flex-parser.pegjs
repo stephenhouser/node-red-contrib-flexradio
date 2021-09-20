@@ -250,7 +250,7 @@ String_quoted 'String_quoted'
 
 Hex_String 'Hex_String' 
 	// 8 hex characters. PegJS does not have the repeat function for characters.
-	= prefix:'0x'? chars:(Hex_String_0 / Hex_String_8)
+	= prefix:'0x'? chars:(Hex_String_8 / Hex_String_0)
 	{ return Number('0x' + chars); }
 Hex_String_0 'Hex_String_0'
 	= '0'

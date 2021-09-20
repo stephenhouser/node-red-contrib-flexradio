@@ -2180,9 +2180,9 @@ function peg$parse(input, options) {
       s1 = null;
     }
     if (s1 !== peg$FAILED) {
-      s2 = peg$parseHex_String_0();
+      s2 = peg$parseHex_String_8();
       if (s2 === peg$FAILED) {
-        s2 = peg$parseHex_String_8();
+        s2 = peg$parseHex_String_0();
       }
       if (s2 !== peg$FAILED) {
         peg$savedPos = s0;
