@@ -12,7 +12,7 @@ module.exports = function(RED) {
 		const node = this;
 
 		node.on('input', function(msg) {
-			vita49_msg = vita49.decode(msg.payload);
+			const vita49_msg = vita49.decode(msg.payload);
 			if (vita49_msg) {
 				node.status({ fill: 'green', shape: 'dot', text: 'decoded' });
 				node.send(vita49_msg);

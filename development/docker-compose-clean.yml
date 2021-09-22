@@ -3,7 +3,7 @@ version: "3.7"
 services:
     node-red:
         image: nodered/node-red:latest-minimal
-        network_mode: "host"
+        #network_mode: "host"
         environment:
             - TZ=EST5EDT
         ports:

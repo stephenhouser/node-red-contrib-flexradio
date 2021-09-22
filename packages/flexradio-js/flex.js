@@ -145,12 +145,13 @@ function decode_panadapter(dgram) {
 			length: 'bins_in_frame'
 		});
 
-	return {
+	const msg = {
 		type: RealtimePacketClass.decode(dgram.class.packet_class),
 		stream: dgram.stream,
 		sequence: dgram.sequence,
 		payload: panadapterParser.parse(dgram.payload)
 	};
+	return msg;
 }
 
 function decode_waterfall(dgram) {
@@ -173,7 +174,9 @@ function decode_realtime(data) {
 		return vita49_dgram.packet_type == vita49.PacketType.ext_data_stream;
 	}
 
-	const vita49_dgram = vita49.decode(data);
+	let vita49_dgram = vita49.decode(data);
+	// console.log(vita49_dgram);
+
 	if (isFlexClass(vita49_dgram) && isDataStream(vita49_dgram)) {
 		const packet_class = RealtimePacketClass.decode(vita49_dgram.class.packet_class);
 		

@@ -158,7 +158,7 @@ function decode(data) {
 		return null;
 	}
 
-	const vita49_dgram = vita49Parser.parse(data);
+	let vita49_dgram = vita49Parser.parse(data);
 	if (vita49_dgram) {
 		// Map the timestamp to a struct
 		if (vita49_dgram._tsi_type && vita49_dgram.timestamp_int) {

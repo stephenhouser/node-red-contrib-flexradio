@@ -1,12 +1,19 @@
 // UDP Client that will send faux FlexRadio data to listeners
 const dgram = require('dgram');
 const pcap = require('pcap');
+const { exit } = require('process');
+const flex = require('..');
 
 const PORT = 4992;
 const HOST = '127.0.0.1';
 
 const capture_file = process.argv[2];
 const udp_client = dgram.createSocket('udp4');
+const data = Buffer.from('hello');
+udp_client.send(data, 4990, '127.0.0.1', function(err) {
+	console.log(err);
+});
+process.exit();
 
 function udp_packet(packet) {
 	if (packet &&
@@ -46,9 +53,14 @@ pcap_session.on('packet', async function(raw_packet) {
 		wait_for_packet(packet);
 		const u_packet = udp_packet(packet);
 		if (u_packet) {
-			const data = u_packet.data;
-			console.log(packet.payload.payload.payload);
-			udp_client.send(data, 0, data.length, PORT, HOST);
+			let data = u_packet.data;
+			console.log(data);
+			console.log(flex.decode_realtime(data));
+			udp_client.send('hello', 4992, '127.0.0.1', function(err) {
+				console.log(err);
+			});
+			sleep(5000);
+			process.exit();
 		}
 	}
 });
