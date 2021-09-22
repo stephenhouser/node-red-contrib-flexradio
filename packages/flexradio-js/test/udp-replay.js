@@ -35,7 +35,7 @@ function get_udp_packet(packet) {
 	return null;
 }
 
-function get_packets() {
+async function get_packets() {
 	return new Promise((resolve, reject) => {
 		const packets = [];
 		const pcap_session = pcap.createOfflineSession(capture_file);
@@ -60,25 +60,25 @@ function get_packets() {
 }
 
 async function packet_delay(packet) {
-	cons
 	return new Promise((resolve) => {
 		setTimeout(resolve, delay_ms)
 	})
 }
 
-get_packets().then(async (packets) => {
-	for (i = 0; i < packets.length; i++) {
-		const p = packets[i];
-	
-		await packet_delay(p);
-	}
-	// packets.forEach(function(p) {
-	// 	console.log(p);
-	// 	udp_client.send(p.data, PORT, HOST)
-	// });
+get_packets()
+	.then(async (packets) => {
+		for (i = 0; i < packets.length; i++) {
+			const p = packets[i];
+		
+			await packet_delay(p);
+		}
+		// packets.forEach(function(p) {
+		// 	console.log(p);
+		// 	udp_client.send(p.data, PORT, HOST)
+		// });
 
-	udp_client.close();	
-});
+		udp_client.close();	
+	});
 
 
 
