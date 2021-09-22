@@ -76,8 +76,7 @@ function decode(response) {
 	if (response) {
 		try {
 			// use PEGJS parser to parse response payloads.
-			const parsed = flexParser.parse(response);
-			return parsed;
+			return flexParser.parse(response);
 		} catch (error) {
 			console.log(error);
 			return {
@@ -103,10 +102,7 @@ function decode_discovery(payload) {
 		radio[key] = tokenValue(value);
 	});
 
-	return {
-		type: 'discovery',
-		payload: radio
-	};
+	return radio;
 }
 
 // decode_meters() -- decode the meter reporting datagram (just the payload)
@@ -126,11 +122,7 @@ function decode_meters(dgram) {
 		meters[m.meter] = m.value;
 	});
 
-	return {
-		type: RealtimePacketClass.decode(dgram.class.packet_class),
-		sequence: dgram.sequence,
-		payload: meters
-	};
+	return meters;
 }
 
 function decode_panadapter(dgram) {
@@ -145,22 +137,11 @@ function decode_panadapter(dgram) {
 			length: 'bins_in_frame'
 		});
 
-	const msg = {
-		type: RealtimePacketClass.decode(dgram.class.packet_class),
-		stream: dgram.stream,
-		sequence: dgram.sequence,
-		payload: panadapterParser.parse(dgram.payload)
-	};
-	return msg;
+	return panadapterParser.parse(dgram.payload);
 }
 
 function decode_waterfall(dgram) {
-	return {
-		type: RealtimePacketClass.decode(dgram.class.packet_class),
-		stream: dgram.stream,
-		sequence: dgram.sequence,
-		payload: dgram.payload
-	};
+	return dgram.payload;
 }
 
 // decode_realtime() -- decode data sent from a FlexRadio on the UDP data channel
@@ -174,32 +155,48 @@ function decode_realtime(data) {
 		return vita49_dgram.packet_type == vita49.PacketType.ext_data_stream;
 	}
 
-	let vita49_dgram = vita49.decode(data);
-	// console.log(vita49_dgram);
+	try {
+		let vita49_dgram = vita49.decode(data);
+		console.log(RealtimePacketClass.decode(vita49_dgram.class.packet_class));
+		console.log('data size =', data.length);
+		if (isFlexClass(vita49_dgram) && isDataStream(vita49_dgram)) {
+			let payload = null;
+			switch (vita49_dgram.class.packet_class) {
+				case RealtimePacketClass.meter:
+					payload = decode_meters(vita49_dgram);
+					break;
 
-	if (isFlexClass(vita49_dgram) && isDataStream(vita49_dgram)) {
-		const packet_class = RealtimePacketClass.decode(vita49_dgram.class.packet_class);
-		
-		switch (vita49_dgram.class.packet_class) {
-			case RealtimePacketClass.meter:
-				return decode_meters(vita49_dgram);
+				case RealtimePacketClass.panadapter:
+					payload = decode_panadapter(vita49_dgram);
+					break;
 
-			case RealtimePacketClass.panadapter:
-				return decode_panadapter(vita49_dgram);
+				case RealtimePacketClass.waterfall:
+					payload = decode_waterfall(vita49_dgram);
+					break;
 
-			case RealtimePacketClass.waterfall:
-				return decode_waterfall(vita49_dgram);
+				case RealtimePacketClass.discovery:
+					const discovery_payload = new TextDecoder().decode(vita49_dgram.payload);
+					payload = decode_discovery(discovery_payload);
+					break;
+					
+				default:
+					payload = vita49_dgram;
+					break;
+			}
 
-			case RealtimePacketClass.discovery:
-				const discovery_payload = new TextDecoder().decode(vita49_dgram.payload);
-				return decode_discovery(discovery_payload);
-				
-			default:
-				return {
-					type: packet_class,
-					payload: vita49_dgram
-				};
-		}
+			return {
+				type: RealtimePacketClass.decode(vita49_dgram.class.packet_class),
+				stream: vita49_dgram.stream,
+				sequence: vita49_dgram.sequence,
+				payload: payload
+			};
+		} 
+	} catch (error) {
+		console.log(error);
+		return {
+			type: 'error',
+			payload: { ...error, data: data }
+		};
 	}
 }
 
