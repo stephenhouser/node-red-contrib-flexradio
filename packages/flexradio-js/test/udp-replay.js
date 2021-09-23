@@ -6,8 +6,8 @@ const { exit } = require('process');
 const vita49 = require('vita49-js');
 const flex = require('..');
 
-const PORT = 4995;
-const HOST = 'localhost';
+const PORT = 4992;
+const HOST = '127.0.0.1';
 
 const capture_file = process.argv[2];
 const udp_client = dgram.createSocket('udp4');
@@ -59,7 +59,16 @@ async function get_packets() {
 	})
 }
 
+let first_time = 0;
+let last_time = 0;
 async function packet_delay(packet) {
+	const packet_time = packet.timestamp_s * 1000 + packet.timestamp_us / 1000;
+	if (first_time === 0) {
+		first_time = packet_time;
+	}
+	const relative_time = packet_time - first_time;
+	const delay_ms = last_time - relative_time;
+	last_time = relative_time;
 	return new Promise((resolve) => {
 		setTimeout(resolve, delay_ms)
 	})
@@ -70,15 +79,11 @@ get_packets()
 		for (i = 0; i < packets.length; i++) {
 			const p = packets[i];
 		
+			console.log(p);
 			await packet_delay(p);
+			udp_client.send(p.data, PORT, HOST)
 		}
-		// packets.forEach(function(p) {
-		// 	console.log(p);
-		// 	udp_client.send(p.data, PORT, HOST)
-		// });
-
-		udp_client.close();	
+	})
+	.finally(() => {
+		udp_client.close();
 	});
-
-
-
