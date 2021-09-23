@@ -48,7 +48,7 @@ module.exports = function(RED) {
 		// which is way too few for many flows.
 		node.setMaxListeners(0);
 
-		// Listeners for the connected radio
+		// Radio event handlers for handling events FROM radio
 		node.radio_event = {};
 
 		node.log('creating host=' + node.host + ' port=' + node.port);
@@ -74,7 +74,7 @@ module.exports = function(RED) {
 			node.radio_event['meter'] = (msg) => { node.emit(msg.type, msg); };
 			node.radio_event['panadapter'] = (msg) => { node.emit(msg.type, msg); };
 			node.radio_event['waterfall'] = (msg) => { node.emit(msg.type, msg); };
-
+			
 			// don't re-emit errors. They are treated differently by
 			// the EventEmitter and will crash if not handled.
 			node.radio_event['error'] = (error) => { node.error(error); };
@@ -88,6 +88,26 @@ module.exports = function(RED) {
 
 			radio.connect();
 		};
+
+		node.on('close', function(done) {
+			node.log('closing host=' + node.host + ' port=' + node.port);
+
+			node.closing = true;
+			if (node.radio) {
+				const radio = node.radio;
+				// Unsubscribe to radio events from our listeners
+				Object.entries(node.radio_event).forEach(([event, handler]) => {
+					if (handler) {
+						radio.off(event, handler);
+					}
+				});
+
+				radio.disconnect();
+				radio = null;
+			}
+
+			done();
+		});
 
 		node.send = function(msg, response_handler) {
 			if (!msg || !msg.payload || !node.radio) {
@@ -192,26 +212,6 @@ module.exports = function(RED) {
 		node.connectionState = function() {
 			return (node.radio) ? node.radio.getConnectionState() : 'disconnected';
 		};
-
-		node.on('close', function(done) {
-			node.log('closing host=' + node.host + ' port=' + node.port);
-
-			node.closing = true;
-			if (node.radio) {
-				const radio = node.radio;
-				// Unsubscribe to radio events from our listeners
-				Object.entries(node.radio_event).forEach(([event, handler]) => {
-					if (handler) {
-						radio.off(event, handler);
-					}
-				});
-
-				radio.disconnect();
-				radio = null;
-			}
-
-			done();
-		});
 
 		function updateNodeStatus(data) {
 			node.state = '';

@@ -19,19 +19,20 @@ module.exports = function(RED) {
 
 		const radio = node.radio;
 		if (!radio) {
-			node.status({ fill: 'red', shape: 'circle', text: 'not configured' });
+			updateNodeStatus('not configured');
 			return;
 		}
 
 		node.radio_event['connecting'] = (msg) => { sendEvent(msg) };
 		node.radio_event['connected'] = (msg) => { sendEvent(msg) };
 		node.radio_event['disconnected'] = (msg) => { sendEvent(msg) };
+
 		node.radio_event['message']  = (msg) => { sendEvent(msg) };
 		node.radio_event['status']  = (msg) => { sendEvent(msg) };
 
-		node.on('close', function(done) {
+		node.on('close', (done) => {
 			// Unsubscribe to radio events from our listeners
-			Object.entries(node.radio_event).forEach(function([event, handler]) {
+			Object.entries(node.radio_event).forEach(([event, handler]) => {
 				if (handler) {
 					radio.off(event, handler);
 				}
@@ -63,20 +64,20 @@ module.exports = function(RED) {
 				case 'disconnected':
 					node.status({ fill: 'red', shape: 'dot', text: status });
 					break;
-				default:
-					node.status({ fill: 'red', shape: 'circle', text: '' });
+				case 'not configured':
+					node.status({ fill: 'black', shape: 'circle', text: status });
 					break;
 			}
 		}
 
 		// Update this node's status from the config node, in case we miss events
 		updateNodeStatus('starting');
-		node.statusUpdate = setInterval(function() {
+		node.statusUpdate = setInterval(() => {
 			updateNodeStatus(radio.connectionState());
 		}, 5000);
 
 		// Subscribe to radio events with our listeners
-		Object.entries(node.radio_event).forEach(function([event, handler]) {
+		Object.entries(node.radio_event).forEach(([event, handler]) => {
 			if (handler) {
 				radio.on(event, handler);
 			}
