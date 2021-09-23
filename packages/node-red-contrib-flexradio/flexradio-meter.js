@@ -15,15 +15,14 @@ module.exports = function(RED) {
 		node.topic_type = config.topic_type;
 		node.output_mode = config.output_mode;
 
-		// Radio event handlers for handling events FROM radio
-		node.radio_event = {};
-
 		const radio = node.radio;
 		if (!radio) {
 			updateNodeStatus('not configured');
 			return;
 		}
 
+		// Radio event handlers for handling events FROM radio
+		node.radio_event = {};
 		node.radio_event['connecting'] = (msg) => { updateNodeStatus(msg.payload) };
 		node.radio_event['connected'] = (msg) => { updateNodeStatus(msg.payload) };
 		node.radio_event['disconnected'] = (msg) => { updateNodeStatus(msg.payload) };
@@ -44,8 +43,7 @@ module.exports = function(RED) {
 		}
 
 		node.on('close', (done) => {
-			// Unsubscribe to radio events from our listeners
-			const radio = node.radio;
+			// Unsubscribe to radio events from our listeners			
 			Object.entries(node.listeners).forEach(([event, handler]) => {
 				if (handler) {
 					radio.off(event, handler)

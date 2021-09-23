@@ -40,22 +40,18 @@ module.exports = function(RED) {
 		node.port = Number(config.port);
 		node.timeoutSeconds = config.timeout || 15;
 
-		console.log("TIMEOUT == " + node.timeoutSeconds);
-
 		node.closing = false;
 
 		// Allows any number of listeners to attach. Default is 10
 		// which is way too few for many flows.
 		node.setMaxListeners(0);
-
-		// Radio event handlers for handling events FROM radio
-		node.radio_event = {};
-
 		node.log('creating host=' + node.host + ' port=' + node.port);
 		node.radio = new Radio({ ip: node.host, port: node.port });
 		if (node.radio) {
 			const radio = node.radio;
 
+			// Radio event handlers for handling events FROM radio
+			node.radio_event = {};
 			node.radio_event['connecting'] = (msg) => { updateNodeStatus(msg); };
 			node.radio_event['connected'] = (msg) => { updateNodeStatus(msg); };
 			node.radio_event['disconnected'] = (msg) => {
@@ -90,22 +86,20 @@ module.exports = function(RED) {
 		};
 
 		node.on('close', function(done) {
+			const radio = node.radio;
+			
 			node.log('closing host=' + node.host + ' port=' + node.port);
-
 			node.closing = true;
-			if (node.radio) {
-				const radio = node.radio;
-				// Unsubscribe to radio events from our listeners
-				Object.entries(node.radio_event).forEach(([event, handler]) => {
-					if (handler) {
-						radio.off(event, handler);
-					}
-				});
 
-				radio.disconnect();
-				radio = null;
-			}
+			// Unsubscribe to radio events from our listeners
+			Object.entries(node.radio_event).forEach(([event, handler]) => {
+				if (handler) {
+					radio.off(event, handler);
+				}
+			});
 
+			radio.disconnect();
+			radio = null;
 			done();
 		});
 

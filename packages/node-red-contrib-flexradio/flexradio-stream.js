@@ -14,25 +14,17 @@ module.exports = function(RED) {
 		node.stream = config.stream;
 		node.output_mode = config.output_mode;
 
-		node.listeners = {};
-
-		if (!node.radio) {
-			node.status({ fill: 'red', shape: 'circle', text: 'not configured' });
+		const radio = node.radio;
+		if (!radio) {
+			updateNodeStatus('not configured');
 			return;
 		}
 
-		const radio = node.radio;
-		node.listeners['connecting'] = function(connection) {
-			updateNodeStatus(connection.payload);
-		}
-
-		node.listeners['connected'] = function(connection) {
-			updateNodeStatus(connection.payload);
-		}
-
-		node.listeners['disconnected'] = function(connection) {
-			updateNodeStatus(connection.payload);
-		};
+		// Radio event handlers for handling events FROM radio
+		node.radio_event = {};
+		node.radio_event['connecting'] = (msg) => { updateNodeStatus(msg.payload) };
+		node.radio_event['connected'] = (msg) => { updateNodeStatus(msg.payload) };
+		node.radio_event['disconnected'] = (msg) => { updateNodeStatus(msg.payload) };
 
 		node.stream_handler = function(stream_data) {
 			const msg = {

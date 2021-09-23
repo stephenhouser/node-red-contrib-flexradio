@@ -14,15 +14,14 @@ module.exports = function(RED) {
 		node.topic = config.topic;
 		node.topic_type = config.topic_type;
 
-		// Radio event handlers for handling events FROM radio
-		node.radio_event = {};
-
 		const radio = node.radio;
 		if (!radio) {
 			updateNodeStatus('not configured');
 			return;
 		}
 
+		// Radio event handlers for handling events FROM radio
+		node.radio_event = {};
 		node.radio_event['connecting'] = (msg) => { sendEvent(msg) };
 		node.radio_event['connected'] = (msg) => { sendEvent(msg) };
 		node.radio_event['disconnected'] = (msg) => { sendEvent(msg) };
