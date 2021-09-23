@@ -10,6 +10,7 @@ const PORT = 4992;
 const HOST = '127.0.0.1';
 
 const capture_file = process.argv[2];
+const port = process.argv[3] || PORT;
 const udp_client = dgram.createSocket('udp4');
 
 function get_udp_packet(packet) {
@@ -81,7 +82,7 @@ get_packets()
 		
 			console.log(p);
 			await packet_delay(p);
-			udp_client.send(p.data, PORT, HOST)
+			udp_client.send(p.data, port, HOST)
 		}
 	})
 	.finally(() => {

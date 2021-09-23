@@ -48,6 +48,9 @@ module.exports = function(RED) {
 		// which is way too few for many flows.
 		node.setMaxListeners(0);
 
+		// Listeners for the connected radio
+		node.listeners = {};
+
 		// Show number of listeners for each emitted event type
 		// setInterval(function() {
 		// 	process.stdout.write('-radio listeners: ')
@@ -63,15 +66,25 @@ module.exports = function(RED) {
 		if (node.radio) {
 			const radio = node.radio;
 
-			radio.on('connecting', function(data) {
+			node.update_connection = function(data) {
 				updateNodeStatus(data);
-			});
+			}
 
-			radio.on('connected', function(data) {
+			node.listeners['connecting'] = node.update_connection;
+			node.listeners['connected'] = node.update_connection;
+
+			node.listeners['disconnected'] = function(data) {
 				updateNodeStatus(data);
-			});
 
-			radio.on('message', function(message) {
+				clearInterval(node.reconnectTimer);
+				if (!node.closing) {
+					node.reconnectTimer = setTimeout(() => {
+						radio.connect();
+					}, node.timeoutSeconds * 1000);
+				}
+			}
+
+			node.listeners['message'] = function(message) {
 				node.debug('message: ' + JSON.stringify(message));
 				const output_message = {
 					topic: message.type,
@@ -80,43 +93,48 @@ module.exports = function(RED) {
 				};
 
 				node.emit('message', output_message);
-			});
+			}
 
-			radio.on('status', function(status) {
-				node.debug('status: ' + JSON.stringify(status));
-				const output_status = {
-					topic: status.topic,
-					client: status.client,
-					payload: status.payload
-				};
+			node.emit_radio_message = function(message) {
+				node.emit(message.type, message);
+			}
+			node.listeners['status'] = node.emit_radio_message;
+			// node.listeners['meter'] = node.emit_radio_message;
+			node.listeners['panadapter'] = node.emit_radio_message;
+			node.listeners['waterfall'] = node.emit_radio_message;
 
-				node.emit('status', output_status);
-			});
+			// node.listeners['status'] = function(status) {
+			// 	node.debug('status: ' + JSON.stringify(status));
+			// 	const output_status = {
+			// 		topic: status.topic,
+			// 		client: status.client,
+			// 		payload: status.payload
+			// 	};
 
-			radio.on('meter', function(meter) {
+			// 	node.emit('status', output_status);
+			// }
+
+			node.listeners['meter'] = function(meter) {
 				// node.log('meter: ' + JSON.stringify(meter));
 				node.emit('meter', meter);
-			});
+			}
 
-			radio.on('daxAudio', function(daxAudio) {
-				// node.log('daxAudio: ' + JSON.stringify(daxAudio));
-				node.emit('daxAudio', daxAudio);
-			});
+			// node.listeners['panadapter'] = function(daxAudio) {
+			// 	// node.log('daxAudio: ' + JSON.stringify(daxAudio));
+			// 	node.emit('panadapter', daxAudio);
+			// }
 
-			radio.on('error', function(error) {
+			node.listeners['error'] = function(error) {
 				// don't re-emit errors. They are treated differently by
 				// the EventEmitter and will crash if not handled.
 				node.error(error);
-			});
+			}
 
-			radio.on('disconnected', function(data) {
-				updateNodeStatus(data);
 
-				clearInterval(node.reconnectTimer);
-				if (!node.closing) {
-					node.reconnectTimer = setTimeout(() => {
-						radio.connect();
-					}, node.timeoutSeconds * 1000);
+			// Subscribe to radio events with our listeners
+			Object.entries(node.listeners).forEach(function([event, handler]) {
+				if (handler) {
+					radio.on(event, handler)
 				}
 			});
 
@@ -232,8 +250,16 @@ module.exports = function(RED) {
 
 			node.closing = true;
 			if (node.radio) {
-				node.radio.disconnect();
-				node.radio = null;
+				const radio = node.radio;
+				// Unsubscribe to radio events from our listeners
+				Object.entries(node.listeners).forEach(function([event, handler]) {
+					if (handler) {
+						radio.off(event, handler)
+					}
+				});
+	
+				radio.disconnect();
+				radio = null;
 			}
 
 			done();

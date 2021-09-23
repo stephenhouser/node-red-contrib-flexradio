@@ -23,15 +23,15 @@ module.exports = function(RED) {
 
 		const radio = node.radio;
 		node.listeners['connecting'] = function(connection) {
-			updateNodeStatus(connection);
+			updateNodeStatus(connection.payload);
 		}
 
 		node.listeners['connected'] = function(connection) {
-			updateNodeStatus(connection);
+			updateNodeStatus(connection.payload);
 		}
 
 		node.listeners['disconnected'] = function(connection) {
-			updateNodeStatus(connection);
+			updateNodeStatus(connection.payload);
 		};
 
 		node.stream_handler = function(stream_data) {
@@ -62,8 +62,7 @@ module.exports = function(RED) {
 			done();
 		});
 
-		function updateNodeStatus(connection) {
-			const status = connection.payload;
+		function updateNodeStatus(status) {
 			switch (status) {
 				case 'connecting':
 					node.status({ fill: 'green', shape: 'circle', text: status });
