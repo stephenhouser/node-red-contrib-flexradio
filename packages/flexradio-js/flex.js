@@ -157,7 +157,7 @@ function decode_realtime(data) {
 
 	try {
 		let vita49_dgram = vita49.decode(data);
-		if (isFlexClass(vita49_dgram) && isDataStream(vita49_dgram)) {
+		if (isFlexClass(vita49_dgram) /*&& isDataStream(vita49_dgram)*/) {
 			let payload = null;
 			switch (vita49_dgram.class.packet_class) {
 				case RealtimePacketClass.meter:

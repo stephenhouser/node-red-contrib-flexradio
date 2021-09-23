@@ -85,6 +85,7 @@ module.exports = function(RED) {
 		node.statusUpdate = setInterval(function() {
 			updateNodeStatus(radio.connectionState());
 		}, 5000);
+		
 		// Subscribe to radio events with our listeners
 		Object.entries(node.listeners).forEach(function([event, handler]) {
 			if (handler) {

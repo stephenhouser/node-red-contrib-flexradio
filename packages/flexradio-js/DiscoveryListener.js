@@ -14,11 +14,6 @@ const DiscoveryStates = {
 	stopped: 'stopped'
 };
 
-const VITA_DISCOVERY_STREAM = 0x00000800;
-const VITA_FLEX_OUI = 0x1c2d;
-const VITA_FLEX_INFORMATION_CLASS = 0x534c;
-const VITA_FLEX_PACKET_CLASS = 0xffff;
-
 class DiscoveryListener extends EventEmitter {
 	constructor(host, port) {
 		super();
@@ -75,23 +70,11 @@ class DiscoveryListener extends EventEmitter {
 		}
 	}
 
-	_isDiscoveryMessage(message) {
-		return message &&
-			message.stream === VITA_DISCOVERY_STREAM &&
-			message.class.oui === VITA_FLEX_OUI &&
-			message.class.information_class === VITA_FLEX_INFORMATION_CLASS &&
-			message.class.packet_class === VITA_FLEX_PACKET_CLASS;
-	}
-
 	_receiveData(data, info) {
-		const vita49_message = vita49.decode(data);
-		if (this._isDiscoveryMessage(vita49_message)) {
-			const discovery_payload = vita49_message.payload.toString('utf8');
-			const radio_descriptor = flex.decode_discovery(discovery_payload);
-			if (radio_descriptor) {
-				log_debug('DiscoveryListener::_receiveData(' + JSON.stringify(radio_descriptor) + ')');
-				this.emit('discovery', radio_descriptor);
-			}
+		const flex_msg = flex.decode_realtime(data);
+		if (flex_msg.type === 'discovery') {
+				log_debug('DiscoveryListener::_receiveData(' + JSON.stringify(flex_msg) + ')');
+				this.emit(flex_msg.type, flex_msg);
 		}
 	}
 
