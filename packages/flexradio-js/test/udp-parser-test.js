@@ -24,32 +24,14 @@ pcap_session.on('packet', function(raw_packet) {
 		const u_packet = udp_packet(packet);
 		if (u_packet) {
 			const data = new Uint8Array(u_packet.data);
-			// console.log(data);
+			console.log(u_packet);
 
 			const flex_dgram = flex.decode_realtime(data);
 			if (flex_dgram) {
-				switch (flex_dgram.type) {
-					case 'meter':
-						// console.log('METER Data');
-						// console.log(flex_dgram);
-						break;
-	
-					case 'panadapter':
-						// console.log(flex_dgram);
-						console.log('[' + flex_dgram.payload.data.join(',') + '],');
-						break;
-							
-					case 'waterfall':
-						break;
-								
-					case 'discovery':
-						break;
-
-					default:
-						console.log(' Data');
-						// console.log(flex_dgram);
-				}
+				console.log(flex_dgram);
 			}
+
+			console.log();
 		}
 	}
 });
