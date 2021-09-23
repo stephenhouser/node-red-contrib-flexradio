@@ -49,32 +49,17 @@ module.exports = function(RED) {
 		node.setMaxListeners(0);
 
 		// Listeners for the connected radio
-		node.listeners = {};
-
-		// Show number of listeners for each emitted event type
-		// setInterval(function() {
-		// 	process.stdout.write('-radio listeners: ')
-		// 	Object.entries(MessageTypes).forEach(function([key, value]) {
-		// 		const listeners = node.listeners(value);
-		// 		process.stdout.write(`${value}=${listeners.length}, `);	
-		// 	});
-		// 	process.stdout.write('\n');
-		// }, 10000);
+		node.radio_event = {};
 
 		node.log('creating host=' + node.host + ' port=' + node.port);
 		node.radio = new Radio({ ip: node.host, port: node.port });
 		if (node.radio) {
 			const radio = node.radio;
 
-			node.update_connection = function(data) {
-				updateNodeStatus(data);
-			}
-
-			node.listeners['connecting'] = node.update_connection;
-			node.listeners['connected'] = node.update_connection;
-
-			node.listeners['disconnected'] = function(data) {
-				updateNodeStatus(data);
+			node.radio_event['connecting'] = (msg) => { updateNodeStatus(msg); };
+			node.radio_event['connected'] = (msg) => { updateNodeStatus(msg); };
+			node.radio_event['disconnected'] = (msg) => {
+				updateNodeStatus(msg);
 
 				clearInterval(node.reconnectTimer);
 				if (!node.closing) {
@@ -82,59 +67,22 @@ module.exports = function(RED) {
 						radio.connect();
 					}, node.timeoutSeconds * 1000);
 				}
-			}
+			};
 
-			node.listeners['message'] = function(message) {
-				node.debug('message: ' + JSON.stringify(message));
-				const output_message = {
-					topic: message.type,
-					message_id: message.message_id,
-					payload: message.payload
-				};
+			node.radio_event['message'] = (msg) => { node.emit(msg.type, msg); };
+			node.radio_event['status'] = (msg) => { node.emit(msg.type, msg); };
+			node.radio_event['meter'] = (msg) => { node.emit(msg.type, msg); };
+			node.radio_event['panadapter'] = (msg) => { node.emit(msg.type, msg); };
+			node.radio_event['waterfall'] = (msg) => { node.emit(msg.type, msg); };
 
-				node.emit('message', output_message);
-			}
-
-			node.emit_radio_message = function(message) {
-				node.emit(message.type, message);
-			}
-			node.listeners['status'] = node.emit_radio_message;
-			// node.listeners['meter'] = node.emit_radio_message;
-			node.listeners['panadapter'] = node.emit_radio_message;
-			node.listeners['waterfall'] = node.emit_radio_message;
-
-			// node.listeners['status'] = function(status) {
-			// 	node.debug('status: ' + JSON.stringify(status));
-			// 	const output_status = {
-			// 		topic: status.topic,
-			// 		client: status.client,
-			// 		payload: status.payload
-			// 	};
-
-			// 	node.emit('status', output_status);
-			// }
-
-			node.listeners['meter'] = function(meter) {
-				// node.log('meter: ' + JSON.stringify(meter));
-				node.emit('meter', meter);
-			}
-
-			// node.listeners['panadapter'] = function(daxAudio) {
-			// 	// node.log('daxAudio: ' + JSON.stringify(daxAudio));
-			// 	node.emit('panadapter', daxAudio);
-			// }
-
-			node.listeners['error'] = function(error) {
-				// don't re-emit errors. They are treated differently by
-				// the EventEmitter and will crash if not handled.
-				node.error(error);
-			}
-
+			// don't re-emit errors. They are treated differently by
+			// the EventEmitter and will crash if not handled.
+			node.radio_event['error'] = (error) => { node.error(error); };
 
 			// Subscribe to radio events with our listeners
-			Object.entries(node.listeners).forEach(function([event, handler]) {
+			Object.entries(node.radio_event).forEach(([event, handler]) => {
 				if (handler) {
-					radio.on(event, handler)
+					radio.on(event, handler);
 				}
 			});
 
@@ -252,12 +200,12 @@ module.exports = function(RED) {
 			if (node.radio) {
 				const radio = node.radio;
 				// Unsubscribe to radio events from our listeners
-				Object.entries(node.listeners).forEach(function([event, handler]) {
+				Object.entries(node.radio_event).forEach(([event, handler]) => {
 					if (handler) {
-						radio.off(event, handler)
+						radio.off(event, handler);
 					}
 				});
-	
+
 				radio.disconnect();
 				radio = null;
 			}

@@ -35,16 +35,19 @@ module.exports = function(RED) {
 			updateNodeStatus(connection.payload);
 		}
 
-		node.listeners['meter'] = function(meter) {
-			const topic = radio.meterTopic(meter);
-			if (radio.matchTopic(node.topic, topic, node.topic_type)) {
-				const msg = {
-					topic: topic,
-					payload: node.output_mode == 'value' ? meter.value : meter
-				};
-
-				node.send(msg);
-			};
+		node.listeners['meter'] = function(meters_update) {
+			for (const [meter_num, meter] of Object.entries(meters_update.payload)) {
+				const topic = radio.meterTopic(meter);
+				if (radio.matchTopic(node.topic, topic, node.topic_type)) {
+					const msg = {
+						topic: topic,
+						meter: Number(meter_num),
+						payload: node.output_mode == 'value' ? meter.value : meter
+					};
+	
+					node.send(msg);
+				};	
+			}
 		}
 
 		node.on('close', function(done) {

@@ -14,56 +14,26 @@ module.exports = function(RED) {
 		node.topic = config.topic;
 		node.topic_type = config.topic_type;
 
-		node.listeners = {};
+		// Radio event handlers for handling events FROM radio
+		node.radio_event = {};
 
-		if (!node.radio) {
+		const radio = node.radio;
+		if (!radio) {
 			node.status({ fill: 'red', shape: 'circle', text: 'not configured' });
 			return;
 		}
 
-		const radio = node.radio;
-		node.listeners['connecting'] = function(connection) {
-			updateNodeStatus(connection.payload);
-
-			if (radio.matchTopic(node.topic, connection.topic, node.topic_type)) {
-				node.send(connection);
-			}
-		}
-
-		node.listeners['connected'] = function(connection) {
-			updateNodeStatus(connection.payload);
-
-			if (radio.matchTopic(node.topic, connection.topic, node.topic_type)) {
-				node.send(connection);
-			}
-		}
-
-		node.listeners['disconnected'] = function(connection) {
-			updateNodeStatus(connection.payload);
-
-			if (radio.matchTopic(node.topic, connection.topic, node.topic_type)) {
-				node.send(connection);
-			}
-		}
-
-		node.listeners['message'] = function(message) {
-			if (radio.matchTopic(node.topic, message.topic, node.topic_type)) {
-				node.send(message);
-			}
-		}
-
-		node.listeners['status'] = function(status) {
-			if (radio.matchTopic(node.topic, status.topic, node.topic_type)) {
-				node.send(status);
-			}
-		}
+		node.radio_event['connecting'] = (msg) => { sendEvent(msg) };
+		node.radio_event['connected'] = (msg) => { sendEvent(msg) };
+		node.radio_event['disconnected'] = (msg) => { sendEvent(msg) };
+		node.radio_event['message']  = (msg) => { sendEvent(msg) };
+		node.radio_event['status']  = (msg) => { sendEvent(msg) };
 
 		node.on('close', function(done) {
 			// Unsubscribe to radio events from our listeners
-			const radio = node.radio;
-			Object.entries(node.listeners).forEach(function([event, handler]) {
+			Object.entries(node.radio_event).forEach(function([event, handler]) {
 				if (handler) {
-					radio.off(event, handler)
+					radio.off(event, handler);
 				}
 			});
 
@@ -71,6 +41,16 @@ module.exports = function(RED) {
 			clearInterval(node.statusUpdate);
 			done();
 		});
+
+		function sendEvent(msg)  {
+			updateNodeStatus(msg.payload);
+			if (radio.matchTopic(node.topic, msg.topic, node.topic_type)) {
+				// use spread operator to create a copy of the message
+				// otherwise modifications to the message in the flow will
+				// propogate back into other nodes we send to.
+				node.send({ ...msg });
+			}
+		}
 
 		function updateNodeStatus(status) {
 			switch (status) {
@@ -84,7 +64,7 @@ module.exports = function(RED) {
 					node.status({ fill: 'red', shape: 'dot', text: status });
 					break;
 				default:
-					node.status({ fill: 'red', shape: 'circle', text: status });
+					node.status({ fill: 'red', shape: 'circle', text: '' });
 					break;
 			}
 		}
@@ -96,9 +76,9 @@ module.exports = function(RED) {
 		}, 5000);
 
 		// Subscribe to radio events with our listeners
-		Object.entries(node.listeners).forEach(function([event, handler]) {
+		Object.entries(node.radio_event).forEach(function([event, handler]) {
 			if (handler) {
-				radio.on(event, handler)
+				radio.on(event, handler);
 			}
 		});
 	}

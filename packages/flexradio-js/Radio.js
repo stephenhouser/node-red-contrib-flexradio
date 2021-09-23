@@ -239,28 +239,27 @@ class Radio extends EventEmitter {
 		const flex_dgram = flex.decode_realtime(data);
 		log_debug_realtime('Radio._receiveRealtimeData(' + JSON.stringify(flex_dgram) + ')');
 		if (flex_dgram) {
+
+			// Handle any special processing of particular message types
 			switch (flex_dgram.type) {
 				case MessageTypes.meter:
-					this._receiveMeterData(flex_dgram.payload);
+					this._scaleMeterValues(flex_dgram.payload);
 					break;
 
 				default:
-					// 'daxAudio', 'panadapter', 'waterfall', 'opus', ...
-					this.emit(flex_dgram.type, flex_dgram);
 			}
+
+			this.emit(flex_dgram.type, flex_dgram);
 		}
 	}
 
-	_receiveMeterData(meter_data) {
+	_scaleMeterValues(meter_update_msg) {
 		const meters = this.meters;
-		for (const [meter_num, meter_value] of Object.entries(meter_data)) {
+		for (const [meter_num, meter_value] of Object.entries(meter_update_msg)) {
 			if (meter_num in meters) {
 				const meter = meters[meter_num];
 				meter.value = this._scaleMeterValue(meter, meter_value);
-				this.emit(MessageTypes.meter, meter);
-			} else {
-				// unknown meter, emit raw unscaled value 
-				this.emit(MessageTypes.meter, { num: meter_num, value: meter_value });
+				meter_update_msg[meter_num] = meter;
 			}
 		}
 	}
