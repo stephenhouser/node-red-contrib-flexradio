@@ -26,24 +26,14 @@ module.exports = function(RED) {
 		node.radio_event['connected'] = (msg) => { updateNodeStatus(msg.payload) };
 		node.radio_event['disconnected'] = (msg) => { updateNodeStatus(msg.payload) };
 
-		node.stream_handler = function(stream_data) {
-			const msg = {
-				topic: stream_data.type,
-				stream: stream_data.stream,
-				payload: stream_data.payload
-			};
+		node.listeners['daxAudio'] = (msg) => { sendEvent(msg); };
+		node.listeners['panadapter'] = (msg) => { sendEvent(msg); };
+		node.listeners['waterfall'] = (msg) => { sendEvent(msg); };
 
-			node.send(msg);			
-		}
-
-		node.listeners['daxAudio'] = node.stream_handler;
-		node.listeners['panadapter'] = node.stream_handler;
-		node.listeners['waterfall'] = node.stream_handler;
-
-		node.on('close', function(done) {
+		node.on('close', (done) => {
 			// Unsubscribe to radio events from our listeners
 			const radio = node.radio;
-			Object.entries(node.listeners).forEach(function([event, handler]) {
+			Object.entries(node.radio_event).forEach(([event, handler]) => {
 				if (handler) {
 					radio.off(event, handler)
 				}
@@ -53,6 +43,16 @@ module.exports = function(RED) {
 			clearInterval(node.statusUpdate);
 			done();
 		});
+
+		function sendEvent(msg)  {
+			updateNodeStatus(msg.payload);
+			if (radio.matchTopic(node.topic, msg.topic, node.topic_type)) {
+				// use spread operator to create a copy of the message
+				// otherwise modifications to the message in the flow will
+				// propogate back into other nodes we send to.
+				node.send({ ...msg });
+			}
+		}
 
 		function updateNodeStatus(status) {
 			switch (status) {
@@ -65,20 +65,20 @@ module.exports = function(RED) {
 				case 'disconnected':
 					node.status({ fill: 'red', shape: 'dot', text: status });
 					break;
-				default:
-					node.status({ fill: 'red', shape: 'circle', text: status });
+				case 'not configured':
+					node.status({ fill: 'black', shape: 'circle', text: status });
 					break;
 			}
 		}
 
 		// Update this node's status from the config node, in case we miss events
 		updateNodeStatus('starting');
-		node.statusUpdate = setInterval(function() {
+		node.statusUpdate = setInterval(() => {
 			updateNodeStatus(radio.connectionState());
 		}, 5000);
 		
 		// Subscribe to radio events with our listeners
-		Object.entries(node.listeners).forEach(function([event, handler]) {
+		Object.entries(node.radio_event).forEach(([event, handler]) => {
 			if (handler) {
 				radio.on(event, handler)
 			}

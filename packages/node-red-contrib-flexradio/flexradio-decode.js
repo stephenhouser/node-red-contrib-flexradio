@@ -12,7 +12,7 @@ module.exports = function(RED) {
 		const node = this;
 
 		node.on('input', function(msg) {
-			const flex_msg = flex.decode_realtime(msg.payload);
+			const flex_msg = flex.decode(msg.payload);
 			if (flex_msg) {
 				node.status({ fill: 'green', shape: 'dot', text: 'decoded' });
 				node.send(flex_msg);

@@ -2,7 +2,7 @@
  *
  * 2021/09/09 Stephen Houser, MIT License
  */
-const vita49 = require('vita49-js');
+const flex = require('flexradio-js');
 
 module.exports = function(RED) {
 	'use strict';
@@ -12,10 +12,10 @@ module.exports = function(RED) {
 		const node = this;
 
 		node.on('input', function(msg) {
-			const vita49_msg = vita49.decode(msg.payload);
-			if (vita49_msg) {
+			const flex_msg = flex.decode_realtime(msg.payload);
+			if (flex_msg) {
 				node.status({ fill: 'green', shape: 'dot', text: 'decoded' });
-				node.send(vita49_msg);
+				node.send(flex_msg);
 			} else {
 				node.status({ fill: 'red', shape: 'dot', text: 'invalid datagram' });
 			}
