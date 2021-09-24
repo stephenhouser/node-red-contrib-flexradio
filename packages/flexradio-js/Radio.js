@@ -219,11 +219,15 @@ class Radio extends EventEmitter {
 		log_debug('Radio._receiveResponse(' + encoded_message + ')');
 		const message = flex.decode(encoded_message);
 		if (message) {
-			// Update internal meter list whenever we see an update...
-			if (message.topic === 'meter') {
-				this._updateMeterList(message.payload);
+			// Update internal data whenever we see an update...
+			switch (message.type) {
+				case 'meter':
+					// TODO: Rewrite topic and payload to 'meter/24' or 'meter/NAME'?
+					this._updateMeterList(message.payload);
+					break;
 			}
 
+			// Send back to a reuqest or emit as asynchronous event
 			if (message.type === MessageTypes.response) {
 				const request = this.requests[message.sequence_number];
 				if (request && request.callback) {
