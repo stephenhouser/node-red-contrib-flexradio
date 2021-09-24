@@ -26,6 +26,8 @@ module.exports = function(RED) {
 		node.radio_event['connected'] = (msg) => { sendEvent(msg) };
 		node.radio_event['disconnected'] = (msg) => { sendEvent(msg) };
 
+		node.radio_event['version']  = (msg) => { sendEvent(msg) };
+		node.radio_event['handle']  = (msg) => { sendEvent(msg) };
 		node.radio_event['message']  = (msg) => { sendEvent(msg) };
 		node.radio_event['status']  = (msg) => { sendEvent(msg) };
 

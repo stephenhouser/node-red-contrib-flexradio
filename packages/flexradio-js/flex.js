@@ -78,7 +78,8 @@ function decode(response) {
 			// use PEGJS parser to parse response payloads.
 			return flexParser.parse(response);
 		} catch (error) {
-			console.log(error);
+			console.error('flexradio-js command stream decoding error:');
+			console.error(error);
 			return {
 				type: 'error',
 				payload: { ...error, response: response }
@@ -190,7 +191,8 @@ function decode_realtime(data) {
 			};
 		} 
 	} catch (error) {
-		console.log(error);
+		console.error('flexradio-js data stream decoding error:');
+		console.error(error);
 		return {
 			type: 'error',
 			payload: { ...error, data: data }
