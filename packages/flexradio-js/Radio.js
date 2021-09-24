@@ -276,23 +276,26 @@ class Radio extends EventEmitter {
 				case 'swr':
 					// Converted to VitaDB value ( converted_value = ((int32)(MeterValue * 128) & 0xFFFF) )
 					value = (value << 16) >> 16; // convert uint16 to int16
-					return parseFloat(value / 128.0).toFixed(1);
+					value /= 128.0;
+					return Math.round((value + Number.EPSILON) * 100) / 100;
 
 				case 'volts':
 				case 'amps':
 					// Converted to floating point value ( converted_value = (float) ( MeterValue * 256.0)
-					return parseFloat(value / 256.0).toFixed(1);
+					value /= 256.0;
+					return Math.round((value + Number.EPSILON) * 100) / 100;
 
 				case 'degc':
 				case 'degf':
 					//  Converted to floating point value ( converted_value = (float) ( MeterValue * 64.0) )
 					value = (value << 16) >> 16; // convert uint16 to int16
-					return parseFloat(value / 64.0).toFixed(1);
+					value /= 64.0;
+					return Math.round((value + Number.EPSILON) * 100) / 100;
 
 				case 'rpm':
 				case 'watts':
 				case 'percent':
-					return value;
+					return Math.round((value + Number.EPSILON) * 100) / 100;
 			}
 		}
 
