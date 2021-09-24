@@ -30,8 +30,5 @@
   "homepage": "https://github.com/stephenhouser/node-red-contrib-flexradio#readme",
   "devDependencies": {
     "lerna": "^4.0.0"
-  },
-  "dependencies": {
-    "node-red-dashboard": "^3.0.4"
   }
 }
