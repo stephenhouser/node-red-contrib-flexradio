@@ -65,11 +65,23 @@ module.exports = function(RED) {
 				}
 			};
 
-			node.radio_event['message'] = (msg) => { node.emit(msg.type, msg); };
-			node.radio_event['status'] = (msg) => { node.emit(msg.type, msg); };
-			node.radio_event['meter'] = (msg) => { node.emit(msg.type, msg); };
-			node.radio_event['panadapter'] = (msg) => { node.emit(msg.type, msg); };
-			node.radio_event['waterfall'] = (msg) => { node.emit(msg.type, msg); };
+			function sendEvent(msg)  {
+				// translate msg.type to topic if we don't have a topic
+				const event_type = msg.type;
+
+				msg.topic = msg.topic || msg.type;
+				delete msg.type;
+
+				node.emit(event_type, msg)
+			}
+
+			node.radio_event['version'] = (msg) => { sendEvent(msg); };
+			node.radio_event['handle'] = (msg) => { sendEvent(msg); };
+			node.radio_event['message'] = (msg) => { sendEvent(msg); };
+			node.radio_event['status'] = (msg) => { sendEvent(msg); };
+			node.radio_event['meter'] = (msg) => { sendEvent(msg); };
+			node.radio_event['panadapter'] = (msg) => { sendEvent(msg); };
+			node.radio_event['waterfall'] = (msg) => { sendEvent(msg); };
 			
 			// don't re-emit errors. They are treated differently by
 			// the EventEmitter and will crash if not handled.
