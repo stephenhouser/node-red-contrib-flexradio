@@ -142,8 +142,16 @@ GPS 'GPS'
 	{ return ['gps', ...m]; }
 
 Meter 'Meter' 
-	= 'meter' _ m:Hash_KV_List
+	= 'meter' _ m:(Meter_List / Meter_Message)
 	{ return ['meter', ...m] ; }
+
+Meter_Message 'Meter_Message'
+	= n:Integer _ m:.*
+	{ return [[n, m.join('')]]; }
+
+Meter_List 'Meter_List'
+	= &([0-9]+ '.') m:Hash_KV_List
+	{ return m; }
 
 Profile 'Profile' 
 	= 'profile' _ t:String _ m:(m:Profile_List / m:Space_KV_List)

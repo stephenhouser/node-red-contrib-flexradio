@@ -70,3 +70,5 @@ S7FE7BBA0|client 0x19935575 connected local_ptt=1 client_id=157225CF-028B-4ABB-9
 C2|client bind client_id=157225CF-028B-4ABB-939D-7AA912859B2D
 R2|0|0x19935575
 H07717FA5
+S184973C0|meter 27 removed
+S513F01DA|meter 18.src=RAD#18.num=3#18.nam=MAINFAN#18.low=0.0#18.hi=8192.0#18.desc=Main radio fan RPM#18.unit=RPM#18.fps=0#
