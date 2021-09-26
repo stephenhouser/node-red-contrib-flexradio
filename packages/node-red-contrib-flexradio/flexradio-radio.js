@@ -152,7 +152,7 @@ module.exports = function(RED) {
 					if (response_handler) {
 						// Synthesize meter topic into 'meter' list responses.
 						if (request.match(/meter list/i) && (response.response_code == 0)) {
-							injectMeterTopic(response);
+							injectMeterTopics(response);
 						}
 
 						const response_data = {
