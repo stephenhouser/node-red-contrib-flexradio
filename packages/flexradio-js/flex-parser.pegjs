@@ -87,7 +87,7 @@ Response 'Response'
 // Special case for an untagged (0x) handle in a response
 // ex: `R12|50000068|Unable to tune a locked slice -- unlock first`
 Response_Handle 'Response_Handle'
-	= 'R' sequence:Integer '|0|' response:Hex_String
+	= 'R' sequence:Integer '|0|' response:Handle_List
 	{ return { type: 'response', 
     			sequence_number: sequence, 
                 response_code: 0, 
@@ -128,7 +128,7 @@ Version 'Version'
 
 Payload 'Payload' 
 	= Profile / Meter / GPS / Info / Version_Info / Space_KV_List
-
+	
 Version_Info "version_info" 
 	= &"SmartSDR" m:Hash_KV_List
     { return ['version', ...m]; }
@@ -209,6 +209,10 @@ Hash_KV_Token 'Hash_KV_Toksn'
 	{ return tokenValue(text()); }
 Hash 
 	= '#'
+
+Handle_List 
+	= head:Hex_String ','? tail:Hex_String* ','?
+	{ return [head].concat(tail); }
 
 Comma_List 
 	= head:Comma_Token tail:(Comma_List_Tail)* Comma?

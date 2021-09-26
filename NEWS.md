@@ -2,19 +2,32 @@
 
 Releases are posted in the [nodered-hamradio Groups.io](https://groups.io/nodered-hamradio) group.
 
+
+
+
 ## Subject: Release of node-red-contrib-flexradio nodes v0.8.0
 
 v0.8.0 of node-red-contrib-flexradio nodes are now available via Manage Pallette and NPM.
 
+* Numbers in delivered messages are now actually numbers and not numbers wrapped in strings. This is from an overhaul (again) of the command stream parser code.
+
+* Found a few more edge cases in the command stream parsing, `meter 24 removed` which were causing errors and in some cases complete crashes of the system.
+
 * Reorder items in node configuration so that the `Name` field is last. This maintains consistency with the built-in NodeRed nodes. This is only a user interface change.
 
-* Clean up the event handlers among the nodes to more gracefully work with re-deploys and not consume extra memory and resources.
+* Clean up the event handlers among the nodes to more gracefully work with re-deploys and not consume extra memory and resources. Refactor many of the listeners in the top-level exposed nodes to be more consistent.
 
 * Change the default radio hostname from `localhost` to `flexradio` as the radio hostname will surely never, ever, be `localhost`. It was misleading.
 
 * Update the `vita49-decode` node which enables access to the VITA-49 datagram parser without creating a UDP listner (e.g. the `flexradio-discover` or `flexradio-meter` nodes). This is an advanced feature which may be removed in a future version.
 
 * Add `flexradio-decode` node to enable access to the parser without a connection to the radio. Could be used if you want to manage the TCP connection yourself. An advanced feature which may be removed in a future version.
+
+* Rewrite the vita49 parser to use `binary-parser` npm module. This adds a dependency, but it's a small one and will make the parser more flexible in the future.
+
+* Begin to add support for more complex data streams (panadapter, waterfall, etc.). Mostly very low level in the parser. Prototype `flexradio-stream` node.
+
+* Write and rewrite test scripts and workloads for both command stream (TCP) and data stream (UDP) parsers to exercise them and their use.
 
 ## Subject: node-red-contrib-flexradio v0.7.0
 
