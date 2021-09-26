@@ -135,7 +135,7 @@ function decode_panadapter(dgram) {
 		.uint32('frame_index')
 		.array("data", {
 			type: new binaryParser().uint16(),
-			length: 'bins_in_frame'
+			length: 'number_of_bins'
 		});
 
 	return panadapterParser.parse(dgram.payload);
@@ -157,12 +157,14 @@ function decode_realtime(data) {
 	}
 
 	try {
-		let vita49_dgram = vita49.decode(data);
-		if (isFlexClass(vita49_dgram) /*&& isDataStream(vita49_dgram)*/) {
+		const vita49_dgram = vita49.decode(data);
+		if (isDataStream(vita49_dgram) && isFlexClass(vita49_dgram)) {
 			let payload = null;
 			switch (vita49_dgram.class.packet_class) {
 				case RealtimePacketClass.meter:
-					payload = decode_meters(vita49_dgram);
+					if (vita49_dgram.stream === StreamType.meter) {
+						payload = decode_meters(vita49_dgram);
+					}
 					break;
 
 				case RealtimePacketClass.panadapter:
@@ -174,8 +176,10 @@ function decode_realtime(data) {
 					break;
 
 				case RealtimePacketClass.discovery:
-					const discovery_payload = new TextDecoder().decode(vita49_dgram.payload);
-					payload = decode_discovery(discovery_payload);
+					if (vita49_dgram.stream === StreamType.discovery) {
+						const discovery_payload = new TextDecoder().decode(vita49_dgram.payload);
+						payload = decode_discovery(discovery_payload);
+					}
 					break;
 					
 				default:

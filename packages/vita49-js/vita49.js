@@ -140,6 +140,7 @@ const vita49Parser = new binaryParser()
 	.uint16('packet_size')
 	.choice(null, {
 		tag: 'packet_type',
+		defaultChoice: nullParser,
 		choices: {
 			0x00: ifDataParser,
 			0x01: ifDataStreamParser,
@@ -149,7 +150,6 @@ const vita49Parser = new binaryParser()
 			0x05: extContextParser,
 			0x06: ifCmdStreamParser,
 			0x07: extCmdStreamParser,
-			0x08: nullParser
 		}
 	});
 

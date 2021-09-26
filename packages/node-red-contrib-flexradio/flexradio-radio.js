@@ -78,7 +78,13 @@ module.exports = function(RED) {
 			node.radio_event['version'] = (msg) => { sendEvent(msg); };
 			node.radio_event['handle'] = (msg) => { sendEvent(msg); };
 			node.radio_event['message'] = (msg) => { sendEvent(msg); };
-			node.radio_event['status'] = (msg) => { sendEvent(msg); };
+			node.radio_event['status'] = (msg) => { 
+				// Synthesize meter topic into 'meter' responses.
+				if (msg.topic === 'meter') {
+					injectMeterTopic(msg);
+				}
+				sendEvent(msg); 
+			};
 			node.radio_event['meter'] = (msg) => { sendEvent(msg); };
 			node.radio_event['panadapter'] = (msg) => { sendEvent(msg); };
 			node.radio_event['waterfall'] = (msg) => { sendEvent(msg); };
@@ -131,7 +137,7 @@ module.exports = function(RED) {
 				if (subMeterMatch && subMeterMatch.groups.meter != 'all') {
 					const topic = subMeterMatch.groups.meter;
 					for (const [meter_number, meter] of Object.entries(radio.getMeters())) {
-						if (node.matchTopic(topic, node.meterTopic(meter), 'mqtt')) {
+						if (node.matchTopic(topic, node.meterTopic(meter, meter_number), 'mqtt')) {
 							node.debug(`send: Translate meter '${topic}' to '${meter_number}'`);
 							requests.push('sub meter ' + meter_number);
 						}
@@ -146,9 +152,7 @@ module.exports = function(RED) {
 					if (response_handler) {
 						// Synthesize meter topic into 'meter' list responses.
 						if (request.match(/meter list/i) && (response.response_code == 0)) {
-							for (const [meter_number, meter] of Object.entries(response.payload)) {
-								meter.topic = node.meterTopic(meter);
-							};
+							injectMeterTopic(response);
 						}
 
 						const response_data = {
@@ -164,11 +168,11 @@ module.exports = function(RED) {
 			}
 		};
 
-		node.meterTopic = function(meter) {
+		node.meterTopic = function(meter, meter_number) {
 			if (meter.src !== undefined && meter.num !== undefined && meter.nam !== undefined) {
 				return [meter.src, meter.num, meter.nam].join('/');
 			} else {
-				return ['meter', meter.num].join('/');
+				return null; //['meter', meter_number].join('/');
 			}
 		};
 
@@ -218,6 +222,12 @@ module.exports = function(RED) {
 		node.connectionState = function() {
 			return (node.radio) ? node.radio.getConnectionState() : 'disconnected';
 		};
+
+		function injectMeterTopic(msg) {
+			for (const [meter_number, meter] of Object.entries(msg.payload)) {
+				meter.topic = node.meterTopic(meter, meter_number);
+			};
+		}
 
 		function updateNodeStatus(data) {
 			node.state = '';

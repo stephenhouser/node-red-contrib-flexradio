@@ -241,9 +241,8 @@ class Radio extends EventEmitter {
 
 	_receiveRealtimeData(data) {
 		const flex_dgram = flex.decode_realtime(data);
-		log_debug_realtime('Radio._receiveRealtimeData(' + JSON.stringify(flex_dgram) + ')');
+		log_debug_realtime('Radio._receiveRealtimeData(' + flex_dgram + ')');
 		if (flex_dgram) {
-
 			// Handle any special processing of particular message types
 			switch (flex_dgram.type) {
 				case MessageTypes.meter:
@@ -263,6 +262,12 @@ class Radio extends EventEmitter {
 			if (meter_num in meters) {
 				const meter = meters[meter_num];
 				meter.value = this._scaleMeterValue(meter, meter_value);
+				meter_update_msg[meter_num] = meter;
+			} else {
+				// console.log(`Radio._scaleMeterValues(${meter_num}) unknown meter`);
+				const meter = {					
+					value: meter_value
+				};
 				meter_update_msg[meter_num] = meter;
 			}
 		}

@@ -28,12 +28,12 @@ module.exports = function(RED) {
 		node.radio_event['disconnected'] = (msg) => { updateNodeStatus(msg.payload) };
 
 		node.listeners['meter'] = (msg) => {
-			for (const [meter_num, meter] of Object.entries(msg.payload)) {
-				const topic = radio.meterTopic(meter);
+			for (const [meter_number, meter] of Object.entries(msg.payload)) {
+				const topic = radio.meterTopic(meter, meter_number);
 				if (radio.matchTopic(node.topic, topic, node.topic_type)) {
 					const meter_msg = {
 						topic: topic,
-						meter: Number(meter_num),
+						meter: Number(meter_number),
 						payload: node.output_mode == 'value' ? meter.value : meter
 					};
 	

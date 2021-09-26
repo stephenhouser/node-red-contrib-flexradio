@@ -4,6 +4,11 @@ This document shows by example the data format as it is moves through the layers
 
 These are used to document what we want the data to look like and can be used as test cases.
 
+## Special Notes
+
+* Handles and identifiers are interpreted as hexadecimal numbers and reflected in NodeRed as decimal numbers. In several cases, e.g. the delivery of handles, the flexradio does not prefix these numbers with the conventinal `0x` but they are indeed hexidecimal numbers and interpreted as such.
+
+
 ## Discovery messages
 
 ### Raw TCP data
@@ -62,7 +67,7 @@ H18A12655
 ```
 {
   "type": "handle",
-  "payload": "18A12655"
+  "payload": 413214293
 }
 ```
 
@@ -70,7 +75,7 @@ H18A12655
 ```
 {
   "topic": "handle",
-  "payload": "18A12655"
+  "payload": 413214293
 }
 ```
 
@@ -87,7 +92,7 @@ M10000001|Client connected from IP 192.168.10.25
 ```
 {
   "type": "message",
-  "message_id": 10000001,
+  "message_id": 268435457,
   "payload": "Client connected from IP 192.168.10.25"
 }
 ```
@@ -96,7 +101,7 @@ M10000001|Client connected from IP 192.168.10.25
 ```
 {
   "topic": "message",
-  "message_id": 10000001,
+  "message_id": 268435457,
   "payload": "Client connected from IP 192.168.10.25"
 }
 ```
@@ -113,11 +118,11 @@ S18A12655|radio filter_sharpness VOICE level=2 auto_level=1
 ```
 {
   "type": "status",
-  "client": "18A12655",
+  "client": 413214293,
   "topic": "radio/filter_sharpness/VOICE",
   "payload": {
-    "level": "2",
-    "auto_level": "1"
+    "level": 2,
+    "auto_level": 1
   }
 }
 ```
@@ -126,11 +131,11 @@ S18A12655|radio filter_sharpness VOICE level=2 auto_level=1
 ```
 {
   "topic": "status",
-  "client": "18A12655",
+  "client": 413214293,
   "topic": "radio/filter_sharpness/VOICE",
   "payload": {
-    "level": "2",
-    "auto_level": "1"
+    "level": 2,
+    "auto_level": 1
   }
 }
 ```
@@ -159,6 +164,8 @@ R9|0|MIC,BAL,LINE,ACC,PC
 
 >>> C43|display panafall rfgain_info 0x0
 R43|50000029|
+
+S67EEC4C3|meter 19.src=TX-#19.num=1#19.nam=FWDPWR#19.low=0.0#19.hi=53.0#19.desc=RF Power Forward#19.unit=dBm#19.fps=20#
 ```
 
 ### Parser/Radio.js output
@@ -174,7 +181,7 @@ R43|50000029|
 {
   "type": "response",
   "sequence_number": 6,
-  "response_code": "0",
+  "response_code": 0,
   "topic": "info",
   "payload": {
     "model": "FLEX-6600",
@@ -182,10 +189,10 @@ R43|50000029|
     "name": "Flex-6600M",
     "callsign": "N1SH",
     "gps": "Not Present",
-    "atu_present": "1",
-    "num_scu": "2",
-    "num_slice": "4",
-    "num_tx": "1",
+    "atu_present": 1,
+    "num_scu": 2,
+    "num_slice": 4,
+    "num_tx": 1,
     "software_ver": "3.2.34.3128",
     "mac": "00:1C:2D:05:1A:68",
     "ip": "192.168.10.27",
@@ -214,7 +221,7 @@ R43|50000029|
 {
   "type": "response",
   "sequence_number": 8,
-  "response_code": "0",
+  "response_code": 0,
   "topic": null,
   "payload": "ANT1,ANT2,RX_A,RX_B,XVTA,XVTB"
 }
@@ -222,7 +229,7 @@ R43|50000029|
 {
   "type": "response",
   "sequence_number": 9,
-  "response_code": "0",
+  "response_code": 0,
   "topic": null,
   "payload": "MIC,BAL,LINE,ACC,PC"
 }
@@ -230,10 +237,29 @@ R43|50000029|
 {
   "type": "response",
   "sequence_number": 43,
-  "response_code": "50000029",
+  "response_code": 1342177321,
   "topic": null,
   "payload": null
 }
+
+{
+  type: "status",
+  client: 1743701187,
+  topic: "meter",
+  payload: {
+    "19": {
+      "src": "TX-",
+      "num": 1,
+      "nam": "FWDPWR",
+      "low": 0,
+      "hi": 53,
+      "desc": "RF Power Forward",
+      "unit": "dBm",
+      "fps": 20
+    }
+  }
+}
+
 ```
 
 ### Node/flexradio-request output
@@ -243,7 +269,7 @@ R43|50000029|
 
   "topic": null,
   "sequence_number": 3,
-  "response_code": "0",
+  "response_code": 0,
   "payload": "192.168.10.25"
 }
 
@@ -252,17 +278,17 @@ R43|50000029|
 
   "topic": "info",
   "sequence_number": 6,
-  "response_code": "0",
+  "response_code": 0,
   "payload": {
     "model": "FLEX-6600",
     "chassis_serial": "0621-1104-6601-1641",
     "name": "Flex-6600M",
     "callsign": "N1SH",
     "gps": "Not Present",
-    "atu_present": "1",
-    "num_scu": "2",
-    "num_slice": "4",
-    "num_tx": "1",
+    "atu_present": 1,
+    "num_scu": 2,
+    "num_slice": 4,
+    "num_tx": 1,
     "software_ver": "3.2.34.3128",
     "mac": "00:1C:2D:05:1A:68",
     "ip": "192.168.10.27",
@@ -280,7 +306,7 @@ R43|50000029|
 
   "topic": "version",
   "sequence_number": 7,
-  "response_code": "0",
+  "response_code": 0,
   "payload": {
     "SmartSDR-MB": "3.2.34.3128",
     "PIC-DECPU": "1.0.3.0",
@@ -293,28 +319,60 @@ R43|50000029|
   "request": "ant list",
 
   "sequence_number": 8,
-  "response_code": "0",
+  "response_code": 0,
   "topic": null,
-  "payload": "ANT1,ANT2,RX_A,RX_B,XVTA,XVTB"
+  "payload": [
+    "ANT1",
+    "ANT2",
+    "RX_A",
+    "RX_B",
+    "XVTA",
+    "XVTB"
+  ]
 }
 
 {
   "request": "mic list",
 
   "sequence_number": 9,
-  "response_code": "0",
+  "response_code": 0,
   "topic": null,
-  "payload": "MIC,BAL,LINE,ACC,PC"
+  "payload": [
+    "MIC",
+    "BAL",
+    "LINE",
+    "ACC",
+    "PC"
+  ]
 }
 
 {
   "request": "display panafall rfgain_info 0x0",
 
   "sequence_number": 43,
-  "response_code": "50000029",
+  "response_code": 1342177321,
   "topic": null,
   "payload": null
 }
+
+{
+  type: "status",
+  client: 1743701187,
+  topic: "meter",
+  payload: {
+    "19": {
+      "src": "TX-",
+      "num": 1,
+      "nam": "FWDPWR",
+      "low": 0,
+      "hi": 53,
+      "desc": "RF Power Forward",
+      "unit": "dBm",
+      "fps": 20,
+      "topic": "TX-/1/FWDPWR"
+    }
+  }
+
 ```
 
 ## Meter updates
@@ -350,9 +408,12 @@ The payload will contain a dictionary/object with a key for each meter number be
 ### Node/flexradio-message output
 
 ```
-# When "Value and Context" is selected
+# When "Value and Context" is selected, a message like this for each meter (1, 19, 21) in the update.
+# The values are scaled based on the meter's units.
+# `meter` is the radio's assigned meter number
 {
     "topic": "TX-/8/CODEC",
+    "meter": 1,
     "payload": {
         "src": "TX-",
         "num": "8",
@@ -366,14 +427,18 @@ The payload will contain a dictionary/object with a key for each meter number be
     }
 }
 
-# When "Value Only" is selected
+# When "Value Only" is selected, one message for each update in the payload.
+# The values are scaled based on the meter's units.
+# `meter` is the radio's assigned meter number
 {
     "topic": "TX-/1/FWDPWR",
+    "meter": 1,
     "payload": 0
 }
 
 {
     "topic": "TX-/3/SWR"
+    "meter": 21,
     "payload": 1.2
 }
 ```
@@ -382,17 +447,20 @@ Meters that the system does not know about, e.g. does not have the proper contex
 
 ```
 {
-    "topic":"meter/1",
+    "topic": null,
+    "meter": 1,
     "payload": 39936
 }
 
 {
-    "topic":"meter/19",
+    "topic": null,
+    "meter": 19,
     "payload": 0
 }
 
 {
-    "topic":"meter/21",
+    "topic": null,
+    "meter": 21,
     "payload": 128
 }
 ```
