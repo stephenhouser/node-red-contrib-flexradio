@@ -29,7 +29,7 @@ module.exports = function(RED) {
 
 		node.listeners['meter'] = (msg) => {
 			for (const [meter_number, meter] of Object.entries(msg.payload)) {
-				const topic = radio.meterTopic(meter, meter_number);
+				const topic = radio.meterTopic(meter);
 				if (radio.matchTopic(node.topic, topic, node.topic_type)) {
 					const meter_msg = {
 						topic: topic,
