@@ -142,12 +142,8 @@ GPS 'GPS'
 	{ return ['gps', ...m]; }
 
 Meter 'Meter' 
-	= 'meter' _ m:(Meter_List / Meter_Message)
+	= 'meter' _ m:(Meter_List / Space_KV_List)
 	{ return ['meter', ...m] ; }
-
-Meter_Message 'Meter_Message'
-	= n:Integer _ m:.*
-	{ return [[n, m.join('')]]; }
 
 Meter_List 'Meter_List'
 	= &([0-9]+ '.') m:Hash_KV_List
