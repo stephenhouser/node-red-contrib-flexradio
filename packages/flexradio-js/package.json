@@ -1,6 +1,6 @@
 {
   "name": "flexradio-js",
-  "version": "0.7.8",
+  "version": "0.8.0-alpha.0",
   "description": "FlexRadio Control and Monitoring Nodes",
   "keywords": [
     "flexradio"
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "binary-parser": "^1.9.2",
-    "vita49-js": "^0.7.5"
+    "vita49-js": "^0.8.0-alpha.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
