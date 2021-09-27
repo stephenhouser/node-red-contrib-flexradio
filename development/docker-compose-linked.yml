@@ -15,4 +15,4 @@ services:
             - ./data-linked:/data
             - ../packages/vita49-js:/data/node_modules/vita49-js
             - ../packages/flexradio-js:/data/node_modules/flexradio-js
-            - ../packages/node-red-contrib-flexradio:/data/node_modules/node-radio-contrib-flexradio
+            - ../packages/node-red-contrib-flexradio:/data/node_modules/node-red-contrib-flexradio
