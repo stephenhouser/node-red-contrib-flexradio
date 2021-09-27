@@ -187,12 +187,13 @@ function decode_realtime(data) {
 					break;
 			}
 
-			return {
+			const msg = {
 				type: RealtimePacketClass.decode(vita49_dgram.class.packet_class),
 				stream: vita49_dgram.stream,
 				sequence: vita49_dgram.sequence,
 				payload: payload
 			};
+			return msg;
 		} 
 	} catch (error) {
 		console.error('flexradio-js data stream decoding error:');
