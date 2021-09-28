@@ -1,4 +1,5 @@
 // https://pegjs.org/online
+// https://peggyjs.org/online.html
 {
 	function tokenValue(token) {
 		if (typeof token === 'string' && token.startsWith('0x')) {
@@ -263,8 +264,8 @@ String_quoted 'String_quoted'
 
 Hex_String 'Hex_String' 
 	// 8 hex characters. PegJS does not have the repeat function for characters.
-	= prefix:'0x'? chars:(Hex_String_8 / Hex_String_0)
-	{ return '0x' + chars; }
+	= prefix:'0x'? hex:(Hex_String_8 / Hex_String_0)
+	{ return '0x' + hex; }
 Hex_String_0 'Hex_String_0'
 	= '0'
     { return '00000000';}
