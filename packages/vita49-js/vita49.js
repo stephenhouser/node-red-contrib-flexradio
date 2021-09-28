@@ -154,31 +154,35 @@ const vita49Parser = new binaryParser()
 	});
 
 function decode(data) {
-	if (!data || !(data instanceof Uint8Array)) {
-		return null;
+	if (data && (data instanceof Uint8Array)) {
+		try {
+			const vita49_dgram = vita49Parser.parse(data);
+
+			// Map the timestamp to a struct
+			if (vita49_dgram._tsi_type && vita49_dgram.timestamp_int) {
+				vita49_dgram.timestamp_int.type = TimeStampIntegerType.decode(vita49_dgram._tsi_type);
+			}
+
+			if (vita49_dgram._tsf_type && vita49_dgram.timestamp_frac) {
+				vita49_dgram.timestamp_frac.type = TimeStampFractionType.decode(vita49_dgram._tsf_type);
+			}
+
+			// Clean up the '_' properties, they are temporary
+			const remove_keys = Object.keys(vita49_dgram).filter(function(key) {
+				return key.startsWith('_');
+			});
+			for (let k = 0; k < remove_keys.length; k++) {			
+				delete vita49_dgram[remove_keys[k]];
+			};
+
+			return vita49_dgram;
+		} catch (error) {
+			console.error('vita49-js data stream decoding error:');
+			console.error(error);
+		}
 	}
 
-	let vita49_dgram = vita49Parser.parse(data);
-	if (vita49_dgram) {
-		// Map the timestamp to a struct
-		if (vita49_dgram._tsi_type && vita49_dgram.timestamp_int) {
-			vita49_dgram.timestamp_int.type = TimeStampIntegerType.decode(vita49_dgram._tsi_type);
-		}
-
-		if (vita49_dgram._tsf_type && vita49_dgram.timestamp_frac) {
-			vita49_dgram.timestamp_frac.type = TimeStampFractionType.decode(vita49_dgram._tsf_type);
-		}
-
-		// Clean up the '_' properties, they are temporary
-		const remove_keys = Object.keys(vita49_dgram).filter(function(key) {
-			return key.startsWith('_');
-		});
-		remove_keys.forEach(function(key) {
-			delete vita49_dgram[key];
-		});
-	}
-
-	return vita49_dgram;
+	return null;	
 }
 
 function encode(data) {

@@ -2560,6 +2560,10 @@ function peg$parse(input, options) {
 
 
   	function tokenValue(token) {
+  		if (token.startsWith('0x')) {
+  			return token;
+  		}
+  		
          	return isNaN(Number(token)) ? token : Number(token);
       }
       

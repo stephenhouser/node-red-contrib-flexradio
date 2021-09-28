@@ -80,10 +80,6 @@ function decode(response) {
 		} catch (error) {
 			console.error('flexradio-js command stream decoding error:');
 			console.error(error);
-			return {
-				type: 'error',
-				payload: { ...error, response: response }
-			};
 		}
 	}
 
@@ -91,17 +87,21 @@ function decode(response) {
 }
 
 // decode_discovery() -- decode FlexRadio discovery datagrams sent as UDP broadcast messages
-function decode_discovery(payload) {
+function decode_discovery(dgram) {
 	function tokenValue(token) {
 		return isNaN(Number(token)) ? token : Number(token);
- 	}
- 
+	}
+
 	const radio = {};
-	const clean_payload = payload.replace(/[^\x20-\x7E]/g, '');
-	const fields = clean_payload.split(' ').forEach(function(kv) {
-		const [key, value] = kv.split('=');
-		radio[key] = tokenValue(value);
-	});
+	if (dgram.stream === StreamType.discovery) {
+		const discovery_payload = new TextDecoder().decode(dgram.payload);
+		const clean_payload = discovery_payload.replace(/[^\x20-\x7E]/g, '');
+		const fields = clean_payload.split(' ');
+		for (let f = 0; f < fields.length; f++) {
+			const [key, value] = fields[f].split('=');
+			radio[key] = tokenValue(value);
+		};
+	}
 
 	return radio;
 }
@@ -118,12 +118,22 @@ function decode_meters(dgram) {
 			readUntil: 'eof'
 		});
 
-	const meters = {};
-	metersParser.parse(dgram.payload).forEach(function(m) {
-		meters[m.meter] = m.value;
-	});
+	const meter_values = {};
+	if (dgram.stream === StreamType.meter) {
+		try {
+			const meter_reports = metersParser.parse(dgram.payload);
+			for (let m = 0; m < meter_reports.length; m++) {
+				const meter_report = meter_reports[m];
+				meter_values[meter_report.meter] = meter_report.value;
+			};
+		} catch (error) {
+			console.error('flexradio-js meter decoding error');
+			console.error(error);
+			return null;
+		}
+	}
 
-	return meters;
+	return meter_values;
 }
 
 function decode_panadapter(dgram) {
@@ -138,7 +148,14 @@ function decode_panadapter(dgram) {
 			length: 'number_of_bins'
 		});
 
-	return panadapterParser.parse(dgram.payload);
+	try {
+		return panadapterParser.parse(dgram.payload);
+	} catch (error) {
+		console.error('flexradio-js panadapter decoding error');
+		console.error(error);
+	}
+
+	return null;
 }
 
 function decode_waterfall(dgram) {
@@ -156,15 +173,13 @@ function decode_realtime(data) {
 		return vita49_dgram.packet_type == vita49.PacketType.ext_data_stream;
 	}
 
-	try {
-		const vita49_dgram = vita49.decode(data);
+	const vita49_dgram = vita49.decode(data);
+	if (vita49_dgram) {
 		if (isDataStream(vita49_dgram) && isFlexClass(vita49_dgram)) {
 			let payload = null;
 			switch (vita49_dgram.class.packet_class) {
 				case RealtimePacketClass.meter:
-					if (vita49_dgram.stream === StreamType.meter) {
-						payload = decode_meters(vita49_dgram);
-					}
+					payload = decode_meters(vita49_dgram);
 					break;
 
 				case RealtimePacketClass.panadapter:
@@ -176,33 +191,26 @@ function decode_realtime(data) {
 					break;
 
 				case RealtimePacketClass.discovery:
-					if (vita49_dgram.stream === StreamType.discovery) {
-						const discovery_payload = new TextDecoder().decode(vita49_dgram.payload);
-						payload = decode_discovery(discovery_payload);
-					}
+					payload = decode_discovery(vita49_dgram);
 					break;
-					
+
 				default:
 					payload = vita49_dgram;
 					break;
 			}
 
-			const msg = {
-				type: RealtimePacketClass.decode(vita49_dgram.class.packet_class),
-				stream: vita49_dgram.stream,
-				sequence: vita49_dgram.sequence,
-				payload: payload
-			};
-			return msg;
-		} 
-	} catch (error) {
-		console.error('flexradio-js data stream decoding error:');
-		console.error(error);
-		return {
-			type: 'error',
-			payload: { ...error, data: data }
-		};
+			if (payload) {
+				return {
+					type: RealtimePacketClass.decode(vita49_dgram.class.packet_class),
+					stream: vita49_dgram.stream,
+					sequence: vita49_dgram.sequence,
+					payload: payload
+				};
+			}
+		}
 	}
+
+	return null;
 }
 
 // encode_request() -- encode a FlexRadio command/request to be sent on the TCP control stream
