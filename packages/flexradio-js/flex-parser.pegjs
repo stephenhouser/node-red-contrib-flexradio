@@ -164,11 +164,8 @@ Profile_List 'Profile_List'
 
 
 Space_KV_List 'Space_KV_List'
-	= head:Space_KV_Member tail:(Space_KV_List_Tail)* _?
-	{ return [head].concat(tail); }
-Space_KV_List_Tail 'Space_KV_List_Tail'
-	= _ m:Space_KV_Member
-	{ return m; }
+	= head:Space_KV_Member tail:(_ @Space_KV_Member)* _?
+	{ return [head, ...tail]; }
 Space_KV_Member 'Space_KV_Member'
 	= key:Space_KV_Token eq:'='? value:Space_KV_Token?
 	{ return eq ? [key, listValue(key, value)] : listValue(key); }
@@ -177,10 +174,10 @@ Space_KV_Token 'Space_KV_Token'
 	{ return tokenValue(text()); }
 
 Comma_KV_List 'Comma_KV_List'
-	= head:Comma_KV_Member tail:(Comma_KV_List_Tail)* Comma?
+	= head:Comma_KV_Member tail:(Comma_KV_List_Tail)* ','?
 	{ return [head].concat(tail); }
 Comma_KV_List_Tail 'Comma_KV_List_Tail'
-	= Comma m:Comma_KV_Member
+	= ',' m:Comma_KV_Member
 	{ return m; }
 Comma_KV_Member 'Comma_KV_Member'
 	= key:Comma_KV_Token eq:'='? value:Comma_KV_Token?
@@ -192,11 +189,8 @@ Comma_KV_Token_unquoted
 	{ return tokenValue(text()); }
 
 Hash_KV_List 'Hash_KV_List'
-	= head:Hash_KV_Member tail:(Hash_KV_List_Tail)* Hash?
-	{ return [head].concat(tail); }
-Hash_KV_List_Tail 'Hash_KV_List_Tail'
-	= Hash m:Hash_KV_Member
-	{ return m; }    
+	= head:Hash_KV_Member tail:('#' @Hash_KV_Member)* '#'?
+	{ return [head, ...tail]; }
 Hash_KV_Member 'Hash_KV_Member'
 	= key:Hash_KV_Key eq:'='? value:Hash_KV_Token?
 	{ return eq ? [...key, value] : key; }
@@ -209,36 +203,24 @@ Hash_KV_Complex_Key 'Hash_KV_Complex_Key'
 Hash_KV_Token 'Hash_KV_Toksn'
 	= [^#=\t]+
 	{ return tokenValue(text()); }
-Hash 
-	= '#'
 
 Handle_List 
-	= head:Hex_String ','? tail:Hex_String* ','?
-	{ return [head].concat(tail); }
+	= head:Hex_String tail:(',' @Hex_String)* ','?
+	{ return [head, ...tail]; }
 
 Comma_List 
-	= head:Comma_Token tail:(Comma_List_Tail)* Comma?
-	{ return [head].concat(tail); }
-Comma_List_Tail 
-	= Comma t:Comma_Token
-	{ return t; }
+	= head:Comma_Token tail:(',' @Comma_Token)* ','?
+	{ return [head, ...tail]; }
 Comma_Token 
 	= [^,]+
 	{ return tokenValue(text()); }
-Comma 
-	= ','
 
 Caret_List 'Caret_List'
-	= head:Caret_Token tail:(Caret_List_Tail)* Caret?
-	{ return [head].concat(tail); }
-Caret_List_Tail 'Caret_List_Tail'
-	= Caret m:Caret_Token
-	{ return m; }
+	= head:Caret_Token tail:('^' @Caret_Token)* '^'?
+	{ return [head, ...tail]; }
 Caret_Token 'Caret_Token'
 	= [^\^]+
 	{ return tokenValue(text()); }
-Caret 
-	= '^'
 
 Version_Number 'Version_Number' 
 	= major:Integer '.' minor:Integer '.' patch:Integer '.' build: Integer
