@@ -15,7 +15,27 @@
             return this.name || this.host + ":" + this.port;
         },
         oneditprepare: function() {
-            var updateOptions = function() {
+            function updateOptions() {
+                var host_mode = $('#node-config-input-host_mode').val();
+                switch (host_mode) {
+                    case 'automatic':
+                        $('#host-mode-automatic').show();
+                        $('#host-mode-manual').hide();
+                        $('#host-mode-discovery').hide();
+                        break;
+                    case 'discovery':
+                        $('#host-mode-automatic').hide();
+                        $('#host-mode-manual').hide();
+                        $('#host-mode-discovery').show();
+                        break;
+                    case 'manual':
+                        $('#host-mode-automatic').hide();
+                        $('#host-mode-manual').show();
+                        $('#host-mode-discovery').hide();
+                        break;
+                }
+
+
                 var station_mode = $('#node-config-input-station_mode').val();
                 switch (station_mode) {
                     case 'none':
@@ -32,7 +52,40 @@
                         break;
                 }
             };
+
+            function addRadio(radio) {
+                const radio_id = 'node-input-radio-b_' + radio;
+                const radio_button = $('<input/>', { 
+                    id:radio_id, name: 'radio', value: radio,
+                    type: 'radio', style:'margin: 5px; width: auto;' })
+                const radio_label = $('<label/>', { for: radio_id, style:'width: auto;' })
+                    .text(radio);
+                const radio_list_item = $('<li/>', {style: 'margin:0; padding:8px 0px; border-bottom: 1px solid #ccc;' })
+                    .append(radio_button)
+                    .append(radio_label);
+
+                $("#node-input-radio-list-container").append(radio_list_item);
+            }
+
+            function refreshRadios() {
+                $('#node-input-radio-list-container').empty();
+                $.getJSON('flexradio/discovery')
+                    .done(function(data) {
+                        if (data['error']) {
+                        } else {
+                            const radios = data['radios'];
+                            for (let r = 0; r < radios.length; r++) {
+                                addRadio(radios[r]);
+                            }
+                        }
+                    }).fail(function(jqxhr) {
+                        console.log('failed to fetch discovered radios');
+                    });
+            }
+
+            refreshRadios();
             updateOptions();
+            $("#node-config-input-host_mode").change(updateOptions);
             $("#node-config-input-station_mode").change(updateOptions);
         }
     });
@@ -44,23 +97,40 @@
             </i> Name</label>
         <input type="text" id="node-config-input-name" placeholder="Name">
     </div>
+
     <div class="form-row">
-        <label for="node-config-input-host"><i class="fa fa-sign-in">
-            </i> Host</label>
-        <input type="text" id="node-config-input-host">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-port"><i class="fa fa-sign-in">
-            </i> Port</label>
-        <input type="text" id="node-config-input-port">
+        <label for="node-config-input-host_mode"><i class="fa fa-sign-in">
+            </i> Radio</label>
+        <select id="node-config-input-host_mode">
+            <option value="automatic">Automatic</option>
+            <option value="discovery">Discovery</option>
+            <option value="manual">Manual</option>
+        </select>
     </div>
 
-    <!-- TODO: Advanced properties start as display: none  -->
-    <div class="form-row" style="display: none;">
-        <label for="node-config-input-timeout"><i class="fa fa-stopwatch">
-            </i> Timeout</label>
-        <input type="text" id="node-config-input-timeout">
+    <div id="host-mode-manual" style="display: none; margin-left: 2em;">
+        <div class="form-row">
+            <label for="node-config-input-host"><i class="fa fa-sign-in">
+                </i> Host</label>
+            <input type="text" id="node-config-input-host">
+        </div>
+        <div class="form-row">
+            <label for="node-config-input-port"><i class="fa fa-sign-in">
+                </i> Port</label>
+            <input type="text" id="node-config-input-port">
+        </div>
     </div>
+
+    <div id="host-mode-discovery" style="display: none; margin-left: 2em;">
+        <div class="form-row">
+            <div id="node-input-radio-list-div" style="border-radius: 5px; height: 150px; padding: 5px; border: 1px solid #ccc; overflow-y:scroll;">
+                <ol id="node-input-radio-list-container" style="list-style-type:none; margin: 0;">
+                </ol>
+            </div>
+        </div>
+    <div id="host-mode-manual" style="display: none;">
+
+    <!-- TODO: Advanced properties start as display: none  -->
     <div class="form-row" style="display: none;">
         <label for="node-config-input-station_mode"><i class="fa fa-sign-in">
             </i> Station</label>
@@ -84,5 +154,12 @@
             <option value="C">C</option>
             <option value="D">D</option>
         </select>
+    </div>
+
+    <!-- TODO: Advanced properties start as display: none  -->
+    <div class="form-row" style="display: none;">
+        <label for="node-config-input-timeout"><i class="fa fa-stopwatch">
+            </i> Timeout</label>
+        <input type="text" id="node-config-input-timeout">
     </div>
 </script>
