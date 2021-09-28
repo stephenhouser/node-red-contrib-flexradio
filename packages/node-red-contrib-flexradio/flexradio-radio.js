@@ -247,4 +247,15 @@ module.exports = function(RED) {
 	}
 
 	RED.nodes.registerType('flexradio-radio', FlexRadioNode);
+
+
+	RED.httpAdmin.get("/flexradio/discovery", function(req, res) {
+		return res
+			.status(200)
+			.send({ 
+				'radios': ['flex-6600m', '192.168.10.27'] 
+			});
+	});
+
+
 };
