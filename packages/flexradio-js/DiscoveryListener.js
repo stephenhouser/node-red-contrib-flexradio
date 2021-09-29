@@ -40,7 +40,7 @@ class DiscoveryListener extends EventEmitter {
 	}
 
 	get radios() {
-		// Return a copy not the original
+		// Return a copy not the original in case the caller modifies it
 		return { ...this.discovered_radios };
 	}
 
@@ -51,7 +51,7 @@ class DiscoveryListener extends EventEmitter {
 		const discoverySocket = this.discoverySocket;
 
 		const discoveryListener = this;
-		
+
 		discoverySocket.on('listening', function() {
 			log_info('DiscoveryListener::connection.on(\'listening\')');
 			discoveryListener._setDiscoveryState(DiscoveryStates.listening);
