@@ -1,7 +1,6 @@
 const udp = require('dgram');
 const EventEmitter = require('events');
 
-const vita49 = require('vita49-js');
 const flex = require('flexradio-js');
 
 const log_info = function(msg) { console.log(msg); };
@@ -18,76 +17,86 @@ class DiscoveryListener extends EventEmitter {
 	constructor(host, port) {
 		super();
 
-		this.host = host;
-		this.port = port;
+		this.host = host || '0.0.0.0';
+		this.port = port || 4992;
 		this.discoveryState = DiscoveryStates.stopped;
-		this.discoveryListener = null;
+		this.discoverySocket = null;
+
+		this.discovered_radios = {};
 	}
 
 	start() {
 		log_info('DiscoveryListener::start()');
-		this._startDiscoveryListener();
+		if (this.discoveryState === DiscoveryStates.stopped) {
+			this._startDiscoveryListener();
+		}
 	}
 
 	stop() {
 		log_info('DiscoveryListener::stop()');
-		this._stopDiscoveryListener();
+		if (this.discoveryState !== DiscoveryStates.stopped) {
+			this._stopDiscoveryListener();
+		}
+	}
+
+	get radios() {
+		// Return a copy not the original
+		return { ...this.discovered_radios };
 	}
 
 	_startDiscoveryListener() {
 		log_info('DiscoveryListener::_startDiscoveryListener()');
 
-		const discovery = this;
-		if (discovery.discoveryState === DiscoveryStates.stopped) {
-			discovery.discoveryListener = udp.createSocket({type: 'udp4', reuseAddr: true});
+		const discoveryListener = this;
+		this.discoverySocket = udp.createSocket({type: 'udp4', reuseAddr: true});
 
-			const discoveryListener = discovery.discoveryListener;
+		const discoverySocket = this.discoverySocket;
+		discoverySocket.on('listening', function() {
+			log_info('DiscoveryListener::connection.on(\'listening\')');
+			discoveryListener._setDiscoveryState(DiscoveryStates.listening);
+		});
 
-			discoveryListener.on('listening', function() {
-				log_info('DiscoveryListener::connection.on(\'listening\')');
-				discovery._setDiscoveryState(DiscoveryStates.listening);
-			});
+		discoverySocket.on('error', function(error) {
+			// MUST be handled by a listener somewhere or will
+			// CRASH the program with an unhandled exception.
+			console.error('DiscoveryListener::connection.on(\'error\')');
+			console.error(error);
+			// this.emit('error', error);
+		});
 
-			discoveryListener.on('error', function(error) {
-				// MUST be handled by a listener somewhere or will
-				// CRASH the program with an unhandled exception.
-				console.error('DiscoveryListener::connection.on(\'error\')');
-				discovery.emit('error', error);
-			});
+		discoverySocket.on('message', function(data, info) {
+			log_debug('DiscoveryListener::connection.on(\'message\')');
+			discoveryListener._receiveData(data, info);
+		});
 
-			discoveryListener.on('message', function(data, info) {
-				log_debug('DiscoveryListener::connection.on(\'message\')');
-				discovery._receiveData(data, info);
-			});
+		discoverySocket.on('close', function() {
+			log_info('DiscoveryListener::connection.on(\'close\')');
+			discoveryListener._setDiscoveryState(DiscoveryStates.stopped);
+		});
 
-			discoveryListener.on('close', function() {
-				log_info('DiscoveryListener::connection.on(\'close\')');
-				discovery._setDiscoveryState(DiscoveryStates.stopped);
-			});
-
-			discovery._setDiscoveryState(DiscoveryStates.connecting);
-			discoveryListener.bind(discovery.port);
-		}
+		this._setDiscoveryState(DiscoveryStates.connecting);
+		discoverySocket.bind(this.port);
 	}
 
 	_receiveData(data, info) {
+		// const discoveryListener = this;
 		const flex_msg = flex.decode_realtime(data);
 		if (flex_msg.type === 'discovery') {
 				log_debug('DiscoveryListener::_receiveData(' + JSON.stringify(flex_msg) + ')');
-				this.emit(flex_msg.type, flex_msg);
+				this.emit('discovery', flex_msg);
 		}
 	}
 
 	_stopDiscoveryListener() {
 		log_info('DiscoveryListener::_stopDiscoveryListener()');
 		if (this.discoveryState !== DiscoveryStates.stopped) {
-			this.discoveryListener.close();
+			this.discoverySocket.close();
 		}
 	}
 
 	_setDiscoveryState(state) {
 		this.discoveryState = state;
-		this.emit(state);
+		this.emit('state', state);
 	}
 }
 

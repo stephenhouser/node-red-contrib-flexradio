@@ -7,7 +7,7 @@ const vita49 = require('vita49-js');
 const flex = require('..');
 
 const PORT = 4992;
-const HOST = '127.0.0.1';
+const HOST = 'localhost';
 
 const capture_file = process.argv[2];
 const port = process.argv[3] || PORT;
@@ -46,6 +46,10 @@ function packet_time(packet) {
 	return p_time - first_time;
 }
 
+function flex_packet(packet) {
+	return packet.dport === 4992 || packet.dport === 4993;
+}
+
 async function get_packets() {
 	return new Promise((resolve, reject) => {
 		const packets = [];
@@ -59,7 +63,8 @@ async function get_packets() {
 
 				try {
 					const udp_packet = get_udp_packet(packet);				
-					if (udp_packet && udp_packet.sport === 4993 && udp_packet.dport === 4991) {
+					console.log(udp_packet);
+					if (udp_packet && flex_packet(udp_packet)) {
 						packets.push({ ...udp_packet });
 					}
 				} catch (error) {
