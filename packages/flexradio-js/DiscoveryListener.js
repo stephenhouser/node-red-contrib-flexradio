@@ -1,7 +1,7 @@
 const udp = require('dgram');
 const EventEmitter = require('events');
 
-const flex = require('flexradio-js');
+const flex = require('./flex');
 
 const log_info = function(msg) { console.log(msg); };
 const log_debug = function(msg) { };

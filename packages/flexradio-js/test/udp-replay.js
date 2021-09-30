@@ -1,9 +1,7 @@
 // UDP Client that will send faux FlexRadio data to listeners
-const { strictEqual } = require('assert');
 const dgram = require('dgram');
 const pcap = require('pcap');
-const { exit } = require('process');
-const vita49 = require('vita49-js');
+const vita49 = require('../../vita49-js');
 const flex = require('..');
 
 const PORT = 4992;
