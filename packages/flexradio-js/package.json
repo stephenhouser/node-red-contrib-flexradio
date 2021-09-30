@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "binary-parser": "^1.9.2",
-    "vita49-js": "^0.8.0-alpha.4"
+    "vita49-js": "^0.8.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
