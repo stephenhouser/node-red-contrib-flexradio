@@ -5,7 +5,7 @@ const vita49 = require('../../vita49-js');
 const flex = require('..');
 
 const PORT = 4992;
-const HOST = 'localhost';
+const HOST = '255.255.255.255';
 
 const capture_file = process.argv[2];
 const port = process.argv[3] || PORT;
