@@ -2,7 +2,7 @@
  *
  * 2021/09/09 Stephen Houser, MIT License
  */
-const { DiscoveryListener } = require('flexradio-js/DiscoveryListener');
+const { discovery_listener } = require('flexradio-js/DiscoveryListener');
 
 module.exports = function(RED) {
 	'use strict';
@@ -15,9 +15,8 @@ module.exports = function(RED) {
 		node.port = config.port;
 		node.host = '0.0.0.0';
 
-		node.discoveryListener = new DiscoveryListener(node.host, node.port);
-		if (node.discoveryListener) {
-			const discoveryListener = node.discoveryListener;
+		const discoveryListener = discovery_listener();
+		if (discoveryListener) {
 			node.status({ fill: 'red', shape: 'dot', text: 'starting...' });
 
 			discoveryListener.on('listening', function() {
@@ -47,14 +46,14 @@ module.exports = function(RED) {
 			});
 
 			node.log('start listener at udp4: ' + node.host + ':' + node.port);
-			discoveryListener.start();
+			// discoveryListener.start();
 		}
 
 		node.on('close', function(done) {
 			node.log('stop listnener at udp4: ' + node.host + ':' + node.port);
-			if (node.discoveryListener) {
-				node.discoveryListener.stop();
-			}
+			// if (node.discoveryListener) {
+			// 	node.discoveryListener.stop();
+			// }
 
 			done();
 		});

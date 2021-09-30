@@ -54,12 +54,20 @@
             };
 
             function addRadio(radio) {
-                const radio_id = 'node-input-radio-b_' + radio;
+                console.log('Adding')
+                console.log(radio);
+
+                const radio_name = radio.nickname ? radio.nickname : 'unknown';
+
+                const radio_id = 'node-input-radio-' + radio_name;
+                
                 const radio_button = $('<input/>', { 
-                    id:radio_id, name: 'radio', value: radio,
-                    type: 'radio', style:'margin: 5px; width: auto;' })
+                    id:radio_id, name: 'radio', value: radio_name,
+                    type: 'radio', style:'margin: 5px; width: auto;' });
+
                 const radio_label = $('<label/>', { for: radio_id, style:'width: auto;' })
-                    .text(radio);
+                    .text(`${radio_name} (${radio.ip}:${radio.port})`);
+
                 const radio_list_item = $('<li/>', {style: 'margin:0; padding:8px 0px; border-bottom: 1px solid #ccc;' })
                     .append(radio_button)
                     .append(radio_label);
@@ -74,9 +82,9 @@
                         if (data['error']) {
                         } else {
                             const radios = data['radios'];
-                            for (let r = 0; r < radios.length; r++) {
-                                addRadio(radios[r]);
-                            }
+                            for (let [key, radio] of Object.entries(radios)) {
+                                addRadio(radios[key]);                                
+                            };
                         }
                     }).fail(function(jqxhr) {
                         console.log('failed to fetch discovered radios');

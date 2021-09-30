@@ -3,6 +3,7 @@
  * 2021/09/09 Stephen Houser, MIT License
  */
 const { Radio } = require('flexradio-js/Radio');
+const { discovery_listener } = require('flexradio-js/DiscoveryListener');
 
 const MessageTypes = {
 	connecting: 'connecting',
@@ -41,6 +42,8 @@ module.exports = function(RED) {
 		node.timeoutSeconds = config.timeout || 15;
 
 		node.closing = false;
+
+		discovery_listener();
 
 		// Allows any number of listeners to attach. Default is 10
 		// which is way too few for many flows.
@@ -253,9 +256,7 @@ module.exports = function(RED) {
 		return res
 			.status(200)
 			.send({ 
-				'radios': ['flex-6600m', '192.168.10.27'] 
+				'radios': discovery_listener().radios
 			});
 	});
-
-
 };
