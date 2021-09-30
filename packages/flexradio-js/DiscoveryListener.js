@@ -78,7 +78,7 @@ class DiscoveryListener extends EventEmitter {
 
 	get radios() {
 		// Return a copy not the original in case the caller modifies it
-		return this.discovered_radios;
+		return { ...this.discovered_radios };
 	}
 
 	_startDiscoveryListener() {
