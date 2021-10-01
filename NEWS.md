@@ -2,14 +2,11 @@
 
 Releases are posted in the [nodered-hamradio Groups.io](https://groups.io/nodered-hamradio) group.
 
-
-
-
 ## Subject: Release of node-red-contrib-flexradio nodes v0.8.0
 
 v0.8.0 of node-red-contrib-flexradio nodes are now available via Manage Pallette and NPM.
 
-* Numbers in delivered messages are now actually numbers and not numbers wrapped in strings. This is from an overhaul (again) of the command stream parser code.
+* Numbers in delivered messages are now actually numbers and not numbers wrapped in strings. This is from an overhaul (again) of the command stream parser code. Handles for clients, streams, and such are kept as hex strings and not converted to numbers, example: 0x40000001. Where a handle is not prefixed by '0x' in the flex radio responses, one is added to maintain consistency.
 
 * Found a few more edge cases in the command stream parsing, `meter 24 removed` which were causing errors and in some cases complete crashes of the system.
 
