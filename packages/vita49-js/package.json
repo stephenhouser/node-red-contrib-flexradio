@@ -1,6 +1,6 @@
 {
   "name": "vita49-js",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "VITA-49 Packet Functions (FlexRadio Specific)",
   "keywords": [
     "flexradio"
