@@ -118,7 +118,11 @@ class Radio extends EventEmitter {
 				// MUST be handled by a listener somewhere or will
 				// CRASH the program with an unhandled exception.
 				console.error('Radio.connection.on(\'error\')');
-				radio.emit(MessageTypes.error, error);
+				try {
+					radio.emit(MessageTypes.error, error);
+				} catch (err) {
+					console.log(err);	
+				}
 			});
 
 			this.connection.on('close', function() {
