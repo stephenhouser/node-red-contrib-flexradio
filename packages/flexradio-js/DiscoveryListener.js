@@ -39,7 +39,7 @@ const EventEmitter = require('events');
 const flex = require('./flex');
 
 const log_info = function(msg) { console.log(msg); };
-const log_debug = function(msg) {};
+const log_debug = function(msg) { };
 
 const FLEX_DISCOVERY_PORT = 4992;
 
@@ -113,6 +113,17 @@ class DiscoveryListener extends EventEmitter {
 		});
 
 		this._setDiscoveryState(DiscoveryStates.connecting);
+
+		const expireTimeMS = 60000; // one minute
+		this.expireInterval = setInterval(() => {
+			const now = new Date();
+			var filtered = Object.fromEntries(Object.entries(this.discovered_radios).filter(([k, v]) => {
+				return (now - v.timestamp) > expireTimeMS;
+			}));
+
+			this.discovered_radios = filtered;
+		}, expireTimeMS);
+
 		discoverySocket.bind(this.port);
 	}
 
@@ -122,15 +133,20 @@ class DiscoveryListener extends EventEmitter {
 		if (flex_msg.type === 'discovery') {
 			log_debug('DiscoveryListener::_receiveData(' + JSON.stringify(flex_msg) + ')');
 			if (flex_msg.payload && flex_msg.payload.serial) {
-				this.discovered_radios[flex_msg.payload.serial] = flex_msg.payload;
+				this.discovered_radios[flex_msg.payload.serial] = {
+					timestamp: new Date(),
+					...flex_msg.payload
+				};
 				this.emit('discovery', flex_msg);
 			}
 		}
 	}
 
+
 	_stopDiscoveryListener() {
 		log_info('DiscoveryListener::_stopDiscoveryListener()');
 		if (this.discoveryState !== DiscoveryStates.stopped) {
+			clearInterval(this.expireInterval);
 			this.discoverySocket.close();
 		}
 	}

@@ -5,10 +5,40 @@
             name: { value: '' },
             host_mode: { value: 'automatic', required: true }, // automatic, discovery, manual
             // for discovery/nickname configuration mode
-            nickname: { value: '' },
+            nickname: {
+                value: '', validate: function(v) {
+                    const host_mode = $('#node-config-input-host_mode').val();
+                    if (host_mode === 'nickname') {
+                        const nickname = $('#node-config-input-nickname').val();
+                        return valid = nickname && nickname !== '';
+                    }
+
+                    return true;
+                }
+            },
             // for manual configuration
-            host: { value: 'flexradio' },
-            port: { value: 4992/*, validate: RED.validators.number() */},
+            host: {
+                value: 'flexradio', validate: function(v) {
+                    const host_mode = $('#node-config-input-host_mode').val();
+                    if (host_mode === 'manual') {
+                        const host = $('#node-config-input-host').val();
+                        return host && host !== '';
+                    }
+
+                    return true;
+                }
+            },
+            port: {
+                value: 4992, validate: function(v) {
+                    const host_mode = $('#node-config-input-host_mode').val();
+                    if (host_mode === 'manual') {
+                        const port = $('#node-config-input-port').val();
+                        return port && RED.validators.number(v);
+                    }
+
+                    return true;
+                }
+            },
             // Advanced properties, hidden by default
             station_name: { value: 'NodeRed', required: true },
             slice_mode: { value: 'headless', required: true },
@@ -24,7 +54,7 @@
                 case 'automatic':
                     return 'Automatic';
                 case 'nickname':
-                    return this.nickname;
+                    return this.nickname || 'Discovery'
                 case 'manual':
                     return this.host + ":" + this.port
             }
@@ -32,8 +62,8 @@
             return 'unconfigured';
         },
         oneditprepare: function() {
-            function updateOptions() {               
-                var host_mode = $('#node-config-input-host_mode').val();
+            function updateOptions() {
+                const host_mode = $('#node-config-input-host_mode').val();
                 switch (host_mode) {
                     case 'automatic':
                         $('#host-mode-automatic').show();
@@ -133,7 +163,7 @@
             switch (host_mode) {
                 case 'automatic':
                     $('#node-config-input-nickname').val(null);
-                    // fallthrough 
+                // fallthrough 
 
                 case 'nickname':
                     $('#node-config-input-host').val(null);
