@@ -37,21 +37,26 @@ module.exports = function(RED) {
 		const node = this;
 
 		node.name = config.name;
-
 		node.timeoutSeconds = config.timeout || 15;
 		node.closing = false;
 
-		discovery_listener();
+		node.descriptor = null;
+		node.radio = null;
+
+		// For automatic and nickname(discovery) based connection
+		discovery_listener().start();
 
 		// Allows any number of listeners to attach. Default is 10
-		// which is way too few for many flows.
+		// which is way too few for many flows. Each outer node needs a
+		// number of listeners to do it's job.
 		node.setMaxListeners(0);
 
-		node._connect = function() {
-			node.log('connecting to host=' + node.host + ' port=' + node.port);
-			node.radio = new Radio({ ip: node.host, port: node.port });
+		node._connect = function(descriptor) {
+			node.log('connecting to host=' + descriptor.host + ' port=' + descriptor.port);
+			node.radio = new Radio(descriptor);
 			if (node.radio) {
 				const radio = node.radio;
+				node.radio_descriptor = descriptor;
 
 				// Radio event handlers for handling events FROM radio
 				node.radio_event = {};
@@ -68,30 +73,27 @@ module.exports = function(RED) {
 					}
 				};
 
-				function sendEvent(msg)  {
-					// translate msg.type to topic if we don't have a topic
+				function sendEvent(msg) {
 					const event_type = msg.type;
-
+					// Use msg.type for topic if we don't have an explicit topic
 					msg.topic = msg.topic || msg.type;
 					delete msg.type;
-
-					node.emit(event_type, msg)
+					node.emit(event_type, msg);
 				}
 
 				node.radio_event['version'] = (msg) => { sendEvent(msg); };
 				node.radio_event['handle'] = (msg) => { sendEvent(msg); };
 				node.radio_event['message'] = (msg) => { sendEvent(msg); };
-				node.radio_event['status'] = (msg) => { 
-					// Synthesize meter topic into 'meter' responses.
+				node.radio_event['status'] = (msg) => {
 					if (msg.topic === 'meter') {
 						injectMeterTopics(msg);
 					}
-					sendEvent(msg); 
+					sendEvent(msg);
 				};
 				node.radio_event['meter'] = (msg) => { sendEvent(msg); };
 				node.radio_event['panadapter'] = (msg) => { sendEvent(msg); };
 				node.radio_event['waterfall'] = (msg) => { sendEvent(msg); };
-				
+
 				// don't re-emit errors. They are treated differently by
 				// the EventEmitter and will crash if not handled.
 				node.radio_event['error'] = (error) => { node.error(error); };
@@ -105,39 +107,34 @@ module.exports = function(RED) {
 
 				radio.connect();
 			}
-		}
+		};
 
+		// Connect to first discovered radio
 		node.connectAutomatic = function() {
-			discovery_listener().on('discovery', (radio_config) => {
-				if (!node.radio) {
-					node.nickname = radio_config.payload.nickname;
-					node.host = radio_config.payload.ip;
-					node.port = radio_config.payload.port;
-					node.log('automatic connect to host=' + node.host + ' port=' + node.port);
-					node._connect();
+			discovery_listener().on('discovery', (discovery) => {
+				if (!node.closing && !node.radio) {
+					node.log('automatic connect to host=' + discovery.payload.ip + ' port=' + discovery.payload.port);
+					node._connect(discovery.payload);
 				}
 			});
-		}
+		};
 
+		// Connect to discovered radio with configured nickname
 		node.connectNickname = function() {
-			node.log('looking for NICKNAME=' + config.nickname);
-			discovery_listener().on('discovery', (radio_config) => {
-				if (!node.radio && config.nickname === radio_config.payload.nickname) {
-					node.nickname = radio_config.payload.nickname;
-					node.host = radio_config.payload.ip;
-					node.port = radio_config.payload.port;
-					node.log('connect to discovered host=' + node.host + ' port=' + node.port);
-					node._connect();
+			discovery_listener().on('discovery', (discovery) => {
+				if (!node.closing && !node.radio && config.nickname === discovery.payload.nickname) {
+					node.log('connect to discovered host=' + discovery.payload.ip + ' port=' + discovery.payload.port);
+					node._connect(discovery.payload);
 				}
 			});
-		}
+		};
 
+		// Connect to radio with host and port
 		node.connectManual = function() {
-			node.log('connecting to host=' + node.host + ' port=' + node.port);
-			node.host = config.host;
-			node.port = Number(config.port);
-			node._connect();
-		}
+			const descriptor = { ip: config.host, port: config.port };
+			node.log('connecting to host=' + descriptor.ip + ' port=' + descriptor.port);
+			node._connect(descriptor);
+		};
 
 		node.connect = function() {
 			node.log('connect mode ' + config.host_mode);
@@ -152,10 +149,10 @@ module.exports = function(RED) {
 					node.connectManual();
 					break;
 			}
-		}
+		};
 
 		node.on('close', function(done) {
-			node.log('closing host=' + node.host + ' port=' + node.port);
+			node.log('closing host=' + node.descriptor.ip + ' port=' + node.descriptor.port);
 			node.closing = true;
 
 			const radio = node.radio;
@@ -201,7 +198,6 @@ module.exports = function(RED) {
 
 				radio.send(request, function(response) {
 					node.debug('response: ' + JSON.stringify(response));
-
 					if (response_handler) {
 						// Synthesize meter topic into 'meter' list responses.
 						if (request.match(/meter list/i) && (response.response_code == 0)) {
@@ -230,8 +226,8 @@ module.exports = function(RED) {
 		};
 
 		node.matchTopic = function(pattern, topic, match_type) {
+			// empty pattern value will match everything
 			if (!pattern || pattern === '') {
-				// empty pattern value will match everything
 				return true;
 			}
 
@@ -260,15 +256,21 @@ module.exports = function(RED) {
 			const hash_pattern = plus_pattern.replace(/\/#$/, '(\/.*)?');
 			// Build regex to test with
 			const regex = new RegExp('^' + hash_pattern + '$', 'i');
+
 			return regex.test(topic);
 		};
 
 		node.radioName = function() {
-			return node.nickname ? node.nickname : (node.host + ':' + node.port);
+			const descriptor = node.descriptor;
+			if (descriptor) {
+				return descriptor.nickname ? descriptor.nickname : (descriptor.ip + ':' + descriptor.port);
+			}
+
+			return null;
 		};
 
 		node.connectionState = function() {
-			return (node.radio) ? node.radio.getConnectionState() : 'disconnected';
+			return node.radio ? node.radio.getConnectionState() : 'disconnected';
 		};
 
 		function injectMeterTopics(msg) {
@@ -280,9 +282,8 @@ module.exports = function(RED) {
 		}
 
 		function updateNodeStatus(data) {
-			node.state = '';
+			node.state = node.connectionState();
 			if (node.radio) {
-				node.state = node.radio.getConnectionState();
 				const connection_msg = {
 					topic: ['connection', data].join('/'),
 					payload: node.state
@@ -298,12 +299,22 @@ module.exports = function(RED) {
 
 	RED.nodes.registerType('flexradio-radio', FlexRadioNode);
 
-
 	RED.httpAdmin.get("/flexradio/discovery", function(req, res) {
 		return res
 			.status(200)
-			.send({ 
+			.send({
 				'radios': discovery_listener().radios
 			});
 	});
+
+	RED.httpAdmin.get("/flexradio/connection", function(req, res) {
+		return res
+			.status(200)
+			.send({
+				'nickname': 'Flex-6600M',
+				'host': '0.0.0.0',
+				'port': 4992
+			});
+	});
+
 };

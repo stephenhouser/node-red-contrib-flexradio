@@ -46,6 +46,7 @@ class Radio extends EventEmitter {
 	constructor(descriptor) {
 		super();
 
+		// copy descriptor into this object
 		for (const [key, value] of Object.entries(descriptor)) {
 			this[key] = value;
 		}
