@@ -40,7 +40,7 @@ module.exports = function(RED) {
 		node.timeoutSeconds = config.timeout || 15;
 		node.closing = false;
 
-		node.descriptor = null;
+		node.radio_descriptor = null;
 		node.radio = null;
 
 		// For automatic and nickname(discovery) based connection
@@ -152,6 +152,7 @@ module.exports = function(RED) {
 		};
 
 		node.on('close', function(done) {
+			const descriptor = node.radio_descriptor
 			node.log('closing host=' + node.descriptor.ip + ' port=' + node.descriptor.port);
 			node.closing = true;
 
@@ -261,7 +262,7 @@ module.exports = function(RED) {
 		};
 
 		node.radioName = function() {
-			const descriptor = node.descriptor;
+			const descriptor = node.radio_descriptor;
 			if (descriptor) {
 				return descriptor.nickname ? descriptor.nickname : (descriptor.ip + ':' + descriptor.port);
 			}
