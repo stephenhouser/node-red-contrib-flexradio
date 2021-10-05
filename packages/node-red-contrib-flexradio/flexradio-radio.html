@@ -61,15 +61,17 @@
                 }
             };
 
-            function addRadio(radio) {
+            function addRadio(radio, selected_nickname) {
                 const radio_name = radio.nickname ? radio.nickname : 'unknown';
                 const radio_id = 'discovered-radio-' + radio_name;
 
                 const radio_button = $('<input/>', {
                     id: radio_id, name: 'discovered-radio', value: radio_name,
-                    type: 'radio', style: 'margin: 5px; width: auto;',
-                    selected: radio.nickname === this.nickname
+                    type: 'radio', style: 'margin: 5px; width: auto;'
                 });
+                if (selected_nickname === radio_name) {
+                    radio_button.attr('checked', 'checked');
+                }
 
                 radio_button.change(function() {
                     var nickname = $('input[name="discovered-radio"]:checked').val();
@@ -89,6 +91,8 @@
             }
 
             function refreshRadios() {
+                const selected_nickname = $('#node-config-input-nickname').val();
+
                 $('#discovered-radios-list').empty();
                 $.getJSON('flexradio/discovery')
                     .done(function(data) {
@@ -96,7 +100,7 @@
                         } else {
                             const radios = data['radios'];
                             for (let [key, radio] of Object.entries(radios)) {
-                                addRadio(radios[key]);
+                                addRadio(radios[key], selected_nickname);
                             };
                         }
                     }).fail(function(jqxhr) {
