@@ -67,7 +67,8 @@
 
                 const radio_button = $('<input/>', {
                     id: radio_id, name: 'discovered-radio', value: radio_name,
-                    type: 'radio', style: 'margin: 5px; width: auto;'
+                    type: 'radio', style: 'margin: 5px; width: auto;',
+                    selected: radio.nickname === this.nickname
                 });
 
                 radio_button.change(function() {
