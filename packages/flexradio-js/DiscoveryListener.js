@@ -39,7 +39,7 @@ const EventEmitter = require('events');
 const flex = require('./flex');
 
 const log_info = function(msg) { console.log(msg); };
-const log_debug = function(msg) { };
+const log_debug = function(msg) {};
 
 const FLEX_DISCOVERY_PORT = 4992;
 

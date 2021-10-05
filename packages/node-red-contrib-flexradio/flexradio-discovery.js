@@ -15,21 +15,31 @@ module.exports = function(RED) {
 		node.port = config.port;
 		node.host = '0.0.0.0';
 
+		node.listener_event = {};
+
 		const discoveryListener = discovery_listener();
 		if (discoveryListener) {
 			node.status({ fill: 'red', shape: 'dot', text: 'starting...' });
 
-			discoveryListener.on('listening', function() {
-				node.log('started listening on udp port ' + this.port);
-				node.status({ fill: 'green', shape: 'dot', text: 'listening' });
-			});
+			node.listener_event['state'] = function(state) {
+				switch (state) {
+					case 'listening':
+						node.log('started listening on udp port ' + this.port);
+						node.status({ fill: 'green', shape: 'dot', text: 'listening' });
+						break;
+					case 'stopped':
+						node.log('stopped listening on udp port ' + node.port);
+						node.status({ fill: 'red', shape: 'circle', text: 'stopped' });
+						break;
+				}
+			}
 
-			discoveryListener.on('error', function(error) {
+			node.listener_event['error'] = function(error) {
 				node.error(error);
 				node.status({ fill: 'red', shape: 'circle', text: 'error' });
-			});
+			}
 
-			discoveryListener.on('discovery', function(discovery) {
+			node.listener_event['discovery'] = function(discovery) {
 				// node.log('discovered radio ' + radio_data);
 				node.status({ fill: 'green', shape: 'dot', text: 'radio found' });
 				const msg = {
@@ -38,25 +48,29 @@ module.exports = function(RED) {
 				};
 
 				node.send(msg);
-			});
+			}
 
-			discoveryListener.on('stopped', function() {
-				node.log('stopped listening on udp port ' + node.port);
-				node.status({ fill: 'red', shape: 'circle', text: 'stopped' });
-			});
+			// Subscribe to radio events with our listeners
+			Object.entries(node.listener_event).forEach(([event, handler]) => {
+				if (handler) {
+					discoveryListener.on(event, handler)
+				}
+			});		
 
 			node.log('start listener at udp4: ' + node.host + ':' + node.port);
-			// discoveryListener.start();
 		}
 
 		node.on('close', function(done) {
 			node.log('stop listnener at udp4: ' + node.host + ':' + node.port);
-			// if (node.discoveryListener) {
-			// 	node.discoveryListener.stop();
-			// }
+			Object.entries(node.listener_event).forEach(([event, handler]) => {
+				if (handler && discoveryListener) {
+					discoveryListener.off(event, handler)
+				}
+			});
 
 			done();
 		});
+
 	}
 
 	RED.nodes.registerType('flexradio-discovery', FlexRadioDiscoveryNode);

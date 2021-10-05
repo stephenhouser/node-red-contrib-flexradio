@@ -38,7 +38,7 @@ module.exports = function(RED) {
 		node.on('close', (done) => {
 			// Unsubscribe to radio events from our listeners
 			const radio = node.radio;
-			Object.entries(node.listeners).forEach(([event, handler]) => {
+			Object.entries(node.radio_event).forEach(([event, handler]) => {
 				if (handler) {
 					radio.off(event, handler)
 				}
@@ -73,7 +73,7 @@ module.exports = function(RED) {
 		}, 5000);
 
 		// Subscribe to radio events with our listeners
-		Object.entries(node.listeners).forEach(([event, handler]) => {
+		Object.entries(node.radio_event).forEach(([event, handler]) => {
 			if (handler) {
 				radio.on(event, handler)
 			}

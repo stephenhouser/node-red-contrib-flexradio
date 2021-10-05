@@ -37,10 +37,8 @@ module.exports = function(RED) {
 		const node = this;
 
 		node.name = config.name;
-		node.host = config.host;
-		node.port = Number(config.port);
-		node.timeoutSeconds = config.timeout || 15;
 
+		node.timeoutSeconds = config.timeout || 15;
 		node.closing = false;
 
 		discovery_listener();
@@ -48,79 +46,131 @@ module.exports = function(RED) {
 		// Allows any number of listeners to attach. Default is 10
 		// which is way too few for many flows.
 		node.setMaxListeners(0);
-		node.log('creating host=' + node.host + ' port=' + node.port);
-		node.radio = new Radio({ ip: node.host, port: node.port });
-		if (node.radio) {
-			const radio = node.radio;
 
-			// Radio event handlers for handling events FROM radio
-			node.radio_event = {};
-			node.radio_event['connecting'] = (msg) => { updateNodeStatus(msg); };
-			node.radio_event['connected'] = (msg) => { updateNodeStatus(msg); };
-			node.radio_event['disconnected'] = (msg) => {
-				updateNodeStatus(msg);
+		node._connect = function() {
+			node.log('connecting to host=' + node.host + ' port=' + node.port);
+			node.radio = new Radio({ ip: node.host, port: node.port });
+			if (node.radio) {
+				const radio = node.radio;
 
-				clearInterval(node.reconnectTimer);
-				if (!node.closing) {
-					node.reconnectTimer = setTimeout(() => {
-						radio.connect();
-					}, node.timeoutSeconds * 1000);
+				// Radio event handlers for handling events FROM radio
+				node.radio_event = {};
+				node.radio_event['connecting'] = (msg) => { updateNodeStatus(msg); };
+				node.radio_event['connected'] = (msg) => { updateNodeStatus(msg); };
+				node.radio_event['disconnected'] = (msg) => {
+					updateNodeStatus(msg);
+
+					clearInterval(node.reconnectTimer);
+					if (!node.closing) {
+						node.reconnectTimer = setTimeout(() => {
+							radio.connect();
+						}, node.timeoutSeconds * 1000);
+					}
+				};
+
+				function sendEvent(msg)  {
+					// translate msg.type to topic if we don't have a topic
+					const event_type = msg.type;
+
+					msg.topic = msg.topic || msg.type;
+					delete msg.type;
+
+					node.emit(event_type, msg)
 				}
-			};
 
-			function sendEvent(msg)  {
-				// translate msg.type to topic if we don't have a topic
-				const event_type = msg.type;
+				node.radio_event['version'] = (msg) => { sendEvent(msg); };
+				node.radio_event['handle'] = (msg) => { sendEvent(msg); };
+				node.radio_event['message'] = (msg) => { sendEvent(msg); };
+				node.radio_event['status'] = (msg) => { 
+					// Synthesize meter topic into 'meter' responses.
+					if (msg.topic === 'meter') {
+						injectMeterTopics(msg);
+					}
+					sendEvent(msg); 
+				};
+				node.radio_event['meter'] = (msg) => { sendEvent(msg); };
+				node.radio_event['panadapter'] = (msg) => { sendEvent(msg); };
+				node.radio_event['waterfall'] = (msg) => { sendEvent(msg); };
+				
+				// don't re-emit errors. They are treated differently by
+				// the EventEmitter and will crash if not handled.
+				node.radio_event['error'] = (error) => { node.error(error); };
 
-				msg.topic = msg.topic || msg.type;
-				delete msg.type;
+				// Subscribe to radio events with our listeners
+				Object.entries(node.radio_event).forEach(([event, handler]) => {
+					if (handler) {
+						radio.on(event, handler);
+					}
+				});
 
-				node.emit(event_type, msg)
+				radio.connect();
 			}
+		}
 
-			node.radio_event['version'] = (msg) => { sendEvent(msg); };
-			node.radio_event['handle'] = (msg) => { sendEvent(msg); };
-			node.radio_event['message'] = (msg) => { sendEvent(msg); };
-			node.radio_event['status'] = (msg) => { 
-				// Synthesize meter topic into 'meter' responses.
-				if (msg.topic === 'meter') {
-					injectMeterTopics(msg);
-				}
-				sendEvent(msg); 
-			};
-			node.radio_event['meter'] = (msg) => { sendEvent(msg); };
-			node.radio_event['panadapter'] = (msg) => { sendEvent(msg); };
-			node.radio_event['waterfall'] = (msg) => { sendEvent(msg); };
-			
-			// don't re-emit errors. They are treated differently by
-			// the EventEmitter and will crash if not handled.
-			node.radio_event['error'] = (error) => { node.error(error); };
-
-			// Subscribe to radio events with our listeners
-			Object.entries(node.radio_event).forEach(([event, handler]) => {
-				if (handler) {
-					radio.on(event, handler);
+		node.connectAutomatic = function() {
+			discovery_listener().on('discovery', (radio_config) => {
+				if (!node.radio) {
+					node.nickname = radio_config.payload.nickname;
+					node.host = radio_config.payload.ip;
+					node.port = radio_config.payload.port;
+					node.log('automatic connect to host=' + node.host + ' port=' + node.port);
+					node._connect();
 				}
 			});
+		}
 
-			radio.connect();
-		};
+		node.connectNickname = function() {
+			node.log('looking for NICKNAME=' + config.nickname);
+			discovery_listener().on('discovery', (radio_config) => {
+				if (!node.radio && config.nickname === radio_config.payload.nickname) {
+					node.nickname = radio_config.payload.nickname;
+					node.host = radio_config.payload.ip;
+					node.port = radio_config.payload.port;
+					node.log('connect to discovered host=' + node.host + ' port=' + node.port);
+					node._connect();
+				}
+			});
+		}
+
+		node.connectManual = function() {
+			node.log('connecting to host=' + node.host + ' port=' + node.port);
+			node.host = config.host;
+			node.port = Number(config.port);
+			node._connect();
+		}
+
+		node.connect = function() {
+			node.log('connect mode ' + config.host_mode);
+			switch (config.host_mode) {
+				case 'automatic':
+					node.connectAutomatic();
+					break;
+				case 'nickname':
+					node.connectNickname();
+					break;
+				case 'manual':
+					node.connectManual();
+					break;
+			}
+		}
 
 		node.on('close', function(done) {
-			const radio = node.radio;
-			
 			node.log('closing host=' + node.host + ' port=' + node.port);
 			node.closing = true;
 
-			// Unsubscribe to radio events from our listeners
-			Object.entries(node.radio_event).forEach(([event, handler]) => {
-				if (handler) {
-					radio.off(event, handler);
-				}
-			});
+			const radio = node.radio;
+			if (radio) {
+				// Unsubscribe to radio events from our listeners
+				Object.entries(node.radio_event).forEach(([event, handler]) => {
+					if (handler) {
+						radio.off(event, handler);
+					}
+				});
 
-			radio.disconnect();
-			radio = null;
+				radio.disconnect();
+				radio = null;
+			}
+
 			done();
 		});
 
@@ -214,12 +264,7 @@ module.exports = function(RED) {
 		};
 
 		node.radioName = function() {
-			if (node.radio) {
-				const radio = node.radio;
-				return radio.nickname ? radio.nickname : (radio.host + ':' + radio.port);
-			}
-
-			return null;
+			return node.nickname ? node.nickname : (node.host + ':' + node.port);
 		};
 
 		node.connectionState = function() {
@@ -247,6 +292,8 @@ module.exports = function(RED) {
 				node.emit(node.state, connection_msg);
 			}
 		}
+
+		node.connect();
 	}
 
 	RED.nodes.registerType('flexradio-radio', FlexRadioNode);

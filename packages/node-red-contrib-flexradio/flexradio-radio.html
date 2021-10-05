@@ -3,8 +3,13 @@
         category: 'config',
         defaults: {
             name: { value: '' },
-            host: { value: 'flexradio', required: true },
-            port: { value: 4992, required: true, validate: RED.validators.number() },
+            host_mode: { value: 'automatic', required: true }, // automatic, discovery, manual
+            // for discovery/nickname configuration mode
+            nickname: { value: '' },
+            // for manual configuration
+            host: { value: 'flexradio' },
+            port: { value: 4992, validate: RED.validators.number() },
+
             // Advanced properties, hidden by default
             timeout: { value: '15' },
             station_name: { value: 'NodeRed', required: true },
@@ -23,11 +28,13 @@
                         $('#host-mode-manual').hide();
                         $('#host-mode-discovery').hide();
                         break;
-                    case 'discovery':
+
+                    case 'nickname':
                         $('#host-mode-automatic').hide();
                         $('#host-mode-manual').hide();
                         $('#host-mode-discovery').show();
                         break;
+
                     case 'manual':
                         $('#host-mode-automatic').hide();
                         $('#host-mode-manual').show();
@@ -35,17 +42,18 @@
                         break;
                 }
 
-
                 var station_mode = $('#node-config-input-station_mode').val();
                 switch (station_mode) {
                     case 'none':
                         $('#node-config-station_config').hide();
                         $('#node-config-slice_config').hide();
                         break;
+
                     case 'headless':
                         $('#node-config-station_config').show();
                         $('#node-config-slice_config').hide();
                         break;
+
                     case 'slice':
                         $('#node-config-station_config').show();
                         $('#node-config-slice_config').show();
@@ -54,36 +62,32 @@
             };
 
             function addRadio(radio) {
-                console.log('Adding')
-                console.log(radio);
-
                 const radio_name = radio.nickname ? radio.nickname : 'unknown';
-
-                const radio_id = 'node-input-radio-' + radio_name;
-                
-                const radio_button = $('<input/>', { 
-                    id:radio_id, name: 'radio', value: radio_name,
-                    type: 'radio', style:'margin: 5px; width: auto;' });
-
-                const radio_label = $('<label/>', { for: radio_id, style:'width: auto;' })
+                const radio_id = 'discovered-radio-' + radio_name;
+                const radio_button = $('<input/>', {
+                    id: radio_id, name: 'discovered-radio', value: radio_name,
+                    type: 'radio', style: 'margin: 5px; width: auto;'
+                });
+                const radio_label = $('<label/>', { for: radio_id, style: 'width: auto;' })
                     .text(`${radio_name} (${radio.ip}:${radio.port})`);
-
-                const radio_list_item = $('<li/>', {style: 'margin:0; padding:8px 0px; border-bottom: 1px solid #ccc;' })
+                const radio_list_item = $('<li/>', {
+                    style: 'margin:0; padding:8px 0px; border-bottom: 1px solid #ccc;'
+                })
                     .append(radio_button)
                     .append(radio_label);
 
-                $("#node-input-radio-list-container").append(radio_list_item);
+                $('#discovered-radios-list').append(radio_list_item);
             }
 
             function refreshRadios() {
-                $('#node-input-radio-list-container').empty();
+                $('#discovered-radios-list').empty();
                 $.getJSON('flexradio/discovery')
                     .done(function(data) {
                         if (data['error']) {
                         } else {
                             const radios = data['radios'];
                             for (let [key, radio] of Object.entries(radios)) {
-                                addRadio(radios[key]);                                
+                                addRadio(radios[key]);
                             };
                         }
                     }).fail(function(jqxhr) {
@@ -93,8 +97,11 @@
 
             refreshRadios();
             updateOptions();
-            $("#node-config-input-host_mode").change(updateOptions);
-            $("#node-config-input-station_mode").change(updateOptions);
+            $('#node-config-input-host_mode').change(updateOptions);
+            $('#node-config-input-station_mode').change(updateOptions);
+            $('input[name="discovered-radio"]').change((rb) => {
+                console.log(rb);
+            });
         }
     });
 </script>
@@ -111,12 +118,28 @@
             </i> Radio</label>
         <select id="node-config-input-host_mode">
             <option value="automatic">Automatic</option>
-            <option value="discovery">Discovery</option>
+            <option value="nickname">Discovery</option>
             <option value="manual">Manual</option>
         </select>
     </div>
 
-    <div id="host-mode-manual" style="display: none; margin-left: 2em;">
+    <div id="host-mode-automatic" style="display: none; margin-left: 3em;">
+        <div class="form-row">
+            discovered-flex (192.168.1.1:4992)
+        </div>
+    </div>
+
+    <div id="host-mode-discovery" style="display: none; margin-left: 3em;">
+        <div class="form-row">
+            <div id="discovered-radios-div" style="border-radius: 5px; height: 150px; padding: 5px; border: 1px solid #ccc; overflow-y:scroll;">
+                <ol id="discovered-radios-list" style="list-style-type:none; margin: 0;">
+                </ol>
+            </div>
+        </div>
+        <input type="text" id="node-config-input-nickname" style="display: none;">
+    </div>
+
+    <div id="host-mode-manual" style="display: none; margin-left: 3em;">
         <div class="form-row">
             <label for="node-config-input-host"><i class="fa fa-sign-in">
                 </i> Host</label>
@@ -128,15 +151,6 @@
             <input type="text" id="node-config-input-port">
         </div>
     </div>
-
-    <div id="host-mode-discovery" style="display: none; margin-left: 2em;">
-        <div class="form-row">
-            <div id="node-input-radio-list-div" style="border-radius: 5px; height: 150px; padding: 5px; border: 1px solid #ccc; overflow-y:scroll;">
-                <ol id="node-input-radio-list-container" style="list-style-type:none; margin: 0;">
-                </ol>
-            </div>
-        </div>
-    <div id="host-mode-manual" style="display: none;">
 
     <!-- TODO: Advanced properties start as display: none  -->
     <div class="form-row" style="display: none;">

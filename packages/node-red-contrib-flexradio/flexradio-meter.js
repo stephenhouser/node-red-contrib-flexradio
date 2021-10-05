@@ -27,7 +27,7 @@ module.exports = function(RED) {
 		node.radio_event['connected'] = (msg) => { updateNodeStatus(msg.payload) };
 		node.radio_event['disconnected'] = (msg) => { updateNodeStatus(msg.payload) };
 
-		node.listeners['meter'] = (msg) => {
+		node.radio_event['meter'] = (msg) => {
 			for (const [meter_number, meter] of Object.entries(msg.payload)) {
 				const topic = radio.meterTopic(meter);
 				if (radio.matchTopic(node.topic, topic, node.topic_type)) {
@@ -44,7 +44,7 @@ module.exports = function(RED) {
 
 		node.on('close', (done) => {
 			// Unsubscribe to radio events from our listeners			
-			Object.entries(node.listeners).forEach(([event, handler]) => {
+			Object.entries(node.radio_event).forEach(([event, handler]) => {
 				if (handler) {
 					radio.off(event, handler)
 				}
@@ -79,7 +79,7 @@ module.exports = function(RED) {
 		}, 5000);
 
 		// Subscribe to radio events with our listeners
-		Object.entries(node.listeners).forEach(([event, handler]) => {
+		Object.entries(node.radio_event).forEach(([event, handler]) => {
 			if (handler) {
 				radio.on(event, handler)
 			}

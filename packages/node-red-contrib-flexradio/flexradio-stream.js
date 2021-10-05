@@ -26,9 +26,9 @@ module.exports = function(RED) {
 		node.radio_event['connected'] = (msg) => { updateNodeStatus(msg.payload) };
 		node.radio_event['disconnected'] = (msg) => { updateNodeStatus(msg.payload) };
 
-		node.listeners['daxAudio'] = (msg) => { sendEvent(msg); };
-		node.listeners['panadapter'] = (msg) => { sendEvent(msg); };
-		node.listeners['waterfall'] = (msg) => { sendEvent(msg); };
+		node.radio_event['daxAudio'] = (msg) => { sendEvent(msg); };
+		node.radio_event['panadapter'] = (msg) => { sendEvent(msg); };
+		node.radio_event['waterfall'] = (msg) => { sendEvent(msg); };
 
 		node.on('close', (done) => {
 			// Unsubscribe to radio events from our listeners
