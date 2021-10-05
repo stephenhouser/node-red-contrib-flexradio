@@ -64,17 +64,25 @@
             function addRadio(radio) {
                 const radio_name = radio.nickname ? radio.nickname : 'unknown';
                 const radio_id = 'discovered-radio-' + radio_name;
+
                 const radio_button = $('<input/>', {
                     id: radio_id, name: 'discovered-radio', value: radio_name,
                     type: 'radio', style: 'margin: 5px; width: auto;'
                 });
+
+                radio_button.change(function() {
+                    var nickname = $('input[name="discovered-radio"]:checked').val();
+                    $('#node-config-input-nickname').val(nickname);
+                });
+
                 const radio_label = $('<label/>', { for: radio_id, style: 'width: auto;' })
                     .text(`${radio_name} (${radio.ip}:${radio.port})`);
+
                 const radio_list_item = $('<li/>', {
                     style: 'margin:0; padding:8px 0px; border-bottom: 1px solid #ccc;'
-                })
-                    .append(radio_button)
-                    .append(radio_label);
+                });
+                radio_list_item.append(radio_button);
+                radio_list_item.append(radio_label);
 
                 $('#discovered-radios-list').append(radio_list_item);
             }
@@ -99,9 +107,6 @@
             updateOptions();
             $('#node-config-input-host_mode').change(updateOptions);
             $('#node-config-input-station_mode').change(updateOptions);
-            $('input[name="discovered-radio"]').change((rb) => {
-                console.log(rb);
-            });
         }
     });
 </script>
