@@ -35,7 +35,7 @@ module.exports = function(RED) {
 	function FlexRadioNode(config) {
 		RED.nodes.createNode(this, config);
 		const node = this;
-
+		
 		node.name = config.name;
 		node.timeoutSeconds = config.timeout || 15;
 		node.closing = false;
@@ -307,15 +307,4 @@ module.exports = function(RED) {
 				'radios': discovery_listener().radios
 			});
 	});
-
-	RED.httpAdmin.get("/flexradio/connection", function(req, res) {
-		return res
-			.status(200)
-			.send({
-				'nickname': 'Flex-6600M',
-				'host': '0.0.0.0',
-				'port': 4992
-			});
-	});
-
 };

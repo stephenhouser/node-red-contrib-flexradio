@@ -8,19 +8,31 @@
             nickname: { value: '' },
             // for manual configuration
             host: { value: 'flexradio' },
-            port: { value: 4992, validate: RED.validators.number() },
-
+            port: { value: 4992/*, validate: RED.validators.number() */},
             // Advanced properties, hidden by default
-            timeout: { value: '15' },
             station_name: { value: 'NodeRed', required: true },
             slice_mode: { value: 'headless', required: true },
             slice_name: { value: 'A' },
+            timeout: { value: '15' }
         },
         label: function() {
-            return this.name || this.host + ":" + this.port;
+            if (this.name && this.name !== '') {
+                return this.name;
+            }
+
+            switch (this.host_mode) {
+                case 'automatic':
+                    return 'Automatic';
+                case 'nickname':
+                    return this.nickname;
+                case 'manual':
+                    return this.host + ":" + this.port
+            }
+
+            return 'unconfigured';
         },
         oneditprepare: function() {
-            function updateOptions() {
+            function updateOptions() {               
                 var host_mode = $('#node-config-input-host_mode').val();
                 switch (host_mode) {
                     case 'automatic':
@@ -36,6 +48,9 @@
                         break;
 
                     case 'manual':
+                        if (!$('#node-config-input-port').val()) {
+                            $('#node-config-input-port').val(4992);
+                        }
                         $('#host-mode-automatic').hide();
                         $('#host-mode-manual').show();
                         $('#host-mode-discovery').hide();
@@ -112,6 +127,23 @@
             updateOptions();
             $('#node-config-input-host_mode').change(updateOptions);
             $('#node-config-input-station_mode').change(updateOptions);
+        },
+        oneditsave: function() {
+            var host_mode = $('#node-config-input-host_mode').val();
+            switch (host_mode) {
+                case 'automatic':
+                    $('#node-config-input-nickname').val(null);
+                    // fallthrough 
+
+                case 'nickname':
+                    $('#node-config-input-host').val(null);
+                    $('#node-config-input-port').val(null);
+                    break;
+
+                case 'manual':
+                    $('#node-config-input-nickname').val(null);
+                    break;
+            }
         }
     });
 </script>
@@ -134,9 +166,6 @@
     </div>
 
     <div id="host-mode-automatic" style="display: none; margin-left: 3em;">
-        <div class="form-row">
-            discovered-flex (192.168.1.1:4992)
-        </div>
     </div>
 
     <div id="host-mode-discovery" style="display: none; margin-left: 3em;">
