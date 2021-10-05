@@ -180,7 +180,7 @@ module.exports = function(RED) {
 			const radio = node.radio;
 			const requests = Array.isArray(msg.payload) ? msg.payload : [msg.payload];
 			while (requests.length) {
-				const request = requests.pop();
+				const request = requests.shift();
 				node.debug('send: ' + request);
 
 				// Expand named meters and push sub commands to end of request array
