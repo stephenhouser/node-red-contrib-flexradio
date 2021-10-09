@@ -88,26 +88,17 @@ function decode(response) {
 
 // decode_discovery() -- decode FlexRadio discovery datagrams sent as UDP broadcast messages
 function decode_discovery(dgram) {
-	function tokenValue(token) {
-		if (typeof token === 'string' && token.startsWith('0x')) {
-			return token;
-		}
-		
-       	return isNaN(Number(token)) ? token : Number(token);
-    }
-
-	const radio = {};
 	if (dgram.stream === StreamType.discovery) {
 		const discovery_payload = new TextDecoder().decode(dgram.payload);
 		const clean_payload = discovery_payload.replace(/[^\x20-\x7E]/g, '');
-		const fields = clean_payload.split(' ');
-		for (let f = 0; f < fields.length; f++) {
-			const [key, value] = fields[f].split('=');
-			radio[key] = tokenValue(value);
-		};
+		// Append fake status header so we can use the same parser for the data.
+		const radio = flexParser.parse(`S0|${clean_payload}`);
+		if (radio && radio.payload) {
+			return radio.payload;
+		}
 	}
 
-	return radio;
+	return {};
 }
 
 // decode_meters() -- decode the meter reporting datagram (just the payload)

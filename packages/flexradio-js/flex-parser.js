@@ -2516,12 +2516,23 @@ function peg$parse(input, options) {
       }
       
   	function listValue(key, value) {
+  		function isListKey(key) {
+  			const list_keys = ['inuse_.*', 'gui_client_.*', '.*_list'];
+  			for (let i = 0; i < list_keys.length; i++) {
+  				if (key.match(list_keys[i])) {
+  					return true;
+  				}
+  			}
+
+  			return false;
+  		}
+
       	if (value === null) {
       		return value;
       	}
   		
       	if (value !== undefined) {
-          	if (typeof key === 'string' && key.endsWith('_list')) {
+          	if (typeof key === 'string' && isListKey(key)) {
           		return value.split(',').map(tokenValue);
               }
               
