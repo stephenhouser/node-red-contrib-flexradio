@@ -89,8 +89,12 @@ function decode(response) {
 // decode_discovery() -- decode FlexRadio discovery datagrams sent as UDP broadcast messages
 function decode_discovery(dgram) {
 	function tokenValue(token) {
-		return isNaN(Number(token)) ? token : Number(token);
-	}
+		if (typeof token === 'string' && token.startsWith('0x')) {
+			return token;
+		}
+		
+       	return isNaN(Number(token)) ? token : Number(token);
+    }
 
 	const radio = {};
 	if (dgram.stream === StreamType.discovery) {
