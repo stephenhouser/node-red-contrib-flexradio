@@ -2,6 +2,25 @@
 
 Releases are posted in the [nodered-hamradio Groups.io](https://groups.io/nodered-hamradio) group.
 
+## Subject: Release of node-red-contrib-flexradio nodes v0.9.0
+
+I'm starting this topic for the release of v0.9.0 of node-red-contrib-flexradio.
+
+At the time of this writing the nodes are in 'prerelease' and only available via `npm` at the command line. I will update this thread when the general release of v0.9.0 is available via NodeRed's palette manager.
+
+Only two changes in this minor version update:
+
+* Auto discovery and configuration of Radios. There are three options for configuring your radio now
+
+ 1. **Automatic**: monitors discovery information sent by the radio and configures itself to connect to the advertised radio. Will continue to work when the radio's IP address changes. 
+ NOTE: This mode only works consistently if there is a *single* radio on the local network.
+ 
+ 2. **Discovery / Nickname**: shows a list of radios that are broadcasting discovery information on the local network and allows choosing from a list. This option remembers the radio's nickname and will connect if the radio's IP address changes. If the radio's nickname changes, you will have to reconfigure the node.
+ 
+ 3. **Manual**: allows entering the radio's IP or DNS address and port number. This is the way all pre-v0.9.0 versions worked.
+
+* Discovery node now reports `inuse_...` and  `gui_client_...` properties as lists and properly keeps client handles as hex strings.
+
 ## Subject: Release of node-red-contrib-flexradio nodes v0.8.0
 
 v0.8.0 of node-red-contrib-flexradio nodes are now available via Manage Pallette and NPM.
