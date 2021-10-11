@@ -6,7 +6,7 @@ up-linked:
 up-clean: clean
 	mkdir -p ./data-clean
 	#cp ../example/flows.json data-clean/
-	(cd data-clean && npm i node-red-dashboard)
+	#(cd data-clean && npm i node-red-dashboard)
 	docker-compose -f docker-compose-clean.yml up
 
 clean:

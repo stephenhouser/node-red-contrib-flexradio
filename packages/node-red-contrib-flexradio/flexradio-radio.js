@@ -5,6 +5,8 @@
 const { Radio } = require('flexradio-js/Radio');
 const { discovery_listener } = require('flexradio-js/DiscoveryListener');
 
+const log_debug = function(msg) { };
+
 const MessageTypes = {
 	connecting: 'connecting',
 	conneced: 'connected',
@@ -29,6 +31,8 @@ const MessageTypes = {
 	unknown: 'unknown'
 };
 
+let node_id = 1;
+
 module.exports = function(RED) {
 	'use strict';
 
@@ -36,6 +40,9 @@ module.exports = function(RED) {
 		RED.nodes.createNode(this, config);
 		const node = this;
 		
+		node.node_id = node_id++;
+		log_debug(`flexradio-radio[${node.node_id}].create()`);
+
 		node.name = config.name;
 		node.timeoutSeconds = config.timeout || 15;
 		node.closing = false;
@@ -52,6 +59,7 @@ module.exports = function(RED) {
 		node.setMaxListeners(0);
 
 		node._connect = function(descriptor) {
+			log_debug(`flexradio-radio[${node.node_id}]._connect(${descriptor.ip}:${descriptor.port})`);
 			node.log('connecting to host=' + descriptor.ip + ' port=' + descriptor.port);
 			node.radio = new Radio(descriptor);
 			if (node.radio) {
@@ -78,6 +86,9 @@ module.exports = function(RED) {
 					// Use msg.type for topic if we don't have an explicit topic
 					msg.topic = msg.topic || msg.type;
 					delete msg.type;
+					if (event_type !== 'meter') {
+						log_debug(`flexradio-radio[${node.node_id}].sendEvent(${msg.topic})`);
+					}
 					node.emit(event_type, msg);
 				}
 
@@ -152,6 +163,7 @@ module.exports = function(RED) {
 		};
 
 		node.on('close', function(done) {
+			log_debug(`flexradio-radio[${node.node_id}].on.close()`);
 			const descriptor = node.radio_descriptor
 			node.log('closing host=' + descriptor.ip + ' port=' + descriptor.port);
 			node.closing = true;
@@ -177,6 +189,7 @@ module.exports = function(RED) {
 				return;
 			}
 
+			log_debug(`flexradio-radio[${node.node_id}].send(${msg.payload})`);
 			const radio = node.radio;
 			const requests = Array.isArray(msg.payload) ? msg.payload : [msg.payload];
 			while (requests.length) {
@@ -284,6 +297,9 @@ module.exports = function(RED) {
 
 		function updateNodeStatus(data) {
 			node.state = node.connectionState();
+
+			log_debug(`flexradio-radio[${node.node_id}].updateNodeStatus(${node.state})`);
+
 			if (node.radio) {
 				const connection_msg = {
 					topic: ['connection', data].join('/'),
