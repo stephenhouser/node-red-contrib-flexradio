@@ -42,12 +42,15 @@ const MessageTypes = {
 	unknown: 'unknown'
 };
 
+// Unique ID for use in debugging connections, events, etc.
 let radio_id = 1;
 
 class Radio extends EventEmitter {
 	constructor(descriptor) {
 		super();
 
+		// Assign this object a unique ID that will show in debug messages
+		// Makes for easy assocaition of events, etc..
 		this.radio_id = radio_id++;
 		log_info(`Radio[${this.radio_id}].constructor(${descriptor.ip}:${descriptor.port})`);
 

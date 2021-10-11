@@ -31,6 +31,7 @@ const MessageTypes = {
 	unknown: 'unknown'
 };
 
+// Unique ID for use in debugging connections, events, etc.
 let node_id = 1;
 
 module.exports = function(RED) {
@@ -40,6 +41,8 @@ module.exports = function(RED) {
 		RED.nodes.createNode(this, config);
 		const node = this;
 		
+		// Assign this object a unique ID that will show in debug messages
+		// Makes for easy assocaition of events, etc..
 		node.node_id = node_id++;
 		log_debug(`flexradio-radio[${node.node_id}].create()`);
 
