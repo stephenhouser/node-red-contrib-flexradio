@@ -52,7 +52,7 @@ module.exports = function(RED) {
 		node.setMaxListeners(0);
 
 		node._connect = function(descriptor) {
-			node.log('connecting to host=' + descriptor.host + ' port=' + descriptor.port);
+			node.log('connecting to host=' + descriptor.ip + ' port=' + descriptor.port);
 			node.radio = new Radio(descriptor);
 			if (node.radio) {
 				const radio = node.radio;
@@ -153,7 +153,7 @@ module.exports = function(RED) {
 
 		node.on('close', function(done) {
 			const descriptor = node.radio_descriptor
-			node.log('closing host=' + node.descriptor.ip + ' port=' + node.descriptor.port);
+			node.log('closing host=' + descriptor.ip + ' port=' + descriptor.port);
 			node.closing = true;
 
 			const radio = node.radio;

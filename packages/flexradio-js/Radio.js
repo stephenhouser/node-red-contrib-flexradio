@@ -9,7 +9,7 @@ const log_info = function(msg) { console.log(msg); };
 const log_debug = function(msg) { console.log(msg); };
 const log_debug_realtime = function(msg) {  };
 
-const CLIENT_SETUP_COMMAND_DELAY = 1000;
+const CLIENT_SETUP_COMMAND_DELAY = 0;
 
 const ConnectionStates = {
 	disconnected: 'disconnected',
@@ -105,9 +105,12 @@ class Radio extends EventEmitter {
 			this.connection = net.connect(radio.port, radio.host, function() {
 				log_info('Radio.connection.on(\'connect\')');
 				radio._startRealtimeListener();
-				radio._getMeterList(function() {
-					radio._setConnectionState(ConnectionStates.connected);
-				});
+
+				setTimeout(function() {
+					radio._getMeterList();
+				}, CLIENT_SETUP_COMMAND_DELAY);
+
+				radio._setConnectionState(ConnectionStates.connected);
 			});
 
 			this.connection.on('data', function(data) {
@@ -343,7 +346,9 @@ class Radio extends EventEmitter {
 		const radio = this;
 		this.send('meter list', function(response) {
 			radio._updateMeterList(response.payload);
-			callback();
+			if (callback) {
+				callback();
+			}
 		});
 	}
 }
