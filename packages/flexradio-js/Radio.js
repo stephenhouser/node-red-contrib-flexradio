@@ -9,7 +9,7 @@ const log_info = function(msg) { console.log(msg); };
 const log_debug = function(msg) { console.log(msg); };
 const log_debug_realtime = function(msg) {  };
 
-const CLIENT_SETUP_COMMAND_DELAY = 0;
+const CLIENT_SETUP_COMMAND_DELAY = 100;
 
 const ConnectionStates = {
 	disconnected: 'disconnected',
@@ -163,7 +163,7 @@ class Radio extends EventEmitter {
 
 				setTimeout(function() {
 					radio.send('client udpport ' + radio.realtimeListenerPort);
-				}, CLIENT_SETUP_COMMAND_DELAY);
+				}, 0);
 			});
 
 			realtimeListener.on('error', function(error) {
