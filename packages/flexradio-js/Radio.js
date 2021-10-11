@@ -9,7 +9,7 @@ const log_info = function(msg) { console.log(msg); };
 const log_debug = function(msg) { console.log(msg); };
 const log_debug_realtime = function(msg) {  };
 
-const CLIENT_SETUP_COMMAND_DELAY = 100;
+const CLIENT_SETUP_COMMAND_DELAY = 0;
 
 const ConnectionStates = {
 	disconnected: 'disconnected',
@@ -104,13 +104,11 @@ class Radio extends EventEmitter {
 			const radio = this;
 			this.connection = net.connect(radio.port, radio.host, function() {
 				log_info('Radio.connection.on(\'connect\')');
-				radio._startRealtimeListener();
 
-				setTimeout(function() {
-					radio._getMeterList();
-				}, CLIENT_SETUP_COMMAND_DELAY);
-
-				radio._setConnectionState(ConnectionStates.connected);
+				Promise.all([radio._startRealtimeListener(), radio._getMeterList()])
+					.then(function() {
+						radio._setConnectionState(ConnectionStates.connected);
+					});
 			});
 
 			this.connection.on('data', function(data) {
@@ -145,46 +143,49 @@ class Radio extends EventEmitter {
 	}
 
 	_startRealtimeListener() {
-		log_info('Radio._startRealtimeListener():');
-		if (this.realtimeListenerState === ConnectionStates.disconnected) {
-			this.realtimeListener = udp.createSocket({ type: 'udp4', reuseAddr: false });
+		const radio = this;
+		return new Promise(function(resolve, reject) {
+			log_info('Radio._startRealtimeListener():');
+			if (radio.realtimeListenerState === ConnectionStates.disconnected) {
+				radio.realtimeListener = udp.createSocket({ type: 'udp4', reuseAddr: false });
 
-			const radio = this;
-			const realtimeListener = this.realtimeListener;
+				const realtimeListener = radio.realtimeListener;
+				realtimeListener.on('listening', function() {
+					log_info('Radio.realtimeListener.on(\'listening\')');
 
-			realtimeListener.on('listening', function() {
-				log_info('Radio.realtimeListener.on(\'listening\')');
+					const listenAddress = realtimeListener.address();
+					radio.realtimeListenerPort = listenAddress.port;
 
-				const listenAddress = realtimeListener.address();
-				radio.realtimeListenerPort = listenAddress.port;
+					log_info('Radio.realtimeListener listening on udp4: ' + radio.realtimeListenerPort);
+					radio._setRealtimeListenerState(ConnectionStates.listening);
 
-				log_info('Radio.realtimeListener listening on udp4: ' + radio.realtimeListenerPort);
-				radio._setRealtimeListenerState(ConnectionStates.listening);
+					radio.send('client udpport ' + radio.realtimeListenerPort, function(response) {
+						resolve();
+					});
+				});
 
-				setTimeout(function() {
-					radio.send('client udpport ' + radio.realtimeListenerPort);
-				}, 0);
-			});
+				realtimeListener.on('error', function(error) {
+					// MUST be handled by a listener somewhere or will
+					// CRASH the program with an unhandled exception.
+					console.error('Radio.realtimeListener.on(\'error\')');
+					radio.emit(MessageTypes.error, error);
+				});
 
-			realtimeListener.on('error', function(error) {
-				// MUST be handled by a listener somewhere or will
-				// CRASH the program with an unhandled exception.
-				console.error('Radio.realtimeListener.on(\'error\')');
-				radio.emit(MessageTypes.error, error);
-			});
+				realtimeListener.on('message', function(data, info) {
+					radio._receiveRealtimeData(data, info);
+				});
 
-			realtimeListener.on('message', function(data, info) {
-				radio._receiveRealtimeData(data, info);
-			});
+				realtimeListener.on('close', function() {
+					log_info('Radio.realtimeListener.on(\'close\')');
+					radio._setRealtimeListenerState(ConnectionStates.disconnected);
+				});
 
-			realtimeListener.on('close', function() {
-				log_info('Radio.realtimeListener.on(\'close\')');
-				radio._setRealtimeListenerState(ConnectionStates.disconnected);
-			});
-
-			this._setRealtimeListenerState(ConnectionStates.connecting);
-			realtimeListener.bind();
-		}
+				radio._setRealtimeListenerState(ConnectionStates.connecting);
+				realtimeListener.bind();
+			} else {
+				reject();
+			}
+		});
 	}
 
 	_stopRealtimeListener() {
@@ -342,13 +343,13 @@ class Radio extends EventEmitter {
 		radio.meters = { ...radio.meters, ...meters };
 	}
 
-	_getMeterList(callback) {
+	_getMeterList() {
 		const radio = this;
-		this.send('meter list', function(response) {
-			radio._updateMeterList(response.payload);
-			if (callback) {
-				callback();
-			}
+		return new Promise(function(resolve, reject) {
+			radio.send('meter list', function(response) {
+				radio._updateMeterList(response.payload);
+				resolve();
+			});
 		});
 	}
 }
