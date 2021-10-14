@@ -1,0 +1,332 @@
+[
+    {
+        "id": "cd2c91a331ba76e5",
+        "type": "tab",
+        "label": "Multiple Radio Discovery",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "e816dcc7c981cc46",
+        "type": "flexradio-discovery",
+        "z": "cd2c91a331ba76e5",
+        "name": "",
+        "port": 4992,
+        "x": 130,
+        "y": 80,
+        "wires": [
+            [
+                "5d87101ab7f1154a"
+            ]
+        ]
+    },
+    {
+        "id": "e2a9cb77eecd33d8",
+        "type": "comment",
+        "z": "cd2c91a331ba76e5",
+        "name": "Multiple Radio Discovery Example",
+        "info": "",
+        "x": 160,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "5d87101ab7f1154a",
+        "type": "function",
+        "z": "cd2c91a331ba76e5",
+        "name": "Save Discovered Radios in flow",
+        "func": "const radios = flow.get('radios') || {};\n\n// add timestamp so we can expire after some period of time.\nradios[msg.payload.nickname] = {\n    timestamp: new Date(),\n    ...msg.payload\n};\n\nflow.set('radios', radios);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 80,
+        "wires": [
+            [
+                "1fe586af7222e6ac"
+            ]
+        ]
+    },
+    {
+        "id": "01a02683d9a2b5c9",
+        "type": "inject",
+        "z": "cd2c91a331ba76e5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "15",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 280,
+        "wires": [
+            [
+                "26c69269e8b9b208"
+            ]
+        ]
+    },
+    {
+        "id": "26c69269e8b9b208",
+        "type": "function",
+        "z": "cd2c91a331ba76e5",
+        "name": "Expire old discovered radios",
+        "func": "const time_to_live = 1 * 60 * 1000; // 1 minute expire time\nconst now = new Date();\n\nconst old_radios = flow.get('radios') || {};\nconst current_radios = {};\nObject.keys(old_radios).forEach(function(nickname) {\n    const radio = old_radios[nickname];\n    if (now - radio.timestamp <= time_to_live) {\n        current_radios[nickname] = radio;\n    }\n})\n\nflow.set('radios', current_radios);\n\nmsg.payload = current_radios;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 280,
+        "wires": [
+            [
+                "cf5ea9b43d989754"
+            ]
+        ]
+    },
+    {
+        "id": "cf5ea9b43d989754",
+        "type": "debug",
+        "z": "cd2c91a331ba76e5",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 610,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "1fe586af7222e6ac",
+        "type": "debug",
+        "z": "cd2c91a331ba76e5",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "a80926fac47703a6",
+        "type": "inject",
+        "z": "cd2c91a331ba76e5",
+        "name": "FakeFlex Discovery",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "discovery",
+        "payload": "{\"nickname\": \"FakeFlex\"}",
+        "payloadType": "json",
+        "x": 190,
+        "y": 180,
+        "wires": [
+            [
+                "5d87101ab7f1154a"
+            ]
+        ]
+    },
+    {
+        "id": "3de96056d3eb703a",
+        "type": "comment",
+        "z": "cd2c91a331ba76e5",
+        "name": "Trigger to inject a fake discovery message for testing",
+        "info": "",
+        "x": 250,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "5410878c4248255d",
+        "type": "comment",
+        "z": "cd2c91a331ba76e5",
+        "name": "Clean out radios that are no longer sending out discovery messages",
+        "info": "",
+        "x": 280,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "e484f7bd68c1b112",
+        "type": "inject",
+        "z": "cd2c91a331ba76e5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 440,
+        "wires": [
+            [
+                "3bd0e5567e2721d6"
+            ]
+        ]
+    },
+    {
+        "id": "62bcbb2ddeb20b62",
+        "type": "debug",
+        "z": "cd2c91a331ba76e5",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "3bd0e5567e2721d6",
+        "type": "function",
+        "z": "cd2c91a331ba76e5",
+        "name": "Get Instance Names",
+        "func": "msg.payload = Object.keys(flow.get('radios'))\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 440,
+        "wires": [
+            [
+                "62bcbb2ddeb20b62"
+            ]
+        ]
+    },
+    {
+        "id": "b3b335fc38edbc21",
+        "type": "comment",
+        "z": "cd2c91a331ba76e5",
+        "name": "Trigger to get list of Radio nicknames for display",
+        "info": "",
+        "x": 220,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "37b727cd700eb505",
+        "type": "change",
+        "z": "cd2c91a331ba76e5",
+        "name": "Get Radio Details",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$flowContext(\"radios[\\\"\" & msg.payload & \"\\\"]\")",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 330,
+        "y": 540,
+        "wires": [
+            [
+                "53debd81df026dcb"
+            ]
+        ]
+    },
+    {
+        "id": "53debd81df026dcb",
+        "type": "debug",
+        "z": "cd2c91a331ba76e5",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "a684d34915c02248",
+        "type": "inject",
+        "z": "cd2c91a331ba76e5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "FakeFlex",
+        "payloadType": "str",
+        "x": 140,
+        "y": 540,
+        "wires": [
+            [
+                "37b727cd700eb505"
+            ]
+        ]
+    },
+    {
+        "id": "484f5f647379b45e",
+        "type": "comment",
+        "z": "cd2c91a331ba76e5",
+        "name": "Trigger to get the details of the radio given in msg.payload",
+        "info": "",
+        "x": 250,
+        "y": 500,
+        "wires": []
+    }
+]
