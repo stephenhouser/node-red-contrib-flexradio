@@ -22,9 +22,13 @@ module.exports = function(RED) {
 		}
 
 		node.on('input', function(msg, send, done) {
-			radio.send(msg, function(response) {
+			const rc = radio.send(msg, function(response) {
 				send(response);
 			});
+
+			if (!rc) {
+				send({ topic: 'error', payload: 'radio not available or connected.'});
+			}
 
 			if (done) {
 				done();

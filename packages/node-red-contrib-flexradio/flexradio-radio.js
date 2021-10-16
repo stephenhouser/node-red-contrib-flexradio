@@ -188,8 +188,12 @@ module.exports = function(RED) {
 		});
 
 		node.send = function(msg, response_handler) {
-			if (!msg || !msg.payload || !node.radio) {
-				return;
+			if (!msg || !msg.payload) {
+				return false;
+			}
+
+			if (!node.radio || node.radio.getConnectionState() !== 'connected') {
+				return false; 
 			}
 
 			log_debug(`flexradio-radio[${node.node_id}].send(${msg.payload})`);
@@ -232,6 +236,8 @@ module.exports = function(RED) {
 					}
 				});
 			}
+
+			return true;
 		};
 
 		node.meterTopic = function(meter) {
