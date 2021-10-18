@@ -40,7 +40,7 @@ module.exports = function(RED) {
 	function FlexRadioNode(config) {
 		RED.nodes.createNode(this, config);
 		const node = this;
-		
+
 		// Assign this object a unique ID that will show in debug messages
 		// Makes for easy assocaition of events, etc..
 		node.node_id = node_id++;
@@ -167,7 +167,7 @@ module.exports = function(RED) {
 
 		node.on('close', function(done) {
 			log_debug(`flexradio-radio[${node.node_id}].on.close()`);
-			const descriptor = node.radio_descriptor
+			const descriptor = node.radio_descriptor;
 			node.log('closing host=' + descriptor.ip + ' port=' + descriptor.port);
 			node.closing = true;
 
@@ -193,7 +193,7 @@ module.exports = function(RED) {
 			}
 
 			if (!node.radio || node.radio.getConnectionState() !== 'connected') {
-				return false; 
+				return false;
 			}
 
 			log_debug(`flexradio-radio[${node.node_id}].send(${msg.payload})`);
