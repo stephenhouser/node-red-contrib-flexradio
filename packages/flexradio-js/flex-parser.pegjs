@@ -5,7 +5,7 @@
 		if (typeof token === 'string' && token.startsWith('0x')) {
 			return token;
 		}
-		
+
        	return isNaN(Number(token)) ? token : Number(token);
     }
     
@@ -85,13 +85,13 @@
 Start = Message / Status / Response / Handle / Version
 
 Message 'Message' 
-	= 'M' message_id:Hex_String '|' message:.* 
+	= 'M' message_id:Hex_String_np '|' message:.* 
 	{ return { type: 'message', 
     			message_id: message_id, 
                 payload: message.join('') }; }
 
 Status 'Status' 
-	= 'S' client:Hex_String '|' response:Payload
+	= 'S' client:Hex_String_np '|' response:Payload
 	{ return { type: 'status', 
     			client: client,
                 topic: makeTopic(response),
@@ -115,7 +115,7 @@ Response_Handle 'Response_Handle'
 // Special case to not parse error messages with non-zero response code
 // Happens with `C7|stream create ...` request
 Response_Error 'Response_Error'
-	= 'R' sequence:Integer '|' code:Hex_String '|' response:.*
+	= 'R' sequence:Integer '|' code:Hex_String_np '|' response:.*
 	{ return { type: 'response', 
     			sequence_number: sequence, 
                 response_code: code, 
@@ -134,7 +134,7 @@ Response_Success 'Response_Success'
     }
 
 Handle 'Handle' 
-	= 'H' client:Hex_String 
+	= 'H' client:Hex_String_np 
 	{ return { type: 'handle', 
     			payload: client }; }
     
@@ -256,16 +256,13 @@ String_quoted 'String_quoted'
 	{ return chars.join(''); }
 
 Hex_String 'Hex_String' 
-	// 8 hex characters. PegJS does not have the repeat function for characters.
-	= prefix:'0x'? hex:(Hex_String_8 / Hex_String_0)
-	{ return '0x' + hex; }
-Hex_String_0 'Hex_String_0'
-	= '0'
-    { return '00000000';}
-Hex_String_8 'Hex_String_8'
-	= [0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]?
-    { return text(); }
-    
+	= '0x' hex:[0-9a-fA-F]+
+	{ return  '0x' + hex.join('').padStart(8, '0'); }
+
+// Hex String with no 0x Prefix
+Hex_String_np 'Hex_String_np'
+	= [0-9a-fA-F]+
+    { return text() === '0' ? '0' : '0x' + text().padStart(8, '0'); }
 
 Integer 'Integer' 
 	= [0-9]+ 
