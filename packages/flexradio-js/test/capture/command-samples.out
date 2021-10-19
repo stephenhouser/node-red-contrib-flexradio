@@ -1,7 +1,3 @@
-
-> flexradio-js@0.8.0-alpha.3 test /home/houser/Projects/node-red-contrib-flexradio/packages/flexradio-js
-> node ./test/flex-parser-test.js ./test/capture/command-samples.txt
-
 V1.4.0.0
 {
   "type": "version",
@@ -219,7 +215,7 @@ S3621C7F5|eq rxsc mode=1 63Hz=0 125Hz=0 250Hz=0 500Hz=0 1000Hz=0 2000Hz=0 4000Hz
 S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
 {
   "type": "status",
-  "client": "0x00000000",
+  "client": "0",
   "topic": "interlock",
   "payload": {
     "tx_client_handle": "0x00000000",
@@ -257,7 +253,7 @@ S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_e
 S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
 {
   "type": "status",
-  "client": "0x00000000",
+  "client": "0",
   "topic": "interlock",
   "payload": {
     "tx_client_handle": "0x786D7CEC",
@@ -272,7 +268,7 @@ S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW t
 S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
 {
   "type": "status",
-  "client": "0x00000000",
+  "client": "0",
   "topic": "interlock",
   "payload": {
     "tx_client_handle": "0x786D7CEC",
@@ -575,7 +571,7 @@ R2|0|meter 1.src=COD-#1.num=1#1.nam=MICPEAK#1.low=-150.0#1.hi=20.0#1.desc=Signal
 S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier=
 {
   "type": "status",
-  "client": "0x00000000",
+  "client": "0",
   "topic": "interlock",
   "payload": {
     "tx_client_handle": "0x786D7CEC",
@@ -590,7 +586,7 @@ S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= t
 S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
 {
   "type": "status",
-  "client": "0x00000000",
+  "client": "0",
   "topic": "interlock",
   "payload": {
     "tx_client_handle": "0x00000000",
@@ -628,7 +624,7 @@ S6EBCFFCF|interlock acc_txreq_enable=0 rca_txreq_enable=0 acc_tx_enabled=0 tx1_e
 S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW tx_allowed=1 amplifier=
 {
   "type": "status",
-  "client": "0x00000000",
+  "client": "0",
   "topic": "interlock",
   "payload": {
     "tx_client_handle": "0x786D7CEC",
@@ -643,7 +639,7 @@ S0|interlock tx_client_handle=0x786D7CEC state=PTT_REQUESTED reason= source=SW t
 S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx_allowed=1 amplifier=
 {
   "type": "status",
-  "client": "0x00000000",
+  "client": "0",
   "topic": "interlock",
   "payload": {
     "tx_client_handle": "0x786D7CEC",
@@ -658,7 +654,7 @@ S0|interlock tx_client_handle=0x786D7CEC state=TRANSMITTING reason= source=SW tx
 S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= tx_allowed=1 amplifier=
 {
   "type": "status",
-  "client": "0x00000000",
+  "client": "0",
   "topic": "interlock",
   "payload": {
     "tx_client_handle": "0x786D7CEC",
@@ -673,7 +669,7 @@ S0|interlock tx_client_handle=0x786D7CEC state=UNKEY_REQUESTED reason= source= t
 S0|interlock tx_client_handle=0x00000000 state=READY reason= source= tx_allowed=1 amplifier=
 {
   "type": "status",
-  "client": "0x00000000",
+  "client": "0",
   "topic": "interlock",
   "payload": {
     "tx_client_handle": "0x00000000",
@@ -1117,9 +1113,8 @@ R7|0|4000008
   "type": "response",
   "sequence_number": 7,
   "response_code": 0,
-  "payload": [
-    "0x4000008"
-  ]
+  "topic": null,
+  "payload": 4000008
 }
 
 R8|0|
@@ -1149,9 +1144,8 @@ R9|0|84000000
   "type": "response",
   "sequence_number": 9,
   "response_code": 0,
-  "payload": [
-    "0x84000000"
-  ]
+  "topic": null,
+  "payload": 84000000
 }
 
 S7FE7BBA0|slice 0 RF_frequency=14.074010 wide=0 lock=1
@@ -1517,6 +1511,18 @@ S10C05077|waveform installed_list=
   "topic": "waveform",
   "payload": {
     "installed_list": null
+  }
+}
+
+SE94304|transmit tune=0 tx_rf_power_changes_allowed=1 max_power_level=100)
+{
+  "type": "status",
+  "client": "0x00E94304",
+  "topic": "transmit",
+  "payload": {
+    "tune": 0,
+    "tx_rf_power_changes_allowed": 1,
+    "max_power_level": "100)"
   }
 }
 
