@@ -25,6 +25,8 @@ The following support libraries are dependencies of these NodeRed nodes. They sh
 
 The `examples` directory has the example flows shown below. You can install this flow in your Node Red instance from Import / Examples. You will have to set the radio address to make the flows work with your setup.
 
+There are also a handful of videos on YouTube: [https://www.youtube.com/playlist?list=PLFeSzqhDMutUQJwLXwDYo94M8RThH9I6U](https://www.youtube.com/playlist?list=PLFeSzqhDMutUQJwLXwDYo94M8RThH9I6U)
+
 The `flexradio-request` node is most likely the first node you will use. It allows you to send requests (or commands if you like) to a radio. You first need to configure the radio connection within the node after you add it to your flow. This radio configuration will be shared by other nodes in your flows, so you should only have to set it up once.
 
 ![Meters](packages/node-red-contrib-flexradio/examples/meters.png) ![Meters](examples/meters.png)
@@ -58,7 +60,7 @@ JSON on the output of a `flexradio-message` node:
 ```
 {
   "topic": "message",
-  "message_id": 10000001,
+  "message_id": "0x10000001",
   "payload": "Client connected from IP 192.168.10.25"
 }
 ```
@@ -74,7 +76,7 @@ JSON on the output of a `flexradio-message` node:
 ```
 {
   "topic": "radio/filter_sharpness/DIGITAL",
-  "client": "10C05077",
+  "client": "0x10C05077",
   "payload": {
     "level": "2",
     "auto_level": "1"
@@ -98,7 +100,7 @@ S10C05077|meter 1.src=COD-#1.num=3#1.nam=MICPEAK#1.low=-150.0#1.hi=20.0#1.desc=S
 Which would generate output on a `flexradio-message` node if configured and generate the JSON below. **NOTE**: This is *not* the meter data, it is the meter *configuration*.
 ```
 {
-  "client": "10C05077",
+  "client": "0x10C05077",
   "topic": "meter",
   "payload": {
     "1": {
@@ -126,7 +128,7 @@ As described above the `flexradio-meter` node assigns a topic to reported meter 
 Thus the meter with configuration:
 ```
 {
-  "client": "10C05077",
+  "client": "0x10C05077",
   "topic": "meter",
   "payload": {
     "1": {

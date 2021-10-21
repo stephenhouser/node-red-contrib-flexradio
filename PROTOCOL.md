@@ -6,12 +6,15 @@ These are used to document what we want the data to look like and can be used as
 
 ## Special Notes
 
-* Handles and identifiers are interpreted as hexadecimal numbers and reflected in NodeRed as decimal numbers. In several cases, e.g. the delivery of handles, the flexradio does not prefix these numbers with the conventinal `0x` but they are indeed hexidecimal numbers and interpreted as such.
+* Handles and identifiers are sent from the radio as hexadecimal numbers, though not always with the `0x` prefix. Where we can determine they should be hex numbers, e.g. in the header of `S`, and `M` messages, we prefix them with `0x` before sending them along. In some other places, specifically `R` responses from commands like creating streams, there is not a generic way to determine that the number that is sent is intended to be a hex number without knowing what command generated it. So these are left as is to be interpreted by the caller.
 
 
 ## Discovery messages
 
-### Raw TCP data
+While the discovery message is sent via UDP, the payload is text. This text is prefixed with a dummy `S0|` to make it appear like a status message and sent to the same parser used for the TCP command and control stream to be decoded.
+
+### Raw UDP payload
+
 ### Parser/Radio.js output
 
 ### Node/flexradio-message output
@@ -67,7 +70,7 @@ H18A12655
 ```
 {
   "type": "handle",
-  "payload": 413214293
+  "payload": "0x413214293"
 }
 ```
 
@@ -75,7 +78,7 @@ H18A12655
 ```
 {
   "topic": "handle",
-  "payload": 413214293
+  "payload": "0x413214293"
 }
 ```
 
@@ -92,7 +95,7 @@ M10000001|Client connected from IP 192.168.10.25
 ```
 {
   "type": "message",
-  "message_id": 268435457,
+  "message_id": "0x10000001",
   "payload": "Client connected from IP 192.168.10.25"
 }
 ```
@@ -101,7 +104,7 @@ M10000001|Client connected from IP 192.168.10.25
 ```
 {
   "topic": "message",
-  "message_id": 268435457,
+  "message_id": "0x10000001",
   "payload": "Client connected from IP 192.168.10.25"
 }
 ```
@@ -118,7 +121,7 @@ S18A12655|radio filter_sharpness VOICE level=2 auto_level=1
 ```
 {
   "type": "status",
-  "client": 413214293,
+  "client": "0x18A12655",
   "topic": "radio/filter_sharpness/VOICE",
   "payload": {
     "level": 2,
@@ -131,7 +134,7 @@ S18A12655|radio filter_sharpness VOICE level=2 auto_level=1
 ```
 {
   "topic": "status",
-  "client": 413214293,
+  "client": "0x18A12655",
   "topic": "radio/filter_sharpness/VOICE",
   "payload": {
     "level": 2,
@@ -223,7 +226,14 @@ S67EEC4C3|meter 19.src=TX-#19.num=1#19.nam=FWDPWR#19.low=0.0#19.hi=53.0#19.desc=
   "sequence_number": 8,
   "response_code": 0,
   "topic": null,
-  "payload": "ANT1,ANT2,RX_A,RX_B,XVTA,XVTB"
+  "payload": [
+    "ANT1",
+    "ANT2",
+    "RX_A",
+    "RX_B",
+    "XVTA",
+    "XVTB"
+  ]
 }
 
 {
@@ -231,20 +241,26 @@ S67EEC4C3|meter 19.src=TX-#19.num=1#19.nam=FWDPWR#19.low=0.0#19.hi=53.0#19.desc=
   "sequence_number": 9,
   "response_code": 0,
   "topic": null,
-  "payload": "MIC,BAL,LINE,ACC,PC"
+  "payload": [
+    "MIC",
+    "BAL",
+    "LINE",
+    "ACC",
+    "PC"
+  ]
 }
 
 {
   "type": "response",
   "sequence_number": 43,
-  "response_code": 1342177321,
+  "response_code": "0x50000029",
   "topic": null,
   "payload": null
 }
 
 {
   type: "status",
-  client: 1743701187,
+  client: "0x67EEC4C3",
   topic: "meter",
   payload: {
     "19": {
@@ -350,14 +366,14 @@ S67EEC4C3|meter 19.src=TX-#19.num=1#19.nam=FWDPWR#19.low=0.0#19.hi=53.0#19.desc=
   "request": "display panafall rfgain_info 0x0",
 
   "sequence_number": 43,
-  "response_code": 1342177321,
+  "response_code": "0x50000029",
   "topic": null,
   "payload": null
 }
 
 {
   type: "status",
-  client: 1743701187,
+  client: "0x67EEC4C3",
   topic: "meter",
   payload: {
     "19": {
