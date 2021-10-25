@@ -2,11 +2,9 @@
 
 The following are a list of tutorials for using the `node-red-contrib-flexradio` nodes in your flows. If you are new to the nodes, start with the _Installation and Overview_.
 
-## NodeRed/FlexRadio Installation and Overview (complete v0.3.2)
+## NodeRed/FlexRadio Introduction and Overview (complete v0.7.8)
 
-**Needs to be Updated**
-
-YouTube: [NodeRed Contrib FlexRadio v0.3.2 Install and Use](https://youtu.be/x9Ga6DZKIGI)
+YouTube: [NodeRed/FlexRadio Introduction and Overview](https://www.youtube.com/watch?v=8TXno7R7i2Y&t=16s)
 
 How to install and configure the `node-red-contrib-flexradio` nodes in your existing NodeRed instance. Basic overview of the nodes provided by the package and their uses.
 
@@ -32,7 +30,6 @@ The nodes and links to video tutorial of each:
 - drop discovery node
 - add debug node
 - deploy and observe
-
 
 #### Message Node
 - drop message node
@@ -85,6 +82,24 @@ Using `node-red-contrib-flexradio` nodes within NodeRed to create a simple dashb
 ## NodeRed/FlexRadio Messages and Status
 
 **TODO**
+
+Describe the `flexradio-messages` node, the types of data from the radio that it will emit, how to use the topic filter settings, and how to decode data it injects.
+
+### Script
+
+* Messages vs Status vs Connection
+* Topic filtering
+* on connected to radio (connection/tcp)
+* watch for state (interlock) changes
+	* we can watch for Transmit
+* drop a sub slice all request node
+	* now we can watch for audio level changes
+	* now we can watch for RF frequency changes
+
+* Now lets build something useful, monitor audio level
+* Connect "connection/tcp" node to reuqest "sub slice all" when payload === 'connected'
+* drop a function node that shows payload as node.status for audio level
+
 
 ## NodeRed/FlexRadio Sending Requests / Commands
 
