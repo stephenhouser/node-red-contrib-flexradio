@@ -2,6 +2,31 @@
 
 Releases are posted in the [nodered-hamradio Groups.io](https://groups.io/nodered-hamradio) group.
 
+
+## Subject: Release of node-red-contrib-flexradio nodes v1.0
+
+This topic is for the first general release of v1.0 of node-red-contrib-flexradio nodes for controlling FLexRadio 6xxx radios with NodeRed.
+
+Before I go any further, A big THANK YOU to Dave W02X, Alan WA9WUD, Gary K6HN, Warren KD4Z, Mike K5MAP, and all the other members of nodered-hamradio on groups.io that have helped in making these nodes possible. Thier tireless reworking and adapting their existing flows and setup to use these nodes, testing them with their varied equipment, and encouragement have really been instrumental in getting to a usable set of nodes.
+
+The nodes in this collection are as follows:
+
+* flexradio-request node to send commands to a radio (and get responses)
+* flexradio-message node that injects messages and status from a radio into the flow
+* flexradio-meter node that injects meter data from a radio (NOT WORKING)
+* flexradio-radio configuration node that manages communication with radios
+* flexradio-discovery node that injects radio discovery messages into the flow
+
+There are very few changes to the nodes since the release of v0.9.2, the latest pre-release version, so rather than re-tell the story that got us to here, I'll simply refer to the previous topics for each release.
+
+You can find the latest node-red-contrib-flexradio nodes at https://flows.nodered.org/node/node-red-contrib-flexradio and in NodeRed's Manage Palette > Install panel. 
+
+For the adventerous, all the gory details and source code are on GitHub at https://github.com/stephenhouser/node-red-contrib-flexradio
+
+While this thread is a great place to discuss these nodes and alert me (and all of us) to potential problems, I track the identifed issues within GitHub at https://github.com/stephenhouser/node-red-contrib-flexradio/issues. Note that the GitHub issued also tracks possible feature requests in addition to bugs.
+
+
+
 ## Subject: Release of node-red-contrib-flexradio nodes v0.9.0
 
 I'm starting this topic for the release of v0.9.0 of node-red-contrib-flexradio.
