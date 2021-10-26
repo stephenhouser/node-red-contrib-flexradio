@@ -9,21 +9,21 @@ This topic is for the first general release of v1.0 of node-red-contrib-flexradi
 
 Before I go any further, A big THANK YOU to Dave W02X, Alan WA9WUD, Gary K6HN, Warren KD4Z, Mike K5MAP, and all the other members of nodered-hamradio on groups.io that have helped in making these nodes possible. Thier tireless reworking and adapting their existing flows and setup to use these nodes, testing them with their varied equipment, and encouragement have really been instrumental in getting to a usable set of nodes.
 
-The nodes in this collection are as follows:
+If you have not been following along the nodes in this collection are as follows:
 
-* flexradio-request node to send commands to a radio (and get responses)
-* flexradio-message node that injects messages and status from a radio into the flow
-* flexradio-meter node that injects meter data from a radio (NOT WORKING)
-* flexradio-radio configuration node that manages communication with radios
-* flexradio-discovery node that injects radio discovery messages into the flow
+    * flexradio-request node to send commands to a radio (and get responses)
+    * flexradio-message node that injects messages and status from a radio into the flow
+    * flexradio-meter node that injects meter data from a radio (NOT WORKING)
+    * flexradio-radio configuration node that manages communication with radios
+    * flexradio-discovery node that injects radio discovery messages into the flow
 
-There are very few changes to the nodes since the release of v0.9.2, the latest pre-release version, so rather than re-tell the story that got us to here, I'll simply refer to the previous topics for each release.
+There are very few changes to the nodes since the most recent pre-release of v0.9.2. Rather than re-tell the story that got us to here, I'll simply refer you to the previous topics on groups.io/nodered-hamradio, the documentation and examples included with the nodes when they are installed.
 
-You can find the latest node-red-contrib-flexradio nodes at https://flows.nodered.org/node/node-red-contrib-flexradio and in NodeRed's Manage Palette > Install panel. 
+You can find the latest node-red-contrib-flexradio nodes at https://flows.nodered.org/node/node-red-contrib-flexradio and in NodeRed's Manage Palette > Install panel. This will install the nodes and the examples.
 
-For the adventerous, all the gory details and source code are on GitHub at https://github.com/stephenhouser/node-red-contrib-flexradio
+A brief and growing series of videos specific to the installation and use of these nodes is on my YouTube channel at https://www.youtube.com/playlist?list=PLFeSzqhDMutUQJwLXwDYo94M8RThH9I6U. I'm hopeful with this 1.0 release I can begin to add to that collection with more details and some advanced uses.
 
-While this thread is a great place to discuss these nodes and alert me (and all of us) to potential problems, I track the identifed issues within GitHub at https://github.com/stephenhouser/node-red-contrib-flexradio/issues. Note that the GitHub issued also tracks possible feature requests in addition to bugs.
+For the adventerous, all the gory details and source code are on GitHub at https://github.com/stephenhouser/node-red-contrib-flexradio. While this thread is a great place to discuss these nodes and alert me (and all of us) to potential problems, I track the identifed issues within GitHub at https://github.com/stephenhouser/node-red-contrib-flexradio/issues. Note that the GitHub issued also tracks possible feature requests in addition to bugs.
 
 
 
