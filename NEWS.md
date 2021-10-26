@@ -2,12 +2,13 @@
 
 Releases are posted in the [nodered-hamradio Groups.io](https://groups.io/nodered-hamradio) group.
 
-
 ## Subject: Release of node-red-contrib-flexradio nodes v1.0
+
+v1.0.0 - Monday, October 25, 2021
 
 This topic is for the first general release of v1.0 of node-red-contrib-flexradio nodes for controlling FLexRadio 6xxx radios with NodeRed.
 
-Before I go any further, A big THANK YOU to Dave W02X, Alan WA9WUD, Gary K6HN, Warren KD4Z, Mike K5MAP, and all the other members of nodered-hamradio on groups.io that have helped in making these nodes possible. Thier tireless reworking and adapting their existing flows and setup to use these nodes, testing them with their varied equipment, and encouragement have really been instrumental in getting to a usable set of nodes.
+Before I go any further, A big THANK YOU to Dave W02X, Alan WA9WUD, Gary K6HN, Warren KD4Z, Mike K5MAP, and all the other members of [nodered-hamradio on groups.io](https://groups.io/nodered-hamradio) that have helped in making these nodes possible. Thier tireless reworking and adapting their existing flows and setup to use these nodes, testing them with their varied equipment, and encouragement have really been instrumental in getting to a usable set of nodes.
 
 If you have not been following along the nodes in this collection are as follows:
 
@@ -17,17 +18,17 @@ If you have not been following along the nodes in this collection are as follows
     * flexradio-radio configuration node that manages communication with radios
     * flexradio-discovery node that injects radio discovery messages into the flow
 
-There are very few changes to the nodes since the most recent pre-release of v0.9.2. Rather than re-tell the story that got us to here, I'll simply refer you to the previous topics on groups.io/nodered-hamradio, the documentation and examples included with the nodes when they are installed.
+There are very few changes to the nodes since the most recent pre-release of v0.9.2. Rather than re-tell the story that got us to here, I'll simply refer you to the previous topics on  [nodered-hamradio on groups.io](https://groups.io/nodered-hamradio), the documentation and examples included with the nodes when they are installed.
 
-You can find the latest node-red-contrib-flexradio nodes at https://flows.nodered.org/node/node-red-contrib-flexradio and in NodeRed's Manage Palette > Install panel. This will install the nodes and the examples.
+You can find the latest [node-red-contrib-flexradio](https://flows.nodered.org/node/node-red-contrib-flexradio) nodes in NodeRed's [Manage Palette > Install panel](https://flows.nodered.org/node/node-red-contrib-flexradio). This will install the nodes and the examples.
 
-A brief and growing series of videos specific to the installation and use of these nodes is on my YouTube channel at https://www.youtube.com/playlist?list=PLFeSzqhDMutUQJwLXwDYo94M8RThH9I6U. I'm hopeful with this 1.0 release I can begin to add to that collection with more details and some advanced uses.
+A brief and growing series of videos specific to the installation and use of these nodes is on my [YouTube channel](https://www.youtube.com/playlist?list=PLFeSzqhDMutUQJwLXwDYo94M8RThH9I6U). I'm hopeful with this v1.0 release I can begin to add to that collection with more details and some advanced uses.
 
-For the adventerous, all the gory details and source code are on GitHub at https://github.com/stephenhouser/node-red-contrib-flexradio. While this thread is a great place to discuss these nodes and alert me (and all of us) to potential problems, I track the identifed issues within GitHub at https://github.com/stephenhouser/node-red-contrib-flexradio/issues. Note that the GitHub issued also tracks possible feature requests in addition to bugs.
-
-
+For the adventurous, all the gory details and source code are on [github.com/stephenhouser/node-red-contrib-flexradio](https://github.com/stephenhouser/node-red-contrib-flexradio). While the groups.io thread is a great place to discuss these nodes and alert me (and all of us) to potential problems, I track the identified [issues within GitHub](https://github.com/stephenhouser/node-red-contrib-flexradio/issues). Note that the GitHub issued also tracks possible feature requests in addition to bugs.
 
 ## Subject: Release of node-red-contrib-flexradio nodes v0.9.0
+
+v0.9.0 - Sunday, October 10, 2021
 
 I'm starting this topic for the release of v0.9.0 of node-red-contrib-flexradio.
 
@@ -48,6 +49,8 @@ Only two changes in this minor version update:
 
 ## Subject: Release of node-red-contrib-flexradio nodes v0.8.0
 
+v0.8.0 - Friday, October 1, 2021
+
 v0.8.0 of node-red-contrib-flexradio nodes are now available via Manage Pallette and NPM.
 
 * Numbers in delivered messages are now actually numbers and not numbers wrapped in strings. This is from an overhaul (again) of the command stream parser code. Handles for clients, streams, and such are kept as hex strings and not converted to numbers, example: 0x40000001. Where a handle is not prefixed by '0x' in the flex radio responses, one is added to maintain consistency.
@@ -60,7 +63,7 @@ v0.8.0 of node-red-contrib-flexradio nodes are now available via Manage Pallette
 
 * Change the default radio hostname from `localhost` to `flexradio` as the radio hostname will surely never, ever, be `localhost`. It was misleading.
 
-* Update the `vita49-decode` node which enables access to the VITA-49 datagram parser without creating a UDP listner (e.g. the `flexradio-discover` or `flexradio-meter` nodes). This is an advanced feature which may be removed in a future version.
+* Update the `vita49-decode` node which enables access to the VITA-49 datagram parser without creating a UDP listener (e.g. the `flexradio-discover` or `flexradio-meter` nodes). This is an advanced feature which may be removed in a future version.
 
 * Add `flexradio-decode` node to enable access to the parser without a connection to the radio. Could be used if you want to manage the TCP connection yourself. An advanced feature which may be removed in a future version.
 
@@ -118,7 +121,7 @@ I've pulled the trigger on v0.5.0 and ready for wider-scale testing before calli
 
 Here are the details you should know when installing and using these:
 
-- The nodes themselves have help information that can be viewed within NodeRed, but there is also a short walkthrough and description of the nodes on the GitHub project page -- https://github.com/stephenhouser/node-red-contrib-flexradio. Scroll down past the code to get to "Using these nodes in your flows" section. This text also appears on nodered.org in the description of the node(s).
+- The nodes themselves have help information that can be viewed within NodeRed, but there is also a short walk-through and description of the nodes on the GitHub project page -- https://github.com/stephenhouser/node-red-contrib-flexradio. Scroll down past the code to get to "Using these nodes in your flows" section. This text also appears on nodered.org in the description of the node(s).
 
 - There are some 'deprecated' nodes that were used in earlier versions that you **should not use** in new flows. They will be removed in the final v1.0 release. These are `flexradio-status` and `flexradio-messages` (note the plural). These notes are a light blue color to highlight they are different. They are included in this release only to assist earlier adopters in migrating their flows to the new `flexradio-message` (node the singular) node.
 
