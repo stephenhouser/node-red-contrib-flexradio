@@ -285,7 +285,7 @@ class Radio extends EventEmitter {
 				meter.value = this._scaleMeterValue(meter, meter_value);
 				meter_update_msg[meter_num] = meter;
 			} else {
-				// console.log(`Radio._scaleMeterValues(${meter_num}) unknown meter`);
+				log_info(`Radio._scaleMeterValues(${meter_num}) unknown meter`);
 				const meter = {					
 					value: meter_value
 				};
