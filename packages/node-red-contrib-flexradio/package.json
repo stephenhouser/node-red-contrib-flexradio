@@ -36,6 +36,7 @@
       "flexradio-message": "flexradio-message.js",
       "flexradio-meter": "flexradio-meter.js",
       "flexradio-discovery": "flexradio-discovery.js",
+      "flexradio-stream": "flexradio-stream.js",
       "flexradio-radio": "flexradio-radio.js",
       "flexradio-decode": "flexradio-decode.js",
       "vita49-decode": "vita49-decode.js"
