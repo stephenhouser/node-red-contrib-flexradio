@@ -5,8 +5,8 @@
         defaults: {
             name: { value: '' },
             radio: { value: '', type: 'flexradio-radio', required: true },
-            stream: { value: '#' },
-            output_mode: { value: 'value', required: true }
+            stream_type: { value: 'all', required: true },
+            stream: { value: '#' }
         },
         inputs: 0,
         outputs: 1,
@@ -23,15 +23,23 @@
         <input type="text" id="node-input-radio" placeholder="FlexRadio">
     </div>
     <div class="form-row">
-        <label for="node-input-stream"><i class="fa fa-tag"></i> Stream</label>
-        <input type="text" id="node-input-stream" placeholder="#">
+        <label for="node-input-stream_type"><i class="fa fa-sign-in"></i> Stream Type</label>
+        <select id="node-input-stream_type">
+            <option value="all">All</option>
+            <option value="panadapter">Panadapter</option>
+            <option value="waterfall">Waterfall</option>
+            <option value="opus">opus</option>
+            <option value="daxAudio">daxAudio</option>
+            <option value="daxReducedBw">daxReducedBw</option>
+            <option value="daxIq24">daxIq24</option>
+            <option value="daxIq48">daxIq48</option>
+            <option value="daxIq96">daxIq96</option>
+            <option value="daxIq192">daxIq192</option>
+        </select>
     </div>
     <div class="form-row">
-        <label for="node-input-output_mode"><i class="fa fa-sign-in"></i> Output</label>
-        <select id="node-input-output_mode">
-            <option value="value">Values Only</option>
-            <option value="context">Values and Context</option>
-        </select>
+        <label for="node-input-stream"><i class="fa fa-tag"></i> Stream</label>
+        <input type="text" id="node-input-stream" placeholder="#">
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>

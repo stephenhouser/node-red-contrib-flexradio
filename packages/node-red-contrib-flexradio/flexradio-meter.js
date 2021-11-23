@@ -29,7 +29,7 @@ module.exports = function(RED) {
 
 		node.radio_event['meter'] = (msg) => {
 			for (const [meter_number, meter] of Object.entries(msg.payload)) {
-				const topic = radio.meterTopic(meter);
+				const topic = radio.meterTopic(meter, meter_number);
 				if (radio.matchTopic(node.topic, topic, node.topic_type)) {
 					const meter_msg = {
 						topic: topic,
@@ -80,6 +80,7 @@ module.exports = function(RED) {
 
 		// Subscribe to radio events with our listeners
 		Object.entries(node.radio_event).forEach(([event, handler]) => {
+			const radio = node.radio;
 			if (handler) {
 				radio.on(event, handler)
 			}

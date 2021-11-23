@@ -11,8 +11,8 @@ module.exports = function(RED) {
 		const node = this;
 		node.name = config.name;
 		node.radio = RED.nodes.getNode(config.radio);
+		node.stream_type = config.stream_type;
 		node.stream = config.stream;
-		node.output_mode = config.output_mode;
 
 		const radio = node.radio;
 		if (!radio) {
@@ -22,20 +22,38 @@ module.exports = function(RED) {
 
 		// Radio event handlers for handling events FROM radio
 		node.radio_event = {};
-		node.radio_event['connecting'] = (msg) => { updateNodeStatus(msg.payload) };
-		node.radio_event['connected'] = (msg) => { updateNodeStatus(msg.payload) };
-		node.radio_event['disconnected'] = (msg) => { updateNodeStatus(msg.payload) };
+		node.radio_event['connecting'] = (msg) => { updateNodeStatus(msg.payload); };
+		node.radio_event['connected'] = (msg) => { updateNodeStatus(msg.payload); };
+		node.radio_event['disconnected'] = (msg) => { updateNodeStatus(msg.payload); };
 
-		node.radio_event['daxAudio'] = (msg) => { sendEvent(msg); };
-		node.radio_event['panadapter'] = (msg) => { sendEvent(msg); };
-		node.radio_event['waterfall'] = (msg) => { sendEvent(msg); };
+		function sendEvent(msg)  {
+			if (radio.matchTopic(node.stream, msg.stream, 'mqtt')) {
+				// use spread operator to create a copy of the message
+				// otherwise modifications to the message in the flow will
+				// propagate back into other nodes we send to.
+				node.send({ ...msg});
+			}
+		}
+
+		if (node.stream_type === 'any' || node.stream_type === 'all') {
+			// subscribe to stream data
+			const stream_types = [
+				'panadapter', 'waterfall', 'opus', 'daxAudio', 'daxReducedBw',
+				'daxIq24', 'daxIq48', 'daxIq96', 'daxIq192'
+			];
+			stream_types.forEach(function(stream_type) {
+				node.radio_event[stream_type] = function(msg) { sendEvent(msg) }
+			});
+		} else {
+			node.radio_event[node.stream_type] = function(msg) { sendEvent(msg) }
+		}
 
 		node.on('close', (done) => {
 			// Unsubscribe to radio events from our listeners
 			const radio = node.radio;
 			Object.entries(node.radio_event).forEach(([event, handler]) => {
 				if (handler) {
-					radio.off(event, handler)
+					radio.off(event, handler);
 				}
 			});
 
@@ -43,16 +61,6 @@ module.exports = function(RED) {
 			clearInterval(node.statusUpdate);
 			done();
 		});
-
-		function sendEvent(msg)  {
-			updateNodeStatus(msg.payload);
-			if (radio.matchTopic(node.topic, msg.topic, node.topic_type)) {
-				// use spread operator to create a copy of the message
-				// otherwise modifications to the message in the flow will
-				// propogate back into other nodes we send to.
-				node.send({ ...msg });
-			}
-		}
 
 		function updateNodeStatus(status) {
 			switch (status) {
@@ -76,11 +84,11 @@ module.exports = function(RED) {
 		node.statusUpdate = setInterval(() => {
 			updateNodeStatus(radio.connectionState());
 		}, 5000);
-		
+
 		// Subscribe to radio events with our listeners
 		Object.entries(node.radio_event).forEach(([event, handler]) => {
 			if (handler) {
-				radio.on(event, handler)
+				radio.on(event, handler);
 			}
 		});
 	}

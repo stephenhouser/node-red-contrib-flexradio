@@ -262,7 +262,7 @@ class Radio extends EventEmitter {
 
 	_receiveRealtimeData(data) {
 		const flex_dgram = flex.decode_realtime(data);
-		log_debug_realtime(`Radio[${this.radio_id}]._receiveRealtimeData(${flex_dgram})`);
+		log_debug_realtime(`Radio[${this.radio_id}]._receiveRealtimeData(${flex_dgram.type})`);
 		if (flex_dgram) {
 			// Handle any special processing of particular message types
 			switch (flex_dgram.type) {

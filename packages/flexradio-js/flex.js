@@ -71,6 +71,10 @@ const ResponseCode = {
 	}
 };
 
+function to_hex(num) {
+	return '0x' + num.toString(16).padStart(8, '0');
+}
+
 // decode() -- decode data sent from a FlexRadio on the TCP control stream.
 function decode(response) {
 	if (response) {
@@ -157,6 +161,18 @@ function decode_waterfall(dgram) {
 	return dgram.payload;
 }
 
+function decode_opus(dgram) {
+	return dgram.payload;
+}
+
+function decode_daxaudio(dgram) {
+	return dgram.payload;
+}
+
+function decode_daxiq(dgram) {
+	return dgram.payload;
+}
+
 // decode_realtime() -- decode data sent from a FlexRadio on the UDP data channel
 function decode_realtime(data) {
 	function isFlexClass(vita49_dgram) {
@@ -185,6 +201,22 @@ function decode_realtime(data) {
 					payload = decode_waterfall(vita49_dgram);
 					break;
 
+				case RealtimePacketClass.opus:
+					payload = decode_opus(vita49_dgram);
+					break;
+
+				case RealtimePacketClass.daxAudio:
+				case RealtimePacketClass.daxReducedBw:
+					payload = decode_daxaudio(vita49_dgram);
+					break;
+
+				case RealtimePacketClass.daxIq24:
+				case RealtimePacketClass.daxIq48:
+				case RealtimePacketClass.daxIq96:
+				case RealtimePacketClass.daxIq192:
+					payload = decode_daxiq(vita49_dgram);
+					break;
+
 				case RealtimePacketClass.discovery:
 					payload = decode_discovery(vita49_dgram);
 					break;
@@ -197,7 +229,7 @@ function decode_realtime(data) {
 			if (payload) {
 				return {
 					type: RealtimePacketClass.decode(vita49_dgram.class.packet_class),
-					stream: vita49_dgram.stream,
+					stream: to_hex(vita49_dgram.stream),
 					sequence: vita49_dgram.sequence,
 					payload: payload
 				};
