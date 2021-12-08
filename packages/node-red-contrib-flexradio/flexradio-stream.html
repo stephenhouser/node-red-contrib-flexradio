@@ -8,7 +8,7 @@
             stream_type: { value: 'all', required: true },
             stream: { value: '#' }
         },
-        inputs: 0,
+        inputs: 1,
         outputs: 1,
         icon: 'font-awesome/fa-volume-up',
         label: function() {
@@ -25,6 +25,7 @@
     <div class="form-row">
         <label for="node-input-stream_type"><i class="fa fa-sign-in"></i> Stream Type</label>
         <select id="node-input-stream_type">
+            <option value="dynamic">Dynamic</option>
             <option value="all">All</option>
             <option value="panadapter">Panadapter</option>
             <option value="waterfall">Waterfall</option>

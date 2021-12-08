@@ -166,7 +166,23 @@ function decode_opus(dgram) {
 }
 
 function decode_daxaudio(dgram) {
-	return dgram.payload;
+	const daxDecoder = new binaryParser()
+		.array('', {
+			type: new binaryParser().array('', {
+				type: new binaryParser().floatbe(),
+				length: 2,
+			}),
+			readUntil: 'eof'
+		});
+
+	try {
+		return daxDecoder.parse(dgram.payload);
+	} catch (error) {
+		console.error('flexradio-js daxAudio decoding error');
+		console.error(error);
+	}
+
+	return null;
 }
 
 function decode_daxiq(dgram) {
