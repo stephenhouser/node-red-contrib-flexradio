@@ -17,5 +17,6 @@ services:
             - ../packages/vita49-js:/data/node_modules/vita49-js
             - ../packages/flexradio-js:/data/node_modules/flexradio-js
             - ../packages/node-red-contrib-flexradio:/data/node_modules/node-red-contrib-flexradio
+            - ../../node-red-contrib-ui-audio-stream:/data/node_modules/node-red-contrib-ui-audio-stream
         #entrypoint: npm nodered/node-red run debug_brk
         #entrypoint: "npm run debug_brk -- --userDir /data"

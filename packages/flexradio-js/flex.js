@@ -136,15 +136,26 @@ function decode_meters(dgram) {
 }
 
 function decode_panadapter(dgram) {
+	// console.log(dgram);
+
 	const panadapterParser = new binaryParser()
-		.uint16('start_bin')
-		.uint16('number_of_bins')
-		.uint16('bin_size')
-		.uint16('bins_in_frame')
+		// .uint16('start_bin')
+		// .uint16('number_of_bins')
+		// .uint16('bin_size')
+		// .uint16('total_bins')
+		// .uint32('frame_index')
+		.uint32('start_bin')
+		.uint32('number_of_bins')
+		.uint32('bin_size')
 		.uint32('frame_index')
 		.array("data", {
 			type: new binaryParser().uint16(),
+			// readUntil: 'eof'
 			length: 'number_of_bins'
+		})
+		.array("extra", {
+			type: new binaryParser().uint8(),
+			readUntil: 'eof'
 		});
 
 	try {
