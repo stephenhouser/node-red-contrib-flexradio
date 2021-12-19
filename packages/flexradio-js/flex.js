@@ -135,25 +135,46 @@ function decode_meters(dgram) {
 	return meter_values;
 }
 
-function decode_panadapter(dgram) {
-	// console.log(dgram);
-
-	const panadapterParser = new binaryParser()
-		// .uint16('start_bin')
-		// .uint16('number_of_bins')
-		// .uint16('bin_size')
-		// .uint16('total_bins')
-		// .uint32('frame_index')
+// This is the <= v2.2 panadapter format. 
+function decode_panadapter_v2(dgram) {
+	const oldPanadapterParser = new binaryParser()
 		.uint32('start_bin')
 		.uint32('number_of_bins')
 		.uint32('bin_size')
 		.uint32('frame_index')
 		.array("data", {
 			type: new binaryParser().uint16(),
-			// readUntil: 'eof'
 			length: 'number_of_bins'
 		})
-		.array("extra", {
+		.array("trailer", {
+			type: new binaryParser().uint8(),
+			readUntil: 'eof'
+		});
+
+	try {
+		return oldPanadapterParser.parse(dgram.payload);
+	} catch (error) {
+		console.error('flexradio-js panadapter decoding error');
+		console.error(error);
+	}
+
+	return null;
+}
+
+// This is the >=2.2 panadapter format
+// MUST send "client set enforce_network_mtu=1" for this to work!
+function decode_panadapter(dgram) {
+	const panadapterParser = new binaryParser()
+		.uint16('start_bin')
+		.uint16('number_of_bins')
+		.uint16('bin_size')
+		.uint16('total_bins')
+		.uint32('frame_index')
+		.array("data", {
+			type: new binaryParser().uint16(),
+			length: 'number_of_bins'
+		})
+		.array("trailer", {
 			type: new binaryParser().uint8(),
 			readUntil: 'eof'
 		});
@@ -164,6 +185,10 @@ function decode_panadapter(dgram) {
 		console.error('flexradio-js panadapter decoding error');
 		console.error(error);
 	}
+
+
+
+return null;
 
 	return null;
 }

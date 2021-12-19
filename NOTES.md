@@ -28,6 +28,18 @@ C39|display panafall rfgain_info 0x0
 S10C05077|display pan 0x40000000 center=14.022560 xvtr=
 
 
+    "display pan set 0x40000000 xpixels=1024 ypixels=700 fps=10 center=14.1 bandwidth=0.2 min_dbm=-130 max_dbm=-50"
+
+[
+    "client gui 8BB112FA-46E0-4002-B9B1-0C7EDC605661",
+    "client program xSDR6000",
+    "client station xSDR6000",
+    "info",
+    "version",
+    "client set enforce_network_mtu=1 network_mtu=1500",
+    "client set send_reduced_bw_dax=0"
+]
+
 S10C05077|display pan 0x40000000 rfgain=32 pre=+32dB
 S10C05077|display waterfall 0x42000000 rfgain=32
 

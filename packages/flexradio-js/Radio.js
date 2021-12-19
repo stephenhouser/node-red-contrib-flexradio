@@ -113,7 +113,13 @@ class Radio extends EventEmitter {
 			this.connection = net.connect(radio.port, radio.host, function() {
 				log_info(`Radio[${radio.radio_id}].connection.on('connect')`);
 
-				Promise.all([radio._startRealtimeListener(), radio._getMeterList()])
+				Promise.all([radio._startRealtimeListener(), 
+								radio._getMeterList(),
+								// triggers new format UDP packets
+								radio.send('client set enforce_network_mtu=1'),
+								// triggers new API
+								radio.send('client set send_reduced_bw_dax=0')
+							])
 					.then(function() {
 						radio._setConnectionState(ConnectionStates.connected);
 					});
