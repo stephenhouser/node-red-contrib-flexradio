@@ -1,0 +1,237 @@
+[
+    {
+        "id": "c34b96fc23747b8c",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "6e1316bfa1a17005",
+        "type": "flexradio-radio",
+        "name": "",
+        "host_mode": "automatic",
+        "nickname": "",
+        "host": "",
+        "port": "",
+        "station_name": "NodeRed",
+        "slice_mode": "headless",
+        "slice_name": "A",
+        "timeout": "15"
+    },
+    {
+        "id": "625dcd24529574df",
+        "type": "flexradio-message",
+        "z": "c34b96fc23747b8c",
+        "name": "",
+        "radio": "6e1316bfa1a17005",
+        "topic": "slice/0",
+        "topic_type": "mqtt",
+        "x": 150,
+        "y": 380,
+        "wires": [
+            [
+                "d289fd65609f09ee"
+            ]
+        ]
+    },
+    {
+        "id": "c7e2f6b646d8555c",
+        "type": "flexradio-request",
+        "z": "c34b96fc23747b8c",
+        "name": "",
+        "radio": "6e1316bfa1a17005",
+        "x": 550,
+        "y": 180,
+        "wires": [
+            [
+                "b27a67a82d44e7f3"
+            ]
+        ]
+    },
+    {
+        "id": "b27a67a82d44e7f3",
+        "type": "debug",
+        "z": "c34b96fc23747b8c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "d93a9e9b2cd70270",
+        "type": "flexradio-message",
+        "z": "c34b96fc23747b8c",
+        "name": "connection/tcp",
+        "radio": "6e1316bfa1a17005",
+        "topic": "connection/tcp",
+        "topic_type": "mqtt",
+        "x": 140,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "61267fe86881bb62",
+        "type": "switch",
+        "z": "c34b96fc23747b8c",
+        "name": "connected",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "connected",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 170,
+        "y": 180,
+        "wires": [
+            [
+                "1ebf3799f43d94c2"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "1ebf3799f43d94c2",
+        "type": "change",
+        "z": "c34b96fc23747b8c",
+        "name": "sub slice all",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "sub slice all",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 350,
+        "y": 180,
+        "wires": [
+            [
+                "c7e2f6b646d8555c"
+            ]
+        ]
+    },
+    {
+        "id": "f56e1834c02f7584",
+        "type": "inject",
+        "z": "c34b96fc23747b8c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 240,
+        "wires": [
+            [
+                "1ebf3799f43d94c2"
+            ]
+        ]
+    },
+    {
+        "id": "d289fd65609f09ee",
+        "type": "switch",
+        "z": "c34b96fc23747b8c",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "hask",
+                "v": "audio_level",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 280,
+        "y": 440,
+        "wires": [
+            [
+                "5cea71f3c8c4fd9f"
+            ]
+        ]
+    },
+    {
+        "id": "5cea71f3c8c4fd9f",
+        "type": "change",
+        "z": "c34b96fc23747b8c",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.audio_level",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 450,
+        "y": 440,
+        "wires": [
+            [
+                "aae9901a70022f0c"
+            ]
+        ]
+    },
+    {
+        "id": "aae9901a70022f0c",
+        "type": "debug",
+        "z": "c34b96fc23747b8c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 440,
+        "wires": []
+    }
+]
