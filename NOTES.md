@@ -86,3 +86,62 @@ C27|sub dax all
 
 
 
+---
+## Audio
+// node-red-dashboard/src/main.js
+            
+			if (msg.hasOwnProperty("audio")) {
+                if (!window.hasOwnProperty("AudioContext")) {
+                    window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
+                }
+                try {
+                    audioContext = audioContext || new AudioContext();
+                    var buffer = new Uint8Array(msg.audio);
+                    audioContext.decodeAudioData(buffer.buffer, function(audioBuffer) {
+                        audioStack.push(audioBuffer);
+                        while (audioStack.length) {
+                            var chunkBuffer = audioStack.shift();
+                            var source = audioContext.createBufferSource();
+                            source.buffer = chunkBuffer;
+                            source.connect(audioContext.destination);
+                            if (nextTime == 0) {
+                                nextTime = audioContext.currentTime + 0.01;
+                            }
+                            source.start(nextTime);
+                            // Make the next buffer wait the length of the last buffer before being played
+                            nextTime += source.buffer.duration;
+                        }
+                    }, function(e) {
+                        console.log("Error decoding audio: " + e);
+                    });
+                }
+                catch (e) { console.log("Error playing audio: " + e); }
+
+                // try {
+                //     audioContext = audioContext || new AudioContext();
+                //     audioSource = audioContext.createBufferSource();
+                //     audioSource.onended = function() {
+                //         events.emit('ui-audio', 'complete');
+                //     }
+                //     var buffer = new Uint8Array(msg.audio);
+
+                //     audioContext.decodeAudioData(
+                //         buffer.buffer,
+                //         function(buffer) {
+                //             audioSource.buffer = buffer;
+                //             if (msg.vol) {
+                //                 var volume = audioContext.createGain();
+                //                 volume.gain.value = msg.vol/100;
+                //                 volume.connect(audioContext.destination);
+                //                 audioSource.connect(volume);
+                //             }
+                //             else {
+                //                 audioSource.connect(audioContext.destination);
+                //             }
+                //             audioSource.start(0);
+                //             events.emit('ui-audio', 'playing');
+                //         },
+                //         function() { events.emit('ui-audio', 'error'); }
+                //     )
+                // }
+                // catch(e) { events.emit('ui-audio', 'error'); }
