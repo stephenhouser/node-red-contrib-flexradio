@@ -11,6 +11,7 @@ module.exports = function(RED) {
 		const node = this;
 		node.name = config.name;
 		node.radio = RED.nodes.getNode(config.radio);
+		node.client = config.client;
 		node.topic = config.topic;
 		node.topic_type = config.topic_type;
 
@@ -29,7 +30,11 @@ module.exports = function(RED) {
 		node.radio_event['version']  = (msg) => { sendEvent(msg) };
 		node.radio_event['handle']  = (msg) => { sendEvent(msg) };
 		node.radio_event['message']  = (msg) => { sendEvent(msg) };
-		node.radio_event['status']  = (msg) => { sendEvent(msg) };
+		node.radio_event['status']  = (msg) => {
+			if (radio.matchClient(node.client, msg.client)) {
+				sendEvent(msg);
+			}
+		};
 
 		node.on('close', (done) => {
 			// Unsubscribe to radio events from our listeners

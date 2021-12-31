@@ -261,6 +261,30 @@ module.exports = function(RED) {
 			return 'meter/unknown';
 		};
 
+		node.matchClient = function(pattern, client) {
+			// pattern = all, self, self_radio, radio
+			// empty pattern value will match everything			
+			if (!pattern || pattern === '' || pattern === 'all') {
+				return true;
+			}
+
+			const is_radio_message = parseInt(client) === 0;
+			const is_own_message = parseInt(client) === parseInt(this.radio.client_handle);
+			switch (pattern) {
+				case 'self':
+					return is_own_message;
+
+				case 'self_radio':
+					return is_own_message || is_radio_message;
+				
+				case 'radio':
+					return is_radio_message;
+			}
+
+			console.error(`MISCONFIGURED: pattern=[${pattern}], client=[${client}]`)
+			return false;
+		};
+
 		node.matchTopic = function(pattern, topic, match_type) {
 			// empty pattern value will match everything
 			if (!pattern || pattern === '') {

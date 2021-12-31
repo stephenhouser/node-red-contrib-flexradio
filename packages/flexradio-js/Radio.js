@@ -76,6 +76,7 @@ class Radio extends EventEmitter {
 		this.nextRequestSequenceNumber = 1;
 		this.requests = {};
 
+		this.client_handle = null;
 		this.meters = {};
 	}
 
@@ -248,6 +249,9 @@ class Radio extends EventEmitter {
 					// TODO: Rewrite topic and payload to 'meter/24' or 'meter/NAME'?
 					this._updateMeterList(message.payload);
 					break;
+				case 'handle':
+					this._updateClientHandle(message.payload);
+					break;
 			}
 
 			// Send back to a reuqest or emit as asynchronous event
@@ -276,11 +280,51 @@ class Radio extends EventEmitter {
 					this._scaleMeterValues(flex_dgram.payload);
 					break;
 
+				case MessageTypes.panadapter:
+					if (!this._collectPanadapterFrame(flex_dgram.payload)) {
+						return;
+					}
+
+					flex_dgram.payload = this.collect_frame;
+					break;
+
 				default:
 			}
 
 			this.emit(flex_dgram.type, flex_dgram);
 		}
+	}
+
+	_collectPanadapterFrame(segment) {
+		//start_bin -> offset
+		//number_of_bins -> number in this payload
+		//total_bins -> total in frame
+		//frame_index -> frame #
+		// console.log(segment);
+
+		if (!this.collect_frame || segment.frame_index !== this.collect_frame.frame_index) {
+			// If this is a new frame... initialize new frame data
+			this.collect_frame = {
+				'frame_index': segment.frame_index,
+				'bins': segment.number_of_bins,
+				'bin_size': segment.bin_size,
+				'data': Array(segment.total_bins).fill(0)
+			};
+		} else {
+			// additional segment for frame
+			this.collect_frame.bins += segment.number_of_bins;
+		}
+
+		// splice the data into the right place
+		this.collect_frame['data'].splice(segment.start_bin, segment.number_of_bins, ...segment.data);
+
+		if (segment.total_bins === this.collect_frame.bins) {
+			// if the frame is complete
+			// console.log(this.collect_frame);
+			return true;
+		}
+
+		return false;
 	}
 
 	_scaleMeterValues(meter_update_msg) {
@@ -354,6 +398,11 @@ class Radio extends EventEmitter {
 	_setRealtimeListenerState(state) {
 		this.realtimeListenerState = state;
 		this.emit(state, 'udp');
+	}
+
+	_updateClientHandle(handle) {
+		const radio = this;
+		radio.client_handle = handle;
 	}
 
 	_updateMeterList(meters) {
