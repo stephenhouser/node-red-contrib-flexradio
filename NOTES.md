@@ -12,6 +12,10 @@
 3. `lerna publish from-git`
 
 
+### Prerelase
+
+`lerna publish --dist-tag prerelease`
+
 ## Panadapter
 C19|sub pan all
 
