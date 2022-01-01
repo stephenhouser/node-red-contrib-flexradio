@@ -246,9 +246,11 @@ class Radio extends EventEmitter {
 		if (message) {
 			// Update internal data whenever we see an update...
 			switch (message.type) {
-				case 'meter':
+				case 'status':
 					// TODO: Rewrite topic and payload to 'meter/24' or 'meter/NAME'?
-					this._updateMeterList(message.payload);
+					if (message.topic === 'meter') {
+						this._updateMeterList(message.payload);
+					}
 					break;
 				case 'handle':
 					this._updateClientHandle(message.payload);
