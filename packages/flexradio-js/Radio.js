@@ -78,6 +78,7 @@ class Radio extends EventEmitter {
 
 		this.client_handle = null;
 		this.meters = {};
+		this.streams = {};
 	}
 
 	static fromDiscoveryDescriptor(radio_descriptor) {
@@ -281,50 +282,41 @@ class Radio extends EventEmitter {
 					break;
 
 				case MessageTypes.panadapter:
-					if (!this._collectPanadapterFrame(flex_dgram.payload)) {
-						return;
-					}
-
-					flex_dgram.payload = this.collect_frame;
+					// console.log(flex_dgram);
+					flex_dgram.payload = this._collectPanadapterFrame(flex_dgram.stream, flex_dgram.payload);
 					break;
 
 				default:
 			}
 
-			this.emit(flex_dgram.type, flex_dgram);
+			if (flex_dgram.payload) {
+				this.emit(flex_dgram.type, flex_dgram);
+			}
 		}
 	}
 
-	_collectPanadapterFrame(segment) {
-		//start_bin -> offset
-		//number_of_bins -> number in this payload
-		//total_bins -> total in frame
-		//frame_index -> frame #
-		// console.log(segment);
-
-		if (!this.collect_frame || segment.frame_index !== this.collect_frame.frame_index) {
-			// If this is a new frame... initialize new frame data
-			this.collect_frame = {
+	_collectPanadapterFrame(stream_id, segment) {
+		let stream = this.streams[stream_id];
+		if (!stream|| stream.frame_index !== segment.frame_index) {
+			stream = {
 				'frame_index': segment.frame_index,
 				'bins': segment.number_of_bins,
 				'bin_size': segment.bin_size,
 				'data': Array(segment.total_bins).fill(0)
 			};
 		} else {
-			// additional segment for frame
-			this.collect_frame.bins += segment.number_of_bins;
+			stream.bins += segment.number_of_bins;
 		}
 
-		// splice the data into the right place
-		this.collect_frame['data'].splice(segment.start_bin, segment.number_of_bins, ...segment.data);
+		stream.data.splice(segment.start_bin, segment.number_of_bins, ...segment.data);
+		
+		if (stream.bins === segment.total_bins) {
+			this.streams[stream_id] = null;	
+			return stream;
+		} 
 
-		if (segment.total_bins === this.collect_frame.bins) {
-			// if the frame is complete
-			// console.log(this.collect_frame);
-			return true;
-		}
-
-		return false;
+		this.streams[stream_id] = stream;
+		return null;
 	}
 
 	_scaleMeterValues(meter_update_msg) {
