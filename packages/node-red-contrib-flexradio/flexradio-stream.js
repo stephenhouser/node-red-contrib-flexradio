@@ -1,4 +1,4 @@
-/* flexradio-meter.js - NodeRed node for emitting meter data from FlexRadio
+/* flexradio-stream.js - NodeRed node for emitting stream data from FlexRadio
  *
  * 2021/09/09 Stephen Houser, MIT License
  * Audio -- https://github.com/bartbutenaers/node-red-contrib-wav#more-detailed
@@ -25,18 +25,22 @@ module.exports = function(RED) {
 		}
 
 		node.on('input', function(msg, send, done) {
-			if (msg.stream) {
+			let changed = false;
+
+			if (msg.stream && msg.stream !== node.stream) {
 				node.log(`setting node.stream to [${msg.stream}]`);
 				node.stream = msg.stream;
 				node.stream_type = 'any';
+				changed = true;
 			}
 
-			if (msg.stream_type) {
+			if (msg.stream_type && msg.stream_type !== node.stream_type) {
 				node.log(`setting node.stream_type to [${msg.stream_type}]`)
 				node.stream_type = msg.stream_type;
+				changed = true;
 			}
 
-			if (msg.stream || msg.stream_type) {
+			if (changed) {
 				unsubscribe();
 				subscribe();
 			}
@@ -55,9 +59,7 @@ module.exports = function(RED) {
 		node.stream_event = {};
 		function sendEvent(msg)  {
 			// node.log(`Received ${msg.stream} matching to ${node.stream}`);
-
-			// if (radio.matchTopic(node.stream, msg.stream, 'mqtt')) {
-			if (node.stream === '#' || parseInt(node.stream) === parseInt(msg.stream)) {
+			if (!node.stream || node.stream === '' || parseInt(node.stream) === parseInt(msg.stream)) {
 				// use spread operator to create a copy of the message
 				// otherwise modifications to the message in the flow will
 				// propagate back into other nodes we send to.
@@ -70,7 +72,6 @@ module.exports = function(RED) {
 
 			const radio = node.radio;
 			if (node.stream_type === 'any' || node.stream_type === 'all') {
-				// subscribe to stream data
 				const stream_types = [
 					'panadapter', 'waterfall', 'opus', 'daxAudio', 'daxReducedBw',
 					'daxIq24', 'daxIq48', 'daxIq96', 'daxIq192'
@@ -135,7 +136,7 @@ module.exports = function(RED) {
 			}
 		}
 
-		if (node.stream_type && node.stream_type != 'dynamic') {
+		if (node.stream_type && node.stream_type !== 'dynamic') {
 			subscribe();
 		}
 

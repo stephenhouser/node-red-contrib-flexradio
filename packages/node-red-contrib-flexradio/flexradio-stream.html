@@ -6,7 +6,7 @@
             name: { value: '' },
             radio: { value: '', type: 'flexradio-radio', required: true },
             stream_type: { value: 'all', required: true },
-            stream: { value: '#' }
+            stream: { value: '' }
         },
         inputs: 1,
         outputs: 1,
@@ -19,11 +19,11 @@
 
 <script type="text/html" data-template-name="flexradio-stream">
     <div class="form-row">
-        <label for="node-input-radio"><i class="fa fa-sign-in"></i> FlexRadio</label>
+        <label for="node-input-radio"><i class="fa fa-globe"></i> FlexRadio</label>
         <input type="text" id="node-input-radio" placeholder="FlexRadio">
     </div>
     <div class="form-row">
-        <label for="node-input-stream_type"><i class="fa fa-sign-in"></i> Stream Type</label>
+        <label for="node-input-stream_type"><i class="fa fa-tasks"></i> Stream Type</label>
         <select id="node-input-stream_type">
             <option value="dynamic">Dynamic</option>
             <option value="all">All</option>
@@ -39,8 +39,8 @@
         </select>
     </div>
     <div class="form-row">
-        <label for="node-input-stream"><i class="fa fa-tag"></i> Stream</label>
-        <input type="text" id="node-input-stream" placeholder="#">
+        <label for="node-input-stream"><i class="fa fa-tasks"></i> Stream</label>
+        <input type="text" id="node-input-stream" placeholder="">
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
