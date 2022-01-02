@@ -23,7 +23,7 @@ module.exports = function(RED) {
 
 		node.on('input', function(msg, send, done) {
 			const rc = radio.send(msg, function(response) {
-				send(response);
+				send({ ...msg, ...response });
 			});
 
 			if (!rc) {
