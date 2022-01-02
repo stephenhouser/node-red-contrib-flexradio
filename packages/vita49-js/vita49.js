@@ -74,21 +74,15 @@ const TimeStampFractionType = {
 
 const nullParser = new binaryParser();
 
+const trailerParser = new binaryParser()
+	.uint32('trailer');
+
 const classIdParser = new binaryParser()
 	.uint32('oui')
 	.uint16('information_class')
 	.uint16('packet_class');
 
-const ifDataParser = new binaryParser();
-// TODO: ifDataParser() is not implemented.
-
-const ifDataStreamParser = new binaryParser();
-// TODO: ifDataStreamParser() is not implemented.
-
-const extDataParser = new binaryParser();
-// TODO: extDataParser() is not implemented.
-
-const extDataStreamParser = new binaryParser()
+const dataStreamParser = new binaryParser()
 	.uint32('stream')
 	.choice('class', {
 		tag: '_class_present',
@@ -118,6 +112,17 @@ const extDataStreamParser = new binaryParser()
 		}
 	});
 
+const ifDataParser = new binaryParser();
+// TODO: ifDataParser() is not implemented.
+	
+const ifDataStreamParser = dataStreamParser; 
+// TODO: ifDataStreamParser() is not well tested.
+
+const extDataParser = new binaryParser();
+// TODO: extDataParser() is not implemented.
+
+const extDataStreamParser = dataStreamParser;
+
 const ifContextParser = new binaryParser();
 // TODO: ifContextParser() is not implemented.
 
@@ -133,8 +138,8 @@ const extCmdStreamParser = new binaryParser();
 const vita49Parser = new binaryParser()
 	.bit4('packet_type')
 	.bit1('_class_present')
-	.bit2('_reserved')
 	.bit1('_trailer_present')
+	.bit2('_reserved')
 	.bit2('_tsi_type')
 	.bit2('_tsf_type')
 	.bit4('sequence')
@@ -151,6 +156,13 @@ const vita49Parser = new binaryParser()
 			0x05: extContextParser,
 			0x06: ifCmdStreamParser,
 			0x07: extCmdStreamParser,
+		}
+	})
+	.choice(null, {
+		tag: '_trailer_present',
+		choices: {
+			0:	nullParser,
+			1:	trailerParser
 		}
 	});
 

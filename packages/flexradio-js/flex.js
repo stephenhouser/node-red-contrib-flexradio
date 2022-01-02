@@ -138,7 +138,7 @@ function decode_meters(dgram) {
 
 // This is the <= v2.2 panadapter format. 
 function decode_panadapter_v2(dgram) {
-	const oldPanadapterParser = new binaryParser()
+	const oldPanadapterDecoder = new binaryParser()
 		.uint32('start_bin')
 		.uint32('number_of_bins')
 		.uint32('bin_size')
@@ -153,7 +153,7 @@ function decode_panadapter_v2(dgram) {
 		});
 
 	try {
-		return oldPanadapterParser.parse(dgram.payload);
+		return oldPanadapterDecoder.parse(dgram.payload);
 	} catch (error) {
 		console.error('flexradio-js panadapter decoding error');
 		console.error(error);
@@ -165,7 +165,7 @@ function decode_panadapter_v2(dgram) {
 // This is the >=2.2 panadapter format
 // MUST send "client set enforce_network_mtu=1" for this to work!
 function decode_panadapter(dgram) {
-	const panadapterParser = new binaryParser()
+	const panadapterDecoder = new binaryParser()
 		.uint16('start_bin')
 		.uint16('number_of_bins')
 		.uint16('bin_size')
@@ -181,7 +181,7 @@ function decode_panadapter(dgram) {
 		});
 
 	try {
-		return panadapterParser.parse(dgram.payload);
+		return panadapterDecoder.parse(dgram.payload);
 	} catch (error) {
 		console.error('flexradio-js panadapter decoding error');
 		console.error(error);
@@ -193,7 +193,7 @@ function decode_panadapter(dgram) {
 // This is the >=2.3 waterfall format
 // MUST send "client set enforce_network_mtu=1" for this to work!
 function decode_waterfall(dgram) {
-	const waterfallParser = new binaryParser()
+	const waterfallDecoder = new binaryParser()
 		.uint64('first_bin_frequency', {
 			formatter: function(f) {
 				return Number(f) / 1.048576E6;
@@ -221,7 +221,7 @@ function decode_waterfall(dgram) {
 		});
 
 		try {
-			return waterfallParser.parse(dgram.payload);
+			return waterfallDecoder.parse(dgram.payload);
 		} catch (error) {
 			console.error('flexradio-js waterfall decoding error');
 			console.error(error);
@@ -231,10 +231,23 @@ function decode_waterfall(dgram) {
 }
 
 function decode_opus(dgram) {
-	return dgram.payload;
+	const opusDecoder = new binaryParser()
+		.array("data", {
+			type: new binaryParser().uint8(),
+			readUntil: 'eof'
+		});
+
+	try {
+		return opusDecoder.parse(dgram.payload);
+	} catch (error) {
+		console.error('flexradio-js opus decoding error');
+		console.error(error);
+	}
+
+	return null;
 }
 
-function decode_daxaudio(dgram) {
+function decode_dax(dgram) {
 	const daxDecoder = new binaryParser()
 		.array('', {
 			type: new binaryParser().array('', {
@@ -247,15 +260,11 @@ function decode_daxaudio(dgram) {
 	try {
 		return daxDecoder.parse(dgram.payload);
 	} catch (error) {
-		console.error('flexradio-js daxAudio decoding error');
+		console.error('flexradio-js dax decoding error');
 		console.error(error);
 	}
 
 	return null;
-}
-
-function decode_daxiq(dgram) {
-	return dgram.payload;
 }
 
 // decode_realtime() -- decode data sent from a FlexRadio on the UDP data channel
@@ -266,7 +275,8 @@ function decode_realtime(data) {
 	}
 
 	function isDataStream(vita49_dgram) {
-		return vita49_dgram.packet_type == vita49.PacketType.ext_data_stream;
+		return vita49_dgram.packet_type == vita49.PacketType.ext_data_stream ||
+				vita49_dgram.packet_type == vita49.PacketType.if_data_stream;
 	}
 
 	const vita49_dgram = vita49.decode(data);
@@ -292,14 +302,11 @@ function decode_realtime(data) {
 
 				case RealtimePacketClass.daxAudio:
 				case RealtimePacketClass.daxReducedBw:
-					payload = decode_daxaudio(vita49_dgram);
-					break;
-
 				case RealtimePacketClass.daxIq24:
 				case RealtimePacketClass.daxIq48:
 				case RealtimePacketClass.daxIq96:
 				case RealtimePacketClass.daxIq192:
-					payload = decode_daxiq(vita49_dgram);
+					payload = decode_dax(vita49_dgram);
 					break;
 
 				case RealtimePacketClass.discovery:

@@ -38,13 +38,19 @@
 	Depending on the type of stream being captured the messages coming from the <code>flexradio-stream</code> node will have different parameters.
 
 	<h4>panadapter</h4>
-	Panadapter data is organized into <code>frame</code>s with a number of <code>bins</code> of data. The <code>data</code> are an array of samples (y values) across the panadapter's spectrum. The x values are implied by the array index.
+	Panadapter <code>data</code> is organized into <code>frame</code>s with a number of <code>bins</code> of points. The points are samples (y values) across the panadapter spectrum. The x values are implied by the array index.
 
 	<h4>waterfall</h4>
-	Waterfall data is... not yet working.
+	Waterfall <code>data</code> is organized into lines of <code>bins</code> of a given <code>height</code>. Each line has a <code>first_bin_frequency</code> and <code>bin_bandwidth</code> as well as a <code>time_code</code>, <code>line_duration</code>, and <code>auto_black_level</code> 
 
 	<h4>daxAudio</h4>
 	DAX audio data is organized a <code>sequence</code> of audio samples. The <code>payload</code> is an array of raw audio data from the radio.
+
+    <h4>Opus audio</h4>
+    (Flex 6000 series) Opus audio is decoded as a stream of 2 channel data in 10ms duration.
+
+    <h4>DAX IQ</h4>
+    Unknown at the moment...
 	
     <h3>Node Details</h3>
     <p>This node requires a connection to a radio using <code>flexradio-radio</code>to be configured. This is configured by clicking the pencil icon. As indicated above, all <code>flexradio-</code> nodes that work with the same radio can and should share the same connection to conserve radio resources.</p>
