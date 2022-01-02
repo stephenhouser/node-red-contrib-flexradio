@@ -8,6 +8,7 @@
  * https://discourse.nodered.org/t/vita-49-decoding/20792
  * https://github.com/K3TZR/xLib6000/blob/master/Sources/xLib6000/Supporting/Vita.swift
  * https://community.flexradio.com/discussion/7063537/meter-packet-protocol
+ * https://github.com/Keichi/binary-parser
 */
 const binaryParser = require("binary-parser").Parser;
 

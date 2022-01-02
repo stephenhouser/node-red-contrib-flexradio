@@ -9,6 +9,7 @@
  * https://discourse.nodered.org/t/vita-49-decoding/20792
  * https://github.com/K3TZR/xLib6000/blob/master/Sources/xLib6000/Supporting/Vita.swift
  * https://community.flexradio.com/discussion/7063537/meter-packet-protocol
+ * https://github.com/Keichi/binary-parser
  */
 
 const binaryParser = require('binary-parser').Parser;
@@ -66,7 +67,7 @@ const ResponseCode = {
 			case 0x5000002C: return 'incorrect number of parameters';
 			case 0x50001000: return '';
 			case 0x50000015: return 'unknown command';
-			default: return 'unknwon ' + code;
+			default: return 'unknown ' + code;
 		}
 	}
 };
@@ -186,15 +187,47 @@ function decode_panadapter(dgram) {
 		console.error(error);
 	}
 
-
-
-return null;
-
 	return null;
 }
 
+// This is the >=2.3 waterfall format
+// MUST send "client set enforce_network_mtu=1" for this to work!
 function decode_waterfall(dgram) {
-	return dgram.payload;
+	const waterfallParser = new binaryParser()
+		.uint64('first_bin_frequency', {
+			formatter: function(f) {
+				return Number(f) / 1.048576E6;
+			}
+		})
+		.uint64('bin_bandwidth', {
+			formatter: function(f) {
+				return Number(f) / 1.048576E6;
+			}
+		})
+		.uint32('line_duration')
+		.uint16('number_of_bins')
+		.uint16('height')
+		.uint32('time_code')
+		.uint32('auto_black_level')
+		.uint16('total_bins')
+		.uint16('first_bin_index')
+		.array("data", {
+			type: new binaryParser().uint16(),
+			length: 'number_of_bins'
+		})
+		.array("trailer", {
+			type: new binaryParser().uint8(),
+			readUntil: 'eof'
+		});
+
+		try {
+			return waterfallParser.parse(dgram.payload);
+		} catch (error) {
+			console.error('flexradio-js waterfall decoding error');
+			console.error(error);
+		}
+
+	return null;
 }
 
 function decode_opus(dgram) {
