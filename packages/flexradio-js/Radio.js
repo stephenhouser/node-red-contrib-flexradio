@@ -306,7 +306,6 @@ class Radio extends EventEmitter {
 			stream = {
 				'frame_index': segment.frame_index,
 				'bins': segment.number_of_bins,
-				'bin_size': segment.bin_size,
 				'data': Array(segment.total_bins).fill(0)
 			};
 		} else {
