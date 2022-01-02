@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-flexradio",
-  "version": "1.1.0-beta.1",
+  "version": "1.1.0-beta.2",
   "description": "FlexRadio Network Control and Monitoring Nodes",
   "keywords": [
     "node-red",
@@ -19,7 +19,7 @@
     "lint": "npx eslint --fix . || exit 0"
   },
   "dependencies": {
-    "flexradio-js": "^1.1.0-beta.1"
+    "flexradio-js": "^1.1.0-beta.2"
   },
   "node-red": {
     "nodes": {
