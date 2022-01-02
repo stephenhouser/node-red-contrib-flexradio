@@ -146,10 +146,6 @@ function decode_panadapter_v2(dgram) {
 		.array("data", {
 			type: new binaryParser().uint16(),
 			length: 'number_of_bins'
-		})
-		.array("trailer", {
-			type: new binaryParser().uint8(),
-			readUntil: 'eof'
 		});
 
 	try {
@@ -174,10 +170,6 @@ function decode_panadapter(dgram) {
 		.array("data", {
 			type: new binaryParser().uint16(),
 			length: 'number_of_bins'
-		})
-		.array("trailer", {
-			type: new binaryParser().uint8(),
-			readUntil: 'eof'
 		});
 
 	try {
@@ -194,30 +186,26 @@ function decode_panadapter(dgram) {
 // MUST send "client set enforce_network_mtu=1" for this to work!
 function decode_waterfall(dgram) {
 	const waterfallDecoder = new binaryParser()
-		.uint64('first_bin_frequency', {
+		.uint64('first_bin_frequency', {			// frequency of first bin Hz
 			formatter: function(f) {
 				return Number(f) / 1.048576E6;
 			}
 		})
-		.uint64('bin_bandwidth', {
+		.uint64('bin_bandwidth', {					// width of a bin Hz
 			formatter: function(f) {
 				return Number(f) / 1.048576E6;
 			}
 		})
-		.uint32('line_duration')
-		.uint16('number_of_bins')
-		.uint16('height')
-		.uint32('time_code')
-		.uint32('auto_black_level')
-		.uint16('total_bins')
-		.uint16('first_bin_index')
-		.array("data", {
+		.uint32('line_duration')					// duration of line 1-100ms
+		.uint16('number_of_bins')					// number of bins in segment
+		.uint16('height')							// height of frame in pixels
+		.uint32('time_code')						// time stamp/code
+		.uint32('auto_black_level')					// level of auto-black
+		.uint16('total_bins')						// number of bins in frame
+		.uint16('first_bin_index')					// index of 1st bin in segment
+		.array("data", {							// bin values
 			type: new binaryParser().uint16(),
 			length: 'number_of_bins'
-		})
-		.array("trailer", {
-			type: new binaryParser().uint8(),
-			readUntil: 'eof'
 		});
 
 		try {
