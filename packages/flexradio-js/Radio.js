@@ -284,8 +284,11 @@ class Radio extends EventEmitter {
 					break;
 
 				case MessageTypes.panadapter:
-					// console.log(flex_dgram);
 					flex_dgram.payload = this._collectPanadapterFrame(flex_dgram.stream, flex_dgram.payload);
+					break;
+
+				case MessageTypes.waterfall:
+					flex_dgram.payload = this._collectWaterfallLine(flex_dgram.stream, flex_dgram.payload);
 					break;
 
 				default:
@@ -299,7 +302,7 @@ class Radio extends EventEmitter {
 
 	_collectPanadapterFrame(stream_id, segment) {
 		let stream = this.streams[stream_id];
-		if (!stream|| stream.frame_index !== segment.frame_index) {
+		if (!stream || stream.frame_index !== segment.frame_index) {
 			stream = {
 				'frame_index': segment.frame_index,
 				'bins': segment.number_of_bins,
@@ -311,6 +314,34 @@ class Radio extends EventEmitter {
 		}
 
 		stream.data.splice(segment.start_bin, segment.number_of_bins, ...segment.data);
+		
+		if (stream.bins === segment.total_bins) {
+			this.streams[stream_id] = null;	
+			return stream;
+		} 
+
+		this.streams[stream_id] = stream;
+		return null;
+	}
+
+	_collectWaterfallLine(stream_id, segment) {
+		let stream = this.streams[stream_id];
+		if (!stream) {
+			stream = {
+				'first_bin_frequency': segment.first_bin_frequency,
+				'bin_bandwidth': segment.bin_bandwidth,
+				'line_duration': segment.line_duration,
+				'height': segment.height,
+				'time_code': segment.time_code,
+				'auto_black_level': segment.auto_black_level,
+				'bins': segment.number_of_bins,
+				'data': Array(segment.total_bins).fill(0)
+			};
+		} else {
+			stream.bins += segment.number_of_bins;
+		}
+
+		stream.data.splice(segment.first_bin_index, segment.number_of_bins, ...segment.data);
 		
 		if (stream.bins === segment.total_bins) {
 			this.streams[stream_id] = null;	
