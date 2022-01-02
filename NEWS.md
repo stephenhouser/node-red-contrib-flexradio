@@ -16,6 +16,8 @@ The big update in this version is the addition of streaming data! Panadapters, w
 
 * Fixed a problem where VITA-49 trailers were not properly accounted for. Somehow I had the field in the wrong place and was seeing 4 bytes of 0's at the end of stream data.
 
+* `flexradio-request` now passes `msg` properties from input to output so you can track your requests easier. Example; set `msg.topic` on input and the response from `flexradio-request` will have the same `msg.topic` and `msg._msgid` as on the input.
+
 ## Subject: Release of node-red-contrib-flexradio nodes v1.0
 
 v1.0.0 - Monday, October 25, 2021
