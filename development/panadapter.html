@@ -118,7 +118,8 @@
 				g.selectAll('g').remove();
 
 				scaleXAxis = d3.scaleLinear()
-					.domain([settings.center - (settings.bandwidth/2), settings.center + (settings.bandwidth/2)])
+					.domain([settings.center - (settings.bandwidth/2), 
+							 settings.center + (settings.bandwidth/2)])
 					.range([0, width]);
 	
 				g.append("g")
@@ -164,6 +165,21 @@
 			});
 		}
 
+		function make_flag(selection) {
+			selection.each(function(d, i) {
+				const g = d3.select(this);
+				g.attr('class', 'flag');
+				g.selectAll('g').remove();
+
+				g.append("line")
+					.style("stroke", "yellow")
+					.attr("x1", 0)
+					.attr("y1", 0)
+					.attr("x2", 0)
+					.attr("y2", height);
+			});
+		}
+
 		function pan(selection) {
 			selection.each(function(d, i) {
 				settings = { ...settings, ...config };
@@ -186,18 +202,15 @@
 	
 				x_axis = g.append("g").call(make_x_axis);
 				y_axis = g.append("g").call(make_y_axis);
+				flag   = g.append("g").call(make_flag)
+							.attr("transform", "translate(" + width/2 + ", 0)");
 	
 				data_line = g.append('g')
 					.attr('clip-path', 'url(#clip)')
 					.append('path')
+						.style('fill', "#a3eafa77")
+						.style("stroke", "white")
 						.attr('class', 'data');
-	
-				flag = PanadapterFlag();
-				g.append("g")
-					.attr('id', 'pan1')
-					.attr("transform", "translate(" + width/2 + ", 0)")
-					.call(flag);
-	
 			});
 		}
 		
@@ -205,30 +218,10 @@
 			settings = { ...settings, ...config };
 			xScale.domain([0, settings.samples - 1]).range([0, width]);
 			yScale.domain([0, settings.range]).range([height, 0]);
-			flag.frequency(settings.center);
 			
 			x_axis.call(make_x_axis);
 			y_axis.call(make_y_axis);
-		};
-	
-		pan.center = function(value) {
-			if (!arguments.length) {
-				return center;
-			}
-	
-			center = value;
-			if (flag) {
-				flag.frequency(center);
-			}
-			return pan;
-		};
-	
-		pan.margin = function(value) {
-			if (!arguments.length) {
-				return margin;
-			}
-	
-			margin = value;
+
 			return pan;
 		};
 	
@@ -241,14 +234,30 @@
 			const dp = lineGenerator(data);
 			data_line
 				.attr("d", dp)
-				.style('fill', "#a3eafa77")
-				.style("stroke", "white")
 				.transition()
-				.duration(100)
-				.ease(d3.easeLinear);
+				// .duration(100)
+				// .ease(d3.easeLinear);
 	
 			return pan;
 		};
+		pan.center = function(value) {
+			if (!arguments.length) {
+				return center;
+			}
+	
+			center = value;
+			return pan;
+		};
+	
+		pan.margin = function(value) {
+			if (!arguments.length) {
+				return margin;
+			}
+	
+			margin = value;
+			return pan;
+		};
+	
 	
 		return pan;
 	}
