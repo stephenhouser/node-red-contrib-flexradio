@@ -1,0 +1,57 @@
+<script type="text/html" data-help-name="flexradio-stream">
+	<p>Connects to a FlexRadio 6xxx series radio and emits stream (audio, panadapter, and waterfall) data into the NodeRed flow.</p>
+
+    <h3>Node Configuration</h3>
+    <h4>FlexRadio</h4>
+    <p>This is the radio configuration to connect to. You can select an existing connection or create a new one. To conserve resources on the radio, you should have only one (shared) connection per radio across all your flows on a system.</p>
+
+    <h4>Stream Type</h4>
+    <p>This is the type of stream to capture. <code>All</code> will capture all stream data, </code><code>Dynamic</code> will allow runtime configuration via the node's input (see below).</p>
+
+	<h4>Stream</h4>
+    <p>The specific stream identifier to capture. Typically this changes and is not reliable to configure a value here, see <code>Dynamic</code> configuration below.</p>
+
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+       <dt>stream <span class="property-type">string</span></dt>
+       <dd> the stream identifier to inject into the flow. Ex. 0x40000001.</dd>
+       <dt>stream_type <span class="property-type">string</span></dt>
+       <dd> the type of stream to capture. Ex. 'panadapter', 'waterfall', 'all'. See the node configuration for more options </dd>
+    </dl>
+
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">string | Object</span></dt>
+            <dd> a JSON object containing the stream data. The format of the payload varies based on the type of stream being captured, see Output Details below.</dd>
+        <dt>sequence <span class="property-type">number</span></dt>
+            <dd> the sequence number that was assigned to the input command.</dd>
+        <dt>type <span class="property-type">string</span></dt>
+            <dd> a string containing the type of stream data (panadapter, waterfall, daxAudio, etc.).</dd>
+		<dt>stream <span class="property-type">string</span></dt>
+            <dd> a string containing the unique stream identifier for the stream data.</dd>
+     </dl>
+    
+    <h3>Input Details</h3>
+	<p>The flexradio-stream node can be dynamically configured to attach to a specific stream at runtime. The node should be configured for the Stream Type <code>Dynamic</code>. Them by sending a message with <code>stream</code> and <code>stream_type</code> its input.
+
+    <h3>Output Details</h3>
+	Depending on the type of stream being captured the messages coming from the <code>flexradio-stream</code> node will have different parameters.
+
+	<h4>panadapter</h4>
+	Panadapter <code>data</code> is organized into <code>frame</code>s with a number of <code>bins</code> of points. The points are samples (y values) across the panadapter spectrum. The x values are implied by the array index.
+
+	<h4>waterfall</h4>
+	Waterfall <code>data</code> is organized into lines of <code>bins</code> of a given <code>height</code>. Each line has a <code>first_bin_frequency</code> and <code>bin_bandwidth</code> as well as a <code>time_code</code>, <code>line_duration</code>, and <code>auto_black_level</code> 
+
+	<h4>daxAudio</h4>
+	DAX audio data is organized a <code>sequence</code> of audio samples. The <code>payload</code> is an array of raw audio data from the radio.
+
+    <h4>Opus audio</h4>
+    (Flex 6000 series) Opus audio is decoded as a stream of 2 channel data in 10ms duration.
+
+    <h4>DAX IQ</h4>
+    Unknown at the moment...
+	
+    <h3>Node Details</h3>
+    <p>This node requires a connection to a radio using <code>flexradio-radio</code>to be configured. This is configured by clicking the pencil icon. As indicated above, all <code>flexradio-</code> nodes that work with the same radio can and should share the same connection to conserve radio resources.</p>
+</script>

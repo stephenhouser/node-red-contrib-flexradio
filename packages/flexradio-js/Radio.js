@@ -76,7 +76,9 @@ class Radio extends EventEmitter {
 		this.nextRequestSequenceNumber = 1;
 		this.requests = {};
 
+		this.client_handle = null;
 		this.meters = {};
+		this.streams = {};
 	}
 
 	static fromDiscoveryDescriptor(radio_descriptor) {
@@ -113,7 +115,13 @@ class Radio extends EventEmitter {
 			this.connection = net.connect(radio.port, radio.host, function() {
 				log_info(`Radio[${radio.radio_id}].connection.on('connect')`);
 
-				Promise.all([radio._startRealtimeListener(), radio._getMeterList()])
+				Promise.all([radio._startRealtimeListener(), 
+								radio._getMeterList(),
+								// triggers new format UDP packets
+								radio.send('client set enforce_network_mtu=1'),
+								// triggers new API
+								radio.send('client set send_reduced_bw_dax=0')
+							])
 					.then(function() {
 						radio._setConnectionState(ConnectionStates.connected);
 					});
@@ -238,9 +246,14 @@ class Radio extends EventEmitter {
 		if (message) {
 			// Update internal data whenever we see an update...
 			switch (message.type) {
-				case 'meter':
+				case 'status':
 					// TODO: Rewrite topic and payload to 'meter/24' or 'meter/NAME'?
-					this._updateMeterList(message.payload);
+					if (message.topic === 'meter') {
+						this._updateMeterList(message.payload);
+					}
+					break;
+				case 'handle':
+					this._updateClientHandle(message.payload);
 					break;
 			}
 
@@ -262,19 +275,80 @@ class Radio extends EventEmitter {
 
 	_receiveRealtimeData(data) {
 		const flex_dgram = flex.decode_realtime(data);
-		log_debug_realtime(`Radio[${this.radio_id}]._receiveRealtimeData(${flex_dgram})`);
 		if (flex_dgram) {
+			log_debug_realtime(`Radio[${this.radio_id}]._receiveRealtimeData(${flex_dgram.type})`);
 			// Handle any special processing of particular message types
 			switch (flex_dgram.type) {
 				case MessageTypes.meter:
 					this._scaleMeterValues(flex_dgram.payload);
 					break;
 
+				case MessageTypes.panadapter:
+					flex_dgram.payload = this._collectPanadapterFrame(flex_dgram.stream, flex_dgram.payload);
+					break;
+
+				case MessageTypes.waterfall:
+					flex_dgram.payload = this._collectWaterfallLine(flex_dgram.stream, flex_dgram.payload);
+					break;
+
 				default:
 			}
 
-			this.emit(flex_dgram.type, flex_dgram);
+			if (flex_dgram.payload) {
+				this.emit(flex_dgram.type, flex_dgram);
+			}
 		}
+	}
+
+	_collectPanadapterFrame(stream_id, segment) {
+		let stream = this.streams[stream_id];
+		if (!stream || stream.frame_index !== segment.frame_index) {
+			stream = {
+				'frame_index': segment.frame_index,
+				'bins': segment.number_of_bins,
+				'data': Array(segment.total_bins).fill(0)
+			};
+		} else {
+			stream.bins += segment.number_of_bins;
+		}
+
+		stream.data.splice(segment.start_bin, segment.number_of_bins, ...segment.data);
+		
+		if (stream.bins === segment.total_bins) {
+			this.streams[stream_id] = null;	
+			return stream;
+		} 
+
+		this.streams[stream_id] = stream;
+		return null;
+	}
+
+	_collectWaterfallLine(stream_id, segment) {
+		let stream = this.streams[stream_id];
+		if (!stream) {
+			stream = {
+				'first_bin_frequency': segment.first_bin_frequency,
+				'bin_bandwidth': segment.bin_bandwidth,
+				'line_duration': segment.line_duration,
+				'height': segment.height,
+				'time_code': segment.time_code,
+				'auto_black_level': segment.auto_black_level,
+				'bins': segment.number_of_bins,
+				'data': Array(segment.total_bins).fill(0)
+			};
+		} else {
+			stream.bins += segment.number_of_bins;
+		}
+
+		stream.data.splice(segment.first_bin_index, segment.number_of_bins, ...segment.data);
+		
+		if (stream.bins === segment.total_bins) {
+			this.streams[stream_id] = null;	
+			return stream;
+		} 
+
+		this.streams[stream_id] = stream;
+		return null;
 	}
 
 	_scaleMeterValues(meter_update_msg) {
@@ -348,6 +422,11 @@ class Radio extends EventEmitter {
 	_setRealtimeListenerState(state) {
 		this.realtimeListenerState = state;
 		this.emit(state, 'udp');
+	}
+
+	_updateClientHandle(handle) {
+		const radio = this;
+		radio.client_handle = handle;
 	}
 
 	_updateMeterList(meters) {

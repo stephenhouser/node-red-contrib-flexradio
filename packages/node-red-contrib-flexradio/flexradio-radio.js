@@ -88,7 +88,7 @@ module.exports = function(RED) {
 					const event_type = msg.type;
 					// Use msg.type for topic if we don't have an explicit topic
 					msg.topic = msg.topic || msg.type;
-					delete msg.type;
+					// delete msg.type;
 					if (event_type !== 'meter') {
 						log_debug(`flexradio-radio[${node.node_id}].sendEvent(${msg.topic})`);
 					}
@@ -98,15 +98,24 @@ module.exports = function(RED) {
 				node.radio_event['version'] = (msg) => { sendEvent(msg); };
 				node.radio_event['handle'] = (msg) => { sendEvent(msg); };
 				node.radio_event['message'] = (msg) => { sendEvent(msg); };
-				node.radio_event['status'] = (msg) => {
-					if (msg.topic === 'meter') {
+				node.radio_event['status'] = (msg) => { sendEvent(msg); };
+
+				node.radio_event['meter'] = (msg) => {
 						injectMeterTopics(msg);
-					}
-					sendEvent(msg);
+						sendEvent(msg);
 				};
-				node.radio_event['meter'] = (msg) => { sendEvent(msg); };
-				node.radio_event['panadapter'] = (msg) => { sendEvent(msg); };
-				node.radio_event['waterfall'] = (msg) => { sendEvent(msg); };
+
+				// subscribe to stream data
+				const streams = [
+					'panadapter', 'waterfall', 'opus', 'daxAudio', 'daxReducedBw',
+					'daxIq24', 'daxIq48', 'daxIq96', 'daxIq192'
+				];
+				streams.forEach(function(stream) {
+					node.radio_event[stream] = function(msg) {
+						msg.topic = `${msg.type}/${msg.stream}`
+						node.emit(msg.type, msg);
+					};
+				});
 
 				// don't re-emit errors. They are treated differently by
 				// the EventEmitter and will crash if not handled.
@@ -240,12 +249,40 @@ module.exports = function(RED) {
 			return true;
 		};
 
-		node.meterTopic = function(meter) {
-			if (meter.src !== undefined && meter.num !== undefined && meter.nam !== undefined) {
-				return [meter.src, meter.num, meter.nam].join('/');
+		node.meterTopic = function(meter_msg, meter_number) {
+			if (meter_msg.src !== undefined && meter_msg.num !== undefined && meter_msg.nam !== undefined) {
+				return `${meter_msg.src}/${meter_msg.num}/${meter_msg.nam}`;
 			}
 
-			return null;
+			if (meter_number !== undefined) {
+				return `meter/${meter_number}`
+			}
+
+			return 'meter/unknown';
+		};
+
+		node.matchClient = function(pattern, client) {
+			// pattern = all, self, self_radio, radio
+			// empty pattern value will match everything			
+			if (!pattern || pattern === '' || pattern === 'all') {
+				return true;
+			}
+
+			const is_radio_message = parseInt(client) === 0;
+			const is_own_message = parseInt(client) === parseInt(this.radio.client_handle);
+			switch (pattern) {
+				case 'self':
+					return is_own_message;
+
+				case 'self_radio':
+					return is_own_message || is_radio_message;
+				
+				case 'radio':
+					return is_radio_message;
+			}
+
+			console.error(`MISCONFIGURED: pattern=[${pattern}], client=[${client}]`)
+			return false;
 		};
 
 		node.matchTopic = function(pattern, topic, match_type) {
@@ -299,7 +336,7 @@ module.exports = function(RED) {
 		function injectMeterTopics(msg) {
 			for (const [meter_number, meter] of Object.entries(msg.payload)) {
 				if (typeof meter === 'object') {
-					meter.topic = node.meterTopic(meter);
+					meter.topic = node.meterTopic(meter, meter_number);
 				}
 			}
 		}

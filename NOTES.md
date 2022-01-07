@@ -12,6 +12,10 @@
 3. `lerna publish from-git`
 
 
+### Prerelase
+
+`lerna publish --dist-tag prerelease`
+
 ## Panadapter
 C19|sub pan all
 
@@ -28,6 +32,18 @@ C39|display panafall rfgain_info 0x0
 S10C05077|display pan 0x40000000 center=14.022560 xvtr=
 
 
+    "display pan set 0x40000000 xpixels=1024 ypixels=700 fps=10 center=14.1 bandwidth=0.2 min_dbm=-130 max_dbm=-50"
+
+[
+    "client gui 8BB112FA-46E0-4002-B9B1-0C7EDC605661",
+    "client program xSDR6000",
+    "client station xSDR6000",
+    "info",
+    "version",
+    "client set enforce_network_mtu=1 network_mtu=1500",
+    "client set send_reduced_bw_dax=0"
+]
+
 S10C05077|display pan 0x40000000 rfgain=32 pre=+32dB
 S10C05077|display waterfall 0x42000000 rfgain=32
 
@@ -42,3 +58,94 @@ S10C05077|display waterfall 0x42000000 client_handle=0x10C05077 x_pixels=50 cent
 S10C05077|display pan 0x40000000 client_handle=0x10C05077 wnb=0 wnb_level=0 wnb_updating=0 band_zoom=0 segment_zoom=0 x_pixels=50 y_pixels=20 center=14.022560 bandwidth=0.075000 min_dbm=-135.00 max_dbm=-30.00 fps=25 average=50 weighted_average=0 rfgain=32 rxant=ANT1 wide=0 loopa=0 loopb=0 band=20 daxiq_channel=0 waterfall=0x42000000 min_bw=0.001230 max_bw=14.745601 xvtr= pre=+32dB ant_list=ANT1,ANT2,RX_A,RX_B,XVTA,XVTB
 S10C05077|display waterfall 0x42000000 client_handle=0x10C05077 x_pixels=50 center=14.022560 bandwidth=0.075000 band_zoom=0 segment_zoom=0 line_duration=87 rfgain=32 rxant=ANT1 wide=0 loopa=0 loopb=0 band=20 daxiq_channel=0 panadapter=0x40000000 color_gain=20 auto_black=1 black_level=1 gradient_index=1 xvtr=
 R19|0|
+
+---
+C7|stream create type=dax_rx dax_channel=1
+R7|0|4000008
+
+S3D63A6E7|slice 0 dax=1 dax_clients=0 
+S3D63A6E7|stream 0x04000008 type=dax_rx dax_channel=1 slice=A client_handle=0x3D63A6E7 ip=192.168.10.20
+S3D63A6E7|stream 0x04000008 type=dax_rx dax_channel=1 slice=A client_handle=0x3D63A6E7 ip=192.168.10.20
+
+C8|audio stream 0x4000008 slice 0 gain 50
+R8|0|
+
+C9|stream create type=dax_tx1
+R9|0|84000000
+S3D63A6E7|stream 0x84000000 type=dax_tx client_handle=0x3D63A6E7 tx=1 ip=192.168.10.20
+
+
+S3D63A6E7|stream 0x04000008 removed
+S3D63A6E7|stream 0x84000000 removed
+
+---- smart sdr
+C22|sub audio_stream all
+S4DF2C247|stream 0x04000008 type=dax_rx dax_channel=1 slice=A client_handle=0x7F44809F ip=192.168.10.20
+S4DF2C247|stream 0x84000000 type=dax_tx client_handle=0x7F44809F tx=1 ip=192.168.10.20
+R2|0|
+
+
+C26|sub daxiq all
+C27|sub dax all
+
+
+
+---
+## Audio
+// node-red-dashboard/src/main.js
+            
+			if (msg.hasOwnProperty("audio")) {
+                if (!window.hasOwnProperty("AudioContext")) {
+                    window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
+                }
+                try {
+                    audioContext = audioContext || new AudioContext();
+                    var buffer = new Uint8Array(msg.audio);
+                    audioContext.decodeAudioData(buffer.buffer, function(audioBuffer) {
+                        audioStack.push(audioBuffer);
+                        while (audioStack.length) {
+                            var chunkBuffer = audioStack.shift();
+                            var source = audioContext.createBufferSource();
+                            source.buffer = chunkBuffer;
+                            source.connect(audioContext.destination);
+                            if (nextTime == 0) {
+                                nextTime = audioContext.currentTime + 0.01;
+                            }
+                            source.start(nextTime);
+                            // Make the next buffer wait the length of the last buffer before being played
+                            nextTime += source.buffer.duration;
+                        }
+                    }, function(e) {
+                        console.log("Error decoding audio: " + e);
+                    });
+                }
+                catch (e) { console.log("Error playing audio: " + e); }
+
+                // try {
+                //     audioContext = audioContext || new AudioContext();
+                //     audioSource = audioContext.createBufferSource();
+                //     audioSource.onended = function() {
+                //         events.emit('ui-audio', 'complete');
+                //     }
+                //     var buffer = new Uint8Array(msg.audio);
+
+                //     audioContext.decodeAudioData(
+                //         buffer.buffer,
+                //         function(buffer) {
+                //             audioSource.buffer = buffer;
+                //             if (msg.vol) {
+                //                 var volume = audioContext.createGain();
+                //                 volume.gain.value = msg.vol/100;
+                //                 volume.connect(audioContext.destination);
+                //                 audioSource.connect(volume);
+                //             }
+                //             else {
+                //                 audioSource.connect(audioContext.destination);
+                //             }
+                //             audioSource.start(0);
+                //             events.emit('ui-audio', 'playing');
+                //         },
+                //         function() { events.emit('ui-audio', 'error'); }
+                //     )
+                // }
+                // catch(e) { events.emit('ui-audio', 'error'); }

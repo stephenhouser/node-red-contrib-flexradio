@@ -1,0 +1,303 @@
+<style>
+	svg .path {
+		fill: none;
+	}
+	
+	.data_line {
+	  fill: none;
+	  stroke: #000;
+	  stroke-width: 1.5px;
+	}
+	
+	.axis--y, .axis--x {
+		stroke: white !important;
+		color: lightgray !important;
+		font-size: 12pt;
+		font-weight: lighter;
+		fill: #032734 !important;
+	}
+	
+	path.domain {
+		fill: none !important;
+	}
+	
+	.panadapter-background {
+		background-image: linear-gradient(#042432, #083c59);    
+	}
+	
+	.grid .tick line {
+		stroke: lightgrey;
+		opacity: 0.7;
+	}
+	.grid path {
+		  stroke-width: 0;
+	}
+	
+	.svg-container {
+		height: 100%;
+		width: 100%;
+		overflow: hidden;
+	} 
+	
+</style>
+<div id='container' class="svg-container">
+</div>
+
+<script>
+	function PanadapterFlag(config) {
+		var frequency = 14.074;
+		var text_node = null;
+	
+		function flag(selection) {
+			selection.each(function(d, i) {
+				const svg = d3.select(this);
+				svg.classed('panadapter-flag', true);
+				svg.append("line")
+					.style("stroke", "yellow")
+					.attr("x1", 0)
+					.attr("y1", 0)
+					.attr("x2", 0)
+					.attr("y2", 700);
+					
+				svg.append("rect")
+					.attr("x", -110)
+					.attr("y", 10)
+					.attr("height", 40)
+					.attr("width", 105)
+					.attr("fill", "midnightblue")
+					.style("stroke", "yellow");
+	
+				text_node = svg.append("text")
+					.attr("x", -100)
+					.attr("y", 40)
+					.attr("fill", "yellow")
+					.attr("font-size", "32px")
+					.text(frequency);
+			});
+		}
+	
+		flag.frequency = function(value) {
+			if (!arguments.length) {
+				return center;
+			}
+	
+			frequency = value;
+			if (text_node) {
+				text_node.text(frequency);
+			}
+	
+			return flag;
+		}
+	
+		return flag;
+	}
+	
+	function Panadapter(config) {
+		var margin = {top: 10, right: 50, bottom: 50, left: 10 };
+		var width = 1024;
+		var height = 768;
+		var xScale = d3.scaleLinear();
+		var yScale = d3.scaleLinear();
+		
+		var x_axis = null;
+		var y_axis = null;
+		
+		let settings = { 
+			samples: 1024, 
+			range: 512, 
+			center: 14.074, 
+			bandwidth: 0.02, 
+			min_dbm: -130, 
+			max_dbm: -40
+		};
+	
+		function make_x_axis(selection) {
+			selection.each(function(d, i) {
+				const g = d3.select(this);
+				g.attr('class', 'axis');
+				g.selectAll('g').remove();
+
+				scaleXAxis = d3.scaleLinear()
+					.domain([settings.center - (settings.bandwidth/2), 
+							 settings.center + (settings.bandwidth/2)])
+					.range([0, width]);
+	
+				g.append("g")
+				    .attr("class", "axis axis--x")
+					.attr("transform", "translate(0," + height + ")")
+					.call(d3.axisBottom(scaleXAxis));
+	
+				g.append("g")
+					.attr("class", "grid")
+					.call(d3.axisBottom(scaleXAxis)
+						.tickSize(height))
+					.call(g => g.select(".domain")
+						.remove())
+					.call(g => g.selectAll(".tick text")
+						.remove());
+			});
+		}
+
+		function make_y_axis(selection) {
+			selection.each(function(d, i) {
+				const g = d3.select(this);
+				g.attr('class', 'axis');
+				g.selectAll('g').remove();
+
+				// Y Axis
+				scaleYAxis = d3.scaleLinear()
+						.domain([settings.min_dbm, settings.max_dbm])
+						.range([height, 0]);
+	
+				g.append('g')
+				    .attr("class", "axis axis--y")
+					.attr("transform", "translate(" + width + ", 0)")
+					.call(d3.axisRight(scaleYAxis));
+	
+				g.append("g")
+					.attr("class", "grid")
+					.call(d3.axisRight(scaleYAxis)
+						.tickSize(width))
+					.call(g => g.select(".domain")
+						.remove())
+					.call(g => g.selectAll(".tick text")
+						.remove());
+			});
+		}
+
+		function make_flag(selection) {
+			selection.each(function(d, i) {
+				const g = d3.select(this);
+				g.attr('class', 'flag');
+				g.selectAll('g').remove();
+
+				g.append("line")
+					.style("stroke", "yellow")
+					.attr("x1", 0)
+					.attr("y1", 0)
+					.attr("x2", 0)
+					.attr("y2", height);
+			});
+		}
+
+		function pan(selection) {
+			selection.each(function(d, i) {
+				settings = { ...settings, ...config };
+	
+				const svg = d3.select(this);
+				width = 1024 - margin.left - margin.right;
+				height = 768 - margin.top - margin.bottom;
+
+				xScale.domain([0, settings.samples - 1]).range([0, width]);
+				yScale.domain([0, settings.range]).range([height, 0]);
+
+				const g = svg.append("g")
+					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	
+				g.append("defs").append("clipPath")
+					.attr("id", "clip")
+					.append("rect")
+					.attr("width", width)
+					.attr("height", height);
+	
+				x_axis = g.append("g").call(make_x_axis);
+				y_axis = g.append("g").call(make_y_axis);
+				flag   = g.append("g").call(make_flag)
+							.attr("transform", "translate(" + width/2 + ", 0)");
+	
+				data_line = g.append('g')
+					.attr('clip-path', 'url(#clip)')
+					.append('path')
+						.style('fill', "#a3eafa77")
+						.style("stroke", "white")
+						.attr('class', 'data');
+			});
+		}
+		
+		pan.config = function(config) {
+			settings = { ...settings, ...config };
+			xScale.domain([0, settings.samples - 1]).range([0, width]);
+			yScale.domain([0, settings.range]).range([height, 0]);
+			
+			x_axis.call(make_x_axis);
+			y_axis.call(make_y_axis);
+
+			return pan;
+		};
+	
+		pan.data = function(data) {
+			const lineGenerator = d3.area()
+				.x(function(d, i) { return xScale(i); })
+				.y0(function(d, i) { return yScale(settings.range - d); })
+				.y1(yScale(0));
+	
+			const dp = lineGenerator(data);
+			data_line
+				.attr("d", dp)
+				.transition()
+				// .duration(100)
+				// .ease(d3.easeLinear);
+	
+			return pan;
+		};
+		pan.center = function(value) {
+			if (!arguments.length) {
+				return center;
+			}
+	
+			center = value;
+			return pan;
+		};
+	
+		pan.margin = function(value) {
+			if (!arguments.length) {
+				return margin;
+			}
+	
+			margin = value;
+			return pan;
+		};
+	
+	
+		return pan;
+	}
+	
+	function pan_main(scope) {
+		function make_panadapter(config) {
+			const pan = Panadapter(config)
+				.margin({top: 10, left: 10, bottom: 50, right: 50})
+	
+			var svg = d3.select("div#container")
+			    .classed('svg-container', true)
+				.append("svg")
+				.attr("preserveAspectRatio", "none")
+				.attr("viewBox", "0 0 1024 768")
+				.attr("height", "100%")
+				.attr("width", "100%")
+				.attr("class", "panadapter-background")
+				.classed("svg-content", true)
+				.call(pan)
+
+			return pan;
+		}
+
+		const timer = setInterval(function() {
+			if (window.d3) {
+				clearInterval(timer);
+	
+				const pan = make_panadapter({samples: 100, range: 100});
+				scope.$watch('msg', function (msg) {
+					if (msg) {
+						if (msg.config) {
+						    pan.config(msg.config);
+						} else {
+							pan.data(msg.payload.data);
+						}
+					}
+				});
+			}
+		}, 1000);
+	}
+	
+	pan_main(scope);
+</script>

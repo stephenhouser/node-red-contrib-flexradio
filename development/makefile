@@ -1,6 +1,8 @@
 
+up-example:
+	docker-compose -f docker-compose-example.yml up
+
 up-linked:
-	#mkdir -p ./data-linked
 	docker-compose -f docker-compose-linked.yml up
 
 up-clean: clean

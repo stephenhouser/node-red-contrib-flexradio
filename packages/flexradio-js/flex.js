@@ -9,6 +9,7 @@
  * https://discourse.nodered.org/t/vita-49-decoding/20792
  * https://github.com/K3TZR/xLib6000/blob/master/Sources/xLib6000/Supporting/Vita.swift
  * https://community.flexradio.com/discussion/7063537/meter-packet-protocol
+ * https://github.com/Keichi/binary-parser
  */
 
 const binaryParser = require('binary-parser').Parser;
@@ -66,10 +67,14 @@ const ResponseCode = {
 			case 0x5000002C: return 'incorrect number of parameters';
 			case 0x50001000: return '';
 			case 0x50000015: return 'unknown command';
-			default: return 'unknwon ' + code;
+			default: return 'unknown ' + code;
 		}
 	}
 };
+
+function to_hex(num) {
+	return '0x' + num.toString(16).padStart(8, '0');
+}
 
 // decode() -- decode data sent from a FlexRadio on the TCP control stream.
 function decode(response) {
@@ -131,12 +136,12 @@ function decode_meters(dgram) {
 	return meter_values;
 }
 
-function decode_panadapter(dgram) {
-	const panadapterParser = new binaryParser()
-		.uint16('start_bin')
-		.uint16('number_of_bins')
-		.uint16('bin_size')
-		.uint16('bins_in_frame')
+// This is the <= v2.2 panadapter format. 
+function decode_panadapter_v2(dgram) {
+	const oldPanadapterDecoder = new binaryParser()
+		.uint32('start_bin')
+		.uint32('number_of_bins')
+		.uint32('bin_size')
 		.uint32('frame_index')
 		.array("data", {
 			type: new binaryParser().uint16(),
@@ -144,7 +149,7 @@ function decode_panadapter(dgram) {
 		});
 
 	try {
-		return panadapterParser.parse(dgram.payload);
+		return oldPanadapterDecoder.parse(dgram.payload);
 	} catch (error) {
 		console.error('flexradio-js panadapter decoding error');
 		console.error(error);
@@ -153,8 +158,101 @@ function decode_panadapter(dgram) {
 	return null;
 }
 
+// This is the >=2.2 panadapter format
+// MUST send "client set enforce_network_mtu=1" for this to work!
+function decode_panadapter(dgram) {
+	const panadapterDecoder = new binaryParser()
+		.uint16('start_bin')
+		.uint16('number_of_bins')
+		.uint16('bin_size')
+		.uint16('total_bins')
+		.uint32('frame_index')
+		.array("data", {
+			type: new binaryParser().uint16(),
+			length: 'number_of_bins'
+		});
+
+	try {
+		return panadapterDecoder.parse(dgram.payload);
+	} catch (error) {
+		console.error('flexradio-js panadapter decoding error');
+		console.error(error);
+	}
+
+	return null;
+}
+
+// This is the >=2.3 waterfall format
+// MUST send "client set enforce_network_mtu=1" for this to work!
 function decode_waterfall(dgram) {
-	return dgram.payload;
+	const waterfallDecoder = new binaryParser()
+		.uint64('first_bin_frequency', {			// frequency of first bin Hz
+			formatter: function(f) {
+				return Number(f) / 1.048576E6;
+			}
+		})
+		.uint64('bin_bandwidth', {					// width of a bin Hz
+			formatter: function(f) {
+				return Number(f) / 1.048576E6;
+			}
+		})
+		.uint32('line_duration')					// duration of line 1-100ms
+		.uint16('number_of_bins')					// number of bins in segment
+		.uint16('height')							// height of frame in pixels
+		.uint32('time_code')						// time stamp/code
+		.uint32('auto_black_level')					// level of auto-black
+		.uint16('total_bins')						// number of bins in frame
+		.uint16('first_bin_index')					// index of 1st bin in segment
+		.array("data", {							// bin values
+			type: new binaryParser().uint16(),
+			length: 'number_of_bins'
+		});
+
+		try {
+			return waterfallDecoder.parse(dgram.payload);
+		} catch (error) {
+			console.error('flexradio-js waterfall decoding error');
+			console.error(error);
+		}
+
+	return null;
+}
+
+function decode_opus(dgram) {
+	const opusDecoder = new binaryParser()
+		.array("data", {
+			type: new binaryParser().uint8(),
+			readUntil: 'eof'
+		});
+
+	try {
+		return opusDecoder.parse(dgram.payload);
+	} catch (error) {
+		console.error('flexradio-js opus decoding error');
+		console.error(error);
+	}
+
+	return null;
+}
+
+function decode_dax(dgram) {
+	const daxDecoder = new binaryParser()
+		.array('', {
+			type: new binaryParser().array('', {
+				type: new binaryParser().floatbe(),
+				length: 2,
+			}),
+			readUntil: 'eof'
+		});
+
+	try {
+		return daxDecoder.parse(dgram.payload);
+	} catch (error) {
+		console.error('flexradio-js dax decoding error');
+		console.error(error);
+	}
+
+	return null;
 }
 
 // decode_realtime() -- decode data sent from a FlexRadio on the UDP data channel
@@ -165,7 +263,8 @@ function decode_realtime(data) {
 	}
 
 	function isDataStream(vita49_dgram) {
-		return vita49_dgram.packet_type == vita49.PacketType.ext_data_stream;
+		return vita49_dgram.packet_type == vita49.PacketType.ext_data_stream ||
+				vita49_dgram.packet_type == vita49.PacketType.if_data_stream;
 	}
 
 	const vita49_dgram = vita49.decode(data);
@@ -185,6 +284,19 @@ function decode_realtime(data) {
 					payload = decode_waterfall(vita49_dgram);
 					break;
 
+				case RealtimePacketClass.opus:
+					payload = decode_opus(vita49_dgram);
+					break;
+
+				case RealtimePacketClass.daxAudio:
+				case RealtimePacketClass.daxReducedBw:
+				case RealtimePacketClass.daxIq24:
+				case RealtimePacketClass.daxIq48:
+				case RealtimePacketClass.daxIq96:
+				case RealtimePacketClass.daxIq192:
+					payload = decode_dax(vita49_dgram);
+					break;
+
 				case RealtimePacketClass.discovery:
 					payload = decode_discovery(vita49_dgram);
 					break;
@@ -197,7 +309,7 @@ function decode_realtime(data) {
 			if (payload) {
 				return {
 					type: RealtimePacketClass.decode(vita49_dgram.class.packet_class),
-					stream: vita49_dgram.stream,
+					stream: to_hex(vita49_dgram.stream),
 					sequence: vita49_dgram.sequence,
 					payload: payload
 				};
