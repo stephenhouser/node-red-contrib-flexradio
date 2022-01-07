@@ -4,19 +4,20 @@
 	<p>This configuration will create a single connection to a radio which can then be shared and used by <code>flexradio-messages</code>, <code>flexradio-request</code>, and <code>flexradio-meter</code> nodes. To preserve radio resources, you should only have one connection node per radio in your flows. This connection can then be shared by any number of <code>flexradio-</code> nodes.</p>
 
     <h3>Node Configuration</h3>
-    <h4>Host</h4>
-    <p>This is the address of the radio to connect to. You can specify either a DNS name or an IP address.</p>
+    <h4>Radio</h4>
+    <p>The radio to connect to can be configured in different ways depending on your setup.</p>
+    <dl></dl>
+    <dt>Automatic</dt><dd>Watches for radio announcements on your network and connects to the first Flexradio found. The most common choice <strong>if you have only one radio</strong>.</dd>
+    <dt>Discovery</dt><dd>Watches for radio announcements on your network and provides a list of radios to choose from. Connects to the radio based on it's nickname. This is the most common connection choice if you have multiple radios.</dd>
+    <dt>Manual</dt><dd>Allows you to specify the <strong>Host</strong>> (IP address or DNS name) and <strong>Port</strong> of a radio. Useful if you have fixed addresses and/or names for devices on your network.</dd>
 
-	<h4>Port</h4>
-    <p>This is the TCP/IP port the radio is listening on. This should not change from the default <code>4992</code> except for advanced uses.</p>
-
+	<!--
 	<h4>Timeout</h4>
     <p>This is the time in seconds that the node will try to reconnect to the radio when the connection is lost or disconnected because of an error. The default is <code>15</code> seconds.</p>
-	<!--
     <h4>Station</h4>
     <p>Reserved for future use.</p>
 	-->
 
     <h3>Node Details</h3>
-    <p>This configuration node, via another underlying dependency, handles the network connection (both TCP and UDP) with the radio. In general once it connects to a radio, it self-configures based on the radio it is attached to. It will trigger a few requests (commands) of its own, like <code>meter list</code>, so that other nodes can re-use common information withouth constant queries to the radio.</p>
+    <p>This configuration node manages the network connection (both TCP and UDP) to the radio. Once it connects to a radio, it self-configures based on the radio it is attached to. It will trigger a few requests (commands) of its own, like <code>meter list</code>, so that other nodes can re-use common information without constant queries to the radio.</p>
 </script>
