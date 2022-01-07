@@ -20,6 +20,8 @@ The big update in this version is the addition of streaming data! Panadapters, w
 
 * `flexradio-request` now passes `msg` properties from input to output so you can track your requests easier. Example; set `msg.topic` on input and the response from `flexradio-request` will have the same `msg.topic` and `msg._msgid` as on the input.
 
+NOTE: The nodes only *decode* audio. There is no audio *encoding* yet.
+
 ## Subject: Release of node-red-contrib-flexradio nodes v1.0
 
 v1.0.0 - Monday, October 25, 2021
