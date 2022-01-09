@@ -1,0 +1,71 @@
+<html>
+	<head>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.0.0/d3.min.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="panadapter.css" />
+		<script src="panadapter.js"></script>
+	</head>
+	<body>
+
+		<input id="freq" type="text" value="14.074" />
+		<input id="filter" type="text" value="0.003" />
+		<input id="tx" type="text" value="off" />
+		<input id="txant" type="text" value="ant1" />
+		<input id="rxant" type="text" value="ant1" />
+
+
+		<button onclick="set()">Set</button>
+
+		<div id='container' class="svg-container"></div>
+
+		<script>
+			function set() {
+				const freq = document.getElementById('freq').value;
+				pan.frequency(parseFloat(freq));
+
+				const filter = document.getElementById('filter').value;
+				pan.filter_width(parseFloat(filter));
+
+				const tx = document.getElementById('tx').value;
+				pan.tx_state(tx);
+
+				const txant = document.getElementById('txant').value;
+				pan.txant(txant);
+
+				const rxant = document.getElementById('rxant').value;
+				pan.rxant(rxant);
+			}
+
+
+			function pan_main(scope) {
+				function make_panadapter(config) {
+					const pan = Panadapter(config)
+						.margin({top: 10, left: 10, bottom: 50, right: 50})
+			
+					var svg = d3.select("div#container")
+						.classed('svg-container', true)
+						.append("svg")
+						.attr("preserveAspectRatio", "none")
+						.attr("viewBox", "0 0 1024 768")
+						.attr("height", "100%")
+						.attr("width", "100%")
+						.attr("class", "panadapter-background")
+						.classed("svg-content", true)
+						.call(pan)
+		
+					return pan;
+				}
+		
+				const timer = setInterval(function() {
+					if (window.d3) {
+						clearInterval(timer);
+			
+						pan = make_panadapter({samples: 100, range: 100});
+					}
+				}, 1000);
+			}
+			
+			pan_main();
+		</script>	
+	</body>
+</html>

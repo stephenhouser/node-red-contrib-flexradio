@@ -1,0 +1,55 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.0.0/d3.min.js"></script>
+
+<div id='container' class="svg-container"></div>
+
+<script>
+	function pan_main(scope) {
+		function make_panadapter(config) {
+			const pan = Panadapter(config)
+				.margin({top: 10, left: 10, bottom: 50, right: 50})
+	
+			var svg = d3.select("div#container")
+			    .classed('svg-container', true)
+				.append("svg")
+				.attr("preserveAspectRatio", "none")
+				.attr("viewBox", "0 0 1024 768")
+				.attr("height", "100%")
+				.attr("width", "100%")
+				.attr("class", "panadapter-background")
+				.classed("svg-content", true)
+				.call(pan)
+
+			return pan;
+		}
+
+		const timer = setInterval(function() {
+			if (window.d3) {
+				clearInterval(timer);
+	
+	            const config = JSON.parse(localStorage.getItem("panadapter"));
+				const pan = make_panadapter(config);
+				scope.$watch('msg', function (msg) {
+					if (msg && msg.topic) {
+					    if (msg.topic.startsWith("slice/")) {
+        				    console.log(msg.payload);
+					        pan.slice(msg.payload);
+					    }
+					    
+						if (msg.topic.startsWith("display/pan")) {
+        				    console.log(msg.payload);
+						    pan.config(msg.payload);
+						    localStorage.setItem("panadapter", JSON.stringify(pan.config()));
+						    scope.send({"topic": "panadapter_settings", "payload": pan.config()});
+						}
+						
+						if (msg.topic.startsWith("panadapter/")) {
+							pan.data(msg.payload.data);
+						}
+					}
+				});
+			}
+		}, 1000);
+	}
+	
+	pan_main(scope);
+</script>

@@ -1,0 +1,109 @@
+svg .path {
+	fill: none;
+}
+
+path.data {
+	fill: #a3eafa;
+	stroke: white;
+}
+
+.axis--y, .axis--x {
+	stroke: white !important;
+	color: lightgray !important;
+	font-size: 12pt;
+	font-weight: lighter;
+	fill: #032734 !important;
+}
+
+path.domain {
+	fill: none !important;
+}
+
+.panadapter-background {
+	background-image: linear-gradient(#042432, #083c59);    
+}
+
+.grid .tick line {
+	stroke: lightgrey;
+	opacity: 0.7;
+}
+.grid path {
+		stroke-width: 0;
+}
+
+.svg-container {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+} 
+
+.panadapter-flag {
+	font-family: sans-serif;
+	font-size: 8pt;
+}
+
+.panadapter-flag .flagpole {
+	stroke: yellow;
+}
+
+.panadapter-flag .flag {
+	fill: yellow;
+}
+
+.panadapter-flag .filter-width {
+	fill: #09a8f4;
+	opacity: 0.25;
+}
+
+.panadapter-background .background {
+	fill: #05161f;
+}
+
+.panadapter-flag .ant {
+	stroke: none;
+}
+
+.panadapter-flag .rx-ant {
+	fill: #09a8f4;
+}
+
+.panadapter-flag .tx-ant {
+	fill: #ed0807;
+}
+
+.panadapter-flag .tx-state rect {
+	fill: #ed0807;
+}
+
+.panadapter-flag .tx-state.off rect {
+	fill: #05161f
+}
+
+.panadapter-flag .tx-state text {
+	stroke: none;
+	fill: white;
+	font-weight: bold;
+	font-size: 12pt;
+}
+
+.panadapter-flag .tx-state.off text {
+	fill: #505050;
+}
+
+.panadapter-flag .slice rect {
+	fill: #09a8f4;
+}
+
+.panadapter-flag .slice text {
+	stroke: none;
+	fill: #05161f;
+	font-weight: bold;
+	font-size: 13pt;
+}
+
+.panadapter-flag .frequency {
+	text-anchor: end;
+	stroke: none;
+	font-size: 14pt;
+	fill: white;
+}

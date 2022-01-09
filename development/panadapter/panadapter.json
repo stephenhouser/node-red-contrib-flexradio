@@ -1,0 +1,1008 @@
+[
+    {
+        "id": "ba16a00f04172021",
+        "type": "tab",
+        "label": "Panadapter",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "16367b2e8c7ba88c",
+        "type": "flexradio-request",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "radio": "efc511a0a80c63d4",
+        "x": 350,
+        "y": 140,
+        "wires": [
+            [
+                "81e8b8229e05ff44"
+            ]
+        ]
+    },
+    {
+        "id": "81e8b8229e05ff44",
+        "type": "debug",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "f86b40719b9e0e16",
+        "type": "flexradio-message",
+        "z": "ba16a00f04172021",
+        "name": "display/pan/#",
+        "radio": "efc511a0a80c63d4",
+        "client": "self_radio",
+        "topic": "display/pan/#",
+        "topic_type": "mqtt",
+        "x": 130,
+        "y": 260,
+        "wires": [
+            [
+                "cfd73ad68090f319",
+                "5dcbb867c4a6a552"
+            ]
+        ]
+    },
+    {
+        "id": "79e8b69461ae3183",
+        "type": "inject",
+        "z": "ba16a00f04172021",
+        "name": "client gui",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[\"client gui 8BB112FA-46E0-4002-B9B1-0C7EDC605661\",\"client station NodeRed\",\"client program NodeRed\"]",
+        "payloadType": "json",
+        "x": 120,
+        "y": 140,
+        "wires": [
+            [
+                "16367b2e8c7ba88c"
+            ]
+        ]
+    },
+    {
+        "id": "b131f93aec9dfe92",
+        "type": "flexradio-stream",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "radio": "efc511a0a80c63d4",
+        "stream_type": "dynamic",
+        "stream": "#",
+        "x": 740,
+        "y": 260,
+        "wires": [
+            [
+                "781f66c2a1ba16fa"
+            ]
+        ]
+    },
+    {
+        "id": "cfd73ad68090f319",
+        "type": "function",
+        "z": "ba16a00f04172021",
+        "name": "Set Stream ID on msg",
+        "func": "const stream_id = msg.topic.split(\"/\")[2];\nmsg.stream = stream_id;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "320695604942a823",
+        "type": "ui_template",
+        "z": "ba16a00f04172021",
+        "group": "",
+        "name": "Panadapter Style",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "format": "<style>\nsvg .path {\n\tfill: none;\n}\n\npath.data {\n\tfill: #a3eafa;\n\tstroke: white;\n}\n\n.axis--y, .axis--x {\n\tstroke: white !important;\n\tcolor: lightgray !important;\n\tfont-size: 12pt;\n\tfont-weight: lighter;\n\tfill: #032734 !important;\n}\n\npath.domain {\n\tfill: none !important;\n}\n\n.panadapter-background {\n\tbackground-image: linear-gradient(#042432, #083c59);    \n}\n\n.grid .tick line {\n\tstroke: lightgrey;\n\topacity: 0.7;\n}\n.grid path {\n\t\tstroke-width: 0;\n}\n\n.svg-container {\n\theight: 100%;\n\twidth: 100%;\n\toverflow: hidden;\n} \n\n.panadapter-flag {\n\tfont-family: sans-serif;\n\tfont-size: 8pt;\n}\n\n.panadapter-flag .flagpole {\n\tstroke: yellow;\n}\n\n.panadapter-flag .flag {\n\tfill: yellow;\n}\n\n.panadapter-flag .filter-width {\n\tfill: #09a8f4;\n\topacity: 0.25;\n}\n\n.panadapter-background .background {\n\tfill: #05161f;\n}\n\n.panadapter-flag .ant {\n\tstroke: none;\n}\n\n.panadapter-flag .rx-ant {\n\tfill: #09a8f4;\n}\n\n.panadapter-flag .tx-ant {\n\tfill: #ed0807;\n}\n\n.panadapter-flag .tx-state rect {\n\tfill: #ed0807;\n}\n\n.panadapter-flag .tx-state.off rect {\n\tfill: #05161f\n}\n\n.panadapter-flag .tx-state text {\n\tstroke: none;\n\tfill: white;\n\tfont-weight: bold;\n\tfont-size: 12pt;\n}\n\n.panadapter-flag .tx-state.off text {\n\tfill: #505050;\n}\n\n.panadapter-flag .slice rect {\n\tfill: #09a8f4;\n}\n\n.panadapter-flag .slice text {\n\tstroke: none;\n\tfill: #05161f;\n\tfont-weight: bold;\n\tfont-size: 13pt;\n}\n\n.panadapter-flag .frequency {\n\ttext-anchor: end;\n\tstroke: none;\n\tfont-size: 14pt;\n\tfill: white;\n}\n\n</style>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "global",
+        "className": "",
+        "x": 1210,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cb1386f440eb2403",
+        "type": "flexradio-request",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "radio": "efc511a0a80c63d4",
+        "x": 1030,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9514bf2783608892",
+        "type": "comment",
+        "z": "ba16a00f04172021",
+        "name": "Connect to Radio as GUI Client and change to known busy frequency",
+        "info": "",
+        "x": 290,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "7ae080e89e9aa94c",
+        "type": "comment",
+        "z": "ba16a00f04172021",
+        "name": "On changes to panadapter and waterfall",
+        "info": "",
+        "x": 200,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "89b276a96538ec84",
+        "type": "comment",
+        "z": "ba16a00f04172021",
+        "name": "Send to stream as configuration",
+        "info": "",
+        "x": 550,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "6e69456fedfd28bb",
+        "type": "comment",
+        "z": "ba16a00f04172021",
+        "name": "Send panadapter configuration to Radio",
+        "info": "",
+        "x": 740,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "b4e18ca2726c2997",
+        "type": "comment",
+        "z": "ba16a00f04172021",
+        "name": "Using template and D3js to create chart on dashboard",
+        "info": "",
+        "x": 1220,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "8250cde141bd14ba",
+        "type": "inject",
+        "z": "ba16a00f04172021",
+        "name": "1024x512@10fps",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "display/pan/",
+        "payload": "{\"xpixels\":1204,\"ypixels\":512,\"fps\":10,\"center\":14.074}",
+        "payloadType": "json",
+        "x": 420,
+        "y": 620,
+        "wires": [
+            [
+                "2befcb5b36585a69",
+                "021831c365874f6e"
+            ]
+        ]
+    },
+    {
+        "id": "1752924b0874930e",
+        "type": "inject",
+        "z": "ba16a00f04172021",
+        "name": "256x128@10fps",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "display/pan/",
+        "payload": "{\"xpixels\": 256, \"ypixels\":128, \"fps\": 10, \"center\": 7.074}",
+        "payloadType": "json",
+        "x": 420,
+        "y": 660,
+        "wires": [
+            [
+                "2befcb5b36585a69",
+                "021831c365874f6e"
+            ]
+        ]
+    },
+    {
+        "id": "c52bacaf8164086c",
+        "type": "comment",
+        "z": "ba16a00f04172021",
+        "name": "Example Panadapter Flow for node-red-contrib-flexradio",
+        "info": "",
+        "x": 230,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "5dcbb867c4a6a552",
+        "type": "function",
+        "z": "ba16a00f04172021",
+        "name": "Panadapter Stream Configuration",
+        "func": "const stream_id = msg.topic.split(\"/\")[2];\nflow.set('pan_stream', stream_id);\n\nreturn {\n    \"stream_type\": \"panadapter\",\n    \"stream\": stream_id\n};    \n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 260,
+        "wires": [
+            [
+                "b131f93aec9dfe92"
+            ]
+        ]
+    },
+    {
+        "id": "2befcb5b36585a69",
+        "type": "function",
+        "z": "ba16a00f04172021",
+        "name": "Build `display pan set` command",
+        "func": "const stream = msg.stream ? msg.stream : flow.get('pan_stream');\n\nconst p = ['display pan set', stream];\nObject.keys(msg.payload).map(function(k) {\n   p.push(`${k}=${msg.payload[k]}`);\n});\n\nmsg.payload = p.join(' ');\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 460,
+        "wires": [
+            [
+                "cb1386f440eb2403"
+            ]
+        ]
+    },
+    {
+        "id": "c7f9457dd3f7fdd2",
+        "type": "comment",
+        "z": "ba16a00f04172021",
+        "name": "Change dimensions and frequency",
+        "info": "",
+        "x": 180,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "fd05034771cfa61c",
+        "type": "flexradio-stream",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "radio": "efc511a0a80c63d4",
+        "stream_type": "dynamic",
+        "stream": "",
+        "x": 700,
+        "y": 880,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8b8e2bdf1f2ff31f",
+        "type": "flexradio-message",
+        "z": "ba16a00f04172021",
+        "name": "display/waterfall/#",
+        "radio": "efc511a0a80c63d4",
+        "client": "self_radio",
+        "topic": "display/waterfall/#",
+        "topic_type": "mqtt",
+        "x": 150,
+        "y": 880,
+        "wires": [
+            [
+                "065df56435ec7b20"
+            ]
+        ]
+    },
+    {
+        "id": "065df56435ec7b20",
+        "type": "function",
+        "z": "ba16a00f04172021",
+        "name": "Waterfall Stream Configuration",
+        "func": "const stream_id = msg.topic.split(\"/\")[2];\nflow.set('waterfall_stream', stream_id);\n\nreturn {\n    \"stream_type\": \"waterfall\",\n    \"stream\": stream_id\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 880,
+        "wires": [
+            [
+                "fd05034771cfa61c"
+            ]
+        ]
+    },
+    {
+        "id": "4781bd37f596ac03",
+        "type": "inject",
+        "z": "ba16a00f04172021",
+        "name": "A2 512x128@10fps",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "display/pan/",
+        "payload": "{\"xpixels\":1203,\"ypixels\":495,\"fps\":10,\"center\":7.074,\"bandwidth\":1,\"rxant\":\"ANT2\",\"frequency\":7.074}",
+        "payloadType": "json",
+        "x": 430,
+        "y": 740,
+        "wires": [
+            [
+                "2befcb5b36585a69",
+                "021831c365874f6e"
+            ]
+        ]
+    },
+    {
+        "id": "8b5908f9e5a56208",
+        "type": "inject",
+        "z": "ba16a00f04172021",
+        "name": "A1 512x128@10fps",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "display/pan/",
+        "payload": "{\"xpixels\": 1203, \"ypixels\":495,\"fps\":10,\"center\":7.074,\"bandwidth\":0.02,\"rxant\":\"ANT1\"}",
+        "payloadType": "json",
+        "x": 430,
+        "y": 700,
+        "wires": [
+            [
+                "2befcb5b36585a69",
+                "021831c365874f6e"
+            ]
+        ]
+    },
+    {
+        "id": "adba4b326f325d4d",
+        "type": "ui_slider",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "label": "Bandwidth",
+        "tooltip": "",
+        "group": "71e5b0a72d69b783",
+        "order": 12,
+        "width": 21,
+        "height": 1,
+        "passthru": true,
+        "outs": "all",
+        "topic": "display/pan",
+        "topicType": "str",
+        "min": ".001",
+        "max": "1",
+        "step": ".005",
+        "className": "",
+        "x": 130,
+        "y": 440,
+        "wires": [
+            [
+                "357ec4139687eb6a"
+            ]
+        ]
+    },
+    {
+        "id": "357ec4139687eb6a",
+        "type": "template",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{\"bandwidth\": {{payload}}}",
+        "output": "json",
+        "x": 340,
+        "y": 440,
+        "wires": [
+            [
+                "021831c365874f6e",
+                "2befcb5b36585a69"
+            ]
+        ]
+    },
+    {
+        "id": "5e2ec4a5a6d982ad",
+        "type": "ui_slider",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "label": "Center",
+        "tooltip": "",
+        "group": "71e5b0a72d69b783",
+        "order": 14,
+        "width": 21,
+        "height": 1,
+        "passthru": true,
+        "outs": "all",
+        "topic": "display/pan",
+        "topicType": "str",
+        "min": "1",
+        "max": "24",
+        "step": ".01",
+        "className": "",
+        "x": 110,
+        "y": 480,
+        "wires": [
+            [
+                "75ae616253cf49c0"
+            ]
+        ]
+    },
+    {
+        "id": "75ae616253cf49c0",
+        "type": "template",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{\"center\": {{payload}}}",
+        "output": "json",
+        "x": 340,
+        "y": 480,
+        "wires": [
+            [
+                "021831c365874f6e",
+                "2befcb5b36585a69"
+            ]
+        ]
+    },
+    {
+        "id": "87d4ed4b959a283f",
+        "type": "ui_template",
+        "z": "ba16a00f04172021",
+        "group": "",
+        "name": "Panadapter Script",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "format": "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/d3/7.0.0/d3.min.js\"></script>\n<script>\n\tfunction format_frequency(frequencyMhz) {\n\t\tconst mHz = parseInt(frequencyMhz);\n\t\tconst kHz = parseInt((frequencyMhz * 1000) % 1000);\n\t\tconst Hz  = parseInt((frequencyMhz * 1000000) % 1000);\n\n\t\tfunction pad3(n) {\n\t\t\tconst pad = '000' + n;\n\t\t\treturn pad.substring(pad.length - 3);\n\t\t}\n\n\t\treturn `${mHz}.${pad3(kHz)}.${pad3(Hz)}`;\n\t}\n\n\tfunction Panadapter(config) {\n\t\tvar margin = {top: 10, right: 50, bottom: 50, left: 10 };\n\t\tvar width = 1024;\n\t\tvar height = 768;\n\t\tvar xScale = d3.scaleLinear();\n\t\tvar yScale = d3.scaleLinear();\n\t\tvar xFrequencyScale = d3.scaleLinear();\n\t\tvar yDbmScale = d3.scaleLinear();\n\t\t\n\t\tvar x_axis = null;\n\t\tvar y_axis = null;\n\t\t\n\t\tvar settings = { \n\t\t\tx_pixels: 50, \n\t\t\ty_pixels: 20, \n\t\t\tcenter: 14.074, \n\t\t\tbandwidth: 0.02, \n\t\t\tmin_dbm: -130, \n\t\t\tmax_dbm: -40,\n\t\t\ttx: 'off',\n\t\t\tslice: 'A',\n\t\t\trxant: 'ANT1',\n\t\t\ttxant: 'ANT1',\n\t\t\tfrequency: 14.074,\n\t\t\tfilter_width: 0.003\n\t\t};\n\t\n\t\tfunction make_x_axis(selection) {\n\t\t\tselection.each(function(d, i) {\n\t\t\t\tconst g = d3.select(this);\n\t\t\t\tg.attr('class', 'axis');\n\t\t\t\tg.selectAll('g').remove();\n\n\t\t\t\txFrequencyScale\n\t\t\t\t\t.domain([settings.center - (settings.bandwidth/2), \n\t\t\t\t\t\t\tsettings.center + (settings.bandwidth/2)])\n\t\t\t\t\t.range([0, width]);\n\t\n\t\t\t\tg.append(\"g\")\n\t\t\t\t    .attr(\"class\", \"axis axis--x\")\n\t\t\t\t\t.attr(\"transform\", \"translate(0,\" + height + \")\")\n\t\t\t\t\t.call(d3.axisBottom(xFrequencyScale));\n\n\t\t\t\tg.append(\"g\")\n\t\t\t\t\t.attr(\"class\", \"grid\")\n\t\t\t\t\t.call(d3.axisBottom(xFrequencyScale)\n\t\t\t\t\t\t.tickSize(height))\n\t\t\t\t\t.call(g => g.select(\".domain\")\n\t\t\t\t\t\t.remove())\n\t\t\t\t\t.call(g => g.selectAll(\".tick text\")\n\t\t\t\t\t\t.remove());\n\t\t\t\t\t\t\n\t\t\t});\n\t\t}\n\n\t\tfunction make_y_axis(selection) {\n\t\t\tselection.each(function(d, i) {\n\t\t\t\tconst g = d3.select(this);\n\t\t\t\tg.attr('class', 'axis');\n\t\t\t\tg.selectAll('g').remove();\n\n\t\t\t\t// Y Axis\n\t\t\t\tyDbmScale\n\t\t\t\t\t\t.domain([settings.min_dbm, settings.max_dbm])\n\t\t\t\t\t\t.range([height, 0]);\n\t\n\t\t\t\tg.append('g')\n\t\t\t\t    .attr(\"class\", \"axis axis--y\")\n\t\t\t\t\t.attr(\"transform\", \"translate(\" + width + \", 0)\")\n\t\t\t\t\t.call(d3.axisRight(yDbmScale));\n\t\n\t\t\t\tg.append(\"g\")\n\t\t\t\t\t.attr(\"class\", \"grid\")\n\t\t\t\t\t.call(d3.axisRight(yDbmScale)\n\t\t\t\t\t\t.tickSize(width))\n\t\t\t\t\t.call(g => g.select(\".domain\")\n\t\t\t\t\t\t.remove())\n\t\t\t\t\t.call(g => g.selectAll(\".tick text\")\n\t\t\t\t\t\t.remove());\n\t\t\t});\n\t\t}\n\n\t\tfunction transform(x, y, scale = 1) {\n\t\t\treturn `translate(${x*scale}, ${y*scale}) scale(${scale})`;\n\t\t}\n\n\t\tfunction make_flag(selection) {\n\t\t\tselection.each(function(d, i) {\n\t\t\t\tconst g = d3.select(this);\n\t\t\t\tg.attr('class', 'panadapter-flag');\n\t\t\t\tg.selectAll('g').remove();\n\n\t\t\t\tconst pole = g.append(\"g\");\n\t\t\t\tpole.append(\"rect\")\n\t\t\t\t\t.attr(\"class\", \"filter-width\")\n\t\t\t\t\t.attr(\"x\", 0).attr(\"y\", 0)\n\t\t\t\t\t.attr(\"width\", 20).attr(\"height\", height);\n\n\t\t\t\tpole.append(\"line\")\n\t\t\t\t\t.attr(\"class\", \"flagpole\")\n\t\t\t\t\t.attr(\"x1\", 0)\n\t\t\t\t\t.attr(\"y1\", 0)\n\t\t\t\t\t.attr(\"x2\", 0)\n\t\t\t\t\t.attr(\"y2\", height);\n\t\t\t\t\n\t\t\t\tpole.append(\"polyline\")\n\t\t\t\t\t.attr(\"class\", \"flag\")\n    \t\t\t\t.attr('points', \"-9 0, 9 0, 0 18\")\n\n\t\t\t\t// background\n\t\t\t\tconst flag_w = 105;\n\t\t\t\tconst flag_h = 35;\n\t\t\t\tflag_box = g.append('g')\n\t\t\t\t\t.attr(\"x\", 0)\n\t\t\t\t\t.attr(\"y\", 0)\n\t\t\t\t\t.attr(\"transform\", transform(-flag_w - 5, 5, 2));\n\t\n\t\t\t\tflag_box.append(\"rect\")\n\t\t\t\t\t.attr(\"class\", \"background\")\n\t\t\t\t\t.attr(\"x\", 0).attr(\"y\", 0)\n\t\t\t\t\t.attr(\"width\", flag_w).attr(\"height\", flag_h)\n\n\t\t\t\t// rx ant\n\t\t\t\tflag_box.append(\"text\")\n\t\t\t\t\t.attr(\"class\", \"ant rx-ant\")\n\t\t\t\t\t.attr(\"x\", 5).attr(\"y\", 10)\n\t\t\t\t\t.text(\"ANT1\");\n\n\t\t\t\t// tx ant\n\t\t\t\tflag_box.append(\"text\")\n\t\t\t\t\t.attr(\"class\", \"ant tx-ant\")\n\t\t\t\t\t.attr(\"x\", 35).attr(\"y\", 10)\n\t\t\t\t\t.text(\"ANT1\");\n\n\t\t\t\t// TX status\n\t\t\t\tconst tx = flag_box.append(\"g\")\n\t\t\t\t\t.attr(\"class\", \"tx-state\");\n\n\t\t\t\ttx.append(\"rect\")\n\t\t\t\t\t.attr(\"x\", 66).attr(\"y\", 1)\n\t\t\t\t\t.attr(\"width\", 23).attr(\"height\", 14)\n\t\t\t\t\t.attr(\"rx\", 2).attr(\"ry\", 2)\n\n\t\t\t\ttx.append(\"text\")\n\t\t\t\t\t.attr(\"x\", 67).attr(\"y\", 14)\n\t\t\t\t\t.text(\"TX\");\n\n\t\t\t\t// slice letter\n\t\t\t\tconst slice = flag_box.append(\"g\")\n\t\t\t\t\t.attr(\"class\", \"slice\");\n\n\t\t\t\tslice.append(\"rect\")\n\t\t\t\t\t.attr(\"x\", 90).attr(\"y\", 1)\n\t\t\t\t\t.attr(\"width\", 13).attr(\"height\", 14)\n\t\t\t\t\t.attr(\"rx\", 2).attr(\"ry\", 2)\n\n\t\t\t\t\tslice.append(\"text\")\n\t\t\t\t\t\t.attr(\"x\", 90).attr(\"y\", 14)\n\t\t\t\t\t\t.text(\"A\");\n\n\t\t\t\t// frequency\n\t\t\t\tflag_box.append(\"text\")\n\t\t\t\t\t.attr(\"class\", \"frequency\")\n\t\t\t\t\t.attr(\"x\", flag_w - 2).attr(\"y\", 30)\n\t\t\t\t\t.text('888.888.888');\n\t\t\t});\n\t\t}\n\n\t\tfunction pan(selection) {\n\t\t\tselection.each(function(d, i) {\n\t\t\t //   debugger;\n\t\t\t    // setting the pan does not use underscores, but the report does\n\t\t\t    if (config) {\n\t\t\t        if (config.xpixels) {\n\t\t\t            config.x_pixels = config.xpixels;\n    \t\t\t        delete config.xpixels;\n\t\t\t        }\n\t\t\t        if (config.ypixels) {\n    \t\t\t        config.y_pixels = config.ypixels;\n    \t\t\t        delete config.ypixels;\n\t\t\t        }\n\t\t\t    }\n\t\t\t    \n\t\t\t\tsettings = { ...settings, ...config };\n\n\t\t\t\tconst svg = d3.select(this);\n\t\t\t\twidth = 1024 - margin.left - margin.right;\n\t\t\t\theight = 768 - margin.top - margin.bottom;\n\n\t\t\t\txScale.domain([0, settings.x_pixels - 1]).range([0, width]);\n\t\t\t\tyScale.domain([0, settings.y_pixels]).range([height, 0]);\n\n\t\t\t\tconst g = svg.append(\"g\")\n\t\t\t\t\t.attr(\"transform\", \"translate(\" + margin.left + \",\" + margin.top + \")\");\n\n\t\t\t\tg.append(\"defs\").append(\"clipPath\")\n\t\t\t\t\t.attr(\"id\", \"clip\")\n\t\t\t\t\t.append(\"rect\")\n\t\t\t\t\t.attr(\"width\", width)\n\t\t\t\t\t.attr(\"height\", height);\n\t\n\t\t\t\tx_axis = g.append(\"g\").call(make_x_axis);\n\t\t\t\ty_axis = g.append(\"g\").call(make_y_axis);\n\t\t\t\tflag   = g.append(\"g\").call(make_flag);\n\t\n\t\t\t\tdata_line = g.append('g')\n\t\t\t\t\t.attr('clip-path', 'url(#clip)')\n\t\t\t\t\t.append('path')\n\t\t\t\t\t    .style('fill', \"#a3eafa77\")\n\t\t\t\t\t\t.style(\"stroke\", \"white\")\n\t\t\t\t\t\t.attr('class', 'data');\n\n\t\t\t\tpan.frequency(settings.center);\n\t\t\t\tpan.filter_width(settings.filter_width);\n\n\t\t\t\tpan.rxant(settings.rxant);\n\t\t\t\tpan.txant(settings.txant);\n\t\t\t\tpan.tx(settings.tx);\n\t\t\t});\n\t\t}\n\t\t\n\t\tpan.slice = function(slice) {\n\t\t    //debugger;\n            pan.frequency(slice.RF_frequency)\t\t    \n\t\t\tpan.filter_width(slice.filter_hi/1000);\n\t\t\tpan.rxant(slice.rxant);\n\t\t\tpan.txant(slice.txant);\n\t\t}\n\t\t\n\t\tpan.config = function(display_pan) {\n\t\t    if (!arguments.length) {\n\t\t\t\treturn settings;\n\t\t\t}\n\t\t    \n\t\t  //  debugger;\n\t    \tif (display_pan && display_pan.xpixels) {\n\t\t\t    display_pan.x_pixels = display_pan.xpixels;\n\t\t\t    delete display_pan.xpixels;\n\t\t\t}\n\t\t\t\n\t\t\tif (display_pan && display_pan.ypixels) {\n\t\t\t    display_pan.y_pixels = display_pan.ypixels;\n\t\t\t    delete display_pan.ypixels;\n\t\t\t}\n\t\t\t    \n\t\t\tsettings = { ...settings, ...display_pan };\n\n\t\t\txScale.domain([0, settings.x_pixels - 1]).range([0, width]);\n\t\t\tyScale.domain([0, settings.y_pixels]).range([height, 0]);\n\t\t\t\n\t\t\tx_axis.call(make_x_axis);\n\t\t\ty_axis.call(make_y_axis);\n\n\t\t\tpan.frequency(settings.center);\n\t\t\tpan.rxant(settings.rxant);\n\t\t\tpan.filter_width(settings.filter_width);\n\n\t\t\treturn pan;\n\t\t};\n\t\n\t\tpan.data = function(data) {\n\t\t  //  debugger;\n\t\t\tconst lineGenerator = d3.area()\n\t\t\t\t.x(function(d, i) { return xScale(i); })\n\t\t\t\t.y0(function(d, i) { return yScale(settings.y_pixels - d); })\n\t\t\t\t.y1(yScale(0));\n\t\n\t\t\tconst dp = lineGenerator(data);\n\t\t\tdata_line\n\t\t\t\t.attr(\"d\", dp)\n\t\t\t\t.transition()\n\t\t\t\t// .duration(100)\n\t\t\t\t// .ease(d3.easeLinear);\n\t\n\t\t\treturn pan;\n\t\t};\n\t\n\t\tpan.frequency = function(new_frequency) {\t\n\t\t\tif (!arguments.length) {\n\t\t\t\treturn settings.frequency;\n\t\t\t}\n\n\t\t\tsettings.frequency = new_frequency;\n\n\t\t\t// TODO: if flag is too close to left edge swap sides\n\t\t\tconst flag_x = xFrequencyScale(settings.frequency);\n\t\t\tflag.attr(\"transform\", \"translate(\" + flag_x + \", 0)\");\n\n\t\t\t// update flag\n\t\t\tconst freq = flag.select('text.frequency');\n\t\t\tfreq.text(format_frequency(new_frequency));\n\n\t\t\treturn pan;\n\t\t};\n\n\t\tpan.rxant = function(new_ant) {\n\t\t\tif (!arguments.length) {\n\t\t\t\treturn settings.rxant;\n\t\t\t}\n\n\t\t\tsettings.rxant = new_ant.slice(0,4).toUpperCase();\n\n\t\t\tconst ant = flag.select('text.rx-ant');\n\t\t\tant.text(settings.rxant);\n\n\t\t\treturn pan;\n\t\t}\n\n\t\tpan.txant = function(new_ant) {\n\t\t\tif (!arguments.length) {\n\t\t\t\treturn settings.tx_ant;\n\t\t\t}\n\n\t\t\tsettings.txant = new_ant.slice(0,4).toUpperCase();\n\n\t\t\tconst ant = flag.select('text.tx-ant');\n\t\t\tant.text(settings.txant);\n\n\t\t\treturn pan;\n\t\t}\n\n\t\tpan.filter_width = function(new_width) {\n\t\t\tif (!arguments.length) {\n\t\t\t\treturn settings.filter_width;\n\t\t\t}\n\n\t\t\tsettings.filter_width = new_width;\n\t\t\tconst filter = flag.select('rect.filter-width');\n\t\t\tconst pixel_width = xFrequencyScale(settings.center + parseFloat(settings.filter_width)) - xFrequencyScale(settings.center);\n\t\t\tfilter.attr(\"width\", pixel_width);\n\n\t\t\treturn pan;\n\t\t}\n\n\t\tpan.tx = function(new_tx) {\n\t\t\tif (!arguments.length) {\n\t\t\t\treturn settings.tx;\n\t\t\t}\n\n\t\t\tsettings.tx = new_tx;\n\t\t\tconst tx = flag.select('.tx-state');\n\t\t\ttx.classed('off', function() { \n\t\t\t\treturn !settings.tx || settings.tx === 'off'\n\t\t\t});\n\n\t\t\treturn pan;\n\t\t}\n\n\t\tpan.margin = function(value) {\n\t\t\tif (!arguments.length) {\n\t\t\t\treturn margin;\n\t\t\t}\n\t\n\t\t\tmargin = value;\n\t\t\treturn pan;\n\t\t};\n\t\t\n\t\treturn pan;\n\t}\n</script>\n",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "global",
+        "className": "",
+        "x": 1210,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "53c750e4a475ffe8",
+        "type": "flexradio-message",
+        "z": "ba16a00f04172021",
+        "name": "slice/#",
+        "radio": "efc511a0a80c63d4",
+        "client": "self_radio",
+        "topic": "slice/#",
+        "topic_type": "mqtt",
+        "x": 110,
+        "y": 800,
+        "wires": [
+            [
+                "021831c365874f6e",
+                "b16e0293d43885e4"
+            ]
+        ]
+    },
+    {
+        "id": "b16e0293d43885e4",
+        "type": "debug",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 310,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "738832cfa90c75e6",
+        "type": "ui_button",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "group": "71e5b0a72d69b783",
+        "order": 5,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "ANT1",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "{\"rxant\":\"ANT1\"}",
+        "payloadType": "json",
+        "topic": "display/pan/",
+        "topicType": "str",
+        "x": 110,
+        "y": 600,
+        "wires": [
+            [
+                "021831c365874f6e",
+                "2befcb5b36585a69"
+            ]
+        ]
+    },
+    {
+        "id": "d2a29371379a2d13",
+        "type": "ui_button",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "group": "71e5b0a72d69b783",
+        "order": 6,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "ANT2",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "{\"rxant\":\"ANT2\"}",
+        "payloadType": "json",
+        "topic": "display/pan/",
+        "topicType": "str",
+        "x": 110,
+        "y": 640,
+        "wires": [
+            [
+                "021831c365874f6e",
+                "2befcb5b36585a69"
+            ]
+        ]
+    },
+    {
+        "id": "51f7390869d48d27",
+        "type": "ui_button",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "group": "71e5b0a72d69b783",
+        "order": 3,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "7.074",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "{\"center\":7.074}",
+        "payloadType": "json",
+        "topic": "display/pan/",
+        "topicType": "str",
+        "x": 110,
+        "y": 520,
+        "wires": [
+            [
+                "021831c365874f6e",
+                "2befcb5b36585a69"
+            ]
+        ]
+    },
+    {
+        "id": "7a3c35f6f3e948c2",
+        "type": "ui_button",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "group": "71e5b0a72d69b783",
+        "order": 2,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "14.074",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "{\"center\":14.074}",
+        "payloadType": "json",
+        "topic": "display/pan/",
+        "topicType": "str",
+        "x": 110,
+        "y": 560,
+        "wires": [
+            [
+                "021831c365874f6e",
+                "2befcb5b36585a69"
+            ]
+        ]
+    },
+    {
+        "id": "e89a7db40b01b474",
+        "type": "debug",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "66ef42ae700f9af3",
+        "type": "link in",
+        "z": "ba16a00f04172021",
+        "name": "Panadapter In",
+        "links": [
+            "021831c365874f6e"
+        ],
+        "x": 995,
+        "y": 360,
+        "wires": [
+            [
+                "99e9a31eda8e67cf",
+                "781f66c2a1ba16fa"
+            ]
+        ]
+    },
+    {
+        "id": "021831c365874f6e",
+        "type": "link out",
+        "z": "ba16a00f04172021",
+        "name": "Panadapter Out",
+        "mode": "link",
+        "links": [
+            "66ef42ae700f9af3"
+        ],
+        "x": 635,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "99e9a31eda8e67cf",
+        "type": "debug",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "81be1b893fab7d33",
+        "type": "inject",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "display/pan/",
+        "payload": "{\"filter_width\": 0.003}",
+        "payloadType": "json",
+        "x": 800,
+        "y": 560,
+        "wires": [
+            [
+                "781f66c2a1ba16fa"
+            ]
+        ]
+    },
+    {
+        "id": "781f66c2a1ba16fa",
+        "type": "ui_template",
+        "z": "ba16a00f04172021",
+        "group": "71e5b0a72d69b783",
+        "name": "Panadapter",
+        "order": 1,
+        "width": 21,
+        "height": 9,
+        "format": "<div id='container' class=\"svg-container\"></div>\n\n<script>\n\tfunction pan_main(scope) {\n\t\tfunction make_panadapter(config) {\n\t\t\tconst pan = Panadapter(config)\n\t\t\t\t.margin({top: 10, left: 10, bottom: 50, right: 50})\n\t\n\t\t\tvar svg = d3.select(\"div#container\")\n\t\t\t    .classed('svg-container', true)\n\t\t\t\t.append(\"svg\")\n\t\t\t\t.attr(\"preserveAspectRatio\", \"none\")\n\t\t\t\t.attr(\"viewBox\", \"0 0 1024 768\")\n\t\t\t\t.attr(\"height\", \"100%\")\n\t\t\t\t.attr(\"width\", \"100%\")\n\t\t\t\t.attr(\"class\", \"panadapter-background\")\n\t\t\t\t.classed(\"svg-content\", true)\n\t\t\t\t.call(pan)\n\n\t\t\treturn pan;\n\t\t}\n\n\t\tconst timer = setInterval(function() {\n\t\t\tif (window.d3) {\n\t\t\t\tclearInterval(timer);\n\t\n\t            const config = JSON.parse(localStorage.getItem(\"panadapter\"));\n\t\t\t\tconst pan = make_panadapter(config);\n\t\t\t\tscope.$watch('msg', function (msg) {\n\t\t\t\t\tif (msg && msg.topic) {\n\t\t\t\t\t    if (msg.topic.startsWith(\"slice/\")) {\n        \t\t\t\t    console.log(msg.payload);\n\t\t\t\t\t        pan.slice(msg.payload);\n\t\t\t\t\t    }\n\t\t\t\t\t    \n\t\t\t\t\t\tif (msg.topic.startsWith(\"display/pan\")) {\n        \t\t\t\t    console.log(msg.payload);\n\t\t\t\t\t\t    pan.config(msg.payload);\n\t\t\t\t\t\t    localStorage.setItem(\"panadapter\", JSON.stringify(pan.config()));\n\t\t\t\t\t\t    scope.send({\"topic\": \"panadapter_settings\", \"payload\": pan.config()});\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\tif (msg.topic.startsWith(\"panadapter/\")) {\n\t\t\t\t\t\t\tpan.data(msg.payload.data);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t});\n\t\t\t}\n\t\t}, 1000);\n\t}\n\t\n\tpan_main(scope);\n</script>",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1190,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "10523527ce8fdac0",
+        "type": "inject",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "display/pan/",
+        "payload": "{\"filter_width\": 0.001}",
+        "payloadType": "json",
+        "x": 800,
+        "y": 600,
+        "wires": [
+            [
+                "781f66c2a1ba16fa"
+            ]
+        ]
+    },
+    {
+        "id": "05e2119cc8329520",
+        "type": "ui_slider",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "label": "Frequency",
+        "tooltip": "",
+        "group": "71e5b0a72d69b783",
+        "order": 14,
+        "width": 21,
+        "height": 1,
+        "passthru": true,
+        "outs": "all",
+        "topic": "slice/1",
+        "topicType": "str",
+        "min": "14.001",
+        "max": "14.4",
+        "step": "0.005",
+        "className": "",
+        "x": 130,
+        "y": 980,
+        "wires": [
+            [
+                "8745e2ec8468fc53"
+            ]
+        ]
+    },
+    {
+        "id": "8745e2ec8468fc53",
+        "type": "function",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "func": "return [\n    { \"topic\": msg.topic, \"payload\": `slice t 1 ${msg.payload}` },\n    { \"topic\": msg.topic, \"payload\": {\"RF_Frequency\":  msg.payload }}\n    ];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 980,
+        "wires": [
+            [
+                "5278b935f74f9e6e"
+            ],
+            [
+                "e89a7db40b01b474"
+            ]
+        ]
+    },
+    {
+        "id": "5278b935f74f9e6e",
+        "type": "flexradio-request",
+        "z": "ba16a00f04172021",
+        "name": "",
+        "radio": "efc511a0a80c63d4",
+        "x": 550,
+        "y": 960,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "77d5820b77582655",
+        "type": "ui_spacer",
+        "z": "ba16a00f04172021",
+        "name": "spacer",
+        "group": "71e5b0a72d69b783",
+        "order": 4,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "817eff4971821db2",
+        "type": "ui_spacer",
+        "z": "ba16a00f04172021",
+        "name": "spacer",
+        "group": "71e5b0a72d69b783",
+        "order": 7,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "1172316c4fdfda6d",
+        "type": "ui_spacer",
+        "z": "ba16a00f04172021",
+        "name": "spacer",
+        "group": "71e5b0a72d69b783",
+        "order": 8,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "2cdda4aff33e6308",
+        "type": "ui_spacer",
+        "z": "ba16a00f04172021",
+        "name": "spacer",
+        "group": "71e5b0a72d69b783",
+        "order": 9,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "cf9afb24a6b9df44",
+        "type": "ui_spacer",
+        "z": "ba16a00f04172021",
+        "name": "spacer",
+        "group": "71e5b0a72d69b783",
+        "order": 10,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "131f869faf81077f",
+        "type": "ui_spacer",
+        "z": "ba16a00f04172021",
+        "name": "spacer",
+        "group": "71e5b0a72d69b783",
+        "order": 11,
+        "width": 24,
+        "height": 1
+    },
+    {
+        "id": "11d6a2e48a91ccb5",
+        "type": "ui_spacer",
+        "z": "ba16a00f04172021",
+        "name": "spacer",
+        "group": "71e5b0a72d69b783",
+        "order": 13,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "1174639efb33aa57",
+        "type": "ui_spacer",
+        "z": "ba16a00f04172021",
+        "name": "spacer",
+        "group": "71e5b0a72d69b783",
+        "order": 15,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "efc511a0a80c63d4",
+        "type": "flexradio-radio",
+        "name": "Flex6600M",
+        "host_mode": "nickname",
+        "nickname": "Flex-6600M",
+        "host": "",
+        "port": "",
+        "station_name": "NodeRed",
+        "slice_mode": "headless",
+        "slice_name": "A",
+        "timeout": "15"
+    },
+    {
+        "id": "71e5b0a72d69b783",
+        "type": "ui_group",
+        "name": "Panadapter",
+        "tab": "808a51c987c8fed5",
+        "order": 1,
+        "disp": false,
+        "width": "24",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "808a51c987c8fed5",
+        "type": "ui_tab",
+        "name": "node-red-contrib-flexradio",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
