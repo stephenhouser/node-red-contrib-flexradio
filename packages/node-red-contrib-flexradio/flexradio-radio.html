@@ -3,7 +3,7 @@
         category: 'config',
         defaults: {
             name: { value: '' },
-            host_mode: { value: 'automatic', required: true }, // automatic, discovery, manual
+            host_mode: { value: 'automatic', required: true }, // automatic, nickname, dynamic, manual
             // for discovery/nickname configuration mode
             nickname: {
                 value: '', validate: function(v) {
@@ -54,9 +54,11 @@
                 case 'automatic':
                     return 'Automatic';
                 case 'nickname':
-                    return this.nickname || 'Discovery'
+                    return this.nickname ? this.nickname : 'Discovery';
+                case 'dynamic':
+                    return this.nickname ? this.nickname : 'Dynamic';
                 case 'manual':
-                    return this.host + ":" + this.port
+                    return this.host + ":" + this.port;
             }
 
             return 'unconfigured';
@@ -75,6 +77,12 @@
                         $('#host-mode-automatic').hide();
                         $('#host-mode-manual').hide();
                         $('#host-mode-discovery').show();
+                        break;
+
+                    case 'dynamic':
+                        $('#host-mode-automatic').hide();
+                        $('#host-mode-manual').hide();
+                        $('#host-mode-discovery').hide();
                         break;
 
                     case 'manual':
@@ -161,6 +169,7 @@
         oneditsave: function() {
             var host_mode = $('#node-config-input-host_mode').val();
             switch (host_mode) {
+                case 'dynamic':
                 case 'automatic':
                     $('#node-config-input-nickname').val(null);
                 // fallthrough 
@@ -191,6 +200,7 @@
         <select id="node-config-input-host_mode">
             <option value="automatic">Automatic</option>
             <option value="nickname">Discovery</option>
+            <option value="dynamic">Dynamic</option>
             <option value="manual">Manual</option>
         </select>
     </div>
