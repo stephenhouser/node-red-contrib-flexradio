@@ -16,6 +16,63 @@
 
 `lerna publish --dist-tag prerelease`
 
+### Updated Radio Ideas
+
+    - push RadioConnection down into sub-object, keep Radio Object top-level
+        RadioConnection - maintain TCP and UDP data, send/receive-to-callback, parsing?
+        Radio uses RadioConnection, parsing?, manage meters, streams, clients...
+        May make it more usable as stand-alone instead of NodeRed specific.
+
+    - create members and maintain in Radio
+    	//scus
+		//slices
+		//panadapters
+		//waterfalls
+		//cleints
+
+### Dynamic Control -- adapted from MQTT in NodeRed 2.1
+
+-request node
+    `msg.action = connect | disconnect`
+
+    - connect needs a radio to connect to:
+        msg.radio = { host: '...', port: '...' } -- a.k.a. manual
+                    { nickname: '...' } -- from discovery
+
+-stream node
+    Action = Subscribe to stream | Dynamic subscription
+    if subscribe, show topic field and use as normal
+    if dyanmic, hide topic and...
+        show input connector
+        msg.action = subscribe | unsubscribe
+        msg.topic = stream id to subscribe or unsubscribe from
+
+-meter node
+    Action = Subscribe to meter | Dynamic subscription
+    if subscribe, show topic field and use as normal
+    if dyanmic, hide topic and...
+        show input connector
+        msg.action = subscribe | unsubscribe
+        msg.topic = meter to subscribe or unsubscribe from
+
+-messages node
+
+action string
+the name of the action the node should perform. Available actions are: "connect", "disconnect", "subscribe" and "unsubscribe".
+topic string|object|array
+For the "subscribe" and "unsubscribe" actions, this property provides the topic. It can be set as either:
+a String containing the topic filter
+an Object containing topic and qos properties
+an array of either strings or objects to handle multiple topics in one
+broker broker
+For the "connect" action, this property can override any of the individual broker configuration settings, including:
+broker
+port
+url - overrides broker/port to provide a complete connection url
+username
+password
+If this property is set and the broker is already connected an error will be logged unless it has the force property set - in which case it will disconnect from the broker, apply the new settings and reconnect.
+
 ## Panadapter
 C19|sub pan all
 
