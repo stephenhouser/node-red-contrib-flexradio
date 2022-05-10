@@ -139,22 +139,26 @@ module.exports = function(RED) {
 
 		// Connect to first discovered radio
 		node.connectAutomatic = function(config) {
-			discovery_listener().on('discovery', (discovery) => {
+			const handler = function(discovery) {
 				if (!node.closing && !node.radio) {
 					node.log('automatic connect to host=' + discovery.payload.ip + ' port=' + discovery.payload.port);
 					node._connect(discovery.payload);
+					discovery_listener().off('discovery', handler);
 				}
-			});
+			}
+			discovery_listener().on('discovery', handler);
 		};
 
 		// Connect to discovered radio with configured nickname
 		node.connectNickname = function(config) {
-			discovery_listener().on('discovery', (discovery) => {
+			const handler = function(discovery) {
 				if (!node.closing && !node.radio && config.nickname === discovery.payload.nickname) {
 					node.log('connect to discovered host=' + discovery.payload.ip + ' port=' + discovery.payload.port);
 					node._connect(discovery.payload);
+					discovery_listener().off('discovery', handler);
 				}
-			});
+			};
+			discovery_listener().on('discovery', handler);
 		};
 
 		// Connect to radio with host and port
@@ -165,7 +169,7 @@ module.exports = function(RED) {
 		};
 
 		node.connect = function(dynamic_config) {
-			if (node.getConnectionState() === 'disconnected') {
+			if (node.connectionState() === 'disconnected') {
 				const connection_config = dynamic_config ? dynamic_config : config;
 				node.log('connect mode ' + connection_config.host_mode);
 				switch (connection_config.host_mode) {
@@ -175,6 +179,7 @@ module.exports = function(RED) {
 					case 'automatic':
 						node.connectAutomatic(connection_config);
 						break;
+					case 'discovery':
 					case 'nickname':
 						node.connectNickname(connection_config);
 						break;
@@ -186,7 +191,7 @@ module.exports = function(RED) {
 		};
 
 		node.disconnect = function() {
-			if (node.getConnectionState() === 'connected') {
+			if (node.connectionState() === 'connected') {
 				const radio = node.radio;
 				if (radio) {
 					// Unsubscribe to radio events from our listeners
@@ -197,7 +202,7 @@ module.exports = function(RED) {
 					});
 
 					radio.disconnect();
-					radio = null;
+					node.radio = null;
 				}
 			}
 		}
@@ -223,7 +228,15 @@ module.exports = function(RED) {
 		});
 
 		node.send = function(msg, response_handler) {
-			if (!msg || !msg.payload) {
+			if (!msg) {
+				return false;
+			}
+
+			if (msg.action) {
+				return node.action(msg);				
+			}
+
+			if (!msg.payload) {
 				return false;
 			}
 
@@ -280,12 +293,15 @@ module.exports = function(RED) {
 				case 'connect':
 					if ('radio' in action_msg) {
 						node.connect(action_msg.radio);
+						return true;
 					}
 					break;
 				case 'disconnect':
 					node.disconnect();
-					break;
+					return true;
 			}
+
+			return false;
 		};
 
 		node.meterTopic = function(meter_msg, meter_number) {

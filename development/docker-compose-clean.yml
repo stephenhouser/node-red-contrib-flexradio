@@ -6,12 +6,12 @@ services:
         network_mode: "host"
         environment:
             - TZ=EST5EDT
-        ports:
-            - "1880:1880/tcp"
-            - "4991:4991/udp"
-            - "4992:4992/udp"
-            - "4993:4993/udp"
-            - "9229:9229"
+        # ports:
+        #     - "1880:1880/tcp"
+        #     - "4991:4991/udp"
+        #     - "4992:4992/udp"
+        #     - "4993:4993/udp"
+        #     - "9229:9229"
         volumes:
             - ./data-clean:/data
         entrypoint: "npm run debug -- --userDir /data"
