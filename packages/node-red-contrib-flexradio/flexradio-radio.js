@@ -63,6 +63,11 @@ module.exports = function(RED) {
 
 		node._connect = function(descriptor) {
 			log_debug(`flexradio-radio[${node.node_id}]._connect(${descriptor.ip}:${descriptor.port})`);
+			if (node.radio) {
+				node.unsubscribe();
+				node.radio = null;
+			}
+
 			node.log('connecting to host=' + descriptor.ip + ' port=' + descriptor.port);
 			node.radio = new Radio(descriptor);
 			if (node.radio) {
@@ -77,7 +82,7 @@ module.exports = function(RED) {
 					updateNodeStatus(msg);
 
 					clearInterval(node.reconnectTimer);
-					if (!node.closing) {
+					if (!node.closing && config.host_mode != 'dynamic') {
 						node.reconnectTimer = setTimeout(() => {
 							radio.connect();
 						}, node.timeoutSeconds * 1000);
@@ -92,6 +97,7 @@ module.exports = function(RED) {
 					if (event_type !== 'meter') {
 						log_debug(`flexradio-radio[${node.node_id}].sendEvent(${msg.topic})`);
 					}
+
 					node.emit(event_type, msg);
 				}
 
@@ -132,88 +138,100 @@ module.exports = function(RED) {
 			}
 		};
 
-		// Connect dynamically based on node input
-		node.connectDynamic = function(config) {
-			// TODO: Dynamic Connection...
-		};
-
-		// Connect to first discovered radio
-		node.connectAutomatic = function(config) {
-			const handler = function(discovery) {
-				if (!node.closing && !node.radio) {
-					node.log('automatic connect to host=' + discovery.payload.ip + ' port=' + discovery.payload.port);
-					node._connect(discovery.payload);
-					discovery_listener().off('discovery', handler);
-				}
-			}
-			discovery_listener().on('discovery', handler);
-		};
-
-		// Connect to discovered radio with configured nickname
-		node.connectNickname = function(config) {
-			const handler = function(discovery) {
-				if (!node.closing && !node.radio && config.nickname === discovery.payload.nickname) {
-					node.log('connect to discovered host=' + discovery.payload.ip + ' port=' + discovery.payload.port);
-					node._connect(discovery.payload);
-					discovery_listener().off('discovery', handler);
-				}
-			};
-			discovery_listener().on('discovery', handler);
-		};
-
-		// Connect to radio with host and port
-		node.connectManual = function(config) {
-			const descriptor = { ip: config.host, port: config.port };
-			node.log('connecting to host=' + descriptor.ip + ' port=' + descriptor.port);
-			node._connect(descriptor);
-		};
-
-		node.connect = function(dynamic_config) {
-			if (node.connectionState() === 'disconnected') {
-				const connection_config = dynamic_config ? dynamic_config : config;
-				node.log('connect mode ' + connection_config.host_mode);
-				switch (connection_config.host_mode) {
-					case 'dynamic':
-						node.connectDynamic(connection_config);
-						break;
-					case 'automatic':
-						node.connectAutomatic(connection_config);
-						break;
-					case 'discovery':
-					case 'nickname':
-						node.connectNickname(connection_config);
-						break;
-					case 'manual':
-						node.connectManual(connection_config);
-						break;
-				}
-			}
-		};
-
-		node.disconnect = function() {
-			if (node.connectionState() === 'connected') {
-				const radio = node.radio;
-				if (radio) {
-					// Unsubscribe to radio events from our listeners
-					Object.entries(node.radio_event).forEach(([event, handler]) => {
-						if (handler) {
-							radio.off(event, handler);
-						}
-					});
-
-					radio.disconnect();
-					node.radio = null;
-				}
-			}
-		}
-
-		node.countListeners = function() {
+		function countListeners() {
 			var listenerCount = 0;
 			Object.entries(node.radio_event).forEach(([event, _]) => {
 				listenerCount += node.listenerCount(event);
 			});
 
 			return listenerCount;
+		}
+
+		// Connect dynamically based on node input
+		node.connectDynamic = function(config) {
+			// Dynamic Connection... we don't do anything here.
+			// The connection will be done via a message.
+		};
+
+		// Connect to first discovered radio
+		node.connectAutomatic = function(config) {
+			const handler = function(discovery) {
+				if (!node.closing && node.getConnectionState() === 'disconnected') {
+					node.log('automatic connect to host=' + discovery.payload.ip + ' port=' + discovery.payload.port);
+					node._connect(discovery.payload);
+					discovery_listener().off('discovery', handler);
+				}
+			};
+
+			discovery_listener().on('discovery', handler);
+		};
+
+		// Connect to discovered radio with configured nickname
+		node.connectNickname = function(config) {
+			const handler = function(discovery) {
+				if (!node.closing && node.connectionState() === 'disconnected') {
+					if (config.nickname === discovery.payload.nickname) {
+						node.log('connect to discovered host=' + discovery.payload.ip + ' port=' + discovery.payload.port);
+						node._connect(discovery.payload);
+						discovery_listener().off('discovery', handler);
+					}
+				}
+			};
+
+			discovery_listener().on('discovery', handler);
+		};
+
+		// Connect to radio with host and port
+		node.connectManual = function(config) {
+			if (!node.closing && node.connectionState() === 'disconnected') {
+				const descriptor = { ip: config.host, port: config.port };
+				node.log('connecting to host=' + descriptor.ip + ' port=' + descriptor.port);
+				node._connect(descriptor);
+			}
+		};
+
+		node.connect = function(dynamic_config) {
+			if (node.connectionState() !== 'disconnected') {
+				node.log('Ignoring connect() wile already connected.');
+				return;
+			}
+
+			const connection_config = dynamic_config ? dynamic_config : config;
+			node.log('connect mode ' + connection_config.host_mode);
+			switch (connection_config.host_mode) {
+				case 'dynamic':
+					node.connectDynamic(connection_config);
+					break;
+				case 'automatic':
+					node.connectAutomatic(connection_config);
+					break;
+				case 'discovery':
+				case 'nickname':
+					node.connectNickname(connection_config);
+					break;
+				case 'manual':
+					node.connectManual(connection_config);
+					break;
+			}
+		};
+
+		node.unsubscribe = function() {
+			const radio = node.radio;
+			// Unsubscribe to radio events from our listeners
+			Object.entries(node.radio_event).forEach(([event, handler]) => {
+				if (handler) {
+					radio.off(event, handler);
+				}
+			});
+		}
+
+		node.disconnect = function() {
+			if (node.connectionState() === 'connected') {
+				const radio = node.radio;
+				if (radio) {
+					radio.disconnect();
+				}
+			}
 		}
 
 		node.on('close', function(done) {
@@ -223,6 +241,7 @@ module.exports = function(RED) {
 			node.closing = true;
 
 			node.disconnect();
+			node.unsubscribe();
 
 			done();
 		});
@@ -240,7 +259,7 @@ module.exports = function(RED) {
 				return false;
 			}
 
-			if (!node.radio || node.radio.getConnectionState() !== 'connected') {
+			if (node.radio.getConnectionState() !== 'connected') {
 				return false;
 			}
 
