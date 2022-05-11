@@ -156,7 +156,7 @@ module.exports = function(RED) {
 		// Connect to first discovered radio
 		node.connectAutomatic = function(config) {
 			const handler = function(discovery) {
-				if (!node.closing && node.getConnectionState() === 'disconnected') {
+				if (!node.closing && node.connectionState() === 'disconnected') {
 					node.log('automatic connect to host=' + discovery.payload.ip + ' port=' + discovery.payload.port);
 					node._connect(discovery.payload);
 					discovery_listener().off('discovery', handler);
@@ -314,7 +314,8 @@ module.exports = function(RED) {
 						node.connect(action_msg.radio);
 						return true;
 					}
-					break;
+					return false;
+
 				case 'disconnect':
 					node.disconnect();
 					return true;
