@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
     node-red:
-        image: nodered/node-red:latest-minimal
+        image: nodered/node-red:latest
         network_mode: "host"
         environment:
             - TZ=EST5EDT

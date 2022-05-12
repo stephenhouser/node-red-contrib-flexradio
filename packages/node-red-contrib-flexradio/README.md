@@ -15,7 +15,7 @@ The nodes in this collection are as follows:
 - `flexradio-radio` configuration node that manages communication with radios
 - `flexradio-discovery` node that injects radio discovery messages into the flow
 
-The following support libraries are dependencies of these NodeRed nodes. They should be automatically installed when you install the `node-red-contrib-flexradio` nodes. They are contained in the same source repository and listed here for completeness sake. These provide two additional nodesto access some of the internal decoding functions of the `flexradio-js` and `vita49-js` libraries for testing. They should not be used under normal circumstances.
+The following support libraries are dependencies of these NodeRed nodes. They should be automatically installed when you install the `node-red-contrib-flexradio` nodes. They are contained in the same source repository and listed here for completeness sake. These provide two additional nodes to access some of the internal decoding functions of the `flexradio-js` and `vita49-js` libraries for testing. They should not be used under normal circumstances.
 
 - `flexradio-decode` node that will run the internal decoder on TCP messages (used for development and debugging only)
 - `vita49-decode` node that will run the internal decoder on TCP messages (used for development and debugging only)
@@ -29,13 +29,13 @@ The `examples` directory has the example flows shown below. You can install this
 
 There are also a handful of videos on YouTube: [https://www.youtube.com/playlist?list=PLFeSzqhDMutUQJwLXwDYo94M8RThH9I6U](https://www.youtube.com/playlist?list=PLFeSzqhDMutUQJwLXwDYo94M8RThH9I6U)
 
-The `flexradio-request` node is most likely the first node you will use. It allows you to send requests (or commands if you like) to a radio. You first need to configure the radio connection within the node after you add it to your flow. This radio configuration will be shared by other nodes in your flows, so you should only have to set it up once.
+The `flexradio-request` node is most likely the first node you will use. It allows you to send requests (or commands if you like) to a radio. You first need to configure the radio connection within the node after you add it to your flow. This radio configuration will be shared by other nodes in your flows, so you should only have to set it up once and you should have only one for each radio you want to connect to. If you have only a single radio, choose _Automatic_. If you have multiple radios on your network, _Discovery_ will allow you to choose the radio to connect to based on it's advertised nickname. _Manual_ will allow you to specify an IP address or DNS host name along with a port. _Dynamic_ configuration is an advanced topic, best left for later explanation.
 
 ![Meters](packages/node-red-contrib-flexradio/examples/meters.png) ![Meters](examples/meters.png)
 
 Once you have a `flexradio-request` node in your flow, you can send a request to your radio and see the response. Add an inject node with the payload `info` and a debug node at the other end to see the response from the radio. When you run the flow you should get an object in the debug window with all your radio parameters. In the above example, we send `sub meter 18` to the radio to subscribe to updates on the main fan speed.
 
-You are now ready to look through the [FlexRadio Wiki](http://wiki.flexradio.com/index.php?title=SmartSDR_TCP/IP_API#SmartSDR_TCP.2FIP_Commands) and start sending other requests to your radio. There is a lot you can do with just this simple flow. Try `ant list`, or the more complex `audio client 0 slice 0 gain 20`.
+You are now ready to look through the [FlexRadio Wiki](http://wiki.flexradio.com/index.php?title=SmartSDR_TCP/IP_API#SmartSDR_TCP.2FIP_Commands) and start sending other requests to your radio. There is a lot you can do with just this simple flow. Try `ant list`, or the more complex `audio client 0 slice 0 gain 20`. Note that the [FlexRadio Wiki](http://wiki.flexradio.com/index.php?title=SmartSDR_TCP/IP_API#SmartSDR_TCP.2FIP_Commands) describes the raw request format with a preceeding _command number_. Something like `C1|`. You don't need to include those in the request you send. The `flexradio-request` node takes care of those details for you. You only need the command itself as described above.
 
 The next step is to start getting some real-time information out of your radio. There are two ways the radio reports this information as it operates and two nodes that get that information into your flows; the `flexradio-message` node and the `flexradio-meter` node. The easier of the two is `flexradio-message`.
 

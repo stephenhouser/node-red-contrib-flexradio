@@ -6,11 +6,34 @@
     <h3>Node Configuration</h3>
     <h4>Radio</h4>
     <p>The radio to connect to can be configured in different ways depending on your setup.</p>
-    <dl></dl>
-    <dt>Automatic</dt><dd>Watches for radio announcements on your network and connects to the first Flexradio found. The most common choice <strong>if you have only one radio</strong>.</dd>
-    <dt>Discovery</dt><dd>Watches for radio announcements on your network and provides a list of radios to choose from. Connects to the radio based on it's nickname. This is the most common connection choice if you have multiple radios.</dd>
-    <dt>Dynamic</dt><dd>Uses `msg.action` messages from request nodes to configure and connect to a radio.</dd>
-    <dt>Manual</dt><dd>Allows you to specify the <strong>Host</strong>> (IP address or DNS name) and <strong>Port</strong> of a radio. Useful if you have fixed addresses and/or names for devices on your network.</dd>
+
+    <dl>
+    <dt>Automatic</dt>
+        <dd>Watches for radio announcements on your network and connects to the first Flexradio found. The most common choice <strong>if you have only one radio</strong>.</dd>
+
+    <dt>Discovery</dt>
+        <dd>Watches for radio announcements on your network and provides a list of radios to choose from. Connects to the radio based on it's nickname. This is the most common connection choice if you have multiple radios.</dd>
+
+    <dt>Dynamic</dt>
+        <dd>Uses <code>msg.action</code> property from request nodes to connect or disconnect from a radio. <code>msg.action</code> can be:
+        <ul>
+            <li><code>connect</code> will attempt to connect to the radio as specified in the <code>msg.radio</code> property.</li>
+            <li><code>disconnect</code> will terminate an active connection to the radio. If the radio is configured for anything other than Dynamic the connection will be retried after a short timeout period. 
+            </li>
+        </ul>
+  
+        When <code>msg.action</code> is set to <code>connect</code>, the <code>msg.radio</code> property specifies the parameters to use in connecting to a radio. The <code>host_mode</code> property of <code>msg.radio</code> specifies how to connect and what additional fields are required.
+
+        <ul>
+            <li><code>automatic</code> requires no additional properties, radio use Automatic configuration.</li>
+            <li><code>nickname</code> requires an additional <code>nickname</code> property, radio will use Discovery connection to the given nickname.</li>
+            <li><code>manual</code> requires additional <code>host</code> and <code>port</code> properties, the radio will use Manual connection to the host and port.</li>
+        </ul>
+    </dd>
+    <dt>Manual</dt>
+        <dd>Allows you to specify the <strong>Host</strong>> (IP address or DNS name) and <strong>Port</strong> of a radio. Useful if you have fixed addresses and/or names for devices on your network.</dd>
+
+    </dl>
 
 	<!--
 	<h4>Timeout</h4>
