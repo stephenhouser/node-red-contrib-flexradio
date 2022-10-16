@@ -259,7 +259,7 @@ module.exports = function(RED) {
 				return false;
 			}
 
-			if (node.radio.getConnectionState() !== 'connected') {
+			if (!node.radio || node.radio.getConnectionState() !== 'connected') {
 				return false;
 			}
 
