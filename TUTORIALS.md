@@ -2,11 +2,11 @@
 
 The following are a list of tutorials for using the `node-red-contrib-flexradio` nodes in your flows. If you are new to the nodes, start with the _Installation and Overview_.
 
-## NodeRed/FlexRadio Introduction and Overview (complete v0.7.8)
+## Node-RED/FlexRadio Introduction and Overview (complete v0.7.8)
 
-YouTube: [NodeRed/FlexRadio Introduction and Overview](https://www.youtube.com/watch?v=8TXno7R7i2Y&t=16s)
+YouTube: [Node-RED/FlexRadio Introduction and Overview](https://www.youtube.com/watch?v=8TXno7R7i2Y&t=16s)
 
-How to install and configure the `node-red-contrib-flexradio` nodes in your existing NodeRed instance. Basic overview of the nodes provided by the package and their uses.
+How to install and configure the `node-red-contrib-flexradio` nodes in your existing Node-RED instance. Basic overview of the nodes provided by the package and their uses.
 
 The nodes and links to video tutorial of each:
 
@@ -54,14 +54,14 @@ The nodes and links to video tutorial of each:
 - change request inect node, configure with "sub meter RAD/3/MAINFAN"
 - deploy and observe
 
-## NodeRed/FlexRadio Discovery Dashboard (complete v0.7.7)
+## Node-RED/FlexRadio Discovery Dashboard (complete v0.7.7)
 
-YouTube: [NodeRed/FlexRadio Discovery Dashboard](https://youtu.be/imn7q8B6PoM)
+YouTube: [Node-RED/FlexRadio Discovery Dashboard](https://youtu.be/imn7q8B6PoM)
 
-Using `node-red-contrib-flexradio` nodes within NodeRed to create a simple dashboard that shows basic information about your radio (model, version, callsign)
+Using `node-red-contrib-flexradio` nodes within Node-RED to create a simple dashboard that shows basic information about your radio (model, version, callsign)
 
-* NodeRed -- https://nodered.org
-* NodeRed Dashboard -- https://flows.nodered.org/node/node-red-dashboard
+* Node-RED -- https://nodered.org
+* Node-RED Dashboard -- https://flows.nodered.org/node/node-red-dashboard
 * FlexRadio Nodes -- https://flows.nodered.org/node/node-red-contrib-flexradio
 
 ### Script
@@ -79,7 +79,7 @@ Using `node-red-contrib-flexradio` nodes within NodeRed to create a simple dashb
 * inject - on startup {"status": "off"}
 * change - flow.discovery = msg.payload
 
-## NodeRed/FlexRadio Messages and Status
+## Node-RED/FlexRadio Messages and Status
 
 **TODO**
 
@@ -101,14 +101,14 @@ Describe the `flexradio-messages` node, the types of data from the radio that it
 * drop a function node that shows payload as node.status for audio level
 
 
-## NodeRed/FlexRadio Sending Requests / Commands
+## Node-RED/FlexRadio Sending Requests / Commands
 
 **TODO**
 
-## NodeRed/FlexRadio Monitoring Radio Meters
+## Node-RED/FlexRadio Monitoring Radio Meters
 
 **TODO**
 
-## NodeRed/FlexRadio Radio Controls
+## Node-RED/FlexRadio Radio Controls
 
 **TODO**

@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "description": "This repository provides a number of [NodeRed](https://nodered.org) nodes to interact with [FlexRadio 6xxx](http://flexradio.com) series software defined and network attached radios.",
+  "description": "This repository provides a number of [Node-RED](https://nodered.org) nodes to interact with [FlexRadio 6xxx](http://flexradio.com) series software defined and network attached radios.",
   "version": "0.7.4",
   "main": "index.js",
   "scripts": {

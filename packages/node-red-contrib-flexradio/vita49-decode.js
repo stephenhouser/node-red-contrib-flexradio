@@ -1,4 +1,4 @@
-/* vita49-decode.js - NodeRed node to decode FlexRadio VITA-49 datagrams
+/* vita49-decode.js - Node-RED node to decode FlexRadio VITA-49 datagrams
  *
  * 2021/09/09 Stephen Houser, MIT License
  */

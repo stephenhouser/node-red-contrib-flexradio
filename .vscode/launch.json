@@ -8,7 +8,7 @@
 			"type": "node",
 			"request": "attach",
 			"protocol": "pwa-node",
-			"name": "Attach to NodeRed",
+			"name": "Attach to Node-RED",
 			"port": 9229,
 			"localRoot": "${workspaceFolder}/packages",
 			"remoteRoot": "/data",

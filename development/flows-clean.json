@@ -14,7 +14,7 @@
         "nickname": "",
         "host": "",
         "port": "",
-        "station_name": "NodeRed",
+        "station_name": "Node-RED",
         "slice_mode": "headless",
         "slice_name": "A",
         "timeout": "15"

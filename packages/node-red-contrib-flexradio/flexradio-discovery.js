@@ -1,4 +1,4 @@
-/* flexradio-discovery.js - NodeRed node for emitting FlexRadio discovery messages
+/* flexradio-discovery.js - Node-RED node for emitting FlexRadio discovery messages
  *
  * 2021/09/09 Stephen Houser, MIT License
  */

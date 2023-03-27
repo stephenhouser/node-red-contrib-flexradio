@@ -1,6 +1,6 @@
-# FlexRadio 6xxx NodeRed Nodes
+# FlexRadio 6xxx Node-RED Nodes
 
-This repository provides a number of [NodeRed](https://nodered.org) nodes to 
+This repository provides a number of [Node-RED](https://nodered.org) nodes to 
 interact with [FlexRadio 6xxx](http://flexradio.com) series software defined
 and network attached radios.
 
@@ -15,7 +15,7 @@ The nodes in this collection are as follows:
 - `flexradio-radio` configuration node that manages communication with radios
 - `flexradio-discovery` node that injects radio discovery messages into the flow
 
-The following support libraries are dependencies of these NodeRed nodes. They should be automatically installed when you install the `node-red-contrib-flexradio` nodes. They are contained in the same source repository and listed here for completeness sake. These provide two additional nodes to access some of the internal decoding functions of the `flexradio-js` and `vita49-js` libraries for testing. They should not be used under normal circumstances.
+The following support libraries are dependencies of these Node-RED nodes. They should be automatically installed when you install the `node-red-contrib-flexradio` nodes. They are contained in the same source repository and listed here for completeness sake. These provide two additional nodes to access some of the internal decoding functions of the `flexradio-js` and `vita49-js` libraries for testing. They should not be used under normal circumstances.
 
 - `flexradio-decode` node that will run the internal decoder on TCP messages (used for development and debugging only)
 - `vita49-decode` node that will run the internal decoder on TCP messages (used for development and debugging only)
@@ -49,7 +49,7 @@ The `flexradio-meter` node will not get any data until you tell your radio to st
 
 ## Topics
 
-These nodes draw on and emulate many of the concepts from the [NodeRed MQTT nodes](https://cookbook.nodered.org/#mqtt). They adapt the radio's messages and status updates to an MQTT *topic* system and adopt the MQTT topic *wildcard* patterns (using `+` and `#`). The [MQTT man page](https://mosquitto.org/man/mqtt-7.html) has some good detail on how these wildcards and MQTT topics work. It's worth reading to understand the idea of topics and topic matching.
+These nodes draw on and emulate many of the concepts from the [Node-RED MQTT nodes](https://cookbook.nodered.org/#mqtt). They adapt the radio's messages and status updates to an MQTT *topic* system and adopt the MQTT topic *wildcard* patterns (using `+` and `#`). The [MQTT man page](https://mosquitto.org/man/mqtt-7.html) has some good detail on how these wildcards and MQTT topics work. It's worth reading to understand the idea of topics and topic matching.
 
 To create *topics* from messages, these nodes use the type of data being received and parts of the message. For example a simple [message](http://wiki.flexradio.com/index.php?title=SmartSDR_TCP/IP_API#Message_Format) from the radio will have a `topic` of `message` and a `payload` corresponding to the message data itself.
 

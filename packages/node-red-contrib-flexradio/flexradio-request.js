@@ -1,4 +1,4 @@
-/* flexradio-radio.js - NodeRed node for sending requests/commands to a FlexRadio
+/* flexradio-radio.js - Node-RED node for sending requests/commands to a FlexRadio
  *
  * 2021/09/09 Stephen Houser, MIT License
  */
@@ -27,7 +27,7 @@ module.exports = function(RED) {
 			});
 
 			if (!rc) {
-				send({ topic: 'error', payload: 'radio not available or connected.'});
+				node.error('radio not available or not connected.', msg);
 			}
 
 			if (done) {

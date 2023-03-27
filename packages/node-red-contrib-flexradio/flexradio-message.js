@@ -1,4 +1,4 @@
-/* flexradio-message.js - NodeRed node for emitting FlexRadio messages and status
+/* flexradio-message.js - Node-RED node for emitting FlexRadio messages and status
  *
  * 2021/09/09 Stephen Houser, MIT License
  */

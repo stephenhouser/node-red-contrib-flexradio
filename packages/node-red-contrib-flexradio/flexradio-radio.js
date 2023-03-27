@@ -1,4 +1,4 @@
-/* flexradio-radio.js - NodeRed configuration node for FlexRadio nodes
+/* flexradio-radio.js - Node-RED configuration node for FlexRadio nodes
  *
  * 2021/09/09 Stephen Houser, MIT License
  */

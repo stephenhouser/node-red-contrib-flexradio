@@ -21,7 +21,7 @@
     - push RadioConnection down into sub-object, keep Radio Object top-level
         RadioConnection - maintain TCP and UDP data, send/receive-to-callback, parsing?
         Radio uses RadioConnection, parsing?, manage meters, streams, clients...
-        May make it more usable as stand-alone instead of NodeRed specific.
+        May make it more usable as stand-alone instead of Node-RED specific.
 
     - create members and maintain in Radio
     	//scus
@@ -30,7 +30,7 @@
 		//waterfalls
 		//cleints
 
-### Dynamic Control -- adapted from MQTT in NodeRed 2.1
+### Dynamic Control -- adapted from MQTT in Node-RED 2.1
 
 -request node
     `msg.action = connect | disconnect`

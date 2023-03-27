@@ -1,4 +1,4 @@
-/* flexradio-meter.js - NodeRed node for emitting meter data from FlexRadio
+/* flexradio-meter.js - Node-RED node for emitting meter data from FlexRadio
  *
  * 2021/09/09 Stephen Houser, MIT License
  */

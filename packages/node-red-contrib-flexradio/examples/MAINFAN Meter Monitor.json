@@ -141,7 +141,7 @@
         "name": "",
         "host": "flex-6600m",
         "port": "4992",
-        "station_name": "NodeRed",
+        "station_name": "Node-RED",
         "slice_mode": "headless",
         "slice_name": "A"
     }

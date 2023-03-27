@@ -1,4 +1,4 @@
-/* flexradio-stream.js - NodeRed node for emitting stream data from FlexRadio
+/* flexradio-stream.js - Node-RED node for emitting stream data from FlexRadio
  *
  * 2021/09/09 Stephen Houser, MIT License
  * Audio -- https://github.com/bartbutenaers/node-red-contrib-wav#more-detailed

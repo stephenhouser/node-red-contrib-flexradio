@@ -1,4 +1,4 @@
-/* flexradio-decode.js - NodeRed node to decode FlexRadio command responses
+/* flexradio-decode.js - Node-RED node to decode FlexRadio command responses
  *
  * 2021/09/09 Stephen Houser, MIT License
  */
@@ -18,6 +18,7 @@ module.exports = function(RED) {
 				node.send(flex_msg);
 			} else {
 				node.status({ fill: 'red', shape: 'dot', text: 'invalid message' });
+				node.error('could not decode flexradio message.', msg);
 			}
 		});
 	}

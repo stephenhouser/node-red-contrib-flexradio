@@ -70,7 +70,7 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "[\"client gui 8BB112FA-46E0-4002-B9B1-0C7EDC605661\",\"client station NodeRed\",\"client program NodeRed\"]",
+        "payload": "[\"client gui 8BB112FA-46E0-4002-B9B1-0C7EDC605661\",\"client station Node-RED\",\"client program Node-RED\"]",
         "payloadType": "json",
         "x": 120,
         "y": 140,
@@ -981,7 +981,7 @@
         "nickname": "Flex-6600M",
         "host": "",
         "port": "",
-        "station_name": "NodeRed",
+        "station_name": "NoNode-REDdeRed",
         "slice_mode": "headless",
         "slice_name": "A",
         "timeout": "15"
