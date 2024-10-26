@@ -170,7 +170,7 @@ module.exports = function(RED) {
 		node.connectNickname = function(config) {
 			const handler = function(discovery) {
 				if (!node.closing && node.connectionState() === 'disconnected') {
-					if (config.nickname === discovery.payload.nickname) {
+					if (config.nickname == discovery.payload.nickname) {
 						node.log('connect to discovered host=' + discovery.payload.ip + ' port=' + discovery.payload.port);
 						node._connect(discovery.payload);
 						discovery_listener().off('discovery', handler);
