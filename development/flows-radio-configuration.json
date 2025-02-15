@@ -1,0 +1,258 @@
+[
+    {
+        "id": "a092282b7f656d8d",
+        "type": "tab",
+        "label": "Dynamic",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2bbcfeb5dc25b1d5",
+        "type": "flexradio-radio",
+        "name": "Dynamic Radio",
+        "host_mode": "dynamic",
+        "nickname": "",
+        "host": "",
+        "port": "",
+        "station_name": "Node-RED",
+        "slice_mode": "headless",
+        "slice_name": "A",
+        "timeout": "15"
+    },
+    {
+        "id": "2a5ff5ea31eaaaa2",
+        "type": "inject",
+        "z": "a092282b7f656d8d",
+        "name": "manual",
+        "props": [
+            {
+                "p": "radio",
+                "v": "{\"host_mode\":\"manual\",\"host\":\"192.168.10.27\",\"port\":4992}",
+                "vt": "json"
+            },
+            {
+                "p": "action",
+                "v": "connect",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 110,
+        "y": 260,
+        "wires": [
+            [
+                "922745580aa14090"
+            ]
+        ]
+    },
+    {
+        "id": "8cd0fda0cdc15174",
+        "type": "inject",
+        "z": "a092282b7f656d8d",
+        "name": "nickname",
+        "props": [
+            {
+                "p": "radio",
+                "v": "{\"host_mode\": \"nickname\", \"nickname\":\"Flex-6600M\"}",
+                "vt": "json"
+            },
+            {
+                "p": "action",
+                "v": "connect",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "str",
+        "x": 120,
+        "y": 200,
+        "wires": [
+            [
+                "922745580aa14090"
+            ]
+        ]
+    },
+    {
+        "id": "922745580aa14090",
+        "type": "flexradio-request",
+        "z": "a092282b7f656d8d",
+        "name": "",
+        "radio": "2bbcfeb5dc25b1d5",
+        "x": 370,
+        "y": 80,
+        "wires": [
+            [
+                "8564343b50bf4747"
+            ]
+        ]
+    },
+    {
+        "id": "8564343b50bf4747",
+        "type": "debug",
+        "z": "a092282b7f656d8d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 570,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "2c91dec5f5c03b88",
+        "type": "inject",
+        "z": "a092282b7f656d8d",
+        "name": "disconnect",
+        "props": [
+            {
+                "p": "action",
+                "v": "disconnect",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "str",
+        "x": 120,
+        "y": 80,
+        "wires": [
+            [
+                "922745580aa14090"
+            ]
+        ]
+    },
+    {
+        "id": "194654a6383ace41",
+        "type": "debug",
+        "z": "a092282b7f656d8d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 570,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "1457c25af7db2660",
+        "type": "flexradio-message",
+        "z": "a092282b7f656d8d",
+        "name": "",
+        "radio": "2bbcfeb5dc25b1d5",
+        "client": "self",
+        "topic": "",
+        "topic_type": "mqtt",
+        "x": 130,
+        "y": 380,
+        "wires": [
+            [
+                "5691f4526079165f"
+            ]
+        ]
+    },
+    {
+        "id": "5691f4526079165f",
+        "type": "switch",
+        "z": "a092282b7f656d8d",
+        "name": "pass connection topic",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "connection",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 360,
+        "y": 380,
+        "wires": [
+            [
+                "194654a6383ace41"
+            ]
+        ]
+    },
+    {
+        "id": "4b35ec5f0cd05a0f",
+        "type": "inject",
+        "z": "a092282b7f656d8d",
+        "name": "automatic",
+        "props": [
+            {
+                "p": "action",
+                "v": "connect",
+                "vt": "str"
+            },
+            {
+                "p": "radio",
+                "v": "{\"host_mode\": \"automatic\"}",
+                "vt": "json"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 120,
+        "y": 140,
+        "wires": [
+            [
+                "922745580aa14090"
+            ]
+        ]
+    },
+    {
+        "id": "f3b58b0bcece87c8",
+        "type": "comment",
+        "z": "a092282b7f656d8d",
+        "name": "msg.radio = {\"host_mode\": \"nickname\", \"nickname\":\"Flex-6600M\"}",
+        "info": "",
+        "x": 480,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "4190c81b2b511e91",
+        "type": "comment",
+        "z": "a092282b7f656d8d",
+        "name": "msg.radio = {\"host_mode\":\"manual\",\"host\":\"flex-6600m\",\"port\":4992}",
+        "info": "",
+        "x": 490,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "df6d8277903db684",
+        "type": "comment",
+        "z": "a092282b7f656d8d",
+        "name": "msg.radio = {\"host_mode\": \"automatic\"}",
+        "info": "",
+        "x": 400,
+        "y": 140,
+        "wires": []
+    }
+]

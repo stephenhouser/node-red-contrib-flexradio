@@ -1,0 +1,402 @@
+[
+    {
+        "id": "36e78c8e18f595d1",
+        "type": "tab",
+        "label": "DAX",
+        "disabled": true,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b5e4c0ed42109e97",
+        "type": "inject",
+        "z": "36e78c8e18f595d1",
+        "name": "stream create type=dax_rx dax_channel=1",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "stream create type=dax_rx dax_channel=1",
+        "payloadType": "str",
+        "x": 220,
+        "y": 140,
+        "wires": [
+            [
+                "7e80c670f685e83c"
+            ]
+        ]
+    },
+    {
+        "id": "7e80c670f685e83c",
+        "type": "flexradio-request",
+        "z": "36e78c8e18f595d1",
+        "name": "",
+        "radio": "850ffdbc.dc261",
+        "x": 650,
+        "y": 100,
+        "wires": [
+            [
+                "4a59ffbb4d3c707f"
+            ]
+        ]
+    },
+    {
+        "id": "4a59ffbb4d3c707f",
+        "type": "change",
+        "z": "36e78c8e18f595d1",
+        "name": "Save Stream ID",
+        "rules": [
+            {
+                "t": "set",
+                "p": "dax_stream",
+                "pt": "flow",
+                "to": "'0x' & payload",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "stream",
+                "pt": "msg",
+                "to": "'0x' & payload",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "stream_type",
+                "pt": "msg",
+                "to": "daxAudio",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 860,
+        "y": 100,
+        "wires": [
+            [
+                "c9747329ab8e6c13"
+            ]
+        ]
+    },
+    {
+        "id": "2bbc660cfec67f42",
+        "type": "flexradio-request",
+        "z": "36e78c8e18f595d1",
+        "name": "",
+        "radio": "850ffdbc.dc261",
+        "x": 490,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "386664159719a3eb",
+        "type": "inject",
+        "z": "36e78c8e18f595d1",
+        "name": "stream remove dlow.dax_stream",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "'stream remove ' & $flowContext('dax_stream')",
+        "payloadType": "jsonata",
+        "x": 170,
+        "y": 400,
+        "wires": [
+            [
+                "2bbc660cfec67f42"
+            ]
+        ]
+    },
+    {
+        "id": "c9747329ab8e6c13",
+        "type": "flexradio-stream",
+        "z": "36e78c8e18f595d1",
+        "name": "",
+        "radio": "850ffdbc.dc261",
+        "stream_type": "dynamic",
+        "stream": "1",
+        "x": 180,
+        "y": 240,
+        "wires": [
+            [
+                "0c078d4ff2823f6a"
+            ]
+        ]
+    },
+    {
+        "id": "8c166b9b5e7b87b7",
+        "type": "ui_audio",
+        "z": "36e78c8e18f595d1",
+        "name": "",
+        "group": "3436bba6a9c277d5",
+        "voice": "com.apple.speech.synthesis.voice.Agnes",
+        "always": "",
+        "x": 800,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "3e3bf44da5614b3e",
+        "type": "wav-headers",
+        "z": "36e78c8e18f595d1",
+        "name": "",
+        "action": "add",
+        "channels": "2",
+        "samplerate": "24000",
+        "bitwidth": "32",
+        "x": 630,
+        "y": 240,
+        "wires": [
+            [
+                "8c166b9b5e7b87b7"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "0c078d4ff2823f6a",
+        "type": "function",
+        "z": "36e78c8e18f595d1",
+        "name": "Convert to PCM (pcm_s32le)",
+        "func": "wav = Buffer.alloc(msg.payload.length * 4 * 2);\n\nfor (s_idx = 0; s_idx < msg.payload.length; s_idx++) {\n    const sample = msg.payload[s_idx];\n    const buffer_idx = s_idx * 2 * 4;\n    // -1.0 to +1.0 into 32-bit PCM \n    const left = (sample[0]) * 2**31;\n    wav.writeInt32LE(left, buffer_idx);\n    const right = (sample[1]) * 2**31;\n    wav.writeInt32LE(sample[1], buffer_idx + 4);\n}\n\nmsg.payload = wav;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 240,
+        "wires": [
+            [
+                "3e3bf44da5614b3e",
+                "4f6996ca5d09fba0"
+            ]
+        ]
+    },
+    {
+        "id": "a025d0097a94d790",
+        "type": "ui_button",
+        "z": "36e78c8e18f595d1",
+        "name": "",
+        "group": "3436bba6a9c277d5",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "DAX On",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 100,
+        "y": 100,
+        "wires": [
+            [
+                "48edaec2aeec1572"
+            ]
+        ]
+    },
+    {
+        "id": "eb053bc9bb9ae870",
+        "type": "ui_button",
+        "z": "36e78c8e18f595d1",
+        "name": "",
+        "group": "3436bba6a9c277d5",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "DAX Off",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 100,
+        "y": 360,
+        "wires": [
+            [
+                "80c042f397c0911d"
+            ]
+        ]
+    },
+    {
+        "id": "80c042f397c0911d",
+        "type": "change",
+        "z": "36e78c8e18f595d1",
+        "name": "Get Stream ID",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "'stream remove ' & $flowContext('dax_stream')",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 270,
+        "y": 360,
+        "wires": [
+            [
+                "2bbc660cfec67f42"
+            ]
+        ]
+    },
+    {
+        "id": "48edaec2aeec1572",
+        "type": "change",
+        "z": "36e78c8e18f595d1",
+        "name": "stream create type=dax_rx dax_channel=1",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "stream create type=dax_rx dax_channel=1",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 350,
+        "y": 100,
+        "wires": [
+            [
+                "7e80c670f685e83c"
+            ]
+        ]
+    },
+    {
+        "id": "c8c7c9f12b22d170",
+        "type": "comment",
+        "z": "36e78c8e18f595d1",
+        "name": "DAX On -- Create stream and save ID in flow",
+        "info": "",
+        "x": 210,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "96e8c756c93cb972",
+        "type": "comment",
+        "z": "36e78c8e18f595d1",
+        "name": "Use Stream ID to inject DAX Audio into flow",
+        "info": "",
+        "x": 210,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "4532c8bb4ddb316e",
+        "type": "comment",
+        "z": "36e78c8e18f595d1",
+        "name": "Modified UI Audio Node",
+        "info": "",
+        "x": 840,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "f7e9fdbe172b2db5",
+        "type": "comment",
+        "z": "36e78c8e18f595d1",
+        "name": "Default does not allow \"streaming\"",
+        "info": "",
+        "x": 880,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "4e05bdda3873561c",
+        "type": "comment",
+        "z": "36e78c8e18f595d1",
+        "name": "DAX Off -- Turn off by removing saved Stream ID",
+        "info": "",
+        "x": 220,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "4f6996ca5d09fba0",
+        "type": "debug",
+        "z": "36e78c8e18f595d1",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "850ffdbc.dc261",
+        "type": "flexradio-radio",
+        "name": "",
+        "host_mode": "nickname",
+        "nickname": "Flex-6600M",
+        "host": "",
+        "port": "",
+        "station_name": "Node-RED",
+        "slice_mode": "headless",
+        "slice_name": "A",
+        "timeout": ""
+    },
+    {
+        "id": "3436bba6a9c277d5",
+        "type": "ui_group",
+        "name": "DAX",
+        "tab": "2cf42508ef86c162",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "2cf42508ef86c162",
+        "type": "ui_tab",
+        "name": "FlexRadio Dashboard",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]

@@ -1,3 +1,5 @@
 node_modules
 development/data-linked
 development/data-clean
+development/data-example
+packages/flexradio-js/test/capture
