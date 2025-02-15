@@ -21,6 +21,6 @@
   },
   "dependencies": {
     "binary-parser": "^1.9.2",
-    "vita49-js": "^1.1.0"
+    "vita49-js": "^1.2.4"
   }
 }
