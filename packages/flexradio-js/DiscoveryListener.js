@@ -130,7 +130,7 @@ class DiscoveryListener extends EventEmitter {
 	_receiveData(data, info) {
 		// const discoveryListener = this;
 		const flex_msg = flex.decode_realtime(data);
-		if (flex_msg.type === 'discovery') {
+		if (flex_msg && flex_msg.type === 'discovery') {
 			log_debug('DiscoveryListener::_receiveData(' + JSON.stringify(flex_msg) + ')');
 			if (flex_msg.payload && flex_msg.payload.serial) {
 				this.discovered_radios[flex_msg.payload.serial] = {
